@@ -101,20 +101,31 @@
 \usepackage{listings}
 %\lstset{numbers=left, numberstyle=\tiny, numbersep=5pt, keywordstyle=\color{black}\bfseries, stringstyle=\ttfamily,showstringspaces=false,basicstyle=\footnotesize,captionpos=b}
 %\lstset{language= [sharp]c}
-\definecolor{darkgreen}{RGB}{0,128,0}
-\lstdefinestyle{freefempp}{
-	language=[sharp]c,
-	basicstyle=\footnotesize\ttfamily,
-	commentstyle=\itshape\color{darkgreen},
-    keywordstyle=\color{blue}\ttfamily,
-    stringstyle=\color{red}\ttfamily,
-%	identifierstyle=\color{black},
-	morekeywords={ nameof },
-	% float,
-	frame=single,
-	numbers=left
+\definecolor{bluekeywords}{rgb}{0,0,1}
+\definecolor{greencomments}{rgb}{0,0.5,0}
+\definecolor{redstrings}{rgb}{0.64,0.08,0.08}
+\definecolor{xmlcomments}{rgb}{0.5,0.5,0.5}
+\definecolor{types}{rgb}{0.17,0.57,0.68}
+\usepackage{listings}
+\lstset{
+    language=[Sharp]C,
+    captionpos=b,
+    %numbers=left, %Nummerierung
+    %numberstyle=\tiny, % kleine Zeilennummern
+    frame=lines, % Oberhalb und unterhalb des Listings ist eine Linie
+    showspaces=false,
+    showtabs=false,
+    breaklines=true,
+    showstringspaces=false,
+    breakatwhitespace=true,
+    escapeinside={(*@}{@*)},
+    commentstyle=\color{greencomments},
+    morekeywords={partial, var, value, get, set},
+    keywordstyle=\color{bluekeywords},
+    stringstyle=\color{redstrings},
+    basicstyle=\ttfamily\small,
+    float,
 }
-\lstset{style=freefempp}
 
 % Indexerstellung
 \makeindex

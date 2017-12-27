@@ -4,7 +4,7 @@ Wie in \autoref{sec:problemstellung} erwähnt, wird am Lehrstuhl das Framework \
 
 Um nun ein System testen zu können, muss dieses zunächst mithilfe von \cS-Klassen und -Instanzen modelliert werden. Die dafür verwendeten Modelle sind meist stark vereinfacht und bilden nur die wesentlichen Aspekte der realen Systeme ab. Für einen korrekten Test ist es jedoch wichtig, dass das Modell des Systems vergleichbar mit dem echten System ist.
 
-\lstinputlisting[label=lst:ssExample,caption={Grundlegender Aufbau einer \sS-Komponente}, float]
+\lstinputlisting[label=lst:ssExample,caption={Grundlegender Aufbau einer \sS-Komponente}]
 {listings/ssExample.cs}
 
 \autoref{lst:ssExample} zeigt den typischen, grundlegenden Aufbau einer \sS-Komponente. Jede Komponente des Modells muss von \texttt{Component} erben, um als \sS-Komponente definiert zu sein. Jede Komponente kann nun temporäre (\texttt{TransientFault}) oder dauerhafte (\texttt{PermanentFault}) Komponentenfehler enthalten, welche zunächst innerhalb der Komponente definiert werden. Der Effekt eines Komponentenfehlers wird anschließend in der entsprechenden Unterklasse definiert, welche von der Hauptklasse (hier \texttt{YarnNode}) erbt und mithilfe des Attributs \texttt{FaultEffect} dem dazugehörigen Komponentenfehler zugeordnet wird \cite{Habermaier2016}.
