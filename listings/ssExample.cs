@@ -9,6 +9,6 @@ public class YarnNode : Component
     [FaultEffect(Fault = nameof(NodeConnectionError))]
     internal class NodeConnectionErrorEffect : YarnNode
     {
-    // fault effect logic
+		// fault effect logic
     }
 }
