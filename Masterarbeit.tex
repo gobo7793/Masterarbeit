@@ -120,7 +120,7 @@
     tabsize=2, 
     extendedchars=true, 
     breaklines=true, 
-    frame=b,
+    frame=single,
     stringstyle=\color{blue}\ttfamily, 
     showspaces=false, 
     showtabs=true, 
@@ -155,11 +155,6 @@
     keywordstyle=\color{cyan},
     identifierstyle=\color{red},
 }
-\usepackage{caption}
-\DeclareCaptionFont{white}{\color{white}}
-\DeclareCaptionFormat{listing}{\colorbox{blue}{\parbox{\textwidth}{\hspace{15pt}#1#2#3}}} %changed \colorbox{8} to \colorbox{blue} cause 8 is not a color!
-\captionsetup[lstlisting]{format=listing,labelfont=white,textfont=white, singlelinecheck=false, margin=0pt, font={bf,footnotesize}}
-
 
 % Indexerstellung
 \makeindex
