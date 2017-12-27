@@ -109,24 +109,17 @@
 %\definecolor{red}{rgb}{0.6,0,0} % for strings
 %\definecolor{blue}{rgb}{0,0,0.7}
 \definecolor{darkgreen}{rgb}{0,0.5,0}
-%\definecolor{cyan}{rgb}{0.0,0.6,0.6}
 
-\lstset{
-    language=csh,
-    basicstyle=\footnotesize\ttfamily, 
-    numbers=left, 
-    numberstyle=\tiny, 
-    tabsize=2, 
-    extendedchars=true, 
-    breaklines=true, 
-    frame=single,
-    stringstyle=\color{blue}\ttfamily, 
-    commentstyle=\color{darkgreen},
-    morecomment=[l]{//}, %use comment-line-style!
-    morecomment=[s]{/*}{*/}, %for multiline comments
-    morekeywords={ nameof },
+\lstset{    
+    language=[sharp]c,
+    basicstyle=\footnotesize\ttfamily,
+    commentstyle=\itshape\color{darkgreen},
     keywordstyle=\color{blue},
-    identifierstyle=\color{black},
+    morekeywords={ border, buildmesh, cos, dx, dy, fespace, fill, func,
+        int2d, label, mesh, on, pi, plot, problem, sin, real, x, y},
+    float,
+    frame=single,
+    numbers=left
 }
 
 % Indexerstellung
