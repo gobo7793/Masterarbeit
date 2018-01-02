@@ -2,13 +2,18 @@
 
 \emph{Model Checking} (MC) ist eine Möglichkeit, um Systeme zu testen und zu verifizieren. Dazu werden vom \emph{Model Checker} (MC) alle möglichen Systemzustände in einem \emph{brute-force}-ähnlichem Vorgehen getestet und somit alle möglichen Szenarien getestet. Die Anzahl der Zustände kann sehr schnell $ 10^{120} $ oder mehr betragen \cite{Grumberg1999,Baier2008}.
 
-%TODO: schematisches vorgehen als bild
+\begin{figure}
+	\centering
+	\includegraphics[width=\columnwidth]{./images/mcSchema.pdf}
+	\caption[Schematischer Aufbau beim MC]{Schematischer Aufbau beim MC, nach \cite{Baier2008}}
+	\label{fig:mcSchema}
+\end{figure}
 
 Ein MC nutzt, wie der Name schon sagt, ein Modell des Systems, um das System zu testen. Wie bei jeder anderen modellbasierten Technik ist daher die Qualität des MC nur so gut wie das darauf zugrunde liegende Modell. Ein Modell kann auch als endlicher Automat angesehen werden, da ein Modell ebenfalls eine endliche Anzahl an möglichen Zuständen und dazugehörige Übergänge besitzt. Für jede Eigenschaft eines Zustandes muss zudem mithilfe einer sog. \emph{temporalen Logik}, also mathematisch bzw. formal, festgelegt werden, was gültige Werte dieser Eigenschaft sind. Die dazu benötigten Informationen werden aus den Anforderungen des Systems ermittelt und dem MC übergeben. So können später verschiedene Eigenschaften des gesamten Systems (\zB die formale Korrektheit, die Ausführbarkeit ohne Deadlocks oder die Einhaltung von Sicherheitsvorgaben) geprüft werden.
 
-Zur Ausführung wird das gesamte Modell zunächst initialisiert und dann automatisch und systematisch vom MC geprüft.
+Zur Ausführung wird das gesamte Modell zunächst initialisiert und dann automatisch und systematisch vom MC auf Fehler und ungültige Zustände geprüft. In der Regel ist aber auch eine Ausführung als reine Simulation des Systems möglich, ohne explizit nach Fehlern zu suchen.
 
-Wenn alle Zustände und deren Eigenschaften die Anforderungen erfüllen, erfüllt auch das Modell die Spezifikation. Wenn nun aber ein Zustand oder Eigenschaft die Anforderungen nicht erfüllt, kann dies mehrere Ursachen haben. Die wesentlichen Fehler und Ursachen sind:
+Wenn alle Zustände und deren Eigenschaften die Anforderungen erfüllen, erfüllt auch das Modell die Spezifikation. Wenn ein Zustand bzw. Eigenschaft die Anforderungen nicht erfüllt, prüft der MC anhand eines Gegenbeispiels den Ausführungspfad zum Fehler. Dadurch kann ermittelt werden, wo die Fehlerursache liegt. Die wesentlichen Fehlertypen und Ursachen sind:
 
 \begin{description}
 	\item[Modelling Error] Der Fehler liegt im Modell, welches korrigiert werden muss.
