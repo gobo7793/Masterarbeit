@@ -8,4 +8,12 @@ Ein MC nutzt, wie der Name schon sagt, ein Modell des Systems, um das System zu 
 
 Zur Ausführung wird das gesamte Modell zunächst initialisiert und dann automatisch und systematisch vom MC geprüft.
 
-Wenn alle Zustände und deren Eigenschaften die Anforderungen erfüllen, erfüllt auch das Modell die Spezifikation. Wenn nun aber ein Zustand oder Eigenschaft die Anforderungen nicht erfüllt, kann dies mehrere Ursachen haben, die wesentlichen Ursachen liegen im Modell (\emph{Modelling Error}, hier muss das Modell selber korrigiert werden), in der Anforderungen des Systems (\emph{Design Error}, hier müssen die formellen oder informellen Anforderungen des Systems oder MC korrigiert werden) oder es ist wirklich ein Fehler im System (\emph{Property Error}). Möglich ist aber auch, dass die Ressourcen des MC nicht ausreichen, um alle Zustände zu prüfen. In so einem Fall gibt es mehrere Möglichkeiten, damit umzugehen, \zB können Heuristiken oder Abstraktionen vom Modell genutzt werden \cite{Leucker2008,Eberhardinger2016}.
+Wenn alle Zustände und deren Eigenschaften die Anforderungen erfüllen, erfüllt auch das Modell die Spezifikation. Wenn nun aber ein Zustand oder Eigenschaft die Anforderungen nicht erfüllt, kann dies mehrere Ursachen haben. Die wesentlichen Fehler sind:
+
+\begin{description}
+	\item[Modelling Error] Der Fehler liegt im Modell, welches korrigiert werden muss
+	\item[Design Error] Der Fehler liegt in den formellen oder informellen Anforderungen, dadurch muss das Modell und/oder die temporale Logik korrigiert werden
+	\item[Property Error] Der Fehler ist wirklich ein Fehler im System, welcher gefunden werden soll
+\end{description}
+
+Möglich ist aber auch, dass die Ressourcen des MC nicht ausreichen, um alle Zustände zu prüfen. In so einem Fall gibt es mehrere Möglichkeiten, damit umzugehen, \zB können Heuristiken oder Abstraktionen vom Modell genutzt werden \cite{Leucker2008,Eberhardinger2016}.
