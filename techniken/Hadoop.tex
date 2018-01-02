@@ -4,8 +4,8 @@
 
 \begin{description}
 	\item[Hadoop Common] Gemeinsam genutzte Kernkomponenten
-	\item[Hadoop Distributed File System] Kurz HDFS, Verteiltes Dateisystem
 	\item[Hadoop YARN] Framework zur Verteilung und Ausführung von Tasks und das dazugehörige Ressourcen-Management
+	\item[Hadoop Distributed File System] Kurz HDFS, Verteiltes Dateisystem
 	\item[Hadoop MapReduce] YARN-Basiertes System zum Verarbeiten von großen Datenmengen
 \end{description}
 
@@ -28,5 +28,7 @@ Die Kernidee der Architektur von YARN ist die Trennung vom Ressourcenmanagement 
 \end{figure}
 
 Das HDFS basiert auf der gleichen Architektur wie YARN und besitzt ebenfalls einen Master und mehrere Slaves, welches in der Regel die gleichen Nodes sind wie bei YARN sind. Der \emph{NameNode} ist als Master für die Verwaltung des Dateisystems zuständig und reguliert den Zugriff auf die darauf gespeicherten Daten. Die Daten selbst werden in mehrere Blöcke aufgeteilt auf den \emph{DataNodes} gespeichert. Um den Zugriff auf die Daten im Falle eines Node-Ausfalls zu gewährleisten, wird jeder Block auf anderen Nodes repliziert. Dateioperationen (wie Öffnen oder Schließen) werden direkt auf den DataNodes ausgeführt, sie sind darüber hinaus auch dafür verantwortlich, dass Clients die Daten lesen oder beschreiben können \cite{HadoopHdfsDesc272}.
+
+Das \emph{MapReduce}-Framework bietet die Möglichkeit, Anwendungen mit einem großen Ressourcenbedarf, welche große Datenmengen verarbeiten, auf einem gesamten Cluster ausführen zu können. Dazu werden bei einem MapReduce-Job die Eingabedaten aufgeteilt, anschließend von den sog. \emph{Map Tasks} verarbeitet und deren Ausgabe von den sog. \emph{Reduce Tasks} geordnet. Meist wird für die Ein- und Ausgabe der Daten das HDFS genutzt, für die Ausführung der einzelnen Tasks wird YARN genutzt.
 
 %Hier soll Hadoop in einer modifizierten Variante zum Einsatz kommen. In \cite{zhang2016} haben Zhang et. al. eine Verbesserung des Scheduler des ResourceManagers vorgestellt, welche genutzt werden soll. Im Vergleich zur Standard-Einstellung von Hadoop benötigt diese mit einer selbstadaptiven Komponente ausgestatte Modifikation im Schnitt um bis zu 40 Prozent weniger Zeit zur Ausführung eines Tasks. Dazu wird der zur Verfügung stehende Arbeitsspeicher zur Laufzeit so eingeteilt, damit immer die maximal mögliche Anzahl an Tasks ausgeführt werden können.
