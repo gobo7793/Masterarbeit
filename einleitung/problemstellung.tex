@@ -12,7 +12,7 @@ Um nun Hadoop in \sS zu modellieren wird zunächst ein Konzept erstellt, in dem 
 
 \subsection{Mapping zum realen System}\label{sec:mapping}
 
-Nachdem die Basis des Modells steht, kann die Funktionalität entwickelt werden. Dazu werden in \sS nur Basisfunktionen eingebaut, um mit dem realen System kommunizieren zu können. Dies geschieht mit einer Art Treiber, welcher mithilfe von mehreren SSH-Verbindungen mit dem realen Hadoop-Cluster kommuniziert und so das Mapping zwischen Modell und realem System übernimmt. Jede der SSH-Verbindungen ist dabei nur für einen Einsatzzweck gedacht, sodass es Verbindungen für \uA folgende Einsatzzwecke gibt:
+Nachdem die Basis des Modells steht, kann die Funktionalität entwickelt werden. Dazu werden in \sS nur Basisfunktionen eingebaut, um mit dem realen System kommunizieren zu können. Um für das reale System möglichst viele Ressourcen zur Verfügung zu stellen, wird das reale System auf einem eigenen PC installiert. Die Verbindung zwischen Modell und realem System wird mit einer Art Treiber realisiert, welcher mithilfe von mehreren SSH-Verbindungen mit dem realen Hadoop-Cluster kommuniziert und so das Mapping zwischen Modell und realem System übernimmt. Jede der SSH-Verbindungen ist dabei nur für einen Einsatzzweck gedacht, sodass es Verbindungen für \uA folgende Einsatzzwecke gibt:
 
 \begin{itemize}[noitemsep]
 	\item Starten von Benchmark-Anwendungen
@@ -20,7 +20,7 @@ Nachdem die Basis des Modells steht, kann die Funktionalität entwickelt werden.
 	\item Injektion von Komponentenfehler
 \end{itemize}
 
-Der Vorteil von mehreren Verbindungen liegt darin, dass jede Verbindung unabhängig ist und nicht auf die Antwort des zuvor gestarteten Programms warten muss. So ist es möglich, mithilfe mehrere Verbindungen mehrere Anwendungen parallel zu starten und jede Rückgabe auszuwerten und währenddessen verschiedene Komponentenfehler zu aktivieren.
+Der Vorteil von mehreren Verbindungen liegt darin, dass jede Verbindung unabhängig ist und nicht auf die Antwort des zuvor ausgeführten Befehls einer anderen Verbindung warten muss. So ist es möglich, mithilfe mehrerer Verbindungen mehrere Anwendungen parallel zu starten und jede Rückgabe auszuwerten und währenddessen verschiedene Komponentenfehler zu aktivieren.
 
 \subsection{Erstellung der Lastprofile}\label{sec:lastprofilerstellung}
 
