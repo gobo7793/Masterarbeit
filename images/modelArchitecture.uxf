@@ -45,7 +45,7 @@ SSH-Verbindung</panel_attributes>
     <coordinates>
       <x>240</x>
       <y>320</y>
-      <w>210</w>
+      <w>120</w>
       <h>40</h>
     </coordinates>
     <panel_attributes>valign=center
@@ -114,17 +114,14 @@ Linux-PC</panel_attributes>
     <panel_attributes>lw=0
 valign=center
 halign=center
-
-
-
-Connector
 customelement=
-drawLine(0, 50, 220, 50) lw=1
+drawLine(0, 50, 140, 50) lw=1
 drawLine(0, 50, 0, 90) lw=1
 drawLine(0, 90, 260, 90) lw=1
 drawLine(260, 0, 260, 90) lw=1
-drawLine(260, 0, 220, 0) lw=1
-drawLine(220, 50, 220, 0) lw=1</panel_attributes>
+drawLine(260, 0, 140, 0) lw=1
+drawLine(140, 50, 140, 0) lw=1
+group=1</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -176,6 +173,22 @@ halign=center
 Relevante
 Komponenten &amp;
 Eigenschaften</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>380</x>
+      <y>320</y>
+      <w>120</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>lw=0
+valign=center
+halign=center
+
+Connector
+group=1</panel_attributes>
     <additional_attributes/>
   </element>
 </diagram>
