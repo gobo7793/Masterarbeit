@@ -11,6 +11,8 @@
     </coordinates>
     <panel_attributes>valign=top
 halign=center
+layer=0
+bg=green
 YARN-Modell</panel_attributes>
     <additional_attributes/>
   </element>
@@ -24,6 +26,8 @@ YARN-Modell</panel_attributes>
     </coordinates>
     <panel_attributes>valign=top
 halign=center
+layer=0
+bg=yellow
 Treiber</panel_attributes>
     <additional_attributes/>
   </element>
@@ -37,6 +41,7 @@ Treiber</panel_attributes>
     </coordinates>
     <panel_attributes>valign=center
 halign=center
+layer=1
 SSH-Verbindung</panel_attributes>
     <additional_attributes/>
   </element>
@@ -50,6 +55,7 @@ SSH-Verbindung</panel_attributes>
     </coordinates>
     <panel_attributes>valign=center
 halign=center
+layer=1
 Parser</panel_attributes>
     <additional_attributes/>
   </element>
@@ -63,6 +69,7 @@ Parser</panel_attributes>
     </coordinates>
     <panel_attributes>valign=center
 halign=center
+bg=orange
 Reales Cluster</panel_attributes>
     <additional_attributes/>
   </element>
@@ -76,6 +83,8 @@ Reales Cluster</panel_attributes>
     </coordinates>
     <panel_attributes>valign=top
 halign=center
+layer=-1
+bg=light_gray
 Windows-PC bzw. VM</panel_attributes>
     <additional_attributes/>
   </element>
@@ -89,6 +98,8 @@ Windows-PC bzw. VM</panel_attributes>
     </coordinates>
     <panel_attributes>valign=top
 halign=center
+layer=-1
+bg=light_gray
 Linux-PC</panel_attributes>
     <additional_attributes/>
   </element>
@@ -114,6 +125,7 @@ Linux-PC</panel_attributes>
     <panel_attributes>lw=0
 valign=center
 halign=center
+layer=1
 customelement=
 drawLine(0, 50, 140, 50) lw=1
 drawLine(0, 50, 0, 90) lw=1
@@ -134,6 +146,7 @@ group=1</panel_attributes>
     </coordinates>
     <panel_attributes>valign=center
 halign=center
+layer=1
 Komponenten-
 fehler</panel_attributes>
     <additional_attributes/>
@@ -170,6 +183,7 @@ fehler</panel_attributes>
     </coordinates>
     <panel_attributes>valign=center
 halign=center
+layer=1
 Relevante
 Komponenten &amp;
 Eigenschaften</panel_attributes>
@@ -186,6 +200,7 @@ Eigenschaften</panel_attributes>
     <panel_attributes>lw=0
 valign=center
 halign=center
+layer=1
 
 Connector
 group=1</panel_attributes>

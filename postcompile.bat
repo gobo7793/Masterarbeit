@@ -1,3 +1,4 @@
+REM commands to execute after compilation
 REM settings for TeXstudio: https://tex.stackexchange.com/a/261721
 
 git add --all
