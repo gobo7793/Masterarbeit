@@ -5,14 +5,13 @@
     <id>UMLClass</id>
     <coordinates>
       <x>230</x>
-      <y>220</y>
+      <y>210</y>
       <w>250</w>
-      <h>70</h>
+      <h>80</h>
     </coordinates>
-    <panel_attributes>valign=center
+    <panel_attributes>valign=top
 halign=center
-YARN-Modell
-mit relevanten Eigenschaften</panel_attributes>
+YARN-Modell</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -45,21 +44,8 @@ SSH-Verbindung</panel_attributes>
     <id>UMLClass</id>
     <coordinates>
       <x>240</x>
-      <y>380</y>
-      <w>230</w>
-      <h>40</h>
-    </coordinates>
-    <panel_attributes>valign=center
-halign=center
-Connector</panel_attributes>
-    <additional_attributes/>
-  </element>
-  <element>
-    <id>UMLClass</id>
-    <coordinates>
-      <x>240</x>
       <y>330</y>
-      <w>230</w>
+      <w>180</w>
       <h>40</h>
     </coordinates>
     <panel_attributes>valign=center
@@ -71,7 +57,7 @@ Parser</panel_attributes>
     <id>UMLClass</id>
     <coordinates>
       <x>230</x>
-      <y>570</y>
+      <y>560</y>
       <w>250</w>
       <h>50</h>
     </coordinates>
@@ -84,9 +70,9 @@ Reales Cluster</panel_attributes>
     <id>UMLClass</id>
     <coordinates>
       <x>210</x>
-      <y>190</y>
+      <y>180</y>
       <w>290</w>
-      <h>310</h>
+      <h>320</h>
     </coordinates>
     <panel_attributes>valign=top
 halign=center
@@ -97,7 +83,7 @@ Windows-PC bzw. VM</panel_attributes>
     <id>UMLClass</id>
     <coordinates>
       <x>210</x>
-      <y>540</y>
+      <y>530</y>
       <w>290</w>
       <h>100</h>
     </coordinates>
@@ -112,9 +98,83 @@ Linux-PC</panel_attributes>
       <x>340</x>
       <y>460</y>
       <w>30</w>
-      <h>100</h>
+      <h>90</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>10.0;80.0;10.0;10.0</additional_attributes>
+    <additional_attributes>10.0;70.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>240</x>
+      <y>330</y>
+      <w>230</w>
+      <h>90</h>
+    </coordinates>
+    <panel_attributes>lw=0
+valign=center
+halign=center
+
+
+
+Connector
+customelement=
+drawLine(0, 50, 190, 50) lw=1
+drawLine(0, 50, 0, 90) lw=1
+drawLine(0, 90, 230, 90) lw=1
+drawLine(230, 0, 230, 90) lw=1
+drawLine(230, 0, 190, 0) lw=1
+drawLine(190, 50, 190, 0) lw=1</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>240</x>
+      <y>240</y>
+      <w>110</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>valign=center
+halign=center
+Relevante
+Eigenschaften</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>360</x>
+      <y>240</y>
+      <w>110</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>valign=center
+halign=center
+Komponenten-
+fehler</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>440</x>
+      <y>270</y>
+      <w>30</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;60.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>280</x>
+      <y>280</y>
+      <w>30</w>
+      <h>70</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;50.0;10.0;10.0</additional_attributes>
   </element>
 </diagram>
