@@ -71,7 +71,7 @@ Parser</panel_attributes>
     <id>UMLClass</id>
     <coordinates>
       <x>230</x>
-      <y>490</y>
+      <y>570</y>
       <w>250</w>
       <h>50</h>
     </coordinates>
@@ -79,5 +79,42 @@ Parser</panel_attributes>
 halign=center
 Reales Cluster</panel_attributes>
     <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>210</x>
+      <y>190</y>
+      <w>290</w>
+      <h>310</h>
+    </coordinates>
+    <panel_attributes>valign=top
+halign=center
+Windows-PC bzw. VM</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>210</x>
+      <y>540</y>
+      <w>290</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>valign=top
+halign=center
+Linux-PC</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>340</x>
+      <y>460</y>
+      <w>30</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;80.0;10.0;10.0</additional_attributes>
   </element>
 </diagram>
