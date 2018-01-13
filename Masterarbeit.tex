@@ -121,8 +121,8 @@
 \makeindex
 
 % Abkürzungsverzeichnis
-%\usepackage[german]{nomencl}
-%\let\abbrev\nomenclature
+\usepackage[german]{nomencl}
+\let\abbrev\nomenclature
 
 % Abkürzungsverzeichnis LiveTex Version
 %\renewcommand{\nomname}{Abkürzungsverzeichnis}
@@ -223,13 +223,13 @@
 %%%%
 
 % das Abkürzungsverzeichnis
-%\newpage
+\newpage
 % Abkürzungsverzeichnis soll im Inhaltsverzeichnis auftauchen
-%\addcontentsline{toc}{section}{Abkürzungsverzeichnis}
+\addcontentsline{toc}{section}{Abkürzungsverzeichnis}
 % das Abkürzungsverzeichnis entgültige Ausgeben
-%\fancyhead[L]{Abkürzungsverzeichnis} %Kopfzeile links
-%\input{settings/abkuerzungen}
-%\printnomenclature
+\fancyhead[L]{Abkürzungsverzeichnis} %Kopfzeile links
+\input{settings/abkuerzungen}
+\printnomenclature
 
 % Definiert Stegbreite bei zweispaltigem Layout
 \setlength{\columnsep}{25pt}
