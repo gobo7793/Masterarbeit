@@ -56,6 +56,9 @@
 % Mathematische Symbole importieren
 \usepackage{amssymb}
 
+% Abkürzungsverzeichnis
+\usepackage[printonlyused]{acronym}
+
 % auf jeder Seite eine Überschrift (alt, zentriert)
 %\pagestyle{headings}
 
@@ -83,9 +86,6 @@
 
 % Runde Klammern für Zitate
 \usepackage[numbers,round]{natbib}
-
-% Festlegung Art der Zitierung
-\bibliographystyle{abbrvdin}
 
 % Schaltet den zusätzlichen Zwischenraum ab, den LaTeX normalerweise nach einem Satzzeichen einfügt.
 \frenchspacing
@@ -120,27 +120,6 @@
 % Indexerstellung
 \makeindex
 
-% Abkürzungsverzeichnis
-\usepackage[german]{nomencl}
-\let\abbrev\nomenclature
-
-% Abkürzungsverzeichnis LiveTex Version
-%\renewcommand{\nomname}{Abkürzungsverzeichnis}
-%\setlength{\nomlabelwidth}{.25\hsize}
-%\renewcommand{\nomlabel}[1]{#1 \dotfill}
-%\setlength{\nomitemsep}{-\parsep}
-%\makenomenclature
-%\makeglossary
-
-% Abkürzungsverzeichnis TeTEX Version
-% \usepackage[german]{nomencl}
-% \makenomenclature
-% %\makeglossary
-% \renewcommand{\nomname}{Abkürzungsverzeichnis}
-% \setlength{\nomlabelwidth}{.25\hsize}
-% \renewcommand{\nomlabel}[1]{#1 \dotfill}
-% \setlength{\nomitemsep}{-\parsep}
-
 % Disable single lines at the start of a paragraph (Schusterjungen)
 \clubpenalty = 10000
 % Disable single lines at the end of a paragraph (Hurenkinder)
@@ -159,7 +138,7 @@
 
 % Eidesstattliche Erklärung
 %\addcontentsline{toc}{section}{Eidesstattliche Erklärung}
-\include{erklaerung}
+%\include{erklaerung}
 
 % römische Numerierung
 \pagenumbering{Roman}
@@ -225,11 +204,9 @@
 % das Abkürzungsverzeichnis
 \newpage
 % Abkürzungsverzeichnis soll im Inhaltsverzeichnis auftauchen
-\addcontentsline{toc}{section}{Abkürzungsverzeichnis}
-% das Abkürzungsverzeichnis entgültige Ausgeben
+\addcontentsline{toc}{chapter}{Abkürzungsverzeichnis}
 \fancyhead[L]{Abkürzungsverzeichnis} %Kopfzeile links
 \input{settings/abkuerzungen}
-\printnomenclature
 
 % Definiert Stegbreite bei zweispaltigem Layout
 \setlength{\columnsep}{25pt}
@@ -255,9 +232,11 @@
 \singlespacing
 % Literaturliste soll im Inhaltsverzeichnis auftauchen
 \newpage
-\addcontentsline{toc}{chapter}{Literaturverzeichnis}
+\phantomsection\addcontentsline{toc}{chapter}{Literaturverzeichnis}
 % Literaturverzeichnis anzeigen
 \renewcommand\refname{Literaturverzeichnis}
+% Festlegung Art der Zitierung
+\bibliographystyle{abbrvdin}
 \bibliography{literatur,web,abbildungen}
 
 %% Index soll Stichwortverzeichnis heissen
