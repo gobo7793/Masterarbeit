@@ -8,11 +8,11 @@ Die Anwendungen, welche mit \texttt{YarnApp} dargestellt werden, werden mithilfe
 
 Jede Ausführung \texttt{YarnAppAttempt} hat eine eigene ID und kann einer Anwendung zugeordnet werden. Genau wie bei den Anwendungen selber wird hier direkt der Node gespeichert, auf welchem der \ac{AppMstr} ausgeführt wird und einen eigenen Container bildet, dessen ID direkt gespeichert wird. Container (dargestellt durch \texttt{YarnAppContainer}) existieren in Hadoop nur während der Laufzeit eines Programmes und enthalten nur wenige Daten, darunter ihr ausführender Node. Jede Anwendung, deren Ausführungen und deren Container enthalten zudem den derzeitigen Status, ob die Komponente noch eingereicht wird, bereits ausgeführt wird oder beendet ist. \texttt{EAppState.NotStartedYet} dient als Status, den es nur im Modell gibt und angibt, dass die Anwendung im späteren Verlauf der Testausführung gestartet wird.
 
+Alle vier YARN-Kernkomponenten implementieren das Interface \texttt{IYarnReadable}, was angibt, dass die Komponente ihren Status aus Hadoop ermitteln kann. Entsprechend wird in allen Komponenten die Methode \texttt{GetStatus()} implementiert, in welchem mithilfe des angegebenen Parsers auf den SSH-Treiber zugegriffen werden kann und die Komponenten im Modell so ihre Daten aus dem realen Cluster ermitteln können.
+
 \begin{figure}
     \centering
     \includegraphics[width=\columnwidth]{./images/yarnModel.png}
     \caption[Aufbau des YARN-Modells]{Aufbau des YARN-Modells. Das Modell wurde mithilfe des Klassendiagramm-Designers in Visual Studio 2017 erstellt. Daher werden Assoziationen aus Listen (wie \texttt{YarnApp.Attempts}) im Diagramm nicht angezeigt.}
     \label{fig:yarnModel}
 \end{figure}
-
-Alle vier YARN-Kernkomponenten implementieren das Interface \texttt{IYarnReadable}, was angibt, dass die Komponente ihren Status aus Hadoop ermitteln kann. Entsprechend wird in allen Komponenten die Methode \texttt{GetStatus()} implementiert, in welchem mithilfe des angegebenen Parsers auf den SSH-Treiber zugegriffen werden kann und die Komponenten im Modell so ihre Daten aus dem realen Cluster ermitteln können.
