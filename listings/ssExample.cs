@@ -3,7 +3,7 @@ public class YarnNode : Component
 	// fault definition, also possible: new PermanentFault()
 	public readonly Fault NodeConnectionError = new TransientFault();
 	
-	// interaction logic (Members, Properties, Methods...)
+	// interaction logic (Fields, Properties, Methods...)
 	
 	// fault effect
 	[FaultEffect(Fault = nameof(NodeConnectionError))]
