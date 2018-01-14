@@ -5,7 +5,7 @@
 % weitere Pakete
 % Grafiken aus PNG und SVG Dateien einbinden
 \usepackage{graphicx}
-\usepackage{svg}
+\usepackage{wrapfig}
 
 % Deutsche Sonderzeichen benutzen 
 \usepackage{ngerman}
@@ -24,6 +24,8 @@
 
 \usepackage{lmodern}
 \usepackage{fix-cm}
+
+\usepackage{xspace}
 
 % floatende Bilder ermöglichen
 %\usepackage{floatflt}
@@ -54,6 +56,9 @@
 % Mathematische Symbole importieren
 \usepackage{amssymb}
 
+% Abkürzungsverzeichnis
+\usepackage[printonlyused]{acronym}
+
 % auf jeder Seite eine Überschrift (alt, zentriert)
 %\pagestyle{headings}
 
@@ -82,9 +87,6 @@
 % Runde Klammern für Zitate
 \usepackage[numbers,round]{natbib}
 
-% Festlegung Art der Zitierung
-\bibliographystyle{abbrvdin}
-
 % Schaltet den zusätzlichen Zwischenraum ab, den LaTeX normalerweise nach einem Satzzeichen einfügt.
 \frenchspacing
 
@@ -99,32 +101,24 @@
 
 % für Listings
 \usepackage{listings}
-\lstset{numbers=left, numberstyle=\tiny, numbersep=5pt, keywordstyle=\color{black}\bfseries, stringstyle=\ttfamily,showstringspaces=false,basicstyle=\footnotesize,captionpos=b}
-\lstset{language= [sharp]c}
+\definecolor{darkgreen}{rgb}{0,0.5,0}
+\lstset{    
+    language=[sharp]c,
+    basicstyle=\footnotesize\ttfamily,
+    commentstyle=\color{darkgreen},
+    keywordstyle=\color{blue},
+    morekeywords={ nameof },
+%    float,
+    frame=single,
+    numbers=left,
+    numberstyle=\tiny,
+    tabsize=2,
+    breaklines=true,
+    captionpos=b,
+}
 
 % Indexerstellung
 \makeindex
-
-% Abkürzungsverzeichnis
-%\usepackage[german]{nomencl}
-%\let\abbrev\nomenclature
-
-% Abkürzungsverzeichnis LiveTex Version
-%\renewcommand{\nomname}{Abkürzungsverzeichnis}
-%\setlength{\nomlabelwidth}{.25\hsize}
-%\renewcommand{\nomlabel}[1]{#1 \dotfill}
-%\setlength{\nomitemsep}{-\parsep}
-%\makenomenclature
-%\makeglossary
-
-% Abkürzungsverzeichnis TeTEX Version
-% \usepackage[german]{nomencl}
-% \makenomenclature
-% %\makeglossary
-% \renewcommand{\nomname}{Abkürzungsverzeichnis}
-% \setlength{\nomlabelwidth}{.25\hsize}
-% \renewcommand{\nomlabel}[1]{#1 \dotfill}
-% \setlength{\nomitemsep}{-\parsep}
 
 % Disable single lines at the start of a paragraph (Schusterjungen)
 \clubpenalty = 10000
@@ -144,7 +138,7 @@
 
 % Eidesstattliche Erklärung
 %\addcontentsline{toc}{section}{Eidesstattliche Erklärung}
-\include{erklaerung}
+%\include{erklaerung}
 
 % römische Numerierung
 \pagenumbering{Roman}
@@ -208,13 +202,11 @@
 %%%%
 
 % das Abkürzungsverzeichnis
-%\newpage
+\newpage
 % Abkürzungsverzeichnis soll im Inhaltsverzeichnis auftauchen
-%\addcontentsline{toc}{section}{Abkürzungsverzeichnis}
-% das Abkürzungsverzeichnis entgültige Ausgeben
-%\fancyhead[L]{Abkürzungsverzeichnis} %Kopfzeile links
-%\input{settings/abkuerzungen}
-%\printnomenclature
+\addcontentsline{toc}{chapter}{Abkürzungsverzeichnis}
+\fancyhead[L]{Abkürzungsverzeichnis} %Kopfzeile links
+\input{settings/abkuerzungen}
 
 % Definiert Stegbreite bei zweispaltigem Layout
 \setlength{\columnsep}{25pt}
@@ -231,15 +223,21 @@
 % einzelne Kapitel
 \include{einleitung/einleitung}
 
+\include{techniken/techniken}
+
+\include{./modell/modell}
+
 \onecolumn
 % einfacher Zeilenabstand
 \singlespacing
 % Literaturliste soll im Inhaltsverzeichnis auftauchen
 \newpage
-\addcontentsline{toc}{chapter}{Literaturverzeichnis}
+\phantomsection\addcontentsline{toc}{chapter}{Literaturverzeichnis}
 % Literaturverzeichnis anzeigen
 \renewcommand\refname{Literaturverzeichnis}
-\bibliography{literatur,abbildungen}
+% Festlegung Art der Zitierung
+\bibliographystyle{abbrvdin}
+\bibliography{literatur,web,abbildungen}
 
 %% Index soll Stichwortverzeichnis heissen
 % \newpage
