@@ -1,2 +1,11 @@
 \section{SSH-Treiber}\label{sec:sshDriver}
 
+In \autoref{sec:architecture} wurde bereits auf den grundlegenden Aufbau des Treibers eingegangen. Der SSH-Treiber besteht aus drei einzelnen Komponenten, welche mithilfe von Interfaces im YARN-Modell eingebunden sind. Dadurch ist es möglich, unterschiedliche Parser bzw. auch Verbindungen für unterschiedliche Komponenten zu nutzen. Da es zwei Möglichkeiten gibt, die Daten des realen Clusters ausgeben zu lassen, wurde dies auch genutzt und so ein Parser für das Monitoring mittels Kommandozeilen-Befehle, und ein Parser für die Nutzung der REST-API von Hadoop erstellt.
+
+\subsection{Kommandozeilen-Parser}\label{sec:cmdParser}
+
+\subsection{REST-API-Parser}\label{sec:restParser}
+
+\subsection{Connector}\label{sec:Connector}
+
+\subsection{SSH-Verbindung}\label{sec:sshConnection}
