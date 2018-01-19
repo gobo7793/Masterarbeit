@@ -1,15 +1,15 @@
 \section{Apache Hadoop}\label{sec:hadoop}
 
-Apache Hadoop ist ein Open-Source-Software-Projekt, mit dessen Hilfe ermöglicht wird, Programme zur Datenverarbeitung mit großen Ressourcenbedarf auf verteilten System auszuführen. Hadoop wird von der \emph{Apache Foundation} entwickelt und bietet verschiedene Komponenten an, welche vollständig skalierbar sind, von einer einfachen Installation auf einem PC bis hin zu einer Installation über mehrere Server in einem Serverzentrum. Hadoop besteht hauptsächlich aus folgenden Kernmodulen \cite{HadoopHomePage}:
+\textbf{Apache Hadoop} ist ein Open-Source-Software-Projekt, mit dessen Hilfe ermöglicht wird, Programme zur Datenverarbeitung mit großen Ressourcenbedarf auf verteilten System auszuführen. Hadoop wird von der \emph{Apache Foundation} entwickelt und bietet verschiedene Komponenten an, welche vollständig skalierbar sind, von einer einfachen Installation auf einem PC bis hin zu einer Installation über mehrere Server in einem Serverzentrum. Hadoop besteht hauptsächlich aus folgenden Kernmodulen \cite{HadoopHomePage}:
 
 \begin{description}
 	\item[Hadoop Common] Gemeinsam genutzte Kernkomponenten
-	\item[Hadoop YARN] Framework zur Verteilung und Ausführung von Tasks und das dazugehörige Ressourcen-Management
+	\item[Hadoop YARN] Framework zur Verteilung und Ausführung von Anwendungen und das dazugehörige Ressourcen-Management
 	\item[Hadoop Distributed File System] Kurz HDFS, Verteiltes Dateisystem
 	\item[Hadoop MapReduce] YARN-Basiertes System zum Verarbeiten von großen Datenmengen
 \end{description}
 
-Hadoop ermöglicht es dadurch, sehr einfach mit Tasks umzugehen, welche große Datenmengen verarbeiten. Da es für Hadoop nicht relevant ist, auf wie vielen Servern es läuft, kann es beliebig skaliert werden, wodurch entsprechend viele Ressourcen zur Bearbeitung und Speicherung von großen Datenmengen zur Verfügung stehen können.
+Hadoop ermöglicht es dadurch, sehr einfach mit Anwendungen umzugehen, welche große Datenmengen verarbeiten. Da es für Hadoop nicht relevant ist, auf wie vielen Servern es läuft, kann es beliebig skaliert werden, wodurch entsprechend viele Ressourcen zur Bearbeitung und Speicherung von großen Datenmengen zur Verfügung stehen können.
 
 \begin{figure}
 	\centering
@@ -18,7 +18,9 @@ Hadoop ermöglicht es dadurch, sehr einfach mit Tasks umzugehen, welche große D
 	\label{fig:yarnarch}
 \end{figure}
 
-Die Kernidee der Architektur von \textbf{YARN} ist die Trennung vom Ressourcenmanagement und Scheduling. Dazu besitzt der Master bzw. \texttt{Controller} den \ac{RM}, welcher für das gesamte System zuständig ist und die Anwendungen im System überwacht. Er besteht aus zwei Kernkomponenten, dem \ac{AM} und dem \emph{Scheduler}. Der \ac{AM} ist für die Annahme und Ausführung von einzelnen Anwendungen zuständig, denen der Scheduler die dafür notwendigen Ressourcen zuteilt und überwacht. Für jeden Slave-\emph{Node} im Hadoop-System gibt es dazu einen \ac{NM}, welcher die lokalen Ressourcen des Nodes überwacht und dem \ac{RM} mitteilt. Jede Anwendung besitzt jeweils einen eigenen \ac{AppMstr}, welcher für das Monitoring und die Kommunikation mit dem \ac{RM} und \ac{NM} zuständig ist und die dazu notwendigen Informationen bereit stellt. Jede YARN-Anwendung bzw. Job besteht aus einem oder mehreren \emph{Containern}, in denen die einzelnen Tasks der Anwendung auf einem beliebigen Node ausgeführt werden \cite{HadoopYarnArch271}.
+Die Kernidee der Architektur von \textbf{YARN} ist die Trennung vom Ressourcenmanagement und Scheduling. Dazu besitzt der Master bzw. \emph{Controller} den \ac{RM}, welcher für das gesamte System zuständig ist und die Anwendungen im System verteilt und überwacht und somit auch als \emph{Load-Balancer} agiert. Er besteht aus zwei Kernkomponenten, dem \ac{AM} und dem \emph{Scheduler}. Der \ac{AM} ist für die Annahme und Ausführung von einzelnen Anwendungen zuständig, denen der Scheduler die dafür notwendigen Ressourcen im Cluster zuteilt.
+
+Jeder Slave-\emph{Node} im Hadoop-Cluster besitzt einen \ac{NM}, welcher für die Überwachung der Ressourcen des Nodes zuständig ist und diese dem \ac{RM} mitteilt. Jede Anwendung besitzt jeweils einen eigenen \ac{AppMstr}, welcher für das anwendungsbezogene Monitoring und die Kommunikation mit dem \ac{RM} und \ac{NM} zuständig ist und die dazu notwendigen Informationen bereit stellt. Jede YARN-Anwendung bzw. Job besteht aus einem oder mehreren \emph{Containern}, in denen die einzelnen Tasks der Anwendung auf einem beliebigen Node ausgeführt werden. Das Monitoring der einzelnen Container wird geteilt durchgeführt. Der \ac{NM} übernimmt das Monitoring der genutzten Ressourcen, der jeweilige \ac{AppMstr} die anwendungsbezogenen Monitoring-Aufgaben \cite{HadoopYarnArch271}.
 
 \begin{figure}
     \centering
