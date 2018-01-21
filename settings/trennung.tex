@@ -1,10 +1,18 @@
 %hier müssen alle Wörter rein, welche Latex von sich auch nicht korrekt trennt bzw. bei denen man die genaue Trennung vorgeben möchte
-%\hyphenchar\font=\string"7F
 \hyphenation
 {
     Film-pro-du-zen-ten
     Lux-em-burg
     Soft-ware-bau-steins
     zeit-in-ten-siv
-    SSH-Ver-bin-dung
+}
+\renewcommand{\texttt}[1]{%
+    \begingroup
+    \ttfamily
+    \begingroup\lccode`~=`/\lowercase{\endgroup\def~}{/\discretionary{}{}{}}%
+    \begingroup\lccode`~=`[\lowercase{\endgroup\def~}{[\discretionary{}{}{}}%
+    \begingroup\lccode`~=`.\lowercase{\endgroup\def~}{.\discretionary{}{}{}}%
+    \catcode`/=\active\catcode`[=\active\catcode`.=\active
+    \scantokens{#1\noexpand}%
+    \endgroup
 }
