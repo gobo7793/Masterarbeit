@@ -8,7 +8,7 @@
 \usepackage{wrapfig}
 
 % Deutsche Sonderzeichen benutzen 
-\usepackage{ngerman}
+%\usepackage{ngerman}
 
 % deutsche Silbentrennung
 \usepackage[ngerman]{babel}
@@ -48,7 +48,7 @@
 \usepackage{fancybox}
 
 % bricht lange URLs "schoen" um
-\usepackage[hyphens,obeyspaces,spaces]{url}
+%\usepackage[hyphens,obeyspaces,spaces]{url}
 
 % Paket für Textfarben
 \usepackage{color}
@@ -63,7 +63,7 @@
 %\pagestyle{headings}
 
 % erzeugt Inhaltsverzeichnis mit Querverweisen zu den Kapiteln (PDF Version)
-\usepackage[bookmarksnumbered,pdftitle={\titleDocument},hyperfootnotes=false]{hyperref} 
+\usepackage[bookmarksnumbered,pdftitle={\titleDocument},hyperfootnotes=false,breaklinks=true]{hyperref} 
 %\hypersetup{colorlinks, citecolor=red, linkcolor=blue, urlcolor=black}
 %\hypersetup{colorlinks, citecolor=black, linkcolor= black, urlcolor=black}
 
@@ -84,8 +84,10 @@
 % für Tabellen
 \usepackage{array}
 
-% Klammern für Zitate
-\usepackage[numbers]{natbib}
+% für Literatur
+%\usepackage[numbers]{natbib}
+\usepackage[style=numeric,natbib=true,maxitems=1,backend=biber]{biblatex}
+\addbibresource{./literatur,./web,./abbildungen}
 
 % Schaltet den zusätzlichen Zwischenraum ab, den LaTeX normalerweise nach einem Satzzeichen einfügt.
 \frenchspacing
@@ -212,9 +214,11 @@
 % Literaturverzeichnis anzeigen
 \renewcommand\refname{Literaturverzeichnis}
 % Festlegung Art der Zitierung
-\bibliographystyle{abbrvdin}
+%\bibliographystyle{abbrvdin}
 %\bibliographystyle{abbrvnat}
-\bibliography{literatur,web,abbildungen}
+%\bibliographystyle{unsrtdin}
+%\bibliography{literatur,web,abbildungen}
+\printbibliography
 
 %% Index soll Stichwortverzeichnis heissen
 % \newpage
