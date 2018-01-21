@@ -89,12 +89,14 @@
 
 % für Literatur
 %\usepackage[numbers]{natbib}
-\usepackage[style=numeric,
+\usepackage[style=numeric-comp,
     natbib=true,
     maxitems=1,
     backend=biber]{biblatex}
 \usepackage{csquotes}
-\addbibresource{./literatur.bib,./web.bib,./abbildungen.bib}
+\addbibresource{./literatur.bib}
+\addbibresource{./web.bib}
+\addbibresource{./abbildungen.bib}
 
 % Schaltet den zusätzlichen Zwischenraum ab, den LaTeX normalerweise nach einem Satzzeichen einfügt.
 \frenchspacing
