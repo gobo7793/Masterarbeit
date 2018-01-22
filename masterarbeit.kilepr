@@ -4,8 +4,8 @@ img_extIsRegExp=false
 img_extensions=.eps .jpg .jpeg .png .pdf .ps .fig .gif
 kileprversion=2
 kileversion=2.1.3
-lastDocument=
-masterDocument=
+lastDocument=settings/abkuerzungen.tex
+masterDocument=Masterarbeit.tex
 name=Masterarbeit
 pkg_extIsRegExp=false
 pkg_extensions=.cls .sty .bbx .cbx .lbx
@@ -23,6 +23,20 @@ Highlighting=LaTeX
 Indentation Mode=normal
 Mode=LaTeX
 
+[document-settings,item:einleitung/einleitung.tex]
+Bookmarks=
+Encoding=UTF-8
+Highlighting=LaTeX
+Indentation Mode=normal
+Mode=LaTeX
+
+[document-settings,item:fallstudie/fallstudie.tex]
+Bookmarks=
+Encoding=UTF-8
+Highlighting=LaTeX
+Indentation Mode=normal
+Mode=LaTeX
+
 [document-settings,item:listings/ssExample.cs]
 Bookmarks=
 Encoding=UTF-8
@@ -30,21 +44,35 @@ Highlighting=C#
 Indentation Mode=normal
 Mode=C#
 
-[document-settings,item:techniken/Hadoop.tex]
+[document-settings,item:methodik/methodik.tex]
 Bookmarks=
 Encoding=UTF-8
 Highlighting=LaTeX
 Indentation Mode=normal
 Mode=LaTeX
 
-[document-settings,item:techniken/modelchecking.tex]
+[document-settings,item:modell/architektur.tex]
 Bookmarks=
 Encoding=UTF-8
 Highlighting=LaTeX
 Indentation Mode=normal
 Mode=LaTeX
 
-[document-settings,item:techniken/ssharp.tex]
+[document-settings,item:modell/modell.tex]
+Bookmarks=
+Encoding=UTF-8
+Highlighting=LaTeX
+Indentation Mode=normal
+Mode=LaTeX
+
+[document-settings,item:modell/yarnModell.tex]
+Bookmarks=
+Encoding=UTF-8
+Highlighting=LaTeX
+Indentation Mode=normal
+Mode=LaTeX
+
+[document-settings,item:settings/abkuerzungen.tex]
 Bookmarks=
 Encoding=UTF-8
 Highlighting=LaTeX
@@ -53,10 +81,10 @@ Mode=LaTeX
 
 [item:Masterarbeit.tex]
 archive=true
-column=0
+column=4
 encoding=UTF-8
 highlight=LaTeX
-line=0
+line=201
 mode=LaTeX
 open=true
 order=0
@@ -83,17 +111,17 @@ order=-1
 
 [item:einleitung/einleitung.tex]
 archive=true
-column=1
-encoding=
-highlight=
+column=0
+encoding=UTF-8
+highlight=LaTeX
 line=0
-mode=
+mode=LaTeX
 open=false
 order=-1
 
-[item:einleitung/problemstellung.tex]
+[item:fallstudie/ablauf.tex]
 archive=true
-column=9789
+column=22040
 encoding=
 highlight=
 line=0
@@ -101,9 +129,39 @@ mode=
 open=false
 order=-1
 
-[item:einleitung/testen.tex]
+[item:fallstudie/aufbauCluster.tex]
 archive=true
 column=0
+encoding=
+highlight=
+line=0
+mode=
+open=false
+order=-1
+
+[item:fallstudie/fallstudie.tex]
+archive=true
+column=0
+encoding=UTF-8
+highlight=LaTeX
+line=0
+mode=LaTeX
+open=false
+order=-1
+
+[item:fallstudie/hadoop.tex]
+archive=true
+column=3014770
+encoding=
+highlight=
+line=0
+mode=
+open=false
+order=-1
+
+[item:fallstudie/inriaSetting.tex]
+archive=true
+column=6357106
 encoding=
 highlight=
 line=0
@@ -124,6 +182,16 @@ order=-1
 [item:images/hdfsarchitecture.png]
 archive=true
 column=22039
+encoding=
+highlight=
+line=0
+mode=
+open=false
+order=-1
+
+[item:images/marpValue.pdf]
+archive=true
+column=22040
 encoding=
 highlight=
 line=0
@@ -201,39 +269,59 @@ mode=
 open=false
 order=-1
 
-[item:modell/architektur.tex]
+[item:methodik/methodik.tex]
 archive=true
-column=6619252
+column=0
+encoding=UTF-8
+highlight=LaTeX
+line=0
+mode=LaTeX
+open=false
+order=-1
+
+[item:methodik/modelChecking.tex]
+archive=true
+column=7864421
 encoding=
 highlight=
 line=0
 mode=
 open=false
+order=-1
+
+[item:methodik/ssharp.tex]
+archive=true
+column=22040
+encoding=
+highlight=
+line=0
+mode=
+open=false
+order=-1
+
+[item:modell/architektur.tex]
+archive=true
+column=0
+encoding=UTF-8
+highlight=LaTeX
+line=0
+mode=LaTeX
+open=true
 order=-1
 
 [item:modell/modell.tex]
 archive=true
 column=0
-encoding=
-highlight=
+encoding=UTF-8
+highlight=LaTeX
 line=0
-mode=
-open=false
-order=-1
-
-[item:modell/realesCluster.tex]
-archive=true
-column=6619252
-encoding=
-highlight=
-line=0
-mode=
-open=false
+mode=LaTeX
+open=true
 order=-1
 
 [item:modell/treiber.tex]
 archive=true
-column=0
+column=22040
 encoding=
 highlight=
 line=0
@@ -241,7 +329,27 @@ mode=
 open=false
 order=-1
 
-[item:modell/yarnmodell.tex]
+[item:modell/yarnModell.tex]
+archive=true
+column=0
+encoding=UTF-8
+highlight=LaTeX
+line=0
+mode=LaTeX
+open=true
+order=-1
+
+[item:settings/abkuerzungen.tex]
+archive=true
+column=13
+encoding=UTF-8
+highlight=LaTeX
+line=12
+mode=LaTeX
+open=true
+order=1
+
+[item:settings/deckblatt.tex]
 archive=true
 column=22039
 encoding=
@@ -251,37 +359,17 @@ mode=
 open=false
 order=-1
 
-[item:techniken/Hadoop.tex]
+[item:settings/trennung.tex]
 archive=true
-column=0
-encoding=UTF-8
-highlight=LaTeX
+column=22039
+encoding=
+highlight=
 line=0
-mode=LaTeX
+mode=
 open=false
 order=-1
 
-[item:techniken/modelchecking.tex]
-archive=true
-column=0
-encoding=UTF-8
-highlight=LaTeX
-line=0
-mode=LaTeX
-open=false
-order=-1
-
-[item:techniken/ssharp.tex]
-archive=true
-column=0
-encoding=UTF-8
-highlight=LaTeX
-line=0
-mode=LaTeX
-open=false
-order=-1
-
-[item:techniken/techniken.tex]
+[item:settings/variablen.tex]
 archive=true
 column=0
 encoding=
@@ -302,6 +390,18 @@ open=false
 order=-1
 
 [view-settings,view=0,item:Masterarbeit.tex]
+CursorColumn=4
+CursorLine=201
+JumpList=
+ViMarks=.,0,0,[,0,0,],256,13
+
+[view-settings,view=0,item:einleitung/einleitung.tex]
+CursorColumn=0
+CursorLine=0
+JumpList=
+ViMarks=
+
+[view-settings,view=0,item:fallstudie/fallstudie.tex]
 CursorColumn=0
 CursorLine=0
 JumpList=
@@ -313,20 +413,32 @@ CursorLine=0
 JumpList=
 ViMarks=
 
-[view-settings,view=0,item:techniken/Hadoop.tex]
+[view-settings,view=0,item:methodik/methodik.tex]
 CursorColumn=0
 CursorLine=0
 JumpList=
 ViMarks=
 
-[view-settings,view=0,item:techniken/modelchecking.tex]
+[view-settings,view=0,item:modell/architektur.tex]
 CursorColumn=0
 CursorLine=0
 JumpList=
 ViMarks=
 
-[view-settings,view=0,item:techniken/ssharp.tex]
+[view-settings,view=0,item:modell/modell.tex]
 CursorColumn=0
 CursorLine=0
 JumpList=
 ViMarks=
+
+[view-settings,view=0,item:modell/yarnModell.tex]
+CursorColumn=0
+CursorLine=0
+JumpList=
+ViMarks=
+
+[view-settings,view=0,item:settings/abkuerzungen.tex]
+CursorColumn=13
+CursorLine=12
+JumpList=
+ViMarks=.,11,10,[,11,10,],11,16
