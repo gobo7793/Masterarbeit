@@ -22,6 +22,8 @@ Die Kernidee der Architektur von \textbf{YARN} ist die Trennung vom Ressourcenma
 
 Jeder Slave-\emph{Node} im Hadoop-Cluster besitzt einen \ac{NM}, welcher für die Überwachung der Ressourcen des Nodes zuständig ist und diese dem \ac{RM} mitteilt. Jede Anwendung besitzt jeweils einen eigenen \ac{AppMstr}, welcher für das anwendungsbezogene Monitoring und die Kommunikation mit dem \ac{RM} und \ac{NM} zuständig ist und die dazu notwendigen Informationen bereit stellt. Jede YARN-Anwendung bzw. Job besteht aus mehreren \emph{Containern}, in denen die einzelnen Tasks der Anwendung auf einem beliebigen Node ausgeführt werden. Auch der \ac{AppMstr} wird dadurch in einem eigenen Container ausgeführt. Das Monitoring der einzelnen Container wird geteilt durchgeführt. Der \ac{NM} übernimmt das Monitoring der genutzten Ressourcen, der jeweilige \ac{AppMstr} die anwendungsbezogenen Monitoring-Aufgaben \cite{HadoopYarnArch271}.
 
+Hadoop enthält zudem einen sog. Timeline-Server. Er ist speziell dafür entwickelt, die Metadaten und Logs der YARN-Anwendungen zu speichern und jederzeit, also auch speziell als Anwendungshistorie, auszugeben \cite{HadoopYarnTlServer271}.
+
 \begin{figure}
     \centering
     \includegraphics[width=.8\columnwidth]{./images/hdfsarchitecture.png}
