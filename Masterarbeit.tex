@@ -48,7 +48,7 @@
 \usepackage{fancybox}
 
 % bricht lange URLs "schoen" um
-%\usepackage[hyphens,obeyspaces,spaces]{url}
+\usepackage[hyphens,obeyspaces,spaces]{url}
 
 % Paket für Textfarben
 \usepackage{color}
@@ -57,16 +57,10 @@
 \usepackage{amssymb}
 
 % Abkürzungsverzeichnis
-\usepackage[printonlyused]{acronym}
+\usepackage[nohyperlinks,printonlyused]{acronym}
 
 % auf jeder Seite eine Überschrift (alt, zentriert)
 %\pagestyle{headings}
-
-% erzeugt Inhaltsverzeichnis mit Querverweisen zu den Kapiteln (PDF Version)
-\usepackage[bookmarksnumbered,
-    pdftitle={\titleDocument},
-    hyperfootnotes=false,
-    breaklinks=true]{hyperref} 
 %\hypersetup{colorlinks, citecolor=red, linkcolor=blue, urlcolor=black}
 %\hypersetup{colorlinks, citecolor=black, linkcolor= black, urlcolor=black}
 
@@ -128,6 +122,12 @@
     breaklines=true,
     captionpos=b,
 }
+
+% erzeugt Inhaltsverzeichnis mit Querverweisen zu den Kapiteln (PDF Version)
+\usepackage[bookmarksnumbered,
+pdftitle={\titleDocument},
+hyperfootnotes=false,
+breaklinks=true]{hyperref} 
 
 % Indexerstellung
 \makeindex
