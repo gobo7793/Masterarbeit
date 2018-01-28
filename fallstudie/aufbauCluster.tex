@@ -17,9 +17,9 @@ Die Plattform Hadoop-Benchmark enthält auch die bereits in \autoref{sec:lastpro
 
 \subsection{Genutztes Cluster in der Fallstudie}\label{sec:clusterFallstudie}
 
-Als reales Hadoop-Cluster für diese Fallstudie soll nun ebenfalls die Plattform Hadoop-Benchmark zum Einsatz kommen. Da das Cluster eine Linux-Umgebung benötigt, wird dazu ein eigener PC genutzt, auf dem Ubuntu 16.04 LTS installiert ist. Da \sS das .NET-Framework, und damit Windows, benötigt, wird dafür ein eigener PC verwendet. Im konkreten Versuchsaufbau wird für Windows ebenfalls eine VM genutzt, welche auf dem anderen PC als das Cluster läuft. Die genauen Spezifikationen der PCs und der Windows-VM sind in \autoref{fig:pcSpecs} aufgelistet.
+Als reales Hadoop-Cluster für diese Fallstudie soll nun ebenfalls die Plattform Hadoop-Benchmark zum Einsatz kommen. Da das Cluster am einfachsten und besten in einer Linux-Umgebung erstellt und ausgeführt werden kann, wird dazu ein eigener PC mit Ubuntu 16.04 LTS genutzt. Da \sS das .NET-Framework, und damit Windows, benötigt, wird dafür ebenfalls ein eigener PC verwendet. Im konkreten Versuchsaufbau wird für Windows eine VM genutzt, welche auf einem anderen PC als das Cluster ausgeführt wird. Die genauen Spezifikationen der PCs und der Windows-VM sind in \autoref{fig:pcSpecs} aufgelistet.
 
-Auf dem Cluster-PC nutzt Docker-Machine zur Erstellung, Verwaltung und Ausführung der VMs die Treiber von VirtualBox 5.2\footnote{\url{https://www.virtualbox.org/}}. Für das Cluster werden 4 Nodes, der Controller sowie eine Consul-VM zur Verwaltung der Netzwerkverbindungen zwischen den VMs erstellt. Jede der vier Nodes und der Controller erhalten jeweils 2 GB RAM, der Consul erhält 512 MB.
+Auf dem Cluster-PC nutzt Docker-Machine zur Erstellung, Verwaltung und Ausführung der VMs die Treiber von VirtualBox 5.2\footnote{\url{https://www.virtualbox.org/}}. Für das Cluster werden 4 Nodes, der Controller sowie eine Consul-VM zur internen Verwaltung der Netzwerkverbindungen zwischen den VMs und Docker-Containern erstellt. Jeder der vier Nodes und der Controller erhalten jeweils 2 GB RAM, für den Consul sind 512 MB ausreichend.
 
 \begin{figure}
     \centering
@@ -35,7 +35,17 @@ Auf dem Cluster-PC nutzt Docker-Machine zur Erstellung, Verwaltung und Ausführu
     \label{fig:pcSpecs}
 \end{figure}
 
-In keinem Szenario der Plattform Hadoop-Benchmark wird standardmäßig der Timeline-Server von Hadoop gestartet. Daher wurde basierend auf dem Selfbalancing-Szenario ein neues Szenario erstellt, bei dem der Timeline-Server gestartet wird. Dadurch ist einerseits die Selfbalancing-Komponente von \citeauthor{zhang2016} aktiv und andererseits besteht die Möglichkeit, mithilfe des Timeline-Servers das Monitoring des Clusters durchzuführen.
 %TODO: Link zum angepassten Hadoop-Benchmark?
+In keinem Szenario der Plattform Hadoop-Benchmark wird standardmäßig der Timeline-Server von Hadoop gestartet. Daher wurde basierend auf dem Selfbalancing-Szenario ein neues Szenario erstellt, bei dem der Timeline-Server gestartet wird. Dadurch ist einerseits die Selfbalancing-Komponente von \citeauthor{zhang2016} aktiv und andererseits besteht die Möglichkeit, für das Monitoring zusätzlich den Timeline-Server zu nutzen.
 
-% Hilfsscript zur einfachen Verwaltung!
+Um viele standardmäßige Aufgaben und Möglichkeiten zu vereinfachen, wurde zudem ein eigenes Setup-Script erstellt. Es vereinfacht folgende Aufgaben:
+
+\begin{itemize}[noitemsep]
+    \item Starten, Beenden und Löschen des kompletten Clusters mit Hadoop
+    \item Starten und Beenden des Docker-Containers eines Nodes
+    \item Hinzufügen und Entfernen der Netzwerkverbindung des Docker-Containers eines Nodes
+    \item Ausführen der Mapreduce-Examples-, HiBench- und SWIM-Benchmarks
+    \item Ausführen von eigenen Befehlen auf dem Docker-Container des Controllers
+\end{itemize}
+
+Für die Befehle, die das gesamte Cluster betreffen, wird vom Setup-Script meist auf das in Hadoop-Benchmark enthaltene Start-Script zugegriffen. Die Befehle, welche die Docker-Container der Nodes betreffen, sowie das Ausführen von Befehlen im Controller-Container, werden vom Setup-Script direkt ausgeführt. Für das Starten der Benchmarks werden dagegen die in Hadoop-Benchmark enthaltenen Ausführungs-Scripte für die Benchmarks gestartet.
