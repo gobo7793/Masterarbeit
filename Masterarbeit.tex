@@ -173,25 +173,34 @@ breaklinks=true]{hyperref}
 
 % das Abbildungsverzeichnis
 \newpage
+\fancyhead[L]{Verzeichnisse} %Kopfzeile links
 % Abbildungsverzeichnis soll im Inhaltsverzeichnis auftauchen
 \addcontentsline{toc}{chapter}{Abbildungsverzeichnis}
 % Abbildungsverzeichnis endgueltig anzeigen
 \listoffigures
 
 % das Listingverzeichnis
-\newpage
+%\newpage
 % Listingverzeichnis soll im Inhaltsverzeichnis auftauchen
 \addcontentsline{toc}{chapter}{Listingverzeichnis}
-\fancyhead[L]{Listingverzeichnis} %Kopfzeile links
 \renewcommand{\lstlistlistingname}{Listingverzeichnis}
 \lstlistoflistings
 %%%%
 
+% das Tabellenverzeichnis
+%\newpage
+% Listingverzeichnis soll im Inhaltsverzeichnis auftauchen
+\addcontentsline{toc}{chapter}{Tabellenverzeichnis}
+%\fancyhead[L]{Listingverzeichnis} %Kopfzeile links
+\renewcommand{\lstlistlistingname}{Listingverzeichnis}
+\listoftables
+%%%%
+
 % das Abkürzungsverzeichnis
-\newpage
+%\newpage
 % Abkürzungsverzeichnis soll im Inhaltsverzeichnis auftauchen
 \addcontentsline{toc}{chapter}{Abkürzungsverzeichnis}
-\fancyhead[L]{Abkürzungsverzeichnis} %Kopfzeile links
+%\fancyhead[L]{Abkürzungsverzeichnis} %Kopfzeile links
 \input{./settings/abkuerzungen}
 
 % Definiert Stegbreite bei zweispaltigem Layout
