@@ -129,6 +129,28 @@ pdftitle={\titleDocument},
 hyperfootnotes=false,
 breaklinks=true]{hyperref} 
 
+% Verzeichnisse
+\makeatletter
+\renewcommand\listoftables{%
+    \section*{\listtablename}\addcontentsline{toc}{section}{\listtablename}%
+    \@mkboth{\MakeUppercase\listtablename}%
+    {\MakeUppercase\listtablename}%
+    \@starttoc{lot}%
+}
+\renewcommand\listoffigures{%
+    \section*{\listfigurename}\addcontentsline{toc}{section}{\listfigurename}%
+    \@mkboth{\MakeUppercase\listfigurename}%
+    {\MakeUppercase\listfigurename}%
+    \@starttoc{lof}%
+}
+\renewcommand\lstlistoflistings{%
+    \section*{\lstlistlistingname}\addcontentsline{toc}{section}{\lstlistlistingname}%
+    \@mkboth{\MakeUppercase\lstlistlistingname}%
+    {\MakeUppercase\lstlistlistingname}%
+    \@starttoc{lol}%
+}
+\makeatother
+
 % Indexerstellung
 \makeindex
 
@@ -171,37 +193,9 @@ breaklinks=true]{hyperref}
 \newpage
 \tableofcontents
 
-% das Abbildungsverzeichnis
+% Verzeichnisse
 \newpage
-\fancyhead[L]{Verzeichnisse} %Kopfzeile links
-% Abbildungsverzeichnis soll im Inhaltsverzeichnis auftauchen
-\addcontentsline{toc}{chapter}{Abbildungsverzeichnis}
-% Abbildungsverzeichnis endgueltig anzeigen
-\listoffigures
-
-% das Listingverzeichnis
-%\newpage
-% Listingverzeichnis soll im Inhaltsverzeichnis auftauchen
-\addcontentsline{toc}{chapter}{Listingverzeichnis}
-\renewcommand{\lstlistlistingname}{Listingverzeichnis}
-\lstlistoflistings
-%%%%
-
-% das Tabellenverzeichnis
-%\newpage
-% Listingverzeichnis soll im Inhaltsverzeichnis auftauchen
-\addcontentsline{toc}{chapter}{Tabellenverzeichnis}
-%\fancyhead[L]{Listingverzeichnis} %Kopfzeile links
-\renewcommand{\lstlistlistingname}{Listingverzeichnis}
-\listoftables
-%%%%
-
-% das Abkürzungsverzeichnis
-%\newpage
-% Abkürzungsverzeichnis soll im Inhaltsverzeichnis auftauchen
-\addcontentsline{toc}{chapter}{Abkürzungsverzeichnis}
-%\fancyhead[L]{Abkürzungsverzeichnis} %Kopfzeile links
-\input{./settings/abkuerzungen}
+\include{./settings/verzeichnisse}
 
 % Definiert Stegbreite bei zweispaltigem Layout
 \setlength{\columnsep}{25pt}
@@ -250,8 +244,9 @@ breaklinks=true]{hyperref}
 \onehalfspacing
 % evtl. Anhang
 %\newpage
-%\addcontentsline{toc}{section}{Anhang}
+%\addcontentsline{toc}{chapter}{Anhang}
 %\fancyhead[L]{Anhang} %Kopfzeile links
-%\input{anhang/anhang}
+\appendix
+\input{./anhang/anhang}
 
 \end{document}
