@@ -83,15 +83,6 @@
 
 % für Literatur
 %\usepackage[numbers]{natbib}
-\usepackage{etoolbox}
-\makeatletter
-\long\def\etb@listitem#1#2{%
-    \expandafter\ifblank\expandafter{\@gobble#2}
-    {}
-    {\expandafter\etb@listitem@i
-        \expandafter{\@secondoftwo#2}{#1}}}
-\long\def\etb@listitem@i#1#2{#2{#1}}
-\makeatother
 \usepackage[style=numeric-comp,
     natbib=true,
     maxitems=1,

@@ -7,6 +7,15 @@ Der Parser selbst besteht neben dem eigentlichen Parser zudem aus Datenhaltungs-
 \subsection{Kommandozeilen-Parser}\label{sec:cmdParser}
 
 % Was gibt Hadoop aus
+Hadoop besitzt zur Steuerung einige Kommandozeilen-Befehle, mit denen \uA auch die Daten der YARN-Komponenten ausgelesen werden können. Die Daten werden mithilfe der Befehle immer vom \ac{RM} und, sofern gestartet, vom Timeline-Server ermittelt und ausgegeben. Ausgegeben werden können \uA dabei Daten zu:
+
+\begin{description}[noitemsep]
+    \item[Anwendungen] als nach dem Status gefilterte Liste oder ausführlicherem Report
+    \item[Ausführungen] als Liste aller Ausführungen einer Anwendung oder ausführlicherem Report
+    \item[Container] als Liste aller Container einer Ausführung oder ausführlicherem Report
+    \item[Nodes] als Liste aller Nodes ausführlicherem Report
+\end{description}
+
 % Wie wurde der Parser aufgebaut
 
 \subsection{REST-API-Parser}\label{sec:restParser}
