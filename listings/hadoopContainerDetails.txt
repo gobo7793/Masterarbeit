@@ -1,0 +1,11 @@
+$ yarn container -status container_1518100641776_0001_01_000001 
+[...]
+Container Report : 
+	Container-Id : container_1518100641776_0001_01_000001
+	Start-Time : 1518103712865
+	Finish-Time : 1518103806309
+	State : COMPLETE
+	LOG-URL : http://0.0.0.0:8188/applicationhistory/logs/compute-1:45454/container_1518100641776_0001_01_000001/container_1518100641776_0001_01_000001/root
+	Host : compute-1:45454
+	NodeHttpAddress : http://compute-1:8042
+	Diagnostics : 

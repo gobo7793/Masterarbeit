@@ -83,7 +83,8 @@
 
 % für Literatur
 %\usepackage[numbers]{natbib}
-\usepackage[style=numeric-comp,
+\usepackage[
+    style=numeric-comp,
     natbib=true,
     maxitems=1,
     backend=biber,
@@ -108,19 +109,28 @@
 % für Listings
 \usepackage{listings}
 \definecolor{darkgreen}{rgb}{0,0.5,0}
-\lstset{    
-    language=[sharp]c,
+\lstdefinestyle{base}{
+    language={},
     basicstyle=\footnotesize\ttfamily,
     commentstyle=\color{darkgreen},
     keywordstyle=\color{blue},
-    morekeywords={ nameof },
-%    float,
     frame=single,
     numbers=left,
     numberstyle=\tiny,
-    tabsize=2,
     breaklines=true,
+    tabsize=2,
     captionpos=b,
+}
+\lstdefinestyle{cs}{
+    style=base,
+    language=[sharp]c,
+    morekeywords={ nameof },
+}
+\lstdefinestyle{plain}{
+    style=base,
+    language={},
+    tabsize=4,
+    captionpos=t,
 }
 
 % erzeugt Inhaltsverzeichnis mit Querverweisen zu den Kapiteln (PDF Version)

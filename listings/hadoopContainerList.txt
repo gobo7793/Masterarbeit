@@ -1,0 +1,8 @@
+$ yarn container -list appattempt_1518100641776_0001_000001   
+[...]
+Total number of containers :22
+Container-Id	Start Time	Finish Time	State	Host	Node Http Address	LOG-URL
+container_1518100641776_0001_01_000022	Thu Feb 08 15:29:36 +0000 2018	Thu Feb 08 15:29:58 +0000 2018	COMPLETE	compute-2:45454	http://compute-2:8042	http://0.0.0.0:8188/applicationhistory/logs/compute-2:45454/container_1518100641776_0001_01_000022/container_1518100641776_0001_01_000022/root
+[...]
+container_1518100641776_0001_01_000001	Thu Feb 08 15:28:32 +0000 2018	Thu Feb 08 15:30:06 +0000 2018	COMPLETE	compute-1:45454	http://compute-1:8042	http://0.0.0.0:8188/applicationhistory/logs/compute-1:45454/container_1518100641776_0001_01_000001/container_1518100641776_0001_01_000001/root
+

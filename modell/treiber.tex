@@ -1,13 +1,10 @@
 \section{SSH-Treiber}\label{sec:sshDriver}
 
-Im Einführungstext zu diesem Kaptiel wurde bereits auf den grundlegenden Aufbau des Treibers eingegangen. Der SSH-Treiber besteht aus den drei einzelnen Komponenten Parser, Connector und SSH-Verbindung, von denen die ersten beiden mithilfe von Interfaces im YARN-Modell eingebunden sind. Dadurch ist es möglich, unterschiedliche Parser bzw. auch Verbindungen für unterschiedliche Komponenten zu nutzen.
+Im Einführungstext zu diesem Kaptiel wurde bereits auf den grundlegenden Aufbau des Treibers eingegangen. Der SSH-Treiber besteht aus den drei einzelnen Komponenten Parser, Connector und SSH-Verbindung. Der Parser selbst besteht neben dem eigentlichen Parser zudem aus Datenhaltungs-Klassen für die relevanten YARN-Komponenten. Sie sind außerdem so aufgebaut, dass sie für beide hier implementierten Parser bzw. Verbindungen für die Kommandozeilen-Befehle und die REST-API genutzt werden können.
 
-Der Parser selbst besteht neben dem eigentlichen Parser zudem aus Datenhaltungs-Klassen für die relevanten YARN-Komponenten. Sie dienen dazu, die geparsten Rohdaten von Hadoop an das \sS-Modell zu übergeben und sind daher ebenfalls mithilfe von entsprechenden Interfaces im Modell eingebunden. Die Implementierungen der Klassen selbst sind außerdem so aufgebaut, dass sie für beide hier implementierten Parser genutzt werden können.
+\subsection{Integration im Modell}\label{sec:modelIntegration}
 
-\subsection{Kommandozeilen-Parser}\label{sec:cmdParser}
-
-% Was gibt Hadoop aus
-Hadoop besitzt zur Steuerung einige Kommandozeilen-Befehle, mit denen \uA auch die Daten der YARN-Komponenten ausgelesen werden können. Die Daten werden mithilfe der Befehle immer vom \ac{RM} und, sofern gestartet, vom Timeline-Server ermittelt und ausgegeben. Ausgegeben werden können \uA die Daten zu:
+Hadoop besitzt zwei primäre Wege, um die Daten vom \ac{RM} bzw. dem \ac{TLS} ausgeben zu können. Dies ist zum einen die Kommandozeile, mithilfe der die Daten vom \ac{RM} und vom \ac{TLS} kombiniert ausgegeben werden, und die REST-API. Auf beiden Wegen können \uA die Daten zu folgenden Komponenten ausgegeben werden \cite{HadoopYarnTlServer271,HadoopYarnCmds271,HadoopRmApi271,HadoopNmApi271}:
 
 \begin{description}[noitemsep]
     \item[Anwendungen] als nach dem Status gefilterte Liste oder der Report einer Anwendung
@@ -16,7 +13,14 @@ Hadoop besitzt zur Steuerung einige Kommandozeilen-Befehle, mit denen \uA auch d
     \item[Nodes] als Liste aller Nodes oder der Report eines Nodes
 \end{description}
 
-Einige Beispiele für die dafür notwendigen Befehle sowie deren mögliche Ausgaben sind in \autoref{app:hadoopCmds} zu finden.
+Zur Integration des Treibers wurden daher entsprechende Interfaces erstellt, über die das Modell auf den eigentlichen Treiber zugreifen kann.
+
+Die vier Interfaces \texttt{IApplicationResult}, \texttt{IAppAttemptResult}, \texttt{IContainerResult} und \texttt{INodeResult} dienen der Übergabe der geparsten Daten der einzelnen Komponenten an die korrespondierenden Komponenten im \sS-Modell. Sie alle implementieren zudem das Interface \texttt{IParsedComponent}, welches wiederum als Basis für die Übergabe der ausgelesenen Daten an \texttt{IYarnReadable.SetStatus()} im Modell dient.
+
+\subsection{Kommandozeilen-Parser}\label{sec:cmdParser}
+
+% Was gibt Hadoop aus
+Hadoop besitzt zur Steuerung einige Kommandozeilen-Befehle, mit denen \uA auch die Daten der YARN-Komponenten ausgelesen werden können. Die Daten werden mithilfe der Befehle immer vom \ac{RM} und, sofern gestartet, vom Timeline-Server ermittelt und ausgegeben.
 
 % Wie wurde der Parser aufgebaut
 

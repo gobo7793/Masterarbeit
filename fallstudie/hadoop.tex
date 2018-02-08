@@ -24,7 +24,7 @@ Jeder Slave-\emph{Node} im Hadoop-Cluster besitzt einen \ac{NM}, welcher für di
 
 Jede YARN-Anwendung bzw. Job besteht aus einem oder mehreren Ausführungsversuchen, genannt \emph{Attempts}, denen wiederum mehrere \emph{Container} zugeordnet sind. Container können auf einem beliebigen Node ausgeführt werden und repräsentieren die Ausführung eines Tasks der Anwendung. Ein besonderer Container bildet dabei der \ac{AppMstr}, welcher innerhalb seines Attempts für das anwendungsbezogene Monitoring und die Kommunikation mit dem \ac{RM} und \ac{NM} zuständig ist und die dazu notwendigen Informationen bereit stellt \cite{HadoopYarnArch271}.
 
-Hadoop enthält zudem einen sog. \textbf{Timeline-Server}. Er ist speziell dafür entwickelt, die Metadaten und Logs der YARN-Anwendungen zu speichern und jederzeit, also auch als Anwendungshistorie, auszugeben \cite{HadoopYarnTlServer271}.
+Hadoop enthält zudem einen sog. \ac{TLS}. Er ist speziell dafür entwickelt, die Metadaten und Logs der YARN-Anwendungen zu speichern und jederzeit, also auch als Anwendungshistorie, auszugeben \cite{HadoopYarnTlServer271}.
 
 \begin{figure}
     \centering

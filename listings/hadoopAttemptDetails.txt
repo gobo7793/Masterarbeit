@@ -1,0 +1,10 @@
+$ yarn applicationattempt -status appattempt_1518100641776_0001_000001
+[...]
+Application Attempt Report : 
+	ApplicationAttempt-Id : appattempt_1518100641776_0001_000001
+	State : FINISHED
+	AMContainer : container_1518100641776_0001_01_000001
+	Tracking-URL : http://controller:8088/proxy/application_1518100641776_0001/
+	RPC Port : 41309
+	AM Host : compute-1
+	Diagnostics : 

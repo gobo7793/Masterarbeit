@@ -1,6 +1,27 @@
 \chapter{Kommandozeilen-Befehle von Hadoop}\label{app:hadoopCmds}
 
-%\lstinputlisting[language=bash,label=lst:,caption={Grundlegender Aufbau einer \sS-Komponente},float]
-%{./listings/ssExample.cs}
+Für jede der vier relevanten YARN-Komponenten können die Daten jeweils als Liste oder als ausführlicher Report ausgegeben werden. Um diese Daten mittels der Kommandozeile ausgeben zu können, sind die im Folgenden aufgeführten Befehle verfügbar. Die Ausgaben zu den Befehlen wurden auf das wesentliche gekürzt, \uA da Hadoop bei jedem Befehl zunächst ausgibt, über welche Services (in \autoref{lst:hadoopAppListCmd} \ac{TLS}, \ac{RM} und \emph{Application History Server}) die Daten ermittelt werden. Weiterführende Informationen zu den einzelnen Befehlen sind in \cite{HadoopYarnCmds271} zu finden.
 
-%TODO: Befehle!
+\lstinputlisting[label=lst:hadoopAppListCmd,caption={Ausgabe der Anwendungsliste. Die Liste kann mithilfe der Optionen \texttt{--appTypes} und \texttt{--appStates} gefiltert werden.},float,style=plain]
+{./listings/hadoopAppList.txt}
+
+\lstinputlisting[label=lst:hadoopAppDetailsCmd,caption={Ausgabe des Reports einer Anwendung},float,style=plain]
+{./listings/hadoopAppDetails.txt}
+
+\lstinputlisting[label=lst:hadoopAttemptListCmd,caption={Ausgabe aller Ausführungen einer Anwendung},float,style=plain]
+{./listings/hadoopAttemptList.txt}
+
+\lstinputlisting[label=lst:hadoopAttemptDetailsCmd,caption={Ausgabe des Reports einer Ausführung},float,style=plain]
+{./listings/hadoopAttemptDetails.txt}
+
+\lstinputlisting[label=lst:hadoopContainerListCmd,caption={Ausgabe aller Container einer Ausführung},float,style=plain]
+{./listings/hadoopContainerList.txt}
+
+\lstinputlisting[label=lst:hadoopContainerDetailsCmd,caption={Ausgabe des Reports eines Containers},float,style=plain]
+{./listings/hadoopContainerDetails.txt}
+
+\lstinputlisting[label=lst:hadoopNodeListCmd,caption={Ausgabe aller Nodes},float,style=plain]
+{./listings/hadoopContainerList.txt}
+
+\lstinputlisting[label=lst:hadoopNodeDetailsCmd,caption={Ausgabe des Reports eines Nodes},float,style=plain]
+{./listings/hadoopNodeDetails.txt}

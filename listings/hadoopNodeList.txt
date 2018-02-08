@@ -1,0 +1,6 @@
+$ yarn node --list                                            
+[...]
+Total Nodes:2
+Node-Id	Node-State	Node-Http-Address	Number-of-Running-Containers
+ compute-2:45454	RUNNING	compute-2:8042	0
+ compute-1:45454	RUNNING	compute-1:8042	0
