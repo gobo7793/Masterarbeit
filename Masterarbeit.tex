@@ -110,7 +110,6 @@
 \usepackage{listings}
 \definecolor{darkgreen}{rgb}{0,0.5,0}
 \lstdefinestyle{base}{
-    language={},
     basicstyle=\footnotesize\ttfamily,
     commentstyle=\color{darkgreen},
     keywordstyle=\color{blue},
@@ -122,13 +121,13 @@
     captionpos=b,
 }
 \lstdefinestyle{cs}{
-    style=base,
     language=[sharp]c,
+    style=base,
     morekeywords={ nameof },
 }
 \lstdefinestyle{plain}{
-    style=base,
     language={},
+    style=base,
     tabsize=4,
     captionpos=t,
 }
@@ -252,10 +251,7 @@ breaklinks=true]{hyperref}
 % \printindex
 
 \onehalfspacing
-% evtl. Anhang
-%\newpage
-%\addcontentsline{toc}{chapter}{Anhang}
-%\fancyhead[L]{Anhang} %Kopfzeile links
+\newpage
 \appendix
 \input{./anhang/anhang}
 

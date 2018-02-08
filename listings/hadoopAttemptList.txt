@@ -1,5 +1,5 @@
 $ yarn applicationattempt -list application_1518100641776_0001
-
+[...]
 Total number of application attempts :1
 ApplicationAttempt-Id	State	AM-Container-Id	Tracking-URL
 appattempt_1518100641776_0001_000001	FINISHED	container_1518100641776_0001_01_000001	http://controller:8088/proxy/application_1518100641776_0001/

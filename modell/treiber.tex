@@ -15,7 +15,8 @@ Hadoop besitzt zwei primäre Wege, um die Daten vom \ac{RM} bzw. dem \ac{TLS} au
 
 Zur Integration des Treibers wurden daher entsprechende Interfaces erstellt, über die das Modell auf den eigentlichen Treiber zugreifen kann.
 
-Die vier Interfaces \texttt{IApplicationResult}, \texttt{IAppAttemptResult}, \texttt{IContainerResult} und \texttt{INodeResult} dienen der Übergabe der geparsten Daten der einzelnen Komponenten an die korrespondierenden Komponenten im \sS-Modell. Sie alle implementieren zudem das Interface \texttt{IParsedComponent}, welches wiederum als Basis für die Übergabe der ausgelesenen Daten an \texttt{IYarnReadable.SetStatus()} im Modell dient.
+%TODO: Umschreiben, besser als Liste oder so
+Die vier Interfaces \texttt{IApplicationResult}, \texttt{IAppAttemptResult}, \texttt{IContainerResult} und \texttt{INodeResult} dienen der Übergabe der geparsten Daten der einzelnen Komponenten an die korrespondierenden Komponenten im \sS-Modell. Sie alle implementieren zudem das Interface \texttt{IParsedComponent}, welches wiederum als Basis für die Übergabe der ausgelesenen Daten an \texttt{IYarnReadable.SetStatus()} im Modell dient. \texttt{IYarnReadableParser} sowie die jeweils als \texttt{FaultConnector} benannten Eigenschaften von \texttt{YarnApp} und \texttt{YarnNode} sind als die beiden Interfaces \texttt{IHadoopParser} und \texttt{IHadoopConnector} eingebunden.
 
 \subsection{Kommandozeilen-Parser}\label{sec:cmdParser}
 
