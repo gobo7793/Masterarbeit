@@ -1,10 +1,10 @@
 \section{SSH-Treiber}\label{sec:sshDriver}
 
-Im Einführungstext zu diesem Kaptiel wurde bereits auf den grundlegenden Aufbau des Treibers eingegangen. Der SSH-Treiber besteht aus den drei einzelnen Komponenten Parser, Connector und SSH-Verbindung. Der Parser selbst besteht neben dem eigentlichen Parser zudem aus Datenhaltungs-Klassen für die relevanten YARN-Komponenten. Sie sind außerdem so aufgebaut, dass sie für beide hier implementierten Parser bzw. Verbindungen für die Kommandozeilen-Befehle und die REST-API genutzt werden können.
+Im Einführungstext zu diesem Kaptiel wurde bereits auf den grundlegenden Aufbau des Treibers eingegangen, der aus den drei einzelnen Komponenten Parser, Connector und der eigentlichen SSH-Verbindung besteht. Der Parser selbst besteht neben dem eigentlichen Parser zudem aus Datenhaltungs-Klassen für die relevanten YARN-Komponenten. Sie sind außerdem so aufgebaut, dass sie für beide hier implementierten Parser bzw. Connectoren für die Kommandozeilen-Befehle und die REST-API genutzt werden können.
 
 \subsection{Integration im Modell}\label{sec:modelIntegration}
 
-Hadoop besitzt zwei primäre Wege, um die Daten vom \ac{RM} bzw. dem \ac{TLS} ausgeben zu können. Dies ist zum einen die Kommandozeile, mithilfe der die Daten vom \ac{RM} und vom \ac{TLS} kombiniert ausgegeben werden, und die REST-API. Auf beiden Wegen können \uA die Daten zu folgenden Komponenten ausgegeben werden \cite{HadoopYarnTlServer271,HadoopYarnCmds271,HadoopRmApi271,HadoopNmApi271}:
+Hadoop besitzt zwei primäre Wege, um die Daten vom \ac{RM} bzw. dem \ac{TLS} ausgeben zu können. Dies ist zum einen die Kommandozeile, mithilfe der die Daten vom \ac{RM} und vom \ac{TLS} kombiniert ausgegeben werden, und die REST-API. Die benötigten Befehle für die Kommandozeile und deren Ausgaben sind in \autoref{app:hadoopCmds}, die Ausgaben der REST-API in \autoref{app:hadoopRest} gelistet. Auf beiden Wegen können \uA die Daten zu folgenden Komponenten ausgegeben werden \cite{HadoopYarnTlServer271,HadoopYarnCmds271,HadoopRmApi271,HadoopNmApi271}:
 
 \begin{description}[noitemsep]
     \item[Anwendungen] als nach dem Status gefilterte Liste oder der Report einer Anwendung
@@ -15,20 +15,15 @@ Hadoop besitzt zwei primäre Wege, um die Daten vom \ac{RM} bzw. dem \ac{TLS} au
 
 Zur Integration des Treibers wurden daher entsprechende Interfaces erstellt, über die das Modell auf den eigentlichen Treiber zugreifen kann.
 
-%TODO: Umschreiben, besser als Liste oder so
-Die vier Interfaces \texttt{IApplicationResult}, \texttt{IAppAttemptResult}, \texttt{IContainerResult} und \texttt{INodeResult} dienen der Übergabe der geparsten Daten der einzelnen Komponenten an die korrespondierenden Komponenten im \sS-Modell. Sie alle implementieren zudem das Interface \texttt{IParsedComponent}, welches wiederum als Basis für die Übergabe der ausgelesenen Daten an \texttt{IYarnReadable.SetStatus()} im Modell dient. \texttt{IYarnReadableParser} sowie die jeweils als \texttt{FaultConnector} benannten Eigenschaften von \texttt{YarnApp} und \texttt{YarnNode} sind als die beiden Interfaces \texttt{IHadoopParser} und \texttt{IHadoopConnector} eingebunden.
+Die vier Interfaces \texttt{IApplicationResult}, \texttt{IAppAttemptResult}, \texttt{IContainerResult} und \texttt{INodeResult} dienen der Übergabe der geparsten Daten der einzelnen Komponenten an die korrespondierenden Komponenten im \sS-Modell. Sie enthalten jeweils alle relevanten Daten, die von Hadoop über die Kommandozeile oder die REST-API ausgegeben werden. Alle vier Interfaces implementieren zudem \texttt{IParsedComponent}, welches wiederum als Basis für die Übergabe der ausgelesenen Daten an \texttt{IYarnReadable.SetStatus()} im Modell dient.
 
-\subsection{Kommandozeilen-Parser}\label{sec:cmdParser}
+Das Interface \texttt{IHadoopParser} dient als Einbindung des Parsers im Modell mithilfe von \texttt{IYarnReadable.Parser} und definiert für jede der acht relevanten Ausgaben von Hadoop entsprechende Funktionen. Beim Interface \texttt{IHadoopConnector}, das im Modell den Connector über die \texttt{FaultConnector}-Eigenschaften von \texttt{YarnApp} und \texttt{YarnNode} einbindet, besitzt ebenfalls für jede der acht Ausgaben entsprechende Definitionen. Zudem enthält das Connector-Interface Definitionen, um die im Modell implementierten Komponentenfehler im realen Cluster zu steuern und Anwendungen starten zu können. Architektonisch ist der Treiber zudem so aufgebaut, dass das Modell keine Kontrolle über den vom Parser benötigten Connector besitzt und die SSH-Verbindung ausschließlich vom Connector gesteuert werden kann.
 
-% Was gibt Hadoop aus
-Hadoop besitzt zur Steuerung einige Kommandozeilen-Befehle, mit denen \uA auch die Daten der YARN-Komponenten ausgelesen werden können. Die Daten werden mithilfe der Befehle immer vom \ac{RM} und, sofern gestartet, vom Timeline-Server ermittelt und ausgegeben.
+\subsection{Parser}\label{sec:cmdParser}
 
-% Wie wurde der Parser aufgebaut
+Da die Daten für die relevanten Komponenten auf zwei Arten ermittelt werden können und unterschiedliche Ausgaben erzeugen, wurden auch zwei Parser entwickelt.
 
-\subsection{REST-API-Parser}\label{sec:restParser}
-
-% Was gibt Hadoop aus
-% Wie wurde der Parser aufgebaut
+% Wie wurden Parser aufgebaut
 
 \subsection{Connector}\label{sec:Connector}
 
