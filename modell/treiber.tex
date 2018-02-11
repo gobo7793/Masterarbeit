@@ -19,14 +19,20 @@ Die vier Interfaces \texttt{IApplicationResult}, \texttt{IAppAttemptResult}, \te
 
 Das Interface \texttt{IHadoopParser} dient als Einbindung des Parsers im Modell mithilfe von \texttt{IYarnReadable.Parser} und definiert für jede der acht relevanten Ausgaben von Hadoop entsprechende Funktionen. Beim Interface \texttt{IHadoopConnector}, das im Modell den Connector über die \texttt{FaultConnector}-Eigenschaften von \texttt{YarnApp} und \texttt{YarnNode} einbindet, besitzt ebenfalls für jede der acht Ausgaben entsprechende Definitionen. Zudem enthält das Connector-Interface Definitionen, um die im Modell implementierten Komponentenfehler im realen Cluster zu steuern und Anwendungen starten zu können. Architektonisch ist der Treiber zudem so aufgebaut, dass das Modell keine Kontrolle über den vom Parser benötigten Connector besitzt und die SSH-Verbindung ausschließlich vom Connector gesteuert werden kann.
 
-\subsection{Parser}\label{sec:cmdParser}
+\subsection{Implementierte Parser}\label{sec:implementedParsers}
 
-Da die Daten für die relevanten Komponenten auf zwei Arten ermittelt werden können und unterschiedliche Ausgaben erzeugen, wurden auch zwei Parser entwickelt.
+Da die Daten für die relevanten Komponenten auf zwei Arten ermittelt werden können und unterschiedliche Ausgaben erzeugen, wurden auch für beide Arten ein Parser (\texttt{CmdParser} und \texttt{RestParser}) entwickelt. Da der Parser von außerhalb keinerlei weitere Informationen erhält außer der ID der zu parsenden YARN-Komponente, ist der Parser selbst dafür verantwortlich, die Daten von einem korrespondierenden Connector zu erhalten. Daher muss zur Initialisierung eines Parsers zunächst der korrespondierende Connector initialisiert werden. Da für die Nutzung der REST-API zum Teil die IDs der übergeordneten YARN-Komponenten ebenfalls nötig sind, ist der \texttt{RestParser} zudem auch dafür verantwortlich, die entsprechenden IDs zu ermitteln, bei der Nutzung der Kommandozeile reichen aufgrund der Befehlsstruktur die IDs der Komponenten selbst.
 
-% Wie wurden Parser aufgebaut
+Die konkreten Implementierungen der auf \texttt{IParsedComponent} basierenden Übergabe"=Interfaces können ebenfalls zum Parser gezählt werden. Sie wurden zudem so implementiert, dass sie für beide Parser genutzt werden können.
 
-\subsection{Connector}\label{sec:Connector}
+Der grundlegende Ablauf ist bei jedem Parsing-Vorgang gleich. Zunächst werden, sofern benötigt, die benötigten YARN-Komponenten-IDs ermittelt und die Rohdaten mithilfe des Connectors von Hadoop abgefragt, wobei bei den entwickelten Parsern auf den Connector wie im Modell ausschließlich mithilfe des Interfaces \texttt{IHadoopConnector} zugegriffen wird. Anschließend findet das eigentliche Parsing der Rückgabe von Hadoop statt, deren Daten dabei in der für die YARN-Komponente vorgesehene \texttt{IParsedCompo"-nent}-Implementierung gespeichert werden. Da Hadoop über die Kommandozeile die Daten in keinem standardisierten Format zurückgibt, wurde das Parsing der Rohdaten von Hadoop beim \texttt{CmdParser} in eigenem Code mithilfe von \emph{Regular Expressions} realisiert. Bei der Nutzung der REST-API sind die Ausgaben von Hadoop dagegen im JSON-Format, wodurch die Rückgaben hier mithilfe des \emph{Json.NET}-Frameworks\footnote{\url{https://www.newtonsoft.com/json}} deserialisiert werden können.
 
+Eine Besonderheit bildet zudem das Abrufen und Parsen der Report-Daten mittels REST-API. Da die Listen durch die REST-API als Array der einzelnen Reports zurückgegeben wird, wird beim Parsen eines Ausführungs- oder Container-Reports die komplette Liste abgerufen und geparst. Anschließend wird in dieser Liste basierend auf der ID die benötigte Komponente gefiltert.
+
+Die geparsten Daten werden abschließend als das für die YARN-Komponente vorgesehene Interface zurückgegeben, was anschließend im Modell zum Speichern der Daten genutzt werden kann.
+
+\subsection{Implementierte Connectoren}\label{sec:implementedConnectors}
+%und ein korrespondierender Connector (\texttt{CmdConnector} und \texttt{RestConnector}) 
 % Wie wird die Verbindung abstrahiert
 
 \subsection{SSH-Verbindung}\label{sec:sshConnection}
