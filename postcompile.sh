@@ -1,4 +1,4 @@
-!#bin/bash
+#!bin/bash
 # commands to execute after compilation
 # settings for TeXstudio: https://tex.stackexchange.com/a/261721
 
