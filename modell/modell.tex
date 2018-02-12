@@ -12,12 +12,10 @@ Die grundlegende Architektur des gesamten Aufbaus besteht aus den drei rechts ab
 \begin{description}[noitemsep]
     \item [Parser] Verarbeitet die Monitoring-Ausgaben vom realen Cluster und konvertiert diese für die Nutzung im Modell
     \item [Connector] Abstrahiert die SSH"=Verbindung
-    \item [SSH-Verbindung] Eigentliche Verbindung zum PC mit dem realen Cluster
+    \item [SSH-Verbindung] Eigentliche Verbindung zum Cluster-PC
 \end{description}
 
-Auf den Treiber bzw. das reale System wird meist über den Parser zugegriffen. Lediglich zum Starten von Anwendungen, zum Aktivieren bzw. Deaktivieren von Komponentenfehlern u.\,Ä. auf dem realen Cluster wird direkt auf den Connector zugegriffen.
-
-%\input{./modell/architektur}
+Auf den Treiber bzw. das reale System wird meist mithilfe des Parsers zugegriffen. Lediglich zum Starten von Anwendungen, zum Aktivieren bzw. Deaktivieren von Komponentenfehlern u.\,Ä. auf dem realen Cluster wird direkt der Connector genutzt.
 
 \input{./modell/yarnModell}
 

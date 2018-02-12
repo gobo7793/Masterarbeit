@@ -1,0 +1,34 @@
+{
+  "container": [
+    {
+      "containerId": "container_1518429920717_0001_01_000002",
+      "allocatedMB": 1024,
+      "allocatedVCores": 1,
+      "assignedNodeId": "compute-2:45454",
+      "priority": 20,
+      "startedTime": 1518430269706,
+      "finishedTime": 1518430313616,
+      "elapsedTime": 43910,
+      "diagnosticsInfo": "Container killed by the ApplicationMaster.\n",
+      "logUrl": "http://0.0.0.0:8188/applicationhistory/logs/compute-2:45454/container_1518429920717_0001_01_000002/container_1518429920717_0001_01_000002/root",
+      "containerExitStatus": 0,
+      "containerState": "COMPLETE",
+      "nodeHttpAddress": "http://compute-2:8042"
+    },
+    {
+      "containerId": "container_1518429920717_0001_01_000001",
+      "allocatedMB": 2048,
+      "allocatedVCores": 1,
+      "assignedNodeId": "compute-2:45454",
+      "priority": 0,
+      "startedTime": 1518430260796,
+      "finishedTime": 1518430410599,
+      "elapsedTime": 149803,
+      "diagnosticsInfo": "",
+      "logUrl": "http://0.0.0.0:8188/applicationhistory/logs/compute-2:45454/container_1518429920717_0001_01_000001/container_1518429920717_0001_01_000001/root",
+      "containerExitStatus": 0,
+      "containerState": "COMPLETE",
+      "nodeHttpAddress": "http://compute-2:8042"
+    }
+  ]
+}

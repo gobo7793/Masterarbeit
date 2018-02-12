@@ -83,12 +83,7 @@
 
 % für Literatur
 %\usepackage[numbers]{natbib}
-\usepackage[
-    style=numeric-comp,
-    natbib=true,
-    maxitems=1,
-    backend=biber,
-    sorting=none]{biblatex}
+\usepackage[style=numeric-comp,natbib=true,maxitems=1,backend=biber,sorting=none]{biblatex}
 \usepackage{csquotes}
 \addbibresource{./literatur.bib}
 \addbibresource{./web.bib}
@@ -108,11 +103,10 @@
 
 % für Listings
 \usepackage{listings}
+\makeatletter
 \definecolor{darkgreen}{rgb}{0,0.5,0}
 \lstdefinestyle{base}{
     basicstyle=\footnotesize\ttfamily,
-    commentstyle=\color{darkgreen},
-    keywordstyle=\color{blue},
     frame=single,
     numbers=left,
     numberstyle=\tiny,
@@ -123,6 +117,8 @@
 \lstdefinestyle{cs}{
     language=[sharp]c,
     style=base,
+    commentstyle=\color{darkgreen},
+    keywordstyle=\color{blue},
     morekeywords={ nameof },
 }
 \lstdefinestyle{plain}{
@@ -131,12 +127,47 @@
     tabsize=4,
     captionpos=t,
 }
+% json files
+\newcommand\JSONnumbervaluestyle{\color{blue}}
+\newcommand\JSONstringvaluestyle{\color{red}}
+% switch used as state variable
+\newif\ifcolonfoundonthisline
+\lstdefinestyle{json}
+{
+    style=base,
+    captionpos=t,
+    showstringspaces    = false,
+    keywords            = {false,true},
+    alsoletter          = 0123456789.,
+    morestring          = [s]{"}{"},
+    stringstyle         = \ifcolonfoundonthisline\JSONstringvaluestyle\fi,
+    MoreSelectCharTable =%
+    \lst@DefSaveDef{`:}\colon@json{\processColon@json},
+    basicstyle          = \ttfamily,
+    keywordstyle        = \ttfamily\bfseries,
+}
+% flip the switch if a colon is found in Pmode
+\newcommand\processColon@json{%
+    \colon@json%
+    \ifnum\lst@mode=\lst@Pmode%
+    \global\colonfoundonthislinetrue%
+    \fi
+}
+\lst@AddToHook{Output}{%
+    \ifcolonfoundonthisline%
+    \ifnum\lst@mode=\lst@Pmode%
+    \def\lst@thestyle{\JSONnumbervaluestyle}%
+    \fi
+    \fi
+    %override by keyword style if a keyword is detected!
+    \lsthk@DetectKeywords% 
+}
+% reset the switch at the end of line
+\lst@AddToHook{EOL}%
+{\global\colonfoundonthislinefalse}
 
 % erzeugt Inhaltsverzeichnis mit Querverweisen zu den Kapiteln (PDF Version)
-\usepackage[bookmarksnumbered,
-pdftitle={\titleDocument},
-hyperfootnotes=false,
-breaklinks=true]{hyperref} 
+\usepackage[bookmarksnumbered,pdftitle={\titleDocument},hyperfootnotes=false,breaklinks=true]{hyperref} 
 
 % Verzeichnisse
 \makeatletter

@@ -1,0 +1,35 @@
+{
+  "apps": {
+    "app": [
+      {
+        "id": "application_1518429920717_0001",
+        "user": "root",
+        "name": "QuasiMonteCarlo",
+        "queue": "default",
+        "state": "FINISHED",
+        "finalStatus": "SUCCEEDED",
+        "progress": 100,
+        "trackingUI": "History",
+        "trackingUrl": "http://controller:8088/proxy/application_1518429920717_0001/",
+        "diagnostics": "",
+        "clusterId": 1518429920717,
+        "applicationType": "MAPREDUCE",
+        "applicationTags": "",
+        "startedTime": 1518430260179,
+        "finishedTime": 1518430404123,
+        "elapsedTime": 143944,
+        "amContainerLogs": "http://compute-2:8042/node/containerlogs/container_1518429920717_0001_01_000001/root",
+        "amHostHttpAddress": "compute-2:8042",
+        "allocatedMB": -1,
+        "allocatedVCores": -1,
+        "runningContainers": -1,
+        "memorySeconds": 1756786,
+        "vcoreSeconds": 1546,
+        "preemptedResourceMB": 0,
+        "preemptedResourceVCores": 0,
+        "numNonAMContainerPreempted": 0,
+        "numAMContainerPreempted": 0
+      }
+    ]
+  }
+}
