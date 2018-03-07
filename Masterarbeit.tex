@@ -1,107 +1,61 @@
-% allgem. Dokumentenformat
-\documentclass[a4paper,12pt,headsepline]{report}
-\input{./settings/variablen}
+\documentclass[12pt,a4paper]{scrreprt}
+\usepackage{scrhack}
 
-% weitere Pakete
-% Grafiken aus PNG und SVG Dateien einbinden
-\usepackage{graphicx}
-\usepackage{wrapfig}
-
-% Deutsche Sonderzeichen benutzen 
-%\usepackage{ngerman}
-
-% deutsche Silbentrennung
+% Textkodierung Deutsch
 \usepackage[ngerman]{babel}
-
-% Eurozeichen einbinden
-\usepackage[right]{eurosym}
-
-% Umlaute unter UTF8 nutzen
-\usepackage[utf8]{inputenc}
-
-% Zeichenencoding
 \usepackage[T1]{fontenc}
-
+\usepackage[utf8]{inputenc}
 \usepackage{lmodern}
-\usepackage{fix-cm}
-
 \usepackage{xspace}
 
-% floatende Bilder ermöglichen
-%\usepackage{floatflt}
+% Basisinfos
+\title{Modellbasierte Testautomatisierung eines verteilen, adaptiven Load-Balancing-Systems}
+\author{Gerald Siegert}
+\date{\today}
+\input{./settings/variablen}
+\input{./settings/trennung}
 
-% mehrseitige Tabellen ermöglichen
-\usepackage{longtable}
-\usepackage{multirow}
-\usepackage{tabularx}
-\usepackage{enumitem}
-
-% Unterstützung für Schriftarten
-%\newcommand{\changefont}[3]{ 
-%\fontfamily{#1} \fontseries{#2} \fontshape{#3} \selectfont}
-
-% Packet für Seitenrandabständex und Einstellung für Seitenränder
+% Seitenränder
 \usepackage{geometry}
-\geometry{left=3.5cm, right=2cm, top=2.5cm, bottom=2cm}
+\geometry{left=35mm, right=20mm, top=25mm, bottom=20mm}
 
-% Paket für Boxen im Text
-\usepackage{fancybox}
+% Kopf/Fußzeilen
+\usepackage[headsepline]{scrpage2}
+\clearscrheadfoot
+\pagestyle{scrheadings}
 
-% bricht lange URLs "schoen" um
-\usepackage[hyphens,obeyspaces,spaces]{url}
+\ihead{\headmark}
+\automark{chapter}
+\ohead{\pagemark}
+\cfoot[\pagemark]{}
 
-% Paket für Textfarben
-\usepackage{color}
+\renewcommand*{\headfont}{\normalfont}
+\setlength{\headheight}{1.5\baselineskip}
 
-% Mathematische Symbole importieren
-\usepackage{amssymb}
+% Grafiken
+\usepackage{graphicx}
+\usepackage{wrapfig}
+\usepackage[format=plain]{caption}
 
-% Abkürzungsverzeichnis
+% Textfarben
+\usepackage{xcolor}
+
+% Abkürzungen
 \usepackage[nohyperlinks,printonlyused]{acronym}
 
-% auf jeder Seite eine Überschrift (alt, zentriert)
-%\pagestyle{headings}
-%\hypersetup{colorlinks, citecolor=red, linkcolor=blue, urlcolor=black}
-%\hypersetup{colorlinks, citecolor=black, linkcolor= black, urlcolor=black}
+% Zeilenabstand
+\usepackage[onehalfspacing]{setspace}
+\usepackage{enumitem}
+\setlist[itemize]{noitemsep}
 
-% Linkziele oberhalb von Abbildungen und Tabellen
-\usepackage{caption}
-
-% neue Kopfzeilen mit fancypaket
-\usepackage{fancyhdr} %Paket laden
-\pagestyle{fancy} %eigener Seitenstil
-\fancyhf{} %alle Kopf- und Fußzeilenfelder bereinigen
-\fancyhead[L]{\nouppercase{\leftmark}} %Kopfzeile links
-\fancyhead[C]{} %zentrierte Kopfzeile
-\fancyhead[R]{\thepage} %Kopfzeile rechts
-\renewcommand{\headrulewidth}{0.4pt} %obere Trennlinie
-%\fancyfoot[C]{\thepage} %Seitennummer
-%\renewcommand{\footrulewidth}{0.4pt} %untere Trennlinie
-
-% für Tabellen
-\usepackage{array}
-
-% für Literatur
-%\usepackage[numbers]{natbib}
+% Literatur
 \usepackage[style=numeric-comp,natbib=true,maxitems=1,backend=biber,sorting=none]{biblatex}
-\usepackage{csquotes}
+\usepackage[autostyle=true,german=quotes]{csquotes}
 \addbibresource{./literatur.bib}
 \addbibresource{./web.bib}
 \addbibresource{./abbildungen.bib}
 
-% Schaltet den zusätzlichen Zwischenraum ab, den LaTeX normalerweise nach einem Satzzeichen einfügt.
-\frenchspacing
-
-% Paket für Zeilenabstand
-\usepackage{setspace}
-
-% für Bildbezeichner
-\usepackage{capt-of}
-
-% für Stichwortverzeichnis
-\usepackage{makeidx}
-
-% für Listings
+% Listings
 \usepackage{listings}
 \makeatletter
 \definecolor{darkgreen}{rgb}{0,0.5,0}
@@ -127,7 +81,7 @@
     tabsize=4,
     captionpos=t,
 }
-% json files
+% Json Listings
 \newcommand\JSONnumbervaluestyle{\color{blue}}
 \newcommand\JSONstringvaluestyle{\color{red}}
 % switch used as state variable
@@ -165,125 +119,77 @@
 % reset the switch at the end of line
 \lst@AddToHook{EOL}%
 {\global\colonfoundonthislinefalse}
-
-% erzeugt Inhaltsverzeichnis mit Querverweisen zu den Kapiteln (PDF Version)
-\usepackage[bookmarksnumbered,pdftitle={\titleDocument},hyperfootnotes=false,breaklinks=true]{hyperref} 
+%%%%%%%%%% end listings
 
 % Verzeichnisse
 \makeatletter
-\renewcommand\listoftables{%
-    \section*{\listtablename}\addcontentsline{toc}{section}{\listtablename}%
-    \@mkboth{\MakeUppercase\listtablename}%
-    {\MakeUppercase\listtablename}%
-    \@starttoc{lot}%
-}
 \renewcommand\listoffigures{%
     \section*{\listfigurename}\addcontentsline{toc}{section}{\listfigurename}%
     \@mkboth{\MakeUppercase\listfigurename}%
-    {\MakeUppercase\listfigurename}%
+    {\listfigurename}%
     \@starttoc{lof}%
+}
+\renewcommand\listoftables{%
+    \section*{\listtablename}\addcontentsline{toc}{section}{\listtablename}%
+    \@mkboth{\MakeUppercase\listtablename}%
+    {\listtablename}%
+    \@starttoc{lot}%
 }
 \renewcommand\lstlistoflistings{%
     \section*{\lstlistlistingname}\addcontentsline{toc}{section}{\lstlistlistingname}%
     \@mkboth{\MakeUppercase\lstlistlistingname}%
-    {\MakeUppercase\lstlistlistingname}%
+    {\lstlistlistingname}%
     \@starttoc{lol}%
 }
 \makeatother
 
-% Indexerstellung
-\makeindex
-
-% Disable single lines at the start of a paragraph (Schusterjungen)
+% Hurenkinder, Schusterjungen
 \clubpenalty = 10000
-% Disable single lines at the end of a paragraph (Hurenkinder)
 \widowpenalty = 10000
-\displaywidowpenalty = 10000
+\displaywidowpenalty = 10000 
+
+% Referenzen
+\usepackage[bookmarksnumbered]{hyperref}
 
 \begin{document}
-% hier werden die Trennvorschläge inkludiert
-\input{./settings/trennung}
-
-%Schriftart Helvetica
-%\changefont{phv}{m}{n}
-
-% Titelseite %
-\include{./settings/deckblatt}
-
-% Eidesstattliche Erklärung
-%\addcontentsline{toc}{section}{Eidesstattliche Erklärung}
-%\include{erklaerung}
-
-% römische Numerierung
-\pagenumbering{Roman}
-
-% 1.5 facher Zeilenabstand
-\onehalfspacing
-
-% Sperrvermerk
-%\input{sperrvermerk}
-
-% Einleitung / Abstract
-\include{./abstract}
-
-% einfacher Zeilenabstand
-\singlespacing
-
-% Inhaltsverzeichnis anzeigen
-\newpage
-\tableofcontents
-
-% Verzeichnisse
-\newpage
-\include{./settings/verzeichnisse}
-
-% Definiert Stegbreite bei zweispaltigem Layout
-\setlength{\columnsep}{25pt}
-
-%%%%%%% EINLEITUNG %%%%%%%%%%%%
-%\twocolumn
-\newpage
-\fancyhead[L]{\nouppercase{\leftmark}} %Kopfzeile links
-\pagenumbering{arabic}
-
-% 1,5 facher Zeilenabstand
-\onehalfspacing
-
-% einzelne Kapitel
-\include{./einleitung/einleitung}
-
-\include{./methodik/methodik}
-
-\include{./fallstudie/fallstudie}
-
-\include{./modell/modell}
-
-\onecolumn
-% einfacher Zeilenabstand
-\singlespacing
-% Literaturliste soll im Inhaltsverzeichnis auftauchen
-\newpage
-\addcontentsline{toc}{chapter}{Literaturverzeichnis}
-% Literaturverzeichnis anzeigen
-\renewcommand\refname{Literaturverzeichnis}
-% Festlegung Art der Zitierung
-%\bibliographystyle{abbrvdin}
-%\bibliographystyle{abbrvnat}
-%\bibliographystyle{unsrtdin}
-%\bibliography{literatur,web,abbildungen}
-\printbibliography
-
-%% Index soll Stichwortverzeichnis heissen
-% \newpage
-% % Stichwortverzeichnis soll im Inhaltsverzeichnis auftauchen
-% \addcontentsline{toc}{section}{Stichwortverzeichnis}
-% \renewcommand{\indexname}{Stichwortverzeichnis}
-% % Stichwortverzeichnis endgueltig anzeigen
-% \printindex
-
-\onehalfspacing
-\newpage
-\appendix
-\input{./anhang/anhang}
-
+    % Titelseite
+    \setcounter{page}{-100}
+    \begin{titlepage}
+        \begin{doublespace}
+            \include{./settings/deckblatt}
+        \end{doublespace}
+    \end{titlepage}
+    
+    % Abstract
+    \pagenumbering{Roman}
+    \include{./abstract}
+    
+    % Verzeichnisse
+    \newpage
+    \begin{singlespace}
+        \tableofcontents
+        \include{./settings/verzeichnisse}
+    \end{singlespace}
+    
+    % Inhalt    
+    \newpage
+    \pagenumbering{arabic}
+    
+    \include{./einleitung/einleitung}
+    \include{./methodik/methodik}
+    \include{./fallstudie/fallstudie}
+    \include{./modell/modell}
+    
+    % Literatur
+    \newpage
+    \begin{singlespace}
+        \addcontentsline{toc}{chapter}{Literatur}
+        \renewcommand\refname{Literatur}
+        \printbibliography
+    \end{singlespace}
+    
+    % Anhang
+    \newpage
+    \appendix
+    \input{./anhang/anhang}
 \end{document}

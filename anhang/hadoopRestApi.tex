@@ -1,27 +1,27 @@
 \chapter{REST-API von Hadoop}\label{app:hadoopRestApi}
 
-Wie bei der Ausgabe der Daten der YARN-Komponenten über die Kommandozeile können auch bei der Ausgabe mithilfe der REST-API die Daten als Liste oder als einzelner Report ausgegeben werden. Der Unterschied zur Kommandozeile liegt jedoch darin, dass die Listenausgaben einem Array der einzelnen Reports entsprechen. Neben der hier verwendeten Ausgabe im JSON-Format unterstützt Hadoop auch eine Ausgabe im XML-Format. Im Folgenden sind nur die für diese Masterarbeit relevanten Rückgaben des \ac{RM} und \ac{TLS} aufgelistet. Weitere Informationen zu den hier verwendeten Nutzungsmöglichkeiten sind in \cite{HadoopYarnTlServer271,HadoopRmApi271,HadoopNmApi271} zu finden.
+Wie bei der Ausgabe der Daten der YARN-Komponenten über die Kommandozeile können auch bei der Ausgabe mithilfe der REST-API die Daten als Liste oder als einzelner Report ausgegeben werden. Der Unterschied zur Kommandozeile liegt jedoch darin, dass die Listenausgaben einem Array der einzelnen Reports entsprechen. Neben der hier verwendeten Ausgabe im JSON-Format unterstützt Hadoop auch eine Ausgabe im XML-Format. Im Folgenden sind daher Beispielhaft die Ausgaben im JSON-Format für die Anwendungsliste vom \ac{RM} und für Ausführungen vom \ac{TLS} aufgeführt. Im Rahmen dieser Masterarbeit relevant waren vom \ac{RM} die Rückgaben der Listen für Anwendungen, Ausführungen, Container (jedoch vom \ac{NM}) und der Nodes. Vom \ac{TLS} relevant waren die Listen für Ausführungen und Container. Weitere Informationen zu den hier verwendeten Nutzungsmöglichkeiten sind in \cite{HadoopYarnTlServer271,HadoopRmApi271,HadoopNmApi271} zu finden.
 
-\lstinputlisting[label=lst:hadoopAppListRestRm,caption={[REST-Ausgabe aller Anwendungen vom \ac{RM}]REST-Ausgabe aller Anwendungen vom \ac{RM}. Die Liste kann mithilfe verschiedener Query-Parameter gefiltert werden.\\URL: \url{http://<rm http address:port>/ws/v1/cluster/apps}},float,style=json]
+\lstinputlisting[label=lst:hadoopAppListRestRm,caption={[REST-Ausgabe aller Anwendungen vom \acs{RM}]REST-Ausgabe aller Anwendungen vom \ac{RM}. Die Liste kann mithilfe verschiedener Query-Parameter gefiltert werden.\\URL: \url{http://<rm http address:port>/ws/v1/cluster/apps}},float,style=json]
 {./listings/hadoopAppListRm.json}
 
-\lstinputlisting[label=lst:hadoopAppDetailsRestRm,caption={[REST-Ausgabe einer Anwendung vom \ac{RM}]REST-Ausgabe einer Anwendung vom \ac{RM}.\\URL: \url{http://<rm http address:port>/ws/v1/cluster/apps/{appid}}},float,style=json]
-{./listings/hadoopAppDetailsRm.json}
+%\lstinputlisting[label=lst:hadoopAppDetailsRestRm,caption={[REST-Ausgabe einer Anwendung vom \acs{RM}]REST-Ausgabe einer Anwendung vom \ac{RM}.\\URL: \url{http://<rm http address:port>/ws/v1/cluster/apps/{appid}}},float,style=json]
+%{./listings/hadoopAppDetailsRm.json}
 
-\lstinputlisting[label=lst:hadoopAttemptListRestRm,caption={[REST-Ausgabe aller Ausführungen einer Anwendung vom \ac{RM}]REST-Ausgabe aller Ausführungen einer Anwendung vom \ac{RM}.\\URL: \url{http://<rm http address:port>/ws/v1/cluster/apps/{appid}/appattempts}},float,style=json]
+\lstinputlisting[label=lst:hadoopAttemptListRestRm,caption={[REST-Ausgabe aller Ausführungen einer Anwendung vom \acs{RM}]REST-Ausgabe aller Ausführungen einer Anwendung vom \ac{RM}.\\URL: \url{http://<rm http address:port>/ws/v1/cluster/apps/{appid}/appattempts}},float,style=json]
 {./listings/hadoopAttemptListRm.json}
 
-\lstinputlisting[label=lst:hadoopAttemptListRestTls,caption={[REST-Ausgabe aller Ausführungen einer Anwendung vom \ac{TLS}]REST-Ausgabe aller Ausführungen einer Anwendung vom \ac{TLS}.\\URL: \url{http(s)://<tls http address:port>/ws/v1/applicationhistory/apps/{appid}/appattempts}},float,style=json]
-{./listings/hadoopAttemptListTls.json}
+%\lstinputlisting[label=lst:hadoopAttemptListRestTls,caption={[REST-Ausgabe aller Ausführungen einer Anwendung vom \acs{TLS}]REST-Ausgabe aller Ausführungen einer Anwendung vom \ac{TLS}.\\URL: \url{http(s)://<tls http address:port>/ws/v1/applicationhistory/apps/{appid}/appattempts}},float,style=json]
+%{./listings/hadoopAttemptListTls.json}
 
-\lstinputlisting[label=lst:hadoopContainerListRestRm,caption={[REST-Ausgabe aller Container auf einem Node vom \ac{NM}]REST-Ausgabe aller Container auf einem Node vom \ac{NM}.\\URL: \url{http://<nm http address:port>/ws/v1/node/containers}},float,style=json]
-{./listings/hadoopContainerListRm.json}
+%\lstinputlisting[label=lst:hadoopContainerListRestRm,caption={[REST-Ausgabe aller Container auf einem Node vom \acs{NM}]REST-Ausgabe aller Container auf einem Node vom \ac{NM}.\\URL: \url{http://<nm http address:port>/ws/v1/node/containers}},float,style=json]
+%{./listings/hadoopContainerListRm.json}
 
-\lstinputlisting[label=lst:hadoopContainerListRestTls,caption={[REST-Ausgabe aller Container einer Ausführung vom \ac{TLS}]REST-Ausgabe aller Container einer Ausführung vom \ac{TLS}.\\URL: \url{http(s)://<tls http address:port>/ws/v1/applicationhistory/apps/{appid}/appattempts/{appattemptid}/containers}},float,style=json]
-{./listings/hadoopContainerListTls.json}
+%\lstinputlisting[label=lst:hadoopContainerListRestTls,caption={[REST-Ausgabe aller Container einer Ausführung vom \acs{TLS}]REST-Ausgabe aller Container einer Ausführung vom \ac{TLS}.\\URL: \url{http(s)://<tls http address:port>/ws/v1/applicationhistory/apps/{appid}/appattempts/{appattemptid}/containers}},float,style=json]
+%{./listings/hadoopContainerListTls.json}
 
-\lstinputlisting[label=lst:hadoopNodeListRest,caption={[REST-Ausgabe aller Nodes vom \ac{RM}]REST-Ausgabe aller Nodes vom \ac{RM}.\\URL: \url{http://<rm http address:port>/ws/v1/cluster/nodes}},float,style=json]
-{./listings/hadoopNodeList.json}
+%\lstinputlisting[label=lst:hadoopNodeListRest,caption={[REST-Ausgabe aller Nodes vom \acs{RM}]REST-Ausgabe aller Nodes vom \ac{RM}.\\URL: \url{http://<rm http address:port>/ws/v1/cluster/nodes}},float,style=json]
+%{./listings/hadoopNodeList.json}
 
-\lstinputlisting[label=lst:hadoopNodeDetailsRest,caption={[REST-Ausgabe des Reports eines Nodes vom \ac{RM}]REST-Ausgabe des Reports eines Nodes vom \ac{RM}.\\URL: \url{http://<rm http address:port>/ws/v1/cluster/nodes/{nodeid}}},float,style=json]
-{./listings/hadoopNodeDetails.json}
+%\lstinputlisting[label=lst:hadoopNodeDetailsRest,caption={[REST-Ausgabe des Reports eines Nodes vom \acs{RM}]REST-Ausgabe des Reports eines Nodes vom \ac{RM}.\\URL: \url{http://<rm http address:port>/ws/v1/cluster/nodes/{nodeid}}},float,style=json]
+%{./listings/hadoopNodeDetails.json}
