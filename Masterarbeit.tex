@@ -45,6 +45,12 @@
 \usepackage{wrapfig}
 \usepackage[format=plain]{caption}
 \setkeys{Gin}{width=0.8\columnwidth} % default width
+% Markow-Ketten
+\usepackage{tikz}
+\usetikzlibrary{automata,positioning}
+
+% Tabellen
+\usepackage{multirow}
 
 % Textfarben
 \usepackage{xcolor}
@@ -55,7 +61,8 @@
 % Zeilenabstand
 \usepackage[onehalfspacing]{setspace}
 \usepackage{enumitem}
-\setlist[itemize]{noitemsep}
+\setlist[itemize]{noitemsep} % noitemsep bei listen
+\renewcommand*{\chapterheadstartvskip}{\vspace*{.5\baselineskip}}% Abstand vor Kapiteltitel
 
 % Literatur
 \usepackage[style=numeric-comp,natbib=true,maxitems=1,backend=biber,sorting=none]{biblatex}
@@ -195,9 +202,10 @@
     \pagenumbering{arabic}
     
     \include{./einleitung/einleitung}
-    \include{./methodik/methodik}
+    %\include{./methodik/methodik}
     \include{./fallstudie/fallstudie}
     \include{./modell/modell}
+    \include{./benchmarks/benchmarks}
     
     % Literatur
     \newpage

@@ -19,7 +19,7 @@ Die Plattform Hadoop-Benchmark enthält zudem einige Benchmark-Anwendungen:
 \begin{itemize}
     \item Hadoop Mapreduce Examples
     \item Intel HiBench\footnote{\url{https://github.com/intel-hadoop/HiBench}}
-    \item SWIM (Statistical Workload Injector for Mapreduce)\footnote{\url{https://github.com/SWIMProjectUCB/SWIM}}
+    \item \ac{SWIM} \footnote{\url{https://github.com/SWIMProjectUCB/SWIM}}
 \end{itemize}
 
 Eine Besonderheit bildet der SWIM-Benchmark, welcher sehr Ressourcenintensiv ist und daher auf einem \emph{Single Node Cluster}, also einem kompletten Hadoop-Cluster auf nur einem Computer, sehr zeitintensiv sein kann. Der Intel HiBench-Benchmark besteht aus Kategorien wie \emph{Machine Learning} oder Graphen, welche wiederum aus einen oder mehreren \emph{Workloads} bestehen, welche entsprechende Anwendungen bzw. Algorithmen auf dem Hadoop-Cluster ausführen. Einige der Hibench-Workloads basieren auf den Mapreduce Examples, welche wiederum voneinander unabhängige Beispielanwendungen für Hadoop darstellen.
@@ -29,14 +29,13 @@ Eine Besonderheit bildet der SWIM-Benchmark, welcher sehr Ressourcenintensiv ist
 Da mithilfe der Plattform Hadoop-Benchmark die Erstellung eines Hadoop-Clusters massiv vereinfacht wird, kommt die Plattform auch in dieser Masterarbeit zum Einsatz. Da Docker und Hadoop aber vor allem für den Einsatz in einer Linux-Umgebung entwickelt wurden, wird dazu ein eigener PC mit Ubuntu 16.04 LTS genutzt. Da \sS das .NET-Framework, und damit Windows, benötigt, wird dafür ebenfalls ein eigener PC verwendet. Im konkreten Versuchsaufbau wird für Windows eine VM genutzt, welche auf einem anderen PC als das Cluster ausgeführt wird. Die genauen Spezifikationen der PCs und der Windows-VM sind in \autoref{tab:pcSpecs} aufgelistet. Die Windows-VM und der Cluster-PC werden mithilfe von SSH-Verbindungen miteinander verbunden.
 
 \begin{table}
-    \centering
     \begin{tabular}{|c|c|c|c|}
     	\hline
-    	 \textbf{}   & \textbf{Cluster-PC} &         \textbf{VM-PC}          & \textbf{Windows-VM}  \\ \hline\hline
-    	\textbf{CPU} & \multicolumn{2}{c|}{Intel Core i5-4570 @ 3,2 GHz x 4} &     4 CPU Cores      \\ \hline
-    	\textbf{RAM} &              \multicolumn{2}{c|}{16 GB}               &         8 GB         \\ \hline
-    	\textbf{SSD} &       512 GB        &             512 GB              &  $\leq$ 100 GB VHD   \\ \hline
-    	\textbf{OS}  &  Ubuntu 16.04 LTS   &        Ubuntu 16.04 LTS         & Windows 10 1709 Edu. \\ \hline
+    	 \textbf{}   & \textbf{Cluster-PC} &          \textbf{VM-PC}          & \textbf{Windows-VM}  \\ \hline\hline
+    	\textbf{CPU} & \multicolumn{2}{|c|}{Intel Core i5-4570 @ 3,2 GHz x 4} &     4 CPU Cores      \\ \hline
+    	\textbf{RAM} &        16 GB        &              16 GB               &         8 GB         \\ \hline
+    	\textbf{SSD} &       512 GB        &              512 GB              &  $\leq$ 100 GB VHD   \\ \hline
+    	\textbf{OS}  &  Ubuntu 16.04 LTS   &         Ubuntu 16.04 LTS         & Windows 10 1709 Edu. \\ \hline
     \end{tabular}
     \caption{Spezifikationen der verwendeten PCs und Windows-VM}
     \label{tab:pcSpecs}
@@ -47,14 +46,15 @@ Auf dem Cluster-PC nutzt Docker-Machine zur Erstellung, Verwaltung und Ausführu
 %TODO: Link zum angepassten Hadoop-Benchmark?
 In keinem Szenario der Plattform Hadoop-Benchmark wird standardmäßig der \ac{TLS} von Hadoop gestartet. Daher wurde für diese Fallstudie basierend auf dem Selfbalancing"=Szenario ein neues Szenario erstellt, bei dem der \ac{TLS} gestartet wird. Dadurch ist einerseits die Selfbalancing"=Komponente von \citeauthor{zhang2016} aktiv und andererseits besteht die Möglichkeit, für das Monitoring zusätzlich den \ac{TLS} zu nutzen.
 
-Um viele standardmäßige Aufgaben und Möglichkeiten zu vereinfachen, wurde zudem ein eigenes Setup-Script erstellt. Es vereinfacht folgende Aufgaben:
+Um die in dieser Fallstudie benötigten Befehle einfach ausführen zu können, wurden zwei eigene Scripte erstellt, welche, sofern möglich, auf den bestehenden Scripten der Plattform aufbauen. Das Setup-Script dient für folgende clusterbezogene Zwecke:
 
 \begin{itemize}
-    \item Starten, Beenden und Löschen des kompletten Clusters mit Hadoop
-    \item Starten und Beenden des Docker-Containers eines Nodes
-    \item Hinzufügen und Entfernen der Netzwerkverbindung des Docker-Containers eines Nodes
-    \item Ausführen der verwendeten Benchmarks
+    \item Starten, Beenden und Löschen des kompletten Clusters bzw. Hadoops
+    \item Starten und Beenden des Docker-Containers eines Hadoop-Nodes
+    \item Hinzufügen und Entfernen der Netzwerkverbindung des Docker-Containers eines Hadoop-Nodes
     \item Ausführen von eigenen Befehlen auf dem Docker-Container des Controllers
 \end{itemize}
+
+Das zweite erstellte Script dient ausschließlich zum Starten der Benchmarks.
 
 Für die Befehle, die das gesamte Cluster betreffen, wird vom Setup-Script meist auf das in Hadoop-Benchmark enthaltene Start-Script zugegriffen. Die Befehle, welche die Docker-Container der Nodes betreffen, sowie das Ausführen von Befehlen im Controller-Container, werden vom Setup-Script direkt ausgeführt. Für das Starten der Benchmarks werden dagegen die in Hadoop-Benchmark enthaltenen Ausführungs-Scripte der Benchmarks gestartet.
