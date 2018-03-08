@@ -1,5 +1,8 @@
-\documentclass[12pt,a4paper]{scrreprt}
-\usepackage{scrhack}
+\documentclass[12pt,a4paper,%
+%draft%
+]{scrreprt}
+% prevent warning \float@addtolists detected
+\usepackage{scrhack} 
 
 % Textkodierung Deutsch
 \usepackage[ngerman]{babel}
@@ -7,6 +10,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage{lmodern}
 \usepackage{xspace}
+\usepackage{microtype}
 
 % Basisinfos
 \title{Modellbasierte Testautomatisierung eines verteilen, adaptiven Load-Balancing-Systems}
@@ -17,25 +21,30 @@
 
 % Seitenränder
 \usepackage{geometry}
-\geometry{left=35mm, right=20mm, top=25mm, bottom=20mm}
+\geometry{left=35mm,right=20mm,top=25mm,bottom=20mm}
 
 % Kopf/Fußzeilen
-\usepackage[headsepline]{scrpage2}
+\usepackage[headsepline]{scrlayer-scrpage}
 \clearscrheadfoot
 \pagestyle{scrheadings}
 
 \ihead{\headmark}
 \automark{chapter}
 \ohead{\pagemark}
-\cfoot[\pagemark]{}
 
 \renewcommand*{\headfont}{\normalfont}
 \setlength{\headheight}{1.5\baselineskip}
+\renewcommand*{\chapterpagestyle}{scrheadings}
+
+\newpairofpagestyles[scrheadings]{lists}{%
+    \ihead{Verzeichnisse}%
+    }
 
 % Grafiken
 \usepackage{graphicx}
 \usepackage{wrapfig}
 \usepackage[format=plain]{caption}
+\setkeys{Gin}{width=0.8\columnwidth} % default width
 
 % Textfarben
 \usepackage{xcolor}
@@ -54,6 +63,9 @@
 \addbibresource{./literatur.bib}
 \addbibresource{./web.bib}
 \addbibresource{./abbildungen.bib}
+% Zeilenumbrüche bei URLs
+\setcounter{biburllcpenalty}{7000}
+\setcounter{biburlucpenalty}{8000}
 
 % Listings
 \usepackage{listings}
@@ -121,26 +133,31 @@
 {\global\colonfoundonthislinefalse}
 %%%%%%%%%% end listings
 
-% Verzeichnisse
 \makeatletter
+
+% Default centering floatboxes
+\g@addto@macro\@floatboxreset\centering
+
+% Verzeichnisse
 \renewcommand\listoffigures{%
-    \section*{\listfigurename}\addcontentsline{toc}{section}{\listfigurename}%
+    \addsec{\listfigurename}%
     \@mkboth{\MakeUppercase\listfigurename}%
     {\listfigurename}%
     \@starttoc{lof}%
 }
 \renewcommand\listoftables{%
-    \section*{\listtablename}\addcontentsline{toc}{section}{\listtablename}%
+    \addsec{\listtablename}%
     \@mkboth{\MakeUppercase\listtablename}%
     {\listtablename}%
     \@starttoc{lot}%
 }
 \renewcommand\lstlistoflistings{%
-    \section*{\lstlistlistingname}\addcontentsline{toc}{section}{\lstlistlistingname}%
+    \addsec{\lstlistlistingname}%
     \@mkboth{\MakeUppercase\lstlistlistingname}%
     {\lstlistlistingname}%
     \@starttoc{lol}%
 }
+
 \makeatother
 
 % Hurenkinder, Schusterjungen
@@ -149,7 +166,7 @@
 \displaywidowpenalty = 10000 
 
 % Referenzen
-\usepackage[bookmarksnumbered]{hyperref}
+\usepackage{hyperref}
 
 \begin{document}
     % Titelseite
@@ -165,13 +182,15 @@
     \include{./abstract}
     
     % Verzeichnisse
+    \pagestyle{lists}
     \newpage
     \begin{singlespace}
         \tableofcontents
         \include{./settings/verzeichnisse}
     \end{singlespace}
     
-    % Inhalt    
+    % Inhalt
+    \pagestyle{scrheadings}
     \newpage
     \pagenumbering{arabic}
     

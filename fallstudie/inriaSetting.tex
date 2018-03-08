@@ -5,8 +5,7 @@ Eine normale Hadoop-Installation besitzt keine adaptive Komponente, sondern rein
 Je nach Bedarf besitzt der Capacity Scheduler entsprechende Einstellungen, um \zB den verfügbaren Speicher pro Container festzulegen. Eine weitere Einstellung des Schedulers ist \acl{MARP}, auch \acs{MARP} gennant\acused{MARP}, der angibt, wie viele Prozent der gesamten Ressourcen durch \ac{AppMstr}-Container genutzt werden dürfen \cite{HadoopCapScheduler271}. Damit bewirkt diese Einstellung indirekt auch die maximale Anzahl an Anwendungen, die gleichzeitig ausgeführt werden dürfen. Da der \ac{MARP}-Wert jedoch nicht während der Laufzeit dynamisch angepasst werden kann, haben \citeauthor{zhang2016} in \cite{zhang2016} einen Ansatz zur dynamischen Anpassung des \ac{MARP}-Wertes zur Laufzeit von Hadoop vorgestellt. Dadurch wird der \ac{MARP}-Wert abhängig von den ausgeführten Anwendungen adaptiv zur Laufzeit angepasst, sodass immer möglichst viele Anwendungen gleichzeitig ausgeführt werden können. Dadurch werden Anwendungen im Schnitt um bis zu 40 \% schneller ausgeführt \cite{zhang2016}.
 
 \begin{figure}
-    \centering
-    \includegraphics[width=.8\columnwidth]{./images/marpValue.pdf}
+    \includegraphics{./images/marpValue.pdf}
     \caption[LoJP und LoJT in Hadoop]{LoJP und LoJT in Hadoop (entnommen aus \cite{zhang2016})}
     \label{fig:marpValue}
 \end{figure}

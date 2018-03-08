@@ -3,8 +3,7 @@
 \ac{MC} ist eine Möglichkeit, um Systeme zu testen und zu verifizieren. Dazu werden vom \ac{MCr} alle möglichen Systemzustände in einem \emph{brute-force}-ähnlichem Vorgehen getestet und somit alle möglichen Szenarien getestet. Die Anzahl der Zustände kann sehr schnell $ 10^{120} $ oder mehr betragen \cite{Grumberg1999,Baier2008}.
 
 \begin{figure}
-	\centering
-	\includegraphics[width=.8\columnwidth]{./images/mcSchema.pdf}
+	\includegraphics{./images/mcSchema.pdf}
 	\caption[Schematischer Aufbau beim MC]{Schematischer Aufbau beim MC, nach \cite{Baier2008}}
 	\label{fig:mcSchema}
 \end{figure}
@@ -24,14 +23,14 @@ Wenn alle Zustände und deren Eigenschaften die Anforderungen erfüllen, erfüll
 Möglich ist aber auch, dass die Ressourcen nicht ausreichen, um alle Zustände zu prüfen. In so einem Fall gibt es mehrere Möglichkeiten, damit umzugehen, \zB können Heuristiken oder Abstraktionen vom Modell genutzt werden \cite{Baier2008,Eberhardinger2016}.
 
 \ac{MC} besitzt durch seine Charakteristik einige Vorteile, \uA \cite{Baier2008}:
-\begin{itemize}[noitemsep]
+\begin{itemize}
 	\item \ac{MC} ist universell nutzbar, \zB für Software, Hardware oder eingebettete Systeme
 	\item Partielle Verifikation ist möglich ohne das gesamte System testen zu müssen
 	\item Vollständig automatisierbar und benötigt kaum Benutzerinteraktion oder hohe Expertise
 \end{itemize}
 
 Natürlich gibt es aber auch einige Nachteile, \uA \cite{Baier2008}:
-\begin{itemize}[noitemsep]
+\begin{itemize}
 	\item Mit \ac{MC} wird nur ein Systemmodell und nicht das eigentliche System getestet, was weitere Fehler nicht ausschließt
 	\item Hauptsächlich für steuerungsbasierte Anwendungen und nicht für datenbasierte Anwendungen geeignet
 	\item Anzahl der möglichen Zustände kann zu hoch sein, um alle zu testen

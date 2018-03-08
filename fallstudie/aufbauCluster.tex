@@ -7,8 +7,7 @@
 Die Plattform ist in mehrere Szenarien unterteilt, darunter ein Hadoop in der Version 2.7.1 ohne Änderungen und ein darauf basierendes Szenario mit der Selfbalancing-Komponente. Hadoop-Benchmark basiert auf der Software \emph{Docker}\footnote{\url{https://www.docker.com/}} und dem dazugehörigen Tool \emph{Docker Machine}, um damit einfach und schnell ein Hadoop-Cluster aufbauen zu können. Mit \emph{Graphite}\footnote{\url{https://graphiteapp.org/}} ist zudem ein Monitoring-Tool enthalten, mit dem die Performance des Clusters überwacht und analysiert werden kann.
 
 \begin{figure}
-    \centering
-    \includegraphics[width=.8\columnwidth]{./images/hadoopBenchmarkArch.png}
+    \includegraphics{./images/hadoopBenchmarkArch.png}
     \caption[High-Level-Architektur von Hadoop-Benchmark]{High-Level-Architektur von Hadoop-Benchmark \cite{abb:hadoopBenchmarkArch}}
     \label{fig:hadoopBenchmarkArchitecture}
 \end{figure}
@@ -17,7 +16,7 @@ Die Plattform ist in mehrere Szenarien unterteilt, darunter ein Hadoop in der Ve
 
 Die Plattform Hadoop-Benchmark enthält zudem einige Benchmark-Anwendungen:
 
-\begin{itemize}[noitemsep]
+\begin{itemize}
     \item Hadoop Mapreduce Examples
     \item Intel HiBench\footnote{\url{https://github.com/intel-hadoop/HiBench}}
     \item SWIM (Statistical Workload Injector for Mapreduce)\footnote{\url{https://github.com/SWIMProjectUCB/SWIM}}
@@ -46,11 +45,11 @@ Da mithilfe der Plattform Hadoop-Benchmark die Erstellung eines Hadoop-Clusters 
 Auf dem Cluster-PC nutzt Docker-Machine zur Erstellung, Verwaltung und Ausführung der VMs die Treiber von VirtualBox 5.2\footnote{\url{https://www.virtualbox.org/}}, zum Abrufen der Daten der REST-API über die SSH-Verbindung wird \emph{curl}\footnote{\url{https://curl.haxx.se/}} genutzt. Für das Cluster werden 4 Nodes, der Controller sowie eine Consul-VM zur internen Verwaltung der Netzwerkverbindungen zwischen den VMs und Docker-Containern erstellt. Der Controller erhält 4 GB RAM, jeder der vier Nodes jeweils 2 GB, für den Consul sind 512 MB ausreichend. Für die Windows-VM wird ebenfalls VirtualBox 5.2 eingesetzt.
 
 %TODO: Link zum angepassten Hadoop-Benchmark?
-In keinem Szenario der Plattform Hadoop-Benchmark wird standardmäßig der \ac{TLS} von Hadoop gestartet. Daher wurde für diese Fallstudie basierend auf dem Selfbalancing-Szenario ein neues Szenario erstellt, bei dem der \ac{TLS} gestartet wird. Dadurch ist einerseits die Selfbalancing-Komponente von \citeauthor{zhang2016} aktiv und andererseits besteht die Möglichkeit, für das Monitoring zusätzlich den \ac{TLS} zu nutzen.
+In keinem Szenario der Plattform Hadoop-Benchmark wird standardmäßig der \ac{TLS} von Hadoop gestartet. Daher wurde für diese Fallstudie basierend auf dem Selfbalancing"=Szenario ein neues Szenario erstellt, bei dem der \ac{TLS} gestartet wird. Dadurch ist einerseits die Selfbalancing"=Komponente von \citeauthor{zhang2016} aktiv und andererseits besteht die Möglichkeit, für das Monitoring zusätzlich den \ac{TLS} zu nutzen.
 
 Um viele standardmäßige Aufgaben und Möglichkeiten zu vereinfachen, wurde zudem ein eigenes Setup-Script erstellt. Es vereinfacht folgende Aufgaben:
 
-\begin{itemize}[noitemsep]
+\begin{itemize}
     \item Starten, Beenden und Löschen des kompletten Clusters mit Hadoop
     \item Starten und Beenden des Docker-Containers eines Nodes
     \item Hinzufügen und Entfernen der Netzwerkverbindung des Docker-Containers eines Nodes
