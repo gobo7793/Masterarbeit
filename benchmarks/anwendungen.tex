@@ -1,6 +1,5 @@
 \section{Übersicht möglicher Anwendungen}\label{sec:appOverview}
 
-
 % Hadoop-Benchmark enthält bereits alles zum starten
 Hadoop-Benchmark enthält bereits die Möglichkeit, unterschiedliche Benchmarks zu starten. Wie in \autoref{sec:hadoopBenchmark} erwähnt, sind folgende Benchmarks in der Plattform integriert:
 
@@ -10,9 +9,29 @@ Hadoop-Benchmark enthält bereits die Möglichkeit, unterschiedliche Benchmarks 
     \item \ac{SWIM}
 \end{itemize}
 
+Jeder Benchmark enthält zum Starten ein jeweiliges Start-Script, mit dem ein neuer Docker"=Container auf der Controller-VM gestartet wird, mit dem der Benchmark auf dem Cluster gestartet wird. Dass dafür ein eigener Docker-Container genutzt wird liegt daran, dass es in Docker"=Umgebungen \emph{best practice} ist, einen Docker"=Container für nur einen Einsatzzweck zu erstellen und zu nutzen. Die Hauptgründe dafür sind, dass dadurch die Skalierbarkeit erhöht und die Wiederverwendbarkeit gesteigert werden \cite{DockerBestPractice}. Daher wurden auch die Startscripte für die Benchmarks so angepasst, dass die jeweiligen Benchmarks mehrfach gestartet werden können.
+
 % Examples
+Die \textbf{Hadoop Mapreduce Examples} sind unterschiedliche und meist voneinander unabhängige Anwendungen, die beispielhaft für die meisten Anwendungsfällen in einem produktiv genutzten Cluster sind. Die Examples sind Teil von Hadoop und daher bei jeder Hadoop"=Installation enthalten. Einige der Anwendungen der Examples sind:
+
+\begin{itemize}
+    \item Generatoren für Text und Binärdaten, \zB \texttt{randomtextwriter}
+    \item Analysieren von Daten, \zB \texttt{wordcount}
+    \item Sortieren von Daten, \zB \texttt{sort}
+    \item Ausführen von komplexen Berechnungen, \zB \emph{Bailey-Borwein-Plouffe-Formel} zur Berechnung einzelner Stellen von $\pi$
+\end{itemize}
 
 % HiBench
+Der \textbf{Intel HiBench} ist eine Benchmark-Suite mit \emph{Workloads} zu verschiedenen Anwendungszwecken mit jeweils unterschiedlichen einzelnen Anwendungen. Da in Hadoop"=Benchmark noch die HiBench"=Version \mbox{2.2} verwendet wird, wurde der Docker"=Container von HiBench zunächst auf Version 7 aktualisiert, die einige neuen Workloads und Anwendungen enthält. HiBench enthält damit folgende Workloads mit einer unterschiedlichen Anzahl an möglichen Anwendungen:
+
+\begin{itemize}
+    \item Micro-Benchmarks (basieret auf den Mapreduce"=Examples und den Jobclient"=Tests)
+    \item Maschinelles Lernen
+    \item SQL/Datenbanken
+    \item Websuche
+    \item Graphen
+    \item Streaming
+\end{itemize}
 
 % Kurze infos zum Swim
 
