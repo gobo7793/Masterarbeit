@@ -1,0 +1,22 @@
+\begin{tikzpicture}[node distance=2cm]
+    \tikzstyle{every state}=[rectangle]
+
+    \node[state]                    (dfsiow)    {DFSIOw};
+    \node[state,below=of dfsiow]    (dfsior)    {DFSIOr};
+    \node[state,right=of dfsior]    (wc)        {WC};
+    \node[state,right=of wc]        (rw)        {RW};
+    \node[state,right=of rw]        (sort)      {Sort};
+    \node[state,right=of sort]      (treasort)  {TSort};
+    \node[state,above=of rw]        (rtw)       {RTW};
+    \node[state,above=of treasort]  (tgen)      {TGen};
+    \node[state,below=of wc]        (pi)        {Pi};
+    \node[state,below=of rw]        (pent)      {Pent};
+    \node[state,below=of sort]      (testsort)  {TestSort};
+    \node[state,below=of treasort]  (tvalid)    {TValid};
+    
+    \path[every loop, auto=right, line width=1pt, >=latex]
+        (dfsiow)    edge[bend right]   node    {0,2}  (rtw)
+        (rtw)       edge[bend right]   node    {0,1}  (dfsiow)
+        (tgen)      edge[bend right]   node    {0,1}  (rtw)
+        (tvalid)    edge[bend left]    node    {0,2}  (dfsiow);
+\end{tikzpicture}

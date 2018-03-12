@@ -1,10 +1,63 @@
 \section{Auswahl der verwendeten Anwendungen}\label{sec:appSelection}
 
-%Nach welchen kritieren
+%Nach welchen Kritieren
+Damit die Fallstudie die Realität abbilden kann, wurden von allen Verfügbaren Anwendungen einige ausgewählt und in ein Transitionssystem in Form einer Markow"=Kette überführt. Diese Kette definiert die Ausführungsreihenfolge zwischen den einzelnen Anwendungen. Eine zufallsbasierte Markow"=Kette wurde aus dem Grund verwendet, dass auch in der Realität Anwendungen nicht immer in der gleichen Reihenfolge ausgeführt werden und daher auch in der Fallstudie eine unterschiedliche Ausführungsreihenfolge der Anwendungen gewährleistet werden soll. Mithilfe der Festlegung eines bestimmten Seeds für den in der Fallstudie benötigten Pseudo"=Zufallsgenerator besteht bei Bedarf dennoch die Möglichkeit, die gleichen Anwendungen erneut ausführen zu können.
 
-%Warum HiBench/dfsioe nachträglich raus
+Da alle verfügbaren Anwendungen zunächst je nach Anwendungsart in verschiedene Kategorien eingeteilt wurden, wurden bei der Erstellung des Transitionssystems einige dieser Kategorien exemplarisch für mögliche, typische Anwendungsfälle auf einem produktiv genutzten Cluster verwendet. Folgende Kategorien und Anwendungen der Mapreduce"=Examples und Jobclient"=Tests wurden daher letztlich ausgewählt:
 
-%Warum SWIM komplett unberücksichtigt
+\begin{itemize}
+    \item Generatoren für
+    \begin{itemize}
+        \item Textdateien: \ac{rtw} und \ac{dfs-w}
+        \item Binärdateien: \ac{rw} und \ac{tgen}
+    \end{itemize}
+
+    \item Datenverarbeitung in Form von:
+    \begin{itemize}
+        \item Auslesen: \ac{wc} und \ac{dfs-r}
+        \item Sortieren: \acl{sort} für Textdaten und \ac{tsort} für Binärdaten
+        \item Validieren: \ac{tstsort} und \ac{tval} für die jeweiligen Sortierungs"=Anwendungen
+    \end{itemize}
+
+    \item Ausführen von Berechnungen:
+    \begin{itemize}
+        \item \acl{pi}: Quasi-Monte-Carlo-Methode zur einfachen Berechnung von $\pi$ 
+        \item \ac{pent}: Berechnung von Pentomino-Problemen
+    \end{itemize}
+
+    \item Dummy"=Anwendungen: \texttt{sleep} und \texttt{fail}
+\end{itemize}
+
+Der Grund für die Berücksichtigung von mehreren gleichen bzw. ähnlichen Anwendungen für einige Kategorien liegt darin, dass eine Anwendung für eine eher kurze Ausführung, die andere für eine umfangreiche Ausgewählt wurde. So steht \texttt{TestDFSIO} für eine umfangreichere Datennutzung, während die jeweils anderen Anwendungen einen kleineren Umfang repräsentieren. Ähnlich verhält es sich bei den beiden Berechnungs"=Anwendungen. \texttt{TestDFSIO} enthält zudem die Möglichkeit, Daten zu genieren und zu lesen, weshalb diese Anwendung in zwei Kategorien verwendet wurde.
+
+Eine Besonderheit bilden die beiden Dummy"=Anwendungen. Beide wurden dafür genutzt, wenn eine Anwendung auf externe Daten warten muss bzw. ein unerwarteter Fehler auftaucht, weshalb sie unabhängig von der derzeit ausgeführten Anwendung als nachfolgende Anwendung ausgewählt werden können. Daher sind die beiden zwar im implementierten Transitionssystem enthalten, jedoch nicht in der darauf zugrundeliegenden Markow"=Kette.
 
 %Markov-Kette
 %http://steventhornton.ca/markov-chains-in-latex/
+%\begin{figure}
+%    \input{./images/markovchain.tex}
+%    \caption{Verwendete Markov"=Kette}
+%    \label{fig:markovChain}
+%\end{figure}
+\begin{table}
+    \begin{tabular}{|l|c|c|c|c|c|c|c|c|c|c|c|c|}
+    	\hline
+    	              & \acs{dfs-w} & \acs{rtw} & \acs{tgen} & \acs{dfs-r} & \acs{wc} & \acs{rw} & \acs{sort} & \acs{tsort} & \acs{pi} & \acs{pent} & \acs{tstsort} & \acs{tval} \\ \hline
+    	\acs{dfs-w}   &      0      &    20     &     0      &     40      &    0     &    0     &     0      &      0      &    20    &     20     &       0       &     0      \\ \hline
+    	\acs{rtw}     &     10      &           &     0      &      0      &    40    &    10    &     30     &      0      &    10    &     0      &       0       &     0      \\ \hline
+    	\acs{tgen}    &      0      &    10     &            &      0      &    0     &    0     &     0      &     70      &    0     &     20     &       0       &     0      \\ \hline
+    	\acs{dfs-r}   &      0      &    20     &     0      &             &    0     &    10    &     0      &      0      &    40    &     30     &       0       &     0      \\ \hline
+    	\acs{wc}      &     20      &    30     &     0      &      0      &          &    0     &     20     &      0      &    20    &     10     &       0       &     0      \\ \hline
+    	\acs{rw}      &      0      &    20     &     20     &      0      &    0     &          &     0      &      0      &    30    &     30     &       0       &     0      \\ \hline
+    	\acs{sort}    &      0      &    20     &     10     &      0      &    20    &    10    &            &      0      &    20    &     0      &      20       &     0      \\ \hline
+    	\acs{tsort}   &      0      &     0     &     0      &      0      &    0     &    0     &     0      &             &    30    &     20     &       0       &     50     \\ \hline
+    	\acs{pi}      &     40      &    30     &     0      &      0      &    0     &    0     &     0      &      0      &          &     30     &       0       &     0      \\ \hline
+    	\acs{pent}    &     30      &    30     &     0      &      0      &    0     &    20    &     0      &      0      &    20    &            &       0       &     0      \\ \hline
+    	\acs{tstsort} &      0      &    40     &     0      &      0      &    0     &    20    &     0      &      0      &    10    &     30     &               &     0      \\ \hline
+    	\acs{tval}    &     20      &    30     &     0      &      0      &    0     &    0     &     0      &      0      &    30    &     20     &       0       &            \\ \hline
+    \end{tabular}
+    \caption[Verwendete Markov"=Kette für die Anwendungs"=Übergänge in Tabellenform]{Verwendete Markov"=Kette für die Anwendungs"=Übergänge in Tabellenform, ohne Selbst"=Transitionen und Dummy"=Anwendungen, Werte in Prozent}
+    \label{tab:transitionsystem}
+\end{table}
+
+Für die Markow"=Kette der Übergänge zwischen den Anwendungen wurde berücksichtigt, welche Anwendungen bestimmte Eingabedaten benötigen, sodass einige Anwendungen nur dann Ausgeführt werden können, sobald eine andere Anwendung direkt zuvor die benötigten Eingabedaten bereitgestellt hat. Andere Anwendungen können dagegen fast jederzeit ausgeführt werden. In der in \autoref{tab:transitionsystem} dargestellten Markow"=Kette wird zudem ersichtlich, dass alle Selbst"=Transitionen sowie die Transitionen für die beiden Dummy"=Anwendungen fehlen. Dies liegt darin, dass Selbst"=Transitionen für jede Anwendung pauschal auf 60 Prozent festgelegt wurden, sodass das hier dargestellte Transitionssystem nur in 40 Prozent der möglichen Zustandswechsel zum Einsatz kommt. Ebenso sind die Übergänge in die beiden Dummy"=Anwendungen mit jeweils fünf Prozent definiert, weshalb es im Falle eines Anwendungswechsels eine gesamte Wahrscheinlichkeit von 110 Prozent gibt, die in der Implementierung jedoch auf 100 Prozent skaliert ist. Zudem beschränken sich die Zustandsübergänge ausgehend von den Dummy"=Anwendungen jeweils auf eine Selbst"=Transition sowie auf die Rückkehr zur zuvor ausgeführten Anwendung mit jeweils 50 Prozent.
