@@ -1,0 +1,4 @@
+$ yarn application -kill application_1520342317799_0002
+[...]
+Killing application application_1520342317799_0002
+18/03/14 13:07:02 INFO impl.YarnClientImpl: Killed application application_1520342317799_0002
