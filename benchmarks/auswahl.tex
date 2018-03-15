@@ -1,6 +1,6 @@
 \section{Auswahl der verwendeten Anwendungen}\label{sec:appSelection}
 
-Damit die Fallstudie die Realität abbilden kann, wurden von allen verfügbaren Anwendungen einige ausgewählt und in ein Transitionssystem in Form einer Markow"=Kette überführt. Diese Kette definiert die Ausführungsreihenfolge zwischen den einzelnen Anwendungen. Eine zufallsbasierte Markow"=Kette wurde aus dem Grund verwendet, dass auch in der Realität Anwendungen nicht immer in der gleichen Reihenfolge ausgeführt werden und daher auch in der Fallstudie eine unterschiedliche Ausführungsreihenfolge der Anwendungen gewährleistet werden soll. Mithilfe der Festlegung eines bestimmten Seeds für den in der Fallstudie benötigten Pseudo"=Zufallsgenerator besteht bei Bedarf dennoch die Möglichkeit, die gleichen Anwendungen erneut ausführen zu können.
+Damit die Fallstudie die Realität abbilden kann, wurden von allen verfügbaren Anwendungen einige ausgewählt und in ein Transitionssystem in Form einer Markow"=Kette überführt. Diese Kette definiert die Ausführungsreihenfolge zwischen den einzelnen Anwendungen. Eine zufallsbasierte Markow"=Kette wurde aus dem Grund verwendet, dass auch in der Realität Anwendungen nicht immer in der gleichen Reihenfolge ausgeführt werden und daher auch in der Fallstudie eine unterschiedliche Ausführungsreihenfolge der Anwendungen gewährleistet werden soll. Mithilfe der Festlegung eines bestimmten Seeds für den in der Fallstudie benötigten Pseudo"=Zufallsgenerator besteht bei Bedarf dennoch die Möglichkeit, einen Test mit den gleichen Anwendungen wiederholen zu können.
 
 Da alle verfügbaren Anwendungen zunächst je nach Anwendungsart in verschiedene Kategorien eingeteilt wurden, wurden bei der Erstellung des Transitionssystems einige dieser Kategorien exemplarisch für mögliche, typische Anwendungsfälle auf einem produktiv genutzten Cluster verwendet. Folgende Kategorien und Anwendungen der Mapreduce"=Examples und Jobclient"=Tests wurden daher letztlich ausgewählt:
 
@@ -15,7 +15,7 @@ Da alle verfügbaren Anwendungen zunächst je nach Anwendungsart in verschiedene
     \begin{itemize}
         \item Auslesen: \ac{wc} und \ac{dfs-r}
         \item Sortieren: \acl{sort} für Textdaten und \ac{tsort} für Binärdaten
-        \item Validieren: \ac{tstsort} und \ac{tval} für die jeweiligen Sortierungs"=Anwendungen
+        \item Validieren: \ac{tstsort} und \ac{tval} für die jeweiligen Sortier"=Anwendungen
     \end{itemize}
 
     \item Ausführen von Berechnungen:
@@ -27,9 +27,9 @@ Da alle verfügbaren Anwendungen zunächst je nach Anwendungsart in verschiedene
     \item Dummy"=Anwendungen: \texttt{sleep} und \texttt{fail}
 \end{itemize}
 
-Der Grund für die Berücksichtigung von mehreren gleichen bzw. ähnlichen Anwendungen für einige Kategorien liegt darin, dass eine Anwendung für eine eher kurze Ausführung, die andere für eine umfangreiche ausgewählt wurde. So steht \texttt{TestDFSIO} für eine umfangreichere Datennutzung, während die jeweils anderen Anwendungen einen kleineren Umfang repräsentieren. Ähnlich verhält es sich bei den beiden Berechnungs"=Anwendungen, bei denen die \acl{pent}-Anwendung die deutlich umfangreicheren Berechnungen durchführt.. \texttt{TestDFSIO} enthält zudem die Möglichkeit, Daten zu genieren und zu lesen, weshalb diese Anwendung in zwei Kategorien verwendet wurde.
+Der Grund für die Berücksichtigung von mehreren gleichen bzw. ähnlichen Anwendungen für einige Kategorien liegt darin, dass eine Anwendung für eine eher kurze Ausführung, die andere für eine umfangreiche ausgewählt wurde. So stehen die beiden \texttt{TestDFSIO}"=Varianten für eine umfangreichere Datennutzung, während die jeweils anderen Anwendungen einen kleineren Umfang repräsentieren. Ähnlich verhält es sich bei den beiden Berechnungs"=Anwendungen, bei denen die \acl{pent}"=Anwendung die deutlich umfangreicheren Berechnungen durchführt. \texttt{TestDFSIO} enthält zudem die Möglichkeit, Daten zu genieren und zu lesen, weshalb diese Anwendung in zwei Kategorien verwendet wurde. Haupteinsatzzweck der Anwendung liegt vor allem darin, den Datendurchsatz des \ac{HDFS} zu testen.
 
-Eine Besonderheit bilden die beiden Dummy"=Anwendungen. Beide wurden dafür genutzt, wenn eine Anwendung auf externe Daten warten muss bzw. ein unerwarteter Fehler auftaucht, weshalb sie unabhängig von der derzeit ausgeführten Anwendung als nachfolgende Anwendung ausgewählt werden können. Daher sind die beiden zwar im implementierten Transitionssystem enthalten, jedoch nicht in der darauf zugrundeliegenden Markow"=Kette.
+Eine Besonderheit bilden die beiden Dummy"=Anwendungen. Beide werden in dieser Fallstudie dafür genutzt, um zu simulieren, wenn eine Anwendung auf externe Daten warten muss bzw. ein unerwarteter Fehler während der Ausführung auftaucht. Daher können beide Anwendungen unabhängig von der derzeit ausgeführten Anwendung als nachfolgende Anwendung ausgewählt werden und haben ihrerseits als nachfolgende Anwendung immer die zuvor ausgeführte Anwendung. Beide Anwendungen sind aus diesem Grund zwar im implementierten Transitionssystem enthalten, jedoch nicht in der darauf zugrundeliegenden Markow"=Kette.
 
 %Markov-Kette
 %http://steventhornton.ca/markov-chains-in-latex/
