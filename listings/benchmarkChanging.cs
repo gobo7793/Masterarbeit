@@ -1,8 +1,8 @@
 // get probabilities from current benchmark
 var transitions = BenchTransitions[CurrentBenchmark.Id];
 
-var ranNumber = RandomGen.Next(_TransitionCumulatedProbability);
-var cumulative = 0;
+var ranNumber = RandomGen.NextDouble();
+var cumulative = 0D;
 for(int i = 0; i < transitions.Length; i++)
 {
   cumulative += transitions[i];

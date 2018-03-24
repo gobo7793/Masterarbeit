@@ -1,62 +1,82 @@
 \section{Auswahl der verwendeten Anwendungen}\label{sec:appSelection}
 
-Damit die Fallstudie die Realität abbilden kann, wurden von allen verfügbaren Anwendungen einige ausgewählt und in ein Transitionssystem in Form einer Markow"=Kette überführt. Diese Kette definiert die Ausführungsreihenfolge zwischen den einzelnen Anwendungen. Eine zufallsbasierte Markow"=Kette wurde aus dem Grund verwendet, dass auch in der Realität Anwendungen nicht immer in der gleichen Reihenfolge ausgeführt werden und daher auch in der Fallstudie eine unterschiedliche Ausführungsreihenfolge der Anwendungen gewährleistet werden soll. Mithilfe der Festlegung eines bestimmten Seeds für den in der Fallstudie benötigten Pseudo"=Zufallsgenerator besteht bei Bedarf dennoch die Möglichkeit, einen Test mit den gleichen Anwendungen wiederholen zu können.
+Damit die Fallstudie die Realität abbilden kann, wurden von allen verfügbaren Anwendungen einige ausgewählt und in ein Transitionssystem in Form einer Markow"=Kette überführt.
+Diese Kette definiert die Ausführungsreihenfolge zwischen den einzelnen Anwendungen.
+Eine zufallsbasierte Markow"=Kette wurde aus dem Grund verwendet, dass auch in der Realität Anwendungen nicht immer in der gleichen Reihenfolge ausgeführt werden und daher auch in der Fallstudie eine unterschiedliche Ausführungsreihenfolge der Anwendungen gewährleistet werden soll.
+Mithilfe der Festlegung eines bestimmten Seeds für den in der Fallstudie benötigten Pseudo"=Zufallsgenerator besteht bei Bedarf dennoch die Möglichkeit, einen Test mit den gleichen Anwendungen wiederholen zu können.
 
-Da alle verfügbaren Anwendungen zunächst je nach Anwendungsart in verschiedene Kategorien eingeteilt wurden, wurden bei der Erstellung des Transitionssystems einige dieser Kategorien exemplarisch für mögliche, typische Anwendungsfälle auf einem produktiv genutzten Cluster verwendet. Folgende Kategorien und Anwendungen der Mapreduce"=Examples und Jobclient"=Tests wurden daher letztlich ausgewählt:
+Da alle verfügbaren Anwendungen zunächst je nach Anwendungsart in verschiedene Kategorien eingeteilt wurden, wurden bei der Erstellung des Transitionssystems einige dieser Kategorien exemplarisch für mögliche, typische Anwendungsfälle auf einem produktiv genutzten Cluster verwendet.
+Folgende Kategorien und Anwendungen der Mapreduce"=Examples und Jobclient"=Tests wurden daher letztlich ausgewählt:
 
 \begin{itemize}
     \item Generatoren für
     \begin{itemize}
-        \item Textdateien: \ac{rtw} und \ac{dfs-w}
-        \item Binärdateien: \ac{rw} und \ac{tgen}
+        \item Textdateien: \ac{rtw} und \ac{dfw}
+        \item Binärdateien: \ac{rw} und \ac{tg}
     \end{itemize}
 
     \item Datenverarbeitung in Form von:
     \begin{itemize}
-        \item Auslesen: \ac{wc} und \ac{dfs-r}
-        \item Sortieren: \acl{sort} für Textdaten und \ac{tsort} für Binärdaten
-        \item Validieren: \ac{tstsort} und \ac{tval} für die jeweiligen Sortier"=Anwendungen
+        \item Auslesen: \ac{wc} und \ac{dfr}
+        \item Sortieren: \ac{so} für Textdaten und \ac{tsr} für Binärdaten
+        \item Validieren: \ac{tms} und \ac{tvl} für die jeweiligen Sortier"=Anwendungen
     \end{itemize}
 
     \item Ausführen von Berechnungen:
     \begin{itemize}
-        \item \acl{pi}: Quasi-Monte-Carlo-Methode zur einfachen Berechnung von $\pi$ 
-        \item \ac{pent}: Berechnung von Pentomino-Problemen
+        \item \acl{pi}\acused{pi}: Quasi-Monte-Carlo-Methode zur einfachen Berechnung von $\pi$ 
+        \item \ac{pt}: Berechnung von Pentomino-Problemen
     \end{itemize}
 
-    \item Dummy"=Anwendungen: \texttt{sleep} und \texttt{fail}
+    \item Dummy"=Anwendungen: \ac{sl} und \ac{fl}
 \end{itemize}
 
-Der Grund für die Berücksichtigung von mehreren gleichen bzw. ähnlichen Anwendungen für einige Kategorien liegt darin, dass eine Anwendung für eine eher kurze Ausführung, die andere für eine umfangreiche ausgewählt wurde. So stehen die beiden \texttt{TestDFSIO}"=Varianten für eine umfangreichere Datennutzung, während die jeweils anderen Anwendungen einen kleineren Umfang repräsentieren. Ähnlich verhält es sich bei den beiden Berechnungs"=Anwendungen, bei denen die \acl{pent}"=Anwendung die deutlich umfangreicheren Berechnungen durchführt. \texttt{TestDFSIO} enthält zudem die Möglichkeit, Daten zu genieren und zu lesen, weshalb diese Anwendung in zwei Kategorien verwendet wurde. Haupteinsatzzweck der Anwendung liegt vor allem darin, den Datendurchsatz des \ac{HDFS} zu testen.
+Der Grund für die Berücksichtigung von mehreren gleichen bzw. ähnlichen Anwendungen für einige Kategorien liegt darin, dass eine Anwendung für eine eher kurze Ausführung, die andere für eine umfangreiche ausgewählt wurde.
+So stehen die beiden \texttt{TestDFSIO}"=Varianten für eine umfangreichere Datennutzung, während die jeweils anderen Anwendungen einen kleineren Umfang repräsentieren.
+Ähnlich verhält es sich bei den beiden Berechnungs"=Anwendungen, bei denen die \acl{pt}"=Anwendung die deutlich umfangreicheren Berechnungen durchführt.
+\texttt{TestDFSIO} enthält zudem die Möglichkeit, Daten zu genieren und zu lesen, weshalb diese Anwendung in zwei Kategorien verwendet wurde.
+Haupteinsatzzweck der Anwendung liegt vor allem darin, den Datendurchsatz des \ac{HDFS} zu testen.
 
-Eine Besonderheit bilden die beiden Dummy"=Anwendungen. Beide werden in dieser Fallstudie dafür genutzt, um zu simulieren, wenn eine Anwendung auf externe Daten warten muss bzw. ein unerwarteter Fehler während der Ausführung auftaucht. Daher können beide Anwendungen unabhängig von der derzeit ausgeführten Anwendung als nachfolgende Anwendung ausgewählt werden und haben ihrerseits als nachfolgende Anwendung immer die zuvor ausgeführte Anwendung. Beide Anwendungen sind aus diesem Grund zwar im implementierten Transitionssystem enthalten, jedoch nicht in der darauf zugrundeliegenden Markow"=Kette.
+Eine Besonderheit bilden die beiden Dummy"=Anwendungen.
+Beide werden in dieser Fallstudie dafür genutzt, um zu simulieren, wenn eine Anwendung \zB auf externe Daten warten muss oder ein unerwarteter Fehler während der Ausführung auftaucht.
+Daher können beide Anwendungen unabhängig von der derzeit ausgeführten Anwendung als nachfolgende Anwendung ausgewählt werden und sind auch bei allen anderen Anwendungen mit einer geringen Wahrscheinlichkeit im Transitionssystem enthalten.
+Als nachfolgende Anwendungen für die Dummy"=Anwendungen kommen nur Anwendungen in Betracht, welche ihrerseits keine Eingabedaten benötigen. Dies sind:
 
-%Markov-Kette
-%http://steventhornton.ca/markov-chains-in-latex/
-%\begin{figure}
-%    \input{./images/markovchain.tex}
-%    \caption{Verwendete Markov"=Kette}
-%    \label{fig:markovChain}
-%\end{figure}
+\begin{itemize}
+    \item \acl{dfw}
+    \item \acl{rtw}
+    \item \acl{tg}
+    \item \acl{rw}
+    \item \acl{pi}
+    \item \acl{pt}
+\end{itemize}
+
 \begin{table}
-    \begin{tabular}{|l|c|c|c|c|c|c|c|c|c|c|c|c|}
+    \resizebox{\linewidth}{!}{\begin{tabular}{|l|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
     	\hline
-    	              & \acs{dfs-w} & \acs{rtw} & \acs{tgen} & \acs{dfs-r} & \acs{wc} & \acs{rw} & \acs{sort} & \acs{tsort} & \acs{pi} & \acs{pent} & \acs{tstsort} & \acs{tval} \\ \hline
-    	\acs{dfs-w}   &             &    20     &     0      &     40      &    0     &    0     &     0      &      0      &    20    &     20     &       0       &     0      \\ \hline
-    	\acs{rtw}     &     10      &           &     0      &      0      &    40    &    10    &     30     &      0      &    10    &     0      &       0       &     0      \\ \hline
-    	\acs{tgen}    &      0      &    10     &            &      0      &    0     &    0     &     0      &     70      &    0     &     20     &       0       &     0      \\ \hline
-    	\acs{dfs-r}   &      0      &    20     &     0      &             &    0     &    10    &     0      &      0      &    40    &     30     &       0       &     0      \\ \hline
-    	\acs{wc}      &     20      &    30     &     0      &      0      &          &    0     &     20     &      0      &    20    &     10     &       0       &     0      \\ \hline
-    	\acs{rw}      &      0      &    20     &     20     &      0      &    0     &          &     0      &      0      &    30    &     30     &       0       &     0      \\ \hline
-    	\acs{sort}    &      0      &    20     &     10     &      0      &    20    &    10    &            &      0      &    20    &     0      &      20       &     0      \\ \hline
-    	\acs{tsort}   &      0      &     0     &     0      &      0      &    0     &    0     &     0      &             &    30    &     20     &       0       &     50     \\ \hline
-    	\acs{pi}      &     40      &    30     &     0      &      0      &    0     &    0     &     0      &      0      &          &     30     &       0       &     0      \\ \hline
-    	\acs{pent}    &     30      &    30     &     0      &      0      &    0     &    20    &     0      &      0      &    20    &            &       0       &     0      \\ \hline
-    	\acs{tstsort} &      0      &    40     &     0      &      0      &    0     &    20    &     0      &      0      &    10    &     30     &               &     0      \\ \hline
-    	\acs{tval}    &     20      &    30     &     0      &      0      &    0     &    0     &     0      &      0      &    30    &     20     &       0       &            \\ \hline
-    \end{tabular}
-    \caption[Verwendete Markov"=Kette für die Anwendungs"=Übergänge in Tabellenform]{Verwendete Markov"=Kette für die Anwendungs"=Übergänge in Tabellenform, ohne Selbst"=Transitionen und Dummy"=Anwendungen, Werte in Prozent}
+    	          &   \acs{dfw}   &   \acs{rtw}   &   \acs{tg}    & \acs{dfr} & \acs{wc} &   \acs{rw}    & \acs{so} & \acs{tsr} &   \acs{pi}    &   \acs{pt}    & \acs{tms} & \acs{tvl} & \acs{sl} & \acs{fl} \\ \hline
+    	\acs{dfw} &     .600      &     .073      &       0       &   .145    &    0     &       0       &    0     &     0     &     .073      &     .073      &     0     &     0     &   .018   &   .018   \\ \hline
+    	\acs{rtw} &     .036      &     .600      &       0       &     0     &   .145   &     .036      &   .109   &     0     &     .036      &       0       &     0     &     0     &   .019   &   .019   \\ \hline
+    	\acs{tg}  &       0       &     .036      &     .600      &     0     &    0     &       0       &    0     &   .255    &       0       &     .073      &     0     &     0     &   .018   &   .018   \\ \hline
+    	\acs{dfr} &       0       &     .073      &       0       &   .600    &    0     &     .036      &    0     &     0     &     .145      &     .109      &     0     &     0     &   .018   &   .019   \\ \hline
+    	\acs{wc}  &     .073      &     .109      &       0       &     0     &   .600   &       0       &   .073   &     0     &     .073      &     .036      &     0     &     0     &   .018   &   .018   \\ \hline
+    	\acs{rw}  &       0       &     .073      &     .073      &     0     &    0     &     .600      &    0     &     0     &     .109      &     .109      &     0     &     0     &   .018   &   .018   \\ \hline
+    	\acs{so}  &       0       &     .073      &     .036      &     0     &   .073   &     .036      &   .600   &     0     &     .073      &       0       &   .073    &     0     &   .018   &   .018   \\ \hline
+    	\acs{tsr} &       0       &       0       &       0       &     0     &    0     &       0       &    0     &   .600    &     .109      &     .073      &     0     &   .182    &   .018   &   .018   \\ \hline
+    	\acs{pi}  &     .145      &     .109      &       0       &     0     &    0     &       0       &    0     &     0     &     .600      &     .109      &     0     &     0     &   .018   &   .019   \\ \hline
+    	\acs{pt}  &     .109      &     .109      &       0       &     0     &    0     &     .073      &    0     &     0     &     .073      &     .600      &     0     &     0     &   .018   &   .018   \\ \hline
+    	\acs{tms} &       0       &     .145      &       0       &     0     &    0     &     .073      &    0     &     0     &     .036      &     .109      &   .600    &     0     &   .018   &   .019   \\ \hline
+    	\acs{tvl} &     .073      &     .109      &       0       &     0     &    0     &       0       &    0     &     0     &     .109      &     .073      &     0     &   .600    &   .018   &   .018   \\ \hline
+    	\acs{sl}  & $\frac{1}{6}$ & $\frac{1}{6}$ & $\frac{1}{6}$ &     0     &    0     & $\frac{1}{6}$ &    0     &     0     & $\frac{1}{6}$ & $\frac{1}{6}$ &     0     &     0     &    0     &    0     \\ \hline
+    	\acs{fl}  & $\frac{1}{6}$ & $\frac{1}{6}$ & $\frac{1}{6}$ &     0     &    0     & $\frac{1}{6}$ &    0     &     0     & $\frac{1}{6}$ & $\frac{1}{6}$ &     0     &     0     &    0     &    0     \\ \hline
+    \end{tabular}}
+    \caption[Verwendete Markov"=Kette für die Anwendungs"=Übergänge in Tabellenform]
+    {Verwendete Markov"=Kette für die Anwendungs"=Übergänge in Tabellenform.
+        Rundungsbedingte Differenzen wurden den beiden Dummy"=Anwendungen hinzugezählt bzw. abgezogen.
+        Die Übergänge ausgehend von den beiden Dummy"=Anwendungen wurden auch als Bruch implementiert.}
     \label{tab:transitionsystem}
 \end{table}
 
-Für die Markow"=Kette der Übergänge zwischen den Anwendungen wurde berücksichtigt, welche Anwendungen bestimmte Eingabedaten benötigen, sodass einige Anwendungen nur dann Ausgeführt werden können, sobald eine andere Anwendung direkt zuvor die benötigten Eingabedaten bereitgestellt hat. Andere Anwendungen können dagegen fast jederzeit ausgeführt werden. In der in \autoref{tab:transitionsystem} dargestellten Markow"=Kette wird zudem ersichtlich, dass alle Selbst"=Transitionen sowie die Transitionen für die beiden Dummy"=Anwendungen fehlen. Dies liegt darin, dass Selbst"=Transitionen für jede Anwendung pauschal auf 60 Prozent festgelegt wurden, sodass das hier dargestellte Transitionssystem nur in 40 Prozent der möglichen Zustandswechsel zum Einsatz kommt. Ebenso sind die Übergänge in die beiden Dummy"=Anwendungen mit jeweils fünf Prozent definiert, weshalb es im Falle eines Anwendungswechsels eine gesamte Wahrscheinlichkeit von 110 Prozent gibt, die in der Implementierung jedoch auf 100 Prozent normalisiert ist. Zudem beschränken sich die Zustandsübergänge ausgehend von den Dummy"=Anwendungen jeweils auf eine Selbst"=Transition sowie auf die Rückkehr zur zuvor ausgeführten Anwendung mit jeweils 50 Prozent.
+Für die in \autoref{tab:transitionsystem} dargestellte Markow"=Kette der Übergänge zwischen den Anwendungen wurde zudem berücksichtigt, welche Anwendungen bestimmte Eingabedaten benötigen.
+Dadurch wird sichergestellt, dass die für einige Anwendungen benötigten Eingabedaten immer vorhanden sind.
+Anwendungen ohne Eingabedaten können dagegen fast jederzeit ausgeführt werden.

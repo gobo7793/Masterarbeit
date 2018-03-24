@@ -1,38 +1,40 @@
 \section{Implementierung der Anwendungen im Modell}\label{sec:AppImplementation}
 
-Die Verwaltung der auszuführenden Benchmarks wurde komplett vom restlichen YARN"=Modell getrennt. Verbunden sind beide durch die Eigenschaft \texttt{Client.BenchController}, das den vom Client verwendeten \texttt{BenchmarkController} enthält, der zur Verwaltung der auszuführenden Anwendung dient. Der Controller besteht aus zwei wesentlichen Teilen, einem statischen und einem dynamischen.
+Die Verwaltung der auszuführenden Benchmarks wurde komplett vom restlichen YARN"=Modell getrennt.
+Verbunden sind beide durch die Eigenschaft \texttt{Client.BenchController}, das den vom Client verwendeten \texttt{BenchmarkController} enthält, der zur Verwaltung der auszuführenden Anwendung dient.
+Der Controller besteht aus zwei wesentlichen Teilen, einem statischen und einem dynamischen.
 
-Der \textbf{statische Teil} des Controllers definiert die möglichen Anwendungen sowie das im Abschnitt zuvor definierte und in \autoref{tab:transitionsystem} dargestellte Transitionssystem. Die einzelnen Anwendungen werden mithilfe der Klasse \texttt{Benchmark} repräsentiert, in der die benötigten Informationen wie \zB der Befehl zum Starten der Anwendung definiert werden. Da mehrere Clients unabhängig voneinander agieren können müssen, erhält jeder Client zudem ein eigenes Unterverzeichnis im \ac{HDFS}, in dem sich die Ein- und Ausgabeverzeichnisse für die von ihm gestarteten Anwendungen befinden. Das muss auch bei der Definition der Startbefehle der Anwendungen berücksichtigt werden, weshalb in \autoref{lst:benchmarkDefinition} entsprechende Platzhalter vorhanden sind. Aus diesem Grund muss vor dem Start der Anwendung mithilfe der Methode \texttt{GetStartCmd()} der Startbefehl generiert werden, indem der zu startende Client das in \texttt{Client.ClientDir} gespeicherte Client"=Basisverzeichnis übergibt. Da einige Anwendungen zudem voraussetzen, dass das genutzte Ausgabe"=Verzeichnis noch nicht im \ac{HDFS} existiert, muss das Verzeichnis vor dem Anwendungsstart gelöscht werden.
+Der \textbf{statische Teil} des Controllers definiert die möglichen Anwendungen sowie das im Abschnitt zuvor definierte und in \autoref{tab:transitionsystem} dargestellte Transitionssystem.
+Die einzelnen Anwendungen werden mithilfe der Klasse \texttt{Benchmark} repräsentiert, in der die benötigten Informationen wie \zB der Befehl zum Starten der Anwendung definiert werden.
+Da mehrere Clients unabhängig voneinander agieren können müssen, erhält jeder Client zudem ein eigenes Unterverzeichnis im \ac{HDFS}, in dem sich die Ein- und Ausgabeverzeichnisse für die von ihm gestarteten Anwendungen befinden.
+Das muss auch bei der Definition der Startbefehle der Anwendungen berücksichtigt werden, weshalb in \autoref{lst:benchmarkDefinition} entsprechende Platzhalter vorhanden sind.
+Aus diesem Grund muss vor dem Start der Anwendung mithilfe der Methode \texttt{GetStartCmd()} der Startbefehl generiert werden, indem der zu startende Client das in \texttt{Client.ClientDir} gespeicherte Client"=Basisverzeichnis übergibt.
+Da einige Anwendungen zudem voraussetzen, dass das genutzte Ausgabe"=Verzeichnis noch nicht im \ac{HDFS} existiert, muss das Verzeichnis vor dem Anwendungsstart gelöscht werden.
 
-Jede Anwendung erhält zudem eine eigene ID, die mit ihrem Index im Array \texttt{BenchmarkController.Benchmarks} übereinstimmt. Diese wird bei der in \autoref{lst:benchmarkChanging} dargestellte Auswahl der nachfolgenden Anwendung benötigt, um innerhalb des gesamten Transitionssystems in \texttt{BenchmarkController.BenchTransitions} die Wahrscheinlichkeiten für die Wechsel von der derzeitigen Anwendung zu anderen Anwendungen auszuwählen.
+Jede Anwendung erhält zudem eine eigene ID, die mit ihrem Index im Array \texttt{BenchmarkController.Benchmarks} übereinstimmt.
+Diese wird bei der in \autoref{lst:benchmarkChanging} dargestellte Auswahl der nachfolgenden Anwendung benötigt, um innerhalb des gesamten Transitionssystems in \texttt{BenchmarkController.BenchTransitions} die Wahrscheinlichkeiten für die Wechsel von der derzeitigen Anwendung zu anderen Anwendungen auszuwählen.
 
 \lstinputlisting[label=lst:benchmarkDefinition,caption={[Definition und Start einer  Anwendung]Definition und Start einer Anwendung (gekürztes Beispiel). Die Generierung des komplettes Startbefehls mit Nutzung des Benchmark"=Scriptes führt der vom Client verwendete Connector durch, weshalb hier nur definiert werden muss, dass das Example"=Programm \acl{wc} gestartet wird.},float,style=cs]
 {./listings/benchmarkDefinition.cs}
 
-Der \textbf{dynamische Teil} des Controllers ist für die Auswahl der auszuführenden Anwendung zuständig, was auch die Auswahl der initial auszuführenden Anwendung einschließt. Als initiale Anwendung wird zufällig, und mit jeweils gleicher Wahrscheinlichkeit, eine der sechs Anwendungen ausgeführt, die keine Eingabedaten benötigen bzw. diese für andere Anwendungen generieren:
+Der \textbf{dynamische Teil} des Controllers ist für die Auswahl der auszuführenden Anwendung zuständig, was auch die Auswahl der initial auszuführenden Anwendung einschließt.
+Zur Auswahl der initialen Anwendung wird basierend auf der \acl{sl}"=Anwendung das Transitionssystem genutzt und so eine Anwendung ausgewählt, die keine Eingabedaten benötigt bzw. diese für andere Anwendungen generiert.
 
-\begin{itemize}
-    \item \acl{dfs-w}
-    \item \acl{rtw}
-    \item \acl{tgen}
-    \item \acl{rw}
-    \item \acl{pi}
-    \item \acl{pent}
-\end{itemize}
-
-Das im vorherigen Abschnitt definierte und im statischen Teil implementierte Transitionssystem kommt immer dann zum Einsatz, wenn Entschieden werden muss, welche Anwendung der derzeit ausgeführten Anwendung folgt. Jeder Client bzw. sein \texttt{BenchmarkController} entscheidet unabhängig von anderen Clients einmal pro \sS-Takt, welche Anwendung ausgeführt wird. Dabei gibt es folgende drei Fälle, die zum Teil im vorherigen Abschnitt bereits erläutert wurden:
-
-\begin{description}
-    \item [Dummy"=Anwendungen] Wenn derzeit eine Dummy"=Anwendung ausgeführt wird, wird mit einer Wahrscheinlichkeit von 50 Prozent die zuvor ausgeführte Anwendung ausgewählt, andernfalls wird die Dummy"=Anwendung erneut ausgeführt.
-    \item [Selbst"=Transitionen] Wenn derzeit keine Dummy"=Anwendung ausgeführt wird, wird die Selbst"=Transition mit einer Wahrscheinlichkeit von 60 Prozent ausgewählt, sodass die Anwendung erneut ausgeführt wird.
-    \item [Transition zwischen Anwendungen] Trifft keiner der anderen Fälle zu, wird basierend auf dem Transitionssystem die nachfolgende Anwendung ausgewählt.
-\end{description}
+Das im vorherigen Abschnitt definierte und im statischen Teil implementierte Transitionssystem kommt auch immer dann zum Einsatz, wenn Entschieden werden muss, welche Anwendung der derzeit ausgeführten Anwendung folgt.
+Jeder Client bzw. sein \texttt{BenchmarkController} entscheidet unabhängig von anderen Clients einmal pro \sS-Takt, welche Anwendung ausgeführt wird.
 
 \lstinputlisting[label=lst:benchmarkChanging,caption={[Normalisierung und Auswahl der nachfolgenden Anwendung]Normalisierung und Auswahl der nachfolgenden Anwendung (gekürzt)},float,style=cs]
 {./listings/benchmarkChanging.cs}
 
-Das im dritten Fall zum Einsatz kommende Transitionssystem stellt sich zum einen aus der Markow"=Kette in \autoref{tab:transitionsystem}, sowie möglicher Übergänge zu den beiden Dummy"=Anwendungen mit einem Wert von jeweils 5 zusammen. \autoref{lst:benchmarkChanging} zeigt, wie bei der Auswahl des Benchmarks die Werte normalisiert und anschließend die nachfolgende Anwendung ausgewählt wird. Die vom Zufallsgenerator ausgewählte Zahl liegt zwischen 0 und \texttt{\_TransitionCumulatedProbability}, das hier entsprechend den Wert 110 hat.
+Nachdem eine neue Anwendung ausgewählt wurde, muss zunächst sichergestellt werden, dass die bisher ausgeführte Anwendung beendet ist.
+Dafür wird der in \autoref{app:hadoopCmds} dargestellte Befehl von Hadoop zum Abbruch von Anwendungen ausgeführt, wodurch die derzeit ausgeführte Anwendung beendet wird, sollte sie noch nicht abgeschlossen sein.
+Im Anschluss kann das von der neuen Anwendung benötigte \ac{HDFS}"=Ausgabeverzeichnis gelöscht werden, bevor die Anwendung selbst gestartet wird.
 
-Wenn eine neue Anwendung ausgewählt wurde, muss zunächst sichergestellt werden, dass die bisher ausgeführte Anwendung beendet ist. Dafür wird der in \autoref{app:hadoopCmds} dargestellte Befehl von Hadoop zum Abbruch von Anwendungen ausgeführt. Im Anschluss kann das von der neuen Anwendung benötigte \ac{HDFS}"=Ausgabeverzeichnis gelöscht werden, bevor die Anwendung selbst gestartet wird.
-
-Eine Anwendung wird wie in \autoref{lst:benchmarkDefinition} gezeigt zwar asynchron gestartet, allerdings wird zunächst noch synchron auf die Ausgabe der \texttt{applicationId} gewartet. Die gesamte Ausgabe einer zu startenden Anwendung ist ebenfalls in \autoref{app:hadoopCmds} zu finden. Die ID wird vom Cluster im Rahmen der Übergabe und Initialisierung der Anwendung vergeben. Erst nachdem diese bekannt ist, wird die restliche Ausführung der Anwendung asynchron durchgeführt. Benötigt wird die ID damit der zu startende Client die Anwendung im Falle eines Anwendungswechsels in den folgenden Takten beenden kann. Ohne die direkte Speicherung der ID wäre es sonst nicht möglich, klar entscheiden zu können, welchem Client die Anwendung zugeordnet ist. Dies ist auch der Grund, weshalb kein HiBench"=Workload in das Transitionssystem aufgenommen wurde, da hier die \texttt{applicationId} gemeinsam mit der gesamten Ausgabe der einzelnen HiBench"=Anwendungen nach Abschluss der Ausführung ausgegeben wird. Gespeichert wird die ID zunächst in einer noch verfügbaren \texttt{YarnApp}"=Instanz, welche anschließend selbst in \texttt{Client.CurrentExecutingApp} gespeichert wird.
+Eine Anwendung wird wie in \autoref{lst:benchmarkDefinition} gezeigt zwar asynchron gestartet, allerdings wird zunächst noch synchron auf die Ausgabe der \texttt{applicationId} gewartet.
+Die gesamte Ausgabe einer zu startenden Anwendung ist ebenfalls in \autoref{app:hadoopCmds} zu finden.
+Die ID wird vom Cluster im Rahmen der Übergabe und Initialisierung der Anwendung vergeben.
+Erst nachdem diese bekannt ist, wird die restliche Ausführung der Anwendung asynchron durchgeführt.
+Benötigt wird die ID damit der zu startende Client die Anwendung im Falle eines Anwendungswechsels in den folgenden Takten beenden kann.
+Ohne die direkte Speicherung der ID wäre es sonst nicht möglich, klar entscheiden zu können, welchem Client die Anwendung zugeordnet ist.
+Dies ist auch der Grund, weshalb kein HiBench"=Workload in das Transitionssystem aufgenommen wurde, da hier die \texttt{applicationId} gemeinsam mit der gesamten Ausgabe der einzelnen HiBench"=Anwendungen erst nach Abschluss der Ausführung ausgegeben wird.
+Gespeichert wird die ID zunächst in einer noch verfügbaren \texttt{YarnApp}"=Instanz, welche anschließend selbst in \texttt{Client.CurrentExecutingApp} gespeichert wird.
