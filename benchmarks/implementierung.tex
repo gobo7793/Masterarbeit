@@ -14,7 +14,11 @@ Da einige Anwendungen zudem voraussetzen, dass das genutzte Ausgabe"=Verzeichnis
 Jede Anwendung erhält zudem eine eigene ID, die mit ihrem Index im Array \texttt{BenchmarkController.Benchmarks} übereinstimmt.
 Diese wird bei der in \autoref{lst:benchmarkChanging} dargestellte Auswahl der nachfolgenden Anwendung benötigt, um innerhalb des gesamten Transitionssystems in \texttt{BenchmarkController.BenchTransitions} die Wahrscheinlichkeiten für die Wechsel von der derzeitigen Anwendung zu anderen Anwendungen auszuwählen.
 
-\lstinputlisting[label=lst:benchmarkDefinition,caption={[Definition und Start einer  Anwendung]Definition und Start einer Anwendung (gekürztes Beispiel). Die Generierung des komplettes Startbefehls mit Nutzung des Benchmark"=Scriptes führt der vom Client verwendete Connector durch, weshalb hier nur definiert werden muss, dass das Example"=Programm \acl{wc} gestartet wird.},float,style=cs]
+\lstinputlisting[label=lst:benchmarkDefinition,
+caption={[Definition und Start einer Anwendung]
+    Definition und Start einer Anwendung (gekürztes Beispiel).
+    Die Generierung des komplettes Startbefehls mit Nutzung des Benchmark"=Scriptes führt der vom Client verwendete Connector durch, weshalb hier nur definiert werden muss, dass das Example"=Programm \acl{wc} gestartet wird.},
+float,style=cs]
 {./listings/benchmarkDefinition.cs}
 
 Der \textbf{dynamische Teil} des Controllers ist für die Auswahl der auszuführenden Anwendung zuständig, was auch die Auswahl der initial auszuführenden Anwendung einschließt.
@@ -23,15 +27,18 @@ Zur Auswahl der initialen Anwendung wird basierend auf der \acl{sl}"=Anwendung d
 Das im vorherigen Abschnitt definierte und im statischen Teil implementierte Transitionssystem kommt auch immer dann zum Einsatz, wenn Entschieden werden muss, welche Anwendung der derzeit ausgeführten Anwendung folgt.
 Jeder Client bzw. sein \texttt{BenchmarkController} entscheidet unabhängig von anderen Clients einmal pro \sS-Takt, welche Anwendung ausgeführt wird.
 
-\lstinputlisting[label=lst:benchmarkChanging,caption={[Normalisierung und Auswahl der nachfolgenden Anwendung]Normalisierung und Auswahl der nachfolgenden Anwendung (gekürzt)},float,style=cs]
+\lstinputlisting[label=lst:benchmarkChanging,
+caption={[Normalisierung und Auswahl der nachfolgenden Anwendung]
+    Normalisierung und Auswahl der nachfolgenden Anwendung (gekürzt)},
+float,style=cs]
 {./listings/benchmarkChanging.cs}
 
 Nachdem eine neue Anwendung ausgewählt wurde, muss zunächst sichergestellt werden, dass die bisher ausgeführte Anwendung beendet ist.
-Dafür wird der in \autoref{app:hadoopCmds} dargestellte Befehl von Hadoop zum Abbruch von Anwendungen ausgeführt, wodurch die derzeit ausgeführte Anwendung beendet wird, sollte sie noch nicht abgeschlossen sein.
+Dafür wird der in \autoref{lst:hadoopAppKill} dargestellte Befehl von Hadoop zum Abbruch von Anwendungen ausgeführt, wodurch die derzeit ausgeführte Anwendung beendet wird, sollte sie noch nicht abgeschlossen sein.
 Im Anschluss kann das von der neuen Anwendung benötigte \ac{HDFS}"=Ausgabeverzeichnis gelöscht werden, bevor die Anwendung selbst gestartet wird.
 
 Eine Anwendung wird wie in \autoref{lst:benchmarkDefinition} gezeigt zwar asynchron gestartet, allerdings wird zunächst noch synchron auf die Ausgabe der \texttt{applicationId} gewartet.
-Die gesamte Ausgabe einer zu startenden Anwendung ist ebenfalls in \autoref{app:hadoopCmds} zu finden.
+Die gesamte Ausgabe einer zu startenden Anwendung ist in \autoref{lst:hadoopAppStart} zu finden.
 Die ID wird vom Cluster im Rahmen der Übergabe und Initialisierung der Anwendung vergeben.
 Erst nachdem diese bekannt ist, wird die restliche Ausführung der Anwendung asynchron durchgeführt.
 Benötigt wird die ID damit der zu startende Client die Anwendung im Falle eines Anwendungswechsels in den folgenden Takten beenden kann.
