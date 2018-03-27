@@ -1,33 +1,64 @@
-\chapter{Kommandozeilen-Befehle von Hadoop}\label{app:hadoopCmds}
+\chapter{Kommandozeilen"=Befehle von Hadoop}\label{app:hadoopCmds}
 
-Für jede der vier relevanten YARN"=Komponenten können die Daten jeweils als Liste oder als ausführlicher Report ausgegeben werden. Im Folgenden sind Beispielhaft die dafür notwendigen Befehle für Anwendungen aufgelistet, für Ausführungen, Container und Nodes sind analoge Befehle verfügbar. Neben den Monitoring"=Befehlen sind auch einige weitere für diese Arbeit relevante Befehle mit ihren Ausgaben aufgelistet. Die Ausgaben zu den Befehlen sind hier zudem auf das wesentliche gekürzt, \uA da Hadoop bei einigen Befehlen ausgibt, über welche Services (in \autoref{lst:hadoopAppListCmd} \zB \ac{TLS}, \ac{RM} und \emph{Application History Server}) die Daten ermittelt werden. Weiterführende Informationen zu den einzelnen Befehlen sind in der dazugehörigen Dokumentation in \cite{HadoopYarnCmds271} zu finden.
+Für jede der vier relevanten YARN"=Komponenten können die Daten jeweils als Liste oder als ausführlicher Report ausgegeben werden.
+Im Folgenden sind Beispielhaft die dafür notwendigen Befehle für Anwendungen aufgelistet, für Ausführungen, Container und Nodes sind analoge Befehle verfügbar.
+Neben den Monitoring"=Befehlen sind auch einige weitere für diese Arbeit relevante Befehle mit ihren Ausgaben aufgelistet.
+Die Ausgaben zu den Befehlen sind hier zudem auf das wesentliche gekürzt, \uA da Hadoop bei einigen Befehlen ausgibt, über welche Services (in \autoref{lst:hadoopAppListCmd} \zB \ac{TLS}, \ac{RM} und \emph{Application History Server}) die Daten ermittelt werden.
+Weiterführende Informationen zu den einzelnen Befehlen sind in der dazugehörigen Dokumentation in \cite{HadoopYarnCmds271} zu finden.
 
-\lstinputlisting[label=lst:hadoopAppListCmd,caption={[CMD-Ausgabe der Anwendungsliste]CMD-Ausgabe der Anwendungsliste. Anwendungen können mithilfe der Optionen \mbox{\texttt{-{}-appTypes}} und \mbox{\texttt{-{}-appStates}} gefiltert werden.},float,style=plain]
+\lstinputlisting[label=lst:hadoopAppListCmd,
+caption={[CMD"=Ausgabe der Anwendungsliste]
+    CMD"=Ausgabe der Anwendungsliste.
+    Anwendungen können mithilfe der Optionen \mbox{\texttt{-{}-appTypes}} und \mbox{\texttt{-{}-appStates}} gefiltert werden.},
+float,style=plain]
 {./listings/hadoopAppList.txt}
 
-\lstinputlisting[label=lst:hadoopAppDetailsCmd,caption={CMD-Ausgabe des Reports einer Anwendung},float,style=plain]
+\lstinputlisting[label=lst:hadoopAppDetailsCmd,
+caption={CMD"=Ausgabe des Reports einer Anwendung},
+float,style=plain]
 {./listings/hadoopAppDetails.txt}
 
-\lstinputlisting[label=lst:hadoopAppStart,caption={[Starten einer Anwendung in Hadoop"-Benchmark]Starten einer Anwendung in Hadoop"-Benchmark. Hier mit dem Mapreduce Example \acl{pi} und dem Abbruch der Anwendung durch den in \autoref{lst:hadoopAppKill} gezeigten Befehl. Die \mbox{\texttt{applicationId}} ist hier in Zeile 13 enthalten.},float,style=plain]
+\lstinputlisting[label=lst:hadoopAppStart,
+caption={[Starten einer Anwendung in Hadoop"=Benchmark]
+    Starten einer Anwendung in Hadoop"=Benchmark.
+    Hier mit dem Mapreduce Example \acl{pi} und dem Abbruch der Anwendung durch den in \autoref{lst:hadoopAppKill} gezeigten Befehl.
+    Die \mbox{\texttt{applicationId}} ist hier in Zeile 13 enthalten.},
+float,style=plain]
 {./listings/hadoopAppStart.txt}
 
-\lstinputlisting[label=lst:hadoopAppKill,caption={[Vorzeitiges Beenden einer Anwendung]Vorzeitiges Beenden einer Anwendung. Hier wird die in \autoref{lst:hadoopAppStart} gestartete Anwendung vorzeitig beendet.},float,style=plain]
+\lstinputlisting[label=lst:hadoopAppKill,
+caption={[Vorzeitiges Beenden einer Anwendung]
+    Vorzeitiges Beenden einer Anwendung.
+    Hier wird die in \autoref{lst:hadoopAppStart} gestartete Anwendung vorzeitig beendet.},
+float,style=plain]
 {./listings/hadoopAppKill.txt}
 
-%\lstinputlisting[label=lst:hadoopAttemptListCmd,caption={CMD-Ausgabe aller Ausführungen einer Anwendung},float,style=plain]
+%\lstinputlisting[label=lst:hadoopAttemptListCmd,
+%caption={CMD"=Ausgabe aller Ausführungen einer Anwendung},
+%float,style=plain]
 %{./listings/hadoopAttemptList.txt}
 
-%\lstinputlisting[label=lst:hadoopAttemptDetailsCmd,caption={CMD-Ausgabe des Reports einer Ausführung},float,style=plain]
+%\lstinputlisting[label=lst:hadoopAttemptDetailsCmd,
+%caption={CMD"=Ausgabe des Reports einer Ausführung},
+%float,style=plain]
 %{./listings/hadoopAttemptDetails.txt}
 
-%\lstinputlisting[label=lst:hadoopContainerListCmd,caption={CMD-Ausgabe aller Container einer Ausführung},float,style=plain]
+%\lstinputlisting[label=lst:hadoopContainerListCmd,
+%caption={CMD"=Ausgabe aller Container einer Ausführung},
+%float,style=plain]
 %{./listings/hadoopContainerList.txt}
 
-%\lstinputlisting[label=lst:hadoopContainerDetailsCmd,caption={Ausgabe des Reports eines Containers},float,style=plain]
+%\lstinputlisting[label=lst:hadoopContainerDetailsCmd,
+%caption={CMD"=Ausgabe des Reports eines Containers},
+%float,style=plain]
 %{./listings/hadoopContainerDetails.txt}
 
-%\lstinputlisting[label=lst:hadoopNodeListCmd,caption={CMD-Ausgabe aller Nodes},float,style=plain]
+%\lstinputlisting[label=lst:hadoopNodeListCmd,
+%caption={CMD"=Ausgabe aller Nodes},
+%float,style=plain]
 %{./listings/hadoopNodeList.txt}
 
-%\lstinputlisting[label=lst:hadoopNodeDetailsCmd,caption={CMD-Ausgabe des Reports eines Nodes},float,style=plain]
+%\lstinputlisting[label=lst:hadoopNodeDetailsCmd,
+%caption={CMD"=Ausgabe des Reports eines Nodes},
+%float,style=plain]
 %{./listings/hadoopNodeDetails.txt}
