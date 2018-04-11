@@ -4,7 +4,7 @@ Die Verwaltung der auszuführenden Benchmarks wurde komplett vom restlichen YARN
 Verbunden sind beide durch die Eigenschaft \texttt{Client.BenchController}, das den vom Client verwendeten \texttt{BenchmarkController} enthält, der zur Verwaltung der auszuführenden Anwendung dient.
 Der Controller besteht aus zwei wesentlichen Teilen, einem statischen und einem dynamischen.
 
-Der \textbf{statische Teil} des Controllers definiert die möglichen Anwendungen sowie das im Abschnitt zuvor definierte und in \autoref{tab:transitionsystem} dargestellte Transitionssystem.
+Der \textbf{statische Teil} des Controllers definiert die möglichen Anwendungen sowie das im Abschnitt zuvor definierte und in \autoref{tab:transMatrix} dargestellte Transitionssystem.
 Die einzelnen Anwendungen werden mithilfe der Klasse \texttt{Benchmark} repräsentiert, in der die benötigten Informationen wie \zB der Befehl zum Starten der Anwendung definiert werden.
 Da mehrere Clients unabhängig voneinander agieren können müssen, erhält jeder Client zudem ein eigenes Unterverzeichnis im \ac{HDFS}, in dem sich die Ein- und Ausgabeverzeichnisse für die von ihm gestarteten Anwendungen befinden.
 Das muss auch bei der Definition der Startbefehle der Anwendungen berücksichtigt werden, weshalb in \autoref{lst:benchmarkDefinition} entsprechende Platzhalter vorhanden sind.

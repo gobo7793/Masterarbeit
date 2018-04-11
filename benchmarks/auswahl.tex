@@ -5,21 +5,31 @@ Diese Kette definiert die Ausführungsreihenfolge zwischen den einzelnen Anwendu
 Eine zufallsbasierte Markow"=Kette wurde aus dem Grund verwendet, dass auch in der Realität Anwendungen nicht immer in der gleichen Reihenfolge ausgeführt werden und daher auch in der Fallstudie eine unterschiedliche Ausführungsreihenfolge der Anwendungen gewährleistet werden soll.
 Mithilfe der Festlegung eines bestimmten Seeds für den in der Fallstudie benötigten Pseudo"=Zufallsgenerator besteht bei Bedarf dennoch die Möglichkeit, einen Test mit den gleichen Anwendungen wiederholen zu können.
 
-Da alle verfügbaren Anwendungen zunächst je nach Anwendungsart in verschiedene Kategorien eingeteilt wurden, wurden bei der Erstellung des Transitionssystems einige dieser Kategorien exemplarisch für mögliche, typische Anwendungsfälle auf einem produktiv genutzten Cluster verwendet.
-Folgende Kategorien und Anwendungen der Mapreduce"=Examples und Jobclient"=Tests wurden daher letztlich ausgewählt:
+Einige der in \autoref{sec:appOverview} erwähnten Mapreduce Examples werden häufig als Benchmark verwendet.
+Einige Beispiele dafür sind die Anwendungen \acl{so} und \texttt{grep} (ermittelt Anzahl von Regex"=Übereinstimmungen), die bereits im Referenzpapier zum MapReduce"=Algorithmus als Benchmarks verwendet wurden \cite{Dean2008}.
+\acl{tsr} ist ebenfalls ein weit verbreiteter Benchmark, der die Hadoop"=Implementierung der standardisierten \emph{Sort Benchmarks}\footnote{\url{https://sortbenchmark.org/}} darstellt \cite{Graves2013}.
+Ebenfalls als guter Benchmark dient die Anwendung \acl{wc}, mit der ein großer Datensatz stark verkleinert bzw. zusammengefasst wird und dient daher als gute Repräsentation für Anwendungsarten, bei denen Daten extrahiert werden \cite{Huang2010,Chen2012}.
+
+Da in dieser Fallstudie ein realistisches Abbild der ausgeführten Anwendungen ausgeführt werden soll, ist es nicht sehr hilfreich, die einzelnen Übergangswahrscheinlichkeiten im Transitionssystem anzugleichen oder rein zufällig zu verteilen.
+Einen realistischen Einblick, welche Anwendungs- und Datentypen in produktiv genutzten Hadoop"=Clustern genutzt werden, geben \uA \cite{Chen2012} und \cite{HadoopDataTypes}.
+Auffällig ist hierbei, dass die meisten Anwendungen in einem Hadoop"=Cluster innerhalb weniger Sekunden oder Minuten abgeschlossen sind und/oder Datensätze im Größenbereich von wenigen Kilobyte bis hin zu wenigen Megabyte verarbeiten.
+Zu einem ähnlichen Ergebnis kamen auch \citeauthor{Ren2013} in \cite{Ren2013} und folgerten daher, dass für kleine Jobs evtl. einfachere Frameworks abseits von Hadoop besser geeignet wären.
+Die Autoren der Studie in \cite{HadoopDataTypes} bezeichneten Hadoop aufgrund ihrer Ergebnisse als \enquote{potentielle Technologie zum Verarbeiten aller Arten von Daten}, stellten aber eine ähnliche Vermutung an wie \citeauthor{Ren2013}, dass Hadoop primär Daten nutze, die auch mit \enquote{traditionellen Plattformen} verarbeiten werden könnten.
+
+Basierend auf den Ergebnissen der Studien und der in den anderen Publikationen verwendeten Benchmark"=Anwendungen, wurden folgende Anwendungen der Mapreduce"=Examples und Jobclient"=Tests in das Transitionssystem übernommen:
 
 \begin{itemize}
-    \item Generatoren für
+    \item Generieren von Eingabedaten für andere Anwendungen:
     \begin{itemize}
         \item Textdateien: \ac{rtw} und \ac{dfw}
         \item Binärdateien: \ac{rw} und \ac{tg}
     \end{itemize}
 
-    \item Datenverarbeitung in Form von:
+    \item Verarbeitung von Eingabedaten:
     \begin{itemize}
-        \item Auslesen: \ac{wc} und \ac{dfr}
-        \item Sortieren: \ac{so} für Textdaten und \ac{tsr} für Binärdaten
-        \item Validieren: \ac{tms} und \ac{tvl} für die jeweiligen Sortier"=Anwendungen
+        \item Auslesen bzw. Zusammenfassen: \ac{wc} und \ac{dfr}
+        \item Transformieren: \ac{so} für Textdaten und \ac{tsr} für Binärdaten
+        \item Validierung: \ac{tms} und \ac{tvl} für die jeweiligen Sortier"=Anwendungen
     \end{itemize}
 
     \item Ausführen von Berechnungen:
@@ -31,15 +41,15 @@ Folgende Kategorien und Anwendungen der Mapreduce"=Examples und Jobclient"=Tests
     \item Dummy"=Anwendungen: \ac{sl} und \ac{fl}
 \end{itemize}
 
-Der Grund für die Berücksichtigung von mehreren gleichen bzw. ähnlichen Anwendungen für einige Kategorien liegt darin, dass eine Anwendung für eine eher kurze Ausführung, die andere für eine umfangreiche ausgewählt wurde.
+Der Grund für die Berücksichtigung von mehreren gleichen bzw. ähnlichen Anwendungen für einige Kategorien liegt darin, dass die unterschiedlichen Anwendungen eine unterschiedliche Ausführungsdauer bzw. Datenrepräsentation (Text und Binär) repräsentieren.
 So stehen die beiden \texttt{TestDFSIO}"=Varianten für eine umfangreichere Datennutzung, während die jeweils anderen Anwendungen einen kleineren Umfang repräsentieren.
 Ähnlich verhält es sich bei den beiden Berechnungs"=Anwendungen, bei denen die \acl{pt}"=Anwendung die deutlich umfangreicheren Berechnungen durchführt.
 \texttt{TestDFSIO} enthält zudem die Möglichkeit, Daten zu genieren und zu lesen, weshalb diese Anwendung in zwei Kategorien verwendet wurde.
 Haupteinsatzzweck der Anwendung liegt vor allem darin, den Datendurchsatz des \ac{HDFS} zu testen.
 
 Eine Besonderheit bilden die beiden Dummy"=Anwendungen.
-Beide werden in dieser Fallstudie dafür genutzt, um zu simulieren, wenn eine Anwendung \zB auf externe Daten warten muss oder ein unerwarteter Fehler während der Ausführung auftaucht.
-Daher können beide Anwendungen unabhängig von der derzeit ausgeführten Anwendung als nachfolgende Anwendung ausgewählt werden und sind auch bei allen anderen Anwendungen mit einer geringen Wahrscheinlichkeit im Transitionssystem enthalten.
+Beide werden in dieser Fallstudie dafür genutzt, um zu simulieren, wenn auf dem Cluster \zB derzeit nichts ausgeführt wird, oder ein unerwarteter Fehler während der Ausführung auftaucht.
+Daher können beide Anwendungen unabhängig von der derzeit ausgeführten Anwendung als nachfolgende Anwendung ausgewählt werden.
 Als nachfolgende Anwendungen für die Dummy"=Anwendungen kommen nur Anwendungen in Betracht, welche ihrerseits keine Eingabedaten benötigen. Dies sind:
 
 \begin{itemize}
@@ -52,31 +62,28 @@ Als nachfolgende Anwendungen für die Dummy"=Anwendungen kommen nur Anwendungen 
 \end{itemize}
 
 \begin{table}
-    \resizebox{\linewidth}{!}{\begin{tabular}{|l|c|c|c|c|c|c|c|c|c|c|c|c|c|c|}
-    	\hline
-    	          &   \acs{dfw}   &   \acs{rtw}   &   \acs{tg}    & \acs{dfr} & \acs{wc} &   \acs{rw}    & \acs{so} & \acs{tsr} &   \acs{pi}    &   \acs{pt}    & \acs{tms} & \acs{tvl} & \acs{sl} & \acs{fl} \\ \hline
-    	\acs{dfw} &     .600      &     .073      &       0       &   .145    &    0     &       0       &    0     &     0     &     .073      &     .073      &     0     &     0     &   .018   &   .018   \\ \hline
-    	\acs{rtw} &     .036      &     .600      &       0       &     0     &   .145   &     .036      &   .109   &     0     &     .036      &       0       &     0     &     0     &   .019   &   .019   \\ \hline
-    	\acs{tg}  &       0       &     .036      &     .600      &     0     &    0     &       0       &    0     &   .255    &       0       &     .073      &     0     &     0     &   .018   &   .018   \\ \hline
-    	\acs{dfr} &       0       &     .073      &       0       &   .600    &    0     &     .036      &    0     &     0     &     .145      &     .109      &     0     &     0     &   .018   &   .019   \\ \hline
-    	\acs{wc}  &     .073      &     .109      &       0       &     0     &   .600   &       0       &   .073   &     0     &     .073      &     .036      &     0     &     0     &   .018   &   .018   \\ \hline
-    	\acs{rw}  &       0       &     .073      &     .073      &     0     &    0     &     .600      &    0     &     0     &     .109      &     .109      &     0     &     0     &   .018   &   .018   \\ \hline
-    	\acs{so}  &       0       &     .073      &     .036      &     0     &   .073   &     .036      &   .600   &     0     &     .073      &       0       &   .073    &     0     &   .018   &   .018   \\ \hline
-    	\acs{tsr} &       0       &       0       &       0       &     0     &    0     &       0       &    0     &   .600    &     .109      &     .073      &     0     &   .182    &   .018   &   .018   \\ \hline
-    	\acs{pi}  &     .145      &     .109      &       0       &     0     &    0     &       0       &    0     &     0     &     .600      &     .109      &     0     &     0     &   .018   &   .019   \\ \hline
-    	\acs{pt}  &     .109      &     .109      &       0       &     0     &    0     &     .073      &    0     &     0     &     .073      &     .600      &     0     &     0     &   .018   &   .018   \\ \hline
-    	\acs{tms} &       0       &     .145      &       0       &     0     &    0     &     .073      &    0     &     0     &     .036      &     .109      &   .600    &     0     &   .018   &   .019   \\ \hline
-    	\acs{tvl} &     .073      &     .109      &       0       &     0     &    0     &       0       &    0     &     0     &     .109      &     .073      &     0     &   .600    &   .018   &   .018   \\ \hline
-    	\acs{sl}  & $\frac{1}{6}$ & $\frac{1}{6}$ & $\frac{1}{6}$ &     0     &    0     & $\frac{1}{6}$ &    0     &     0     & $\frac{1}{6}$ & $\frac{1}{6}$ &     0     &     0     &    0     &    0     \\ \hline
-    	\acs{fl}  & $\frac{1}{6}$ & $\frac{1}{6}$ & $\frac{1}{6}$ &     0     &    0     & $\frac{1}{6}$ &    0     &     0     & $\frac{1}{6}$ & $\frac{1}{6}$ &     0     &     0     &    0     &    0     \\ \hline
+    \resizebox{\linewidth}{!}{\begin{tabular}{l|c|c|c|c|c|c|c|c|c|c|c|c|c|c}
+    	             & \textit{dfw} & \textit{rtw} & \textit{tg} & \textit{dfr} & \textit{wc} & \textit{rw} & \textit{so} & \textit{tsr} & \textit{pi} & \textit{pt} & \textit{tms} & \textit{tvl} & \textit{sl} & \textit{fl} \\ \hline
+    	\textit{dfw} &     .600     &     .073     &      0      &     .145     &      0      &      0      &      0      &      0       &    .073     &    .073     &      0       &      0       &    .018     &    .018     \\ \hline
+    	\textit{rtw} &     .036     &     .600     &      0      &      0       &    .145     &    .036     &    .109     &      0       &    .036     &      0      &      0       &      0       &    .019     &    .019     \\ \hline
+    	\textit{tg}  &      0       &     .036     &    .600     &      0       &      0      &      0      &      0      &     .255     &      0      &    .073     &      0       &      0       &    .018     &    .018     \\ \hline
+    	\textit{dfr} &      0       &     .073     &      0      &     .600     &      0      &    .036     &      0      &      0       &    .145     &    .109     &      0       &      0       &    .018     &    .019     \\ \hline
+    	\textit{wc}  &     .073     &     .109     &      0      &      0       &    .600     &      0      &    .073     &      0       &    .073     &    .036     &      0       &      0       &    .018     &    .018     \\ \hline
+    	\textit{rw}  &      0       &     .073     &    .073     &      0       &      0      &    .600     &      0      &      0       &    .109     &    .109     &      0       &      0       &    .018     &    .018     \\ \hline
+    	\textit{so}  &      0       &     .073     &    .036     &      0       &    .073     &    .036     &    .600     &      0       &    .073     &      0      &     .073     &      0       &    .018     &    .018     \\ \hline
+    	\textit{tsr} &      0       &      0       &      0      &      0       &      0      &      0      &      0      &     .600     &    .109     &    .073     &      0       &     .182     &    .018     &    .018     \\ \hline
+    	\textit{pi}  &     .145     &     .109     &      0      &      0       &      0      &      0      &      0      &      0       &    .600     &    .109     &      0       &      0       &    .018     &    .019     \\ \hline
+    	\textit{pt}  &     .109     &     .109     &      0      &      0       &      0      &    .073     &      0      &      0       &    .073     &    .600     &      0       &      0       &    .018     &    .018     \\ \hline
+    	\textit{tms} &      0       &     .145     &      0      &      0       &      0      &    .073     &      0      &      0       &    .036     &    .109     &     .600     &      0       &    .018     &    .019     \\ \hline
+    	\textit{tvl} &     .073     &     .109     &      0      &      0       &      0      &      0      &      0      &      0       &    .109     &    .073     &      0       &     .600     &    .018     &    .018     \\ \hline
+    	\textit{sl}  &     .167     &     .167     &    .167     &      0       &      0      &    .167     &      0      &      0       &    .167     &    .167     &      0       &      0       &      0      &      0      \\ \hline
+    	\textit{fl}  &     .167     &     .167     &    .167     &      0       &      0      &    .167     &      0      &      0       &    .167     &    .167     &      0       &      0       &      0      &      0
     \end{tabular}}
-    \caption[Verwendete Markov"=Kette für die Anwendungs"=Übergänge in Tabellenform]
-    {Verwendete Markov"=Kette für die Anwendungs"=Übergänge in Tabellenform.
-        Rundungsbedingte Differenzen wurden den beiden Dummy"=Anwendungen hinzugezählt bzw. abgezogen.
-        Die Übergänge ausgehend von den beiden Dummy"=Anwendungen wurden exakt wie hier dargestellt implementiert.}
-    \label{tab:transitionsystem}
+    \caption
+    {Verwendete Markov"=Kette für die Anwendungs"=Übergänge in Tabellenform.}
+    \label{tab:transMatrix}
 \end{table}
 
-Für die in \autoref{tab:transitionsystem} dargestellte Markow"=Kette der Übergänge zwischen den Anwendungen wurde zudem berücksichtigt, welche Anwendungen bestimmte Eingabedaten benötigen.
-Dadurch wird sichergestellt, dass die für einige Anwendungen benötigten Eingabedaten immer vorhanden sind.
+Für die in \autoref{tab:transMatrix} dargestellte Markow"=Kette der Übergänge zwischen den Anwendungen wurde neben den Ergebnissen aus den Studien zudem berücksichtigt, welche Anwendungen bestimmte Eingabedaten benötigen.
+Dadurch wird sichergestellt, dass die für einige Anwendungen benötigten Eingabedaten immer vorhanden sind, da diese ebenfalls im Rahmen der Ausführung der Benchmarks generiert werden.
 Anwendungen ohne Eingabedaten können dagegen fast jederzeit ausgeführt werden.

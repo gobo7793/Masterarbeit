@@ -63,7 +63,7 @@
 
 % Literatur
 \usepackage[style=numeric-comp,natbib=true,maxitems=1,backend=biber,sorting=none]{biblatex}
-\usepackage[autostyle=true,german=quotes]{csquotes}
+\usepackage{csquotes}
 \addbibresource{./literatur.bib}
 \addbibresource{./web.bib}
 \addbibresource{./abbildungen.bib}
@@ -170,7 +170,7 @@
 \displaywidowpenalty = 10000 
 
 % Referenzen
-\usepackage{hyperref}
+\PassOptionsToPackage{hyphens}{url}\usepackage{hyperref}
 
 \begin{document}
     % Titelseite

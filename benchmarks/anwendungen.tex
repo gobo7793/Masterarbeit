@@ -26,11 +26,13 @@ Einige der Anwendungen der Examples sind:
 \end{itemize}
 
 \textbf{Intel HiBench} ist eine von Intel entwickelte Benchmark-Suite mit \emph{Workloads} zu verschiedenen Anwendungszwecken mit jeweils unterschiedlichen einzelnen Anwendungen.
-Da in Hadoop"=Benchmark noch die HiBench"=Version \mbox{2.2} verwendet wird, wurde der Docker"=Container von HiBench zunächst auf Version 7 aktualisiert, die einige neue Workloads und Anwendungen enthält.
+Der anfangs nur wenige Anwendungen enthaltene Benchmark \cite{Huang2010} wurde stetig mit neuen Anwendungsarten und Workloads erweitert.
+Das zeigt sich auch darin, dass in in Hadoop"=Benchmark noch die HiBench"=Version \mbox{2.2} verwendet wird, die einen noch deutlich geringeren Umfang an Workloads und Anwendungen besitzt, als die aktuelle Version 7.
+Daher wurde der der Docker"=Container von HiBench zunächst auf die aktuelle Version 7 aktualisiert.
 HiBench enthält damit folgende Workloads mit einer unterschiedlichen Anzahl an möglichen Anwendungen:
 
 \begin{itemize}
-    \item Micro"=Benchmarks (basieret auf den Mapreduce"=Examples und den Jobclient"=Tests)
+    \item Micro"=Benchmarks (basierend auf den Mapreduce"=Examples und den Jobclient"=Tests)
     \item Maschinelles Lernen
     \item SQL/Datenbanken
     \item Websuche
@@ -40,12 +42,12 @@ HiBench enthält damit folgende Workloads mit einer unterschiedlichen Anzahl an 
 
 \textbf{\ac{SWIM}} ist eine Benchmark-Suite, die aus 50 verschiedenen Workloads besteht.
 Das besondere dabei ist, dass die dabei verwendeten Mapreduce"=Jobs anhand mehrerer tausend Jobs erstellt wurden und im Vergleich zu anderen Benchmarks eine größere Vielfalt an Anwendungen und somit ein größerer Testumfang gewährleistet wird \cite{SwimWikiHome}.
-Bei der Ausführung auf dem in dieser Arbeit verwendete Cluster wurden jedoch nicht alle Workloads fehlerfrei ausgeführt.
+Bei der Ausführung auf dem in dieser Fallstudie verwendetem Cluster wurden jedoch nicht alle Workloads fehlerfrei ausgeführt.
 Zudem wird in \cite{InriaTutorial} explizit erwähnt, dass es bei der Ausführung auf einem Cluster auf einem einzelnen PC bzw. Laptop Probleme geben kann.
 SWIM ist außerdem für Benchmarks eines Clusters mit mehreren physischen Nodes ausgelegt, weshalb die Ausführung in dieser Fallstudie extrem viel Zeit benötigten würde.
 Daher wurde die Nutzung des SWIM-Benchmarks nicht weiter verfolgt.
 
-Ebenfalls im Installationsumfang von Hadoop enthalten sind die sog. \textbf{Jobclient"=Tests}.
+Ebenfalls im Installationsumfang von Hadoop enthalten sind die hier aufgrund ihres Dateinamens als \textbf{Jobclient"=Tests} bezeichneten Anwendungen.
 Hauptbestandteil dieser Tests sind vor allem weitere, den Examples ergänzende, Benchmarks, welche das gesamte Cluster oder einzelne Nodes testen.
 Der Fokus der Jobclient"=Tests liegt im Gegensatz zu den Examples nicht auf dem MapReduce- bzw. YARN"=Framework, sondern beim \ac{HDFS}.
 Da die Jobclient-Tests kein Teil von Hadoop"=Benchmark sind, wurde zur Ausführung der Jobclient"=Test zunächst ein eigenes Start"=Script analog zur Ausführung der Mapreduce"=Examples erstellt, damit hierfür ebenfalls ein eigener Docker"=Container gestartet wird.
