@@ -357,9 +357,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.4142136"
-     inkscape:cx="232.56814"
-     inkscape:cy="170.0763"
+     inkscape:zoom="2.8284271"
+     inkscape:cx="284.79252"
+     inkscape:cy="116.49793"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="true"
@@ -394,7 +394,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -983,8 +983,8 @@
          sodipodi:nodetypes="cc"
          inkscape:connector-curvature="0"
          id="path11057"
-         d="m 40,213.98917 h 80"
-         style="fill:none;stroke:#000000;stroke-width:1.50565553;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+         d="M 28,213.98894 H 132"
+         style="fill:none;stroke:#000000;stroke-width:1.50600004;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
       <path
          inkscape:connector-curvature="0"
          sodipodi:nodetypes="cc"
@@ -1042,18 +1042,6 @@
            id="path4806"
            d="m 45.08,210.50888 h 3.386667"
            style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:#000000;stroke-width:1.12888896;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-        <path
-           inkscape:connector-curvature="0"
-           sodipodi:nodetypes="cc"
-           id="path5690"
-           d="m 50.16,212.48444 h 1.693334"
-           style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:#000000;stroke-width:1.12888896;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-        <path
-           inkscape:connector-curvature="0"
-           sodipodi:nodetypes="cc"
-           style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:#000000;stroke-width:1.12893093;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-           d="m 41.693333,212.48444 h 1.693334"
-           id="path6565" />
       </g>
       <text
          id="text10893"
@@ -1065,7 +1053,7 @@
            y="201.93333"
            x="79.863464"
            id="tspan10891"
-           sodipodi:role="line">local-hadoop-controller</tspan></text>
+           sodipodi:role="line">hadoop-controller</tspan></text>
     </g>
     <g
        transform="translate(45.022399)"
@@ -1106,18 +1094,6 @@
            id="path4806-4"
            d="m 45.08,210.50888 h 3.386667"
            style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:#000000;stroke-width:1.12888896;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-        <path
-           inkscape:connector-curvature="0"
-           sodipodi:nodetypes="cc"
-           id="path5690-0"
-           d="m 50.16,212.48444 h 1.693334"
-           style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:#000000;stroke-width:1.12888896;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-        <path
-           inkscape:connector-curvature="0"
-           sodipodi:nodetypes="cc"
-           style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:#000000;stroke-width:1.12888896;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-           d="m 41.693333,212.48444 h 1.693334"
-           id="path6565-8" />
       </g>
       <text
          id="text10893-3"
@@ -1129,7 +1105,7 @@
            y="201.93333"
            x="79.863464"
            id="tspan10891-1"
-           sodipodi:role="line">local-hadoop-compute-n</tspan></text>
+           sodipodi:role="line">hadoop-compute-n</tspan></text>
     </g>
     <g
        transform="translate(-45)"
@@ -1170,18 +1146,6 @@
            id="path4806-4-2"
            d="m 45.08,210.50888 h 3.386667"
            style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:#000000;stroke-width:1.12888896;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-        <path
-           inkscape:connector-curvature="0"
-           sodipodi:nodetypes="cc"
-           id="path5690-0-7"
-           d="m 50.16,212.48444 h 1.693334"
-           style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:#000000;stroke-width:1.12888896;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
-        <path
-           inkscape:connector-curvature="0"
-           sodipodi:nodetypes="cc"
-           style="fill:none;fill-opacity:0.75;fill-rule:evenodd;stroke:#000000;stroke-width:1.12888896;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-           d="m 41.693333,212.48444 h 1.693334"
-           id="path6565-8-3" />
       </g>
       <text
          id="text10893-3-3"
@@ -1193,7 +1157,7 @@
            y="201.93333"
            x="79.863464"
            id="tspan10891-1-0"
-           sodipodi:role="line">local-hadoop-compute-1</tspan></text>
+           sodipodi:role="line">hadoop-compute-1</tspan></text>
     </g>
     <g
        id="g16191"
@@ -1227,19 +1191,19 @@
          sodipodi:nodetypes="cc"
          inkscape:connector-curvature="0"
          id="path14787"
-         d="m 64,260.99999 c -8,4 -9,11 -1,15"
+         d="M 63.800056,260.99999 C 54.800056,265 54,272 63,275.99999"
          style="fill:none;stroke:#ff0000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker14797)" />
       <path
          sodipodi:nodetypes="cc"
          inkscape:connector-curvature="0"
          id="path15033"
-         d="m 35,255.99999 c 0,11 4,22 28,22"
+         d="m 35,256.34994 c 0,11 4,21.65005 28,21.65005"
          style="fill:none;stroke:#ff0000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker15043)" />
       <path
          sodipodi:nodetypes="cc"
          inkscape:connector-curvature="0"
          id="path15033-4"
-         d="m 125,255.99999 c 0,11 -4,22 -28,22"
+         d="m 125,256.34994 c 0,11 -4,21.65005 -28,21.65005"
          style="fill:none;stroke:#ff0000;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker15043-9)" />
       <path
          style="fill:none;stroke:#000000;stroke-width:0.70555556;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:0.70555559, 0.70555559;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#DiamondMstart-9)"

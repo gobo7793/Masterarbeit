@@ -10,10 +10,12 @@ Die Plattform ist in mehrere Szenarien unterteilt, darunter ein Hadoop in der Ve
 Hadoop"=Benchmark basiert auf der Software \emph{Docker}\footnote{\url{https://www.docker.com/}} und dem dazugehörigen Tool \emph{Docker Machine}, um damit einfach und schnell ein Hadoop"=Cluster aufbauen zu können.
 Mit \emph{Graphite}\footnote{\url{https://graphiteapp.org/}} ist zudem ein Monitoring"=Tool enthalten, mit dem die Performance des Clusters überwacht und analysiert werden kann.
 
+%TODO: In den nächsten Unterabschnitt verschieben
 \begin{figure}
     \includegraphics{./images/hadoopBenchmarkArch.pdf}
     \caption[High"=Level"=Architektur von Hadoop"=Benchmark]
-    {High"=Level"=Architektur von Hadoop"=Benchmark. Grün: \ac{HDFS}, Blau: YARN, Rot: Graphite.}
+    {High"=Level"=Architektur von Hadoop"=Benchmark.
+        Grün: \ac{HDFS}, Blau: YARN, Rot: Graphite.}
     \label{fig:hadoopBenchmarkArchitecture}
 \end{figure}
 
@@ -37,24 +39,25 @@ Einige der Hibench"=Workloads basieren auf den Mapreduce Examples, welche wieder
 \subsection{Anpassungen und Setup}\label{sec:clusterFallstudie}
 
 Da mithilfe der Plattform Hadoop"=Benchmark die Erstellung eines Hadoop"=Clusters massiv vereinfacht wird, kommt die Plattform auch in dieser Masterarbeit zum Einsatz.
-Da Docker und Hadoop aber vor allem für den Einsatz in einer Linux"=Umgebung entwickelt wurden, wird dazu ein eigener PC mit Ubuntu 16.04 LTS genutzt.
+Da Docker und Hadoop vor allem für den Einsatz in einer Linux"=Umgebung entwickelt wurden, wird dazu ein eigener PC mit Ubuntu 16.04 LTS genutzt.
 Da \sS das .NET"=Framework, und damit Windows, benötigt, wird dafür ebenfalls ein eigener PC verwendet.
 Im konkreten Versuchsaufbau wird für Windows eine VM genutzt, welche auf einem anderen PC als das Cluster ausgeführt wird.
-Die genauen Spezifikationen der PCs und der Windows"=VM sind in \autoref{tab:pcSpecs} aufgelistet.
+Beide zum Einsatz kommenden PCs sind jeweils mit einem Intel Core i5"=4570 @ 3,2 GHz x 4, 16 GB Arbeitsspeicher sowie einer insgesamt 512 GB großen SSD ausgestattet, auf der Ubuntu 16.04 LTS installiert ist.
+%Die genauen Spezifikationen der PCs und der Windows"=VM sind in \autoref{tab:pcSpecs} aufgelistet.
 Die Windows"=VM und der Cluster"=PC werden mithilfe von SSH"=Verbindungen miteinander verbunden.
 
-\begin{table}
-    \begin{tabular}{|c|c|c|c|}
-    	\hline
-    	 \textbf{}   & \textbf{Cluster"=PC} &          \textbf{VM"=PC}          & \textbf{Windows"=VM}  \\ \hline\hline
-    	\textbf{CPU} & \multicolumn{2}{|c|}{Intel Core i5"=4570 @ 3,2 GHz x 4} &     4 CPU Cores      \\ \hline
-    	\textbf{RAM} &        16 GB        &              16 GB               &         8 GB         \\ \hline
-    	\textbf{SSD} &       512 GB        &              512 GB              &  $\leq$ 100 GB VHD   \\ \hline
-    	\textbf{OS}  &  Ubuntu 16.04 LTS   &         Ubuntu 16.04 LTS         & Windows 10 1709 Edu. \\ \hline
-    \end{tabular}
-    \caption{Spezifikationen der verwendeten PCs und Windows"=VM}
-    \label{tab:pcSpecs}
-\end{table}
+%\begin{table}
+%    \begin{tabular}{|c|c|c|c|}
+%    	\hline
+%    	 \textbf{}   & \textbf{Cluster"=PC} &          \textbf{VM"=PC}          & \textbf{Windows"=VM}  \\ \hline\hline
+%    	\textbf{CPU} & \multicolumn{2}{|c|}{Intel Core i5"=4570 @ 3,2 GHz x 4} &     4 CPU Cores      \\ \hline
+%    	\textbf{RAM} &        16 GB        &              16 GB               &         8 GB         \\ \hline
+%    	\textbf{SSD} &       512 GB        &              512 GB              &  $\leq$ 100 GB VHD   \\ \hline
+%    	\textbf{OS}  &  Ubuntu 16.04 LTS   &         Ubuntu 16.04 LTS         & Windows 10 1709 Edu. \\ \hline
+%    \end{tabular}
+%    \caption{Spezifikationen der verwendeten PCs und Windows"=VM}
+%    \label{tab:pcSpecs}
+%\end{table}
 
 Auf dem Cluster"=PC nutzt Docker"=Machine zur Erstellung, Verwaltung und Ausführung der VMs die Treiber von VirtualBox 5.2\footnote{\url{https://www.virtualbox.org/}}, zum Abrufen der Daten der REST"=API über die SSH"=Verbindung wird \emph{curl}\footnote{\url{https://curl.haxx.se/}} genutzt.
 Für das Cluster werden 4 Nodes, der Controller sowie eine Consul"=VM zur internen Verwaltung der Netzwerkverbindungen zwischen den VMs und Docker"=Containern erstellt.
