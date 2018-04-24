@@ -74,22 +74,31 @@
 % Listings
 \usepackage{listings}
 \makeatletter
-\definecolor{darkgreen}{rgb}{0,0.5,0}
+\definecolor{bluekeywords}{rgb}{0.13,0.13,1}
+\definecolor{greencomments}{rgb}{0,0.5,0}
+\definecolor{redstrings}{rgb}{0.9,0,0}
+\definecolor{typeidentifier}{RGB}{38, 121,	153}
 \lstdefinestyle{base}{
     basicstyle=\footnotesize\ttfamily,
     frame=single,
     numbers=left,
     numberstyle=\tiny,
+    numbersep=7pt,
     breaklines=true,
-    tabsize=2,
+    tabsize=3,
     captionpos=b,
+    extendedchars=true,
+    showstringspaces=false,
 }
 \lstdefinestyle{cs}{
     language=[sharp]c,
     style=base,
-    commentstyle=\color{darkgreen},
-    keywordstyle=\color{blue},
-    morekeywords={ nameof },
+    escapeinside={(*@}{@*)},
+    morekeywords={get,set,var,nameof},
+    moredelim=[is][\color{typeidentifier}]{|}{|},
+    commentstyle=\color{greencomments},
+    keywordstyle=\color{bluekeywords}\bfseries,
+    stringstyle=\color{redstrings},
 }
 \lstdefinestyle{plain}{
     language={},

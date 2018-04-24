@@ -1,5 +1,7 @@
 \section{YARN"=Modell}\label{sec:yarnModel}
 
+\todo{Komplett neu strukturieren}
+
 \begin{figure}
     \includegraphics[width=\columnwidth]{./images/yarnModel.png}
     \caption[Aufbau des YARN"=Modells]
@@ -58,3 +60,27 @@ Um zu prüfen, ob sich das reale Cluster nach der Aktivierung bzw. Deaktivierung
 \todo{Verweis zu Anforderungen}
 Diese richten sich nach den funktionalen Anforderungen des Systems und prüfen, ob diese weiterhin eingehalten werden.
 Da die funktionalen Anforderungen bei jeder YARN"=Komponente unterschiedlich sind, wurden diese mithilfe der Eigenschaft \texttt{IYarnReadable.Constraints} für jede Komponente einzeln definiert.
+\autoref{lst:constraintDefinition} zeigt die Definition der Constraints für \texttt{YarnApp}, bei der die Anforderungen 1 und 3 eine Rolle spielen.
+In jeder Komponente sind nur die funktionalen Anforderungen als Constraints implementiert, die für diese Komponente auch relevant sind.
+Daher finden sich die beiden Anforderungen 2 und 4 nicht in der Klasse \texttt{YarnApp} wieder, letztere dafür aber \zB in \texttt{YarnNode}.
+
+\lstinputlisting[label=lst:constraintDefinition,
+caption={[Definition der Constraints in YarnApp]
+    Definition der Constraints in \texttt{YarnApp}},
+float,style=cs]
+{./listings/constraints.cs}
+
+Geprüft werden die Constraints im Anschluss an das Monitoring der einzelnen YARN"=Komponenten.
+Wenn dabei die Bedingungen einer funktionalen Anforderungen nicht erfüllt werden, wird von den Constraints \texttt{false} zurückgegeben und so erkannt, dass bei dieser Komponente ein Fehler von Hadoop nicht selbst korrigiert wurde.
+Die ID der Komponente wird daher entsprechend ausgegeben bzw. in der Logdatei gespeichert.
+Zwar wäre es hier auch möglich gewesen, ähnlich wie in den Modellen der anderen Fallstudien, die mit dem \sS-Framework entwickelt wurden, eine Exception zu werfen, jedoch wurde hier darauf verzichtet, damit immer die Daten aller Komponenten geprüft werden können.
+Dadurch kann erkannt werden, wenn mehrere Komponenten nicht den funktionalen Anforderungen entsprechen.
+
+Nach der Überprüfung der Constraints wird abschließend geprüft, ob es dem Cluster möglich ist, sich überhaupt rekonfigurieren zu können.
+Dies wird dadurch realisiert, dass geprüft wird, ob mindestens ein Node noch aktiv ist.
+Dabei wird jedoch nicht der interne Fehlerstatus in \texttt{YarnNode.IsActive} oder \texttt{YarnNode.IsConnected} geprüft, sondern der beim Monitoring vom Cluster zurückgegebene \texttt{YarnNode.State}.
+Nur wenn dieser den Wert \texttt{ENodeState.Running} hat, ist der Node aktiv und kann Anwendungen ausführen.
+Das reale Hadoop"=Cluster kann sich somit nicht mehr rekonfigurieren und neue Container allokieren bzw. in der Ausführung befindliche Anwendungen und ihre Komponenten umverteilen, wenn kein Node den Wert \texttt{ENodeState.Running} hat.
+\todo{Verweis auf Abschnitt, wo implementierung der Simulation genauer erklärt wird}
+Kommt es zu diesem Fall, wird dies analog zu den Constraints ebenfalls ausgegeben und in der Logdatei vermerkt und die Ausführung des Simulationsschrittes fortgeführt, da die Daten aller Yarn"=Komponenten erst nach Abschluss der Simulation eines Schrittes ausgegeben werden.
+Somit kann im Fehlerfall einfacher ermittelt werden, wie der Systemzustand zum Zeitpunkt des Fehlers war.
