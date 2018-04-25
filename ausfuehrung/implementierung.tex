@@ -1,0 +1,34 @@
+\section{Implementierung der Tests}\label{sec:testImplementation}
+
+Wie bereits erwähnt, wurden zwei grundlegende Tests implementiert.
+Das ist zum einen die Simulation, bei der ein Testfall ohne die Aktivierung von Komponentenfehler ausgeführt wird, sowie der Analysetest, bei dem Komponentenfehler aktiviert werden.
+
+\subsection{Implementierte Simulation}\label{sec:implementedSimulation}
+
+% Was ist Simulation
+\todo{Anpassen wenn Stand der Technik mit \sS-Einführung geschrieben ist}
+Die Simulation ist die einfache Ausführung eines Testfalls ohne die Aktivierung der implementierten Komponentenfehlern oder der Erzeugung von weiteren Fehlern im realen Cluster.
+Der \sS-Simulator unterstützt eine Simulation in einzelnen Schritten, zwischen denen beliebig gewechselt werden kann.
+Da hier jedoch ein reales System getestet wird, läuft die Simulation in dieser Fallstudie linear ab, ohne zwischenzeitlich einen oder mehrere Schritte zurück zu wechseln.
+
+Da im realen Cluster Hadoop kontinuierlich Anpassungen durchführt und Tests in \sS mit diskreten Schritten durchgeführt werden, muss beachtet werden, dass die Werte, die beim Test ermittelt werden, immer nur Momentaufnahmen darstellen.
+Ebenso muss beachtet werden, dass bei der Deaktivierung von einzelnen Nodes diese nicht in Echtzeit, sondern um einige Zeit verzögert erkannt werden und erst nach einer gewissen Zeit aus der Konfiguration des Clusters entfernt werden.
+Genauso verhält es sich, wenn ein Node wieder aktiviert wird, da dieser zunächst selbst starten muss und sich mit dem YARN"=Controller verbinden muss.
+Außerdem werden die für die auf dem Cluster ausgeführten Anwendungen benötigten \ac{AppMstr} und YARN"=Container aufgrund der komplexen internen Prozesse von Hadoop nicht innerhalb weniger Millisekunden allokiert, sondern benötigen ebenfalls eine gewisse Zeit.
+Aus diesen Gründen darf ein Schritt nicht zu schnell vorüber sein.
+
+% Wie läuft Simulation ab
+\lstinputlisting[label=lst:simulationInit,
+caption={[Initialisierung und Ausführung der Simulation]
+    Initialisierung und Ausführung der Simulation (gekürzt).},
+float,style=cs]
+{./listings/simulationInit.cs}
+
+Um die Simulation zu initialisieren, muss zunächst das Modell initialisiert und die grundlegenden Parameter des Modells definiert werden.
+\autoref{lst:simulationInit} zeigt die Initialisierung des in dieser Fallstudie verwendeten Modells, bei der eingestellt wird, dass keine Komponentenfehler aktiviert werden, bevor der \texttt{SafetySharpSimulator} selbst initialisiert wird, mit dessen Hilfe anschließend das Modell ausgeführt wird.
+Zwar besteht mithilfe des Simulators auch die Möglichkeit, mehrere Schritte der Simulation direkt hintereinander auszuführen, jedoch wird davon kein Gebrauch gemacht.
+Dies liegt darin, dass zum einen jeder Schritt mindestens die in \texttt{\_MinStepTime} gespeicherte Zeitspanne benötigen muss, zum anderen darin, dass nach jedem Schritt der aktuelle System- bzw. Modellzustand ausgegeben wird.
+
+% Möglichkeiten zur Testfall-Ausführung
+
+% Implementierung vom Analysetest
