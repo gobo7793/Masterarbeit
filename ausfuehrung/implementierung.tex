@@ -1,34 +1,60 @@
-\section{Implementierung der Tests}\label{sec:testImplementation}
+\section{Implementierung der Simulation}\label{sec:implSimulation}
 
 Wie bereits erwähnt, wurden zwei grundlegende Tests implementiert.
 Das ist zum einen die Simulation, bei der ein Testfall ohne die Aktivierung von Komponentenfehler ausgeführt wird, sowie der Analysetest, bei dem Komponentenfehler aktiviert werden.
 
-\subsection{Implementierte Simulation}\label{sec:implementedSimulation}
+\subsection{Grundlegender Aufbau}\label{sec:simulationBasics}
 
-% Was ist Simulation
 \todo{Anpassen wenn Stand der Technik mit \sS-Einführung geschrieben ist}
 Die Simulation ist die einfache Ausführung eines Testfalls ohne die Aktivierung der implementierten Komponentenfehlern oder der Erzeugung von weiteren Fehlern im realen Cluster.
-Der \sS-Simulator unterstützt eine Simulation in einzelnen Schritten, zwischen denen beliebig gewechselt werden kann.
-Da hier jedoch ein reales System getestet wird, läuft die Simulation in dieser Fallstudie linear ab, ohne zwischenzeitlich einen oder mehrere Schritte zurück zu wechseln.
+Der \sS-Simulator unterstützt eine Simulation in einzelnen oder mehreren Schritten, zwischen denen in reinen Modellen beliebig gewechselt werden kann.
+Da hier jedoch ein reales System getestet wird, wird jeder Schritt einzeln ausgeführt.
 
 Da im realen Cluster Hadoop kontinuierlich Anpassungen durchführt und Tests in \sS mit diskreten Schritten durchgeführt werden, muss beachtet werden, dass die Werte, die beim Test ermittelt werden, immer nur Momentaufnahmen darstellen.
-Ebenso muss beachtet werden, dass bei der Deaktivierung von einzelnen Nodes diese nicht in Echtzeit, sondern um einige Zeit verzögert erkannt werden und erst nach einer gewissen Zeit aus der Konfiguration des Clusters entfernt werden.
-Genauso verhält es sich, wenn ein Node wieder aktiviert wird, da dieser zunächst selbst starten muss und sich mit dem YARN"=Controller verbinden muss.
+Ebenso muss beachtet werden, dass bei der Deaktivierung von einzelnen Nodes bzw. deren Netzwerkverbindungen diese nicht in Echtzeit, sondern um einige Zeit verzögert erkannt werden und erst nach einer gewissen Zeit aus der Konfiguration des Clusters entfernt werden.
+Genauso verhält es sich, wenn ein Node bzw. seine Verbindung wieder aktiviert wird, da dieser zunächst selbst starten muss und sich mit dem YARN"=Controller verbinden muss.
 Außerdem werden die für die auf dem Cluster ausgeführten Anwendungen benötigten \ac{AppMstr} und YARN"=Container aufgrund der komplexen internen Prozesse von Hadoop nicht innerhalb weniger Millisekunden allokiert, sondern benötigen ebenfalls eine gewisse Zeit.
 Aus diesen Gründen darf ein Schritt nicht zu schnell vorüber sein.
 
-% Wie läuft Simulation ab
-\lstinputlisting[label=lst:simulationInit,
-caption={[Initialisierung und Ausführung der Simulation]
-    Initialisierung und Ausführung der Simulation (gekürzt).},
+\lstinputlisting[label=lst:hadoopSimulationInit,
+caption={[Initialisierung und Ausführung der Simulationen]
+    Initialisierung und Ausführung der Simulationen (gekürzt).},
 float,style=cs]
-{./listings/simulationInit.cs}
+{./listings/hadoopSimulationInit.cs}
 
-Um die Simulation zu initialisieren, muss zunächst das Modell initialisiert und die grundlegenden Parameter des Modells definiert werden.
-\autoref{lst:simulationInit} zeigt die Initialisierung des in dieser Fallstudie verwendeten Modells, bei der eingestellt wird, dass keine Komponentenfehler aktiviert werden, bevor der \texttt{SafetySharpSimulator} selbst initialisiert wird, mit dessen Hilfe anschließend das Modell ausgeführt wird.
-Zwar besteht mithilfe des Simulators auch die Möglichkeit, mehrere Schritte der Simulation direkt hintereinander auszuführen, jedoch wird davon kein Gebrauch gemacht.
-Dies liegt darin, dass zum einen jeder Schritt mindestens die in \texttt{\_MinStepTime} gespeicherte Zeitspanne benötigen muss, zum anderen darin, dass nach jedem Schritt der aktuelle System- bzw. Modellzustand ausgegeben wird.
+\autoref{lst:hadoopSimulationInit} zeigt den Ablauf einer Hadoop"=Simulation.
+Da der Ablauf der Simulation unabhängig von der Aktivierung der Komponentenfehler der gleiche ist, ist hier nur die Variante ohne deren Aktivierung aufgezeigt.
+Im Falle einer Aktivierung der Komponentenfehler unterscheiden sich beide Simulationsvarianten nur durch die Angabe der Wahrscheinlichkeiten zum Aktivieren und Deaktivieren der Komponentenfehler sowie des Übergabeparameters an \texttt{ExecuteSimulation()}.
+Da die einzelnen Schritte einer Simulation eine gewisse Mindestdauer haben, wird nach jedem Schritt geprüft, wie viel Zeit für die Ausführung des Schrittes benötigt wurde.
+Liegt die Zeit unterhalb der Mindestdauer für einen Schritt, wird die Ausführung des nächsten Schrittes solange hinausgezögert, bis die Mindestdauer des Schrittes erreicht wurde.
 
-% Möglichkeiten zur Testfall-Ausführung
+Wenn während der Simulation eine im Modell nicht behandelte \texttt{Exception} auftritt, dann wird diese außerhalb der Simulation abgefangen und geloggt.
+Dadurch wird zudem die Simulation beim aktuellen Stand abgebrochen und unabhängig von aufgetretenen \texttt{Exception}s Nodes mit injizierten Komponentenfehlern neu gestartet.
 
-% Implementierung vom Analysetest
+\subsection{Initialisierung des Modells}\label{sec:simulationModelInit}
+
+% Einfache Variablen
+
+
+% Variablen mit mehr aktivitäten
+
+
+\subsection{Ablauf eines Simulations"=Schrittes}\label{sec:simulationStep}
+
+Der Ablauf eines Schrittes lässt sich in die folgenden fünf Abschnitte einteilen.
+Während die \nameref{sec:simulationFaultActivation} komplett außerhalb des Modells durch den Simulator erfolgt, werden die anderen Abschnitte durch den \texttt{YarnController} innerhalb des Modells durchgeführt.
+Die \nameref{sec:simulationStepOutput} werden direkt von den jeweils betroffenen Komponenten im Rahmen des normalen Loggings durchgeführt.
+
+\subsubsection{Aktivierung der Komponentenfehler}\label{sec:simulationFaultActivation}
+
+
+\subsubsection{Ausführung Benchmarks}\label{sec:simulationBenchmarkExecution}
+
+
+\subsubsection{Monitoring der ausgeführten Anwendungen}\label{sec:simulationMonitoring}
+
+
+\subsubsection{Prüfungen durch das Oracle}\label{sec:simulationOracle}
+
+
+\subsubsection{Ausgaben während eines Schrittes}\label{sec:simulationStepOutput}
