@@ -6,31 +6,27 @@ Neben den Monitoring"=Befehlen sind auch einige weitere für diese Arbeit releva
 Die Ausgaben zu den Befehlen sind hier zudem auf das wesentliche gekürzt, \uA da Hadoop bei einigen Befehlen ausgibt, über welche Services (in \autoref{lst:hadoopAppListCmd} \zB \ac{TLS}, \ac{RM} und \emph{Application History Server}) die Daten ermittelt werden.
 Weiterführende Informationen zu den einzelnen Befehlen sind in der dazugehörigen Dokumentation in \cite{HadoopYarnCmds271} zu finden.
 
-\lstinputlisting[label=lst:hadoopAppListCmd,
+\lstinputlisting[label=lst:hadoopAppListCmd,style=plain,
 caption={[CMD"=Ausgabe der Anwendungsliste]
     CMD"=Ausgabe der Anwendungsliste.
-    Anwendungen können mithilfe der Optionen \mbox{\texttt{-{}-appTypes}} und \mbox{\texttt{-{}-appStates}} gefiltert werden.},
-float,style=plain]
+    Anwendungen können mithilfe der Optionen \mbox{\texttt{-{}-appTypes}} und \mbox{\texttt{-{}-appStates}} gefiltert werden.}]
 {./listings/hadoopAppList.txt}
 
-\lstinputlisting[label=lst:hadoopAppDetailsCmd,
-caption={CMD"=Ausgabe des Reports einer Anwendung},
-float,style=plain]
+\lstinputlisting[label=lst:hadoopAppDetailsCmd,style=plain,
+caption={CMD"=Ausgabe des Reports einer Anwendung}]
 {./listings/hadoopAppDetails.txt}
 
-\lstinputlisting[label=lst:hadoopAppStart,
+\lstinputlisting[label=lst:hadoopAppStart,style=plain,
 caption={[Starten einer Anwendung in Hadoop"=Benchmark]
     Starten einer Anwendung in Hadoop"=Benchmark.
     Hier mit dem Mapreduce Example \acl{pi} und dem Abbruch der Anwendung durch den in \autoref{lst:hadoopAppKill} gezeigten Befehl.
-    Die \mbox{\texttt{applicationId}} ist hier in Zeile 13 enthalten.},
-float,style=plain]
+    Die \mbox{\texttt{applicationId}} ist hier in Zeile 13 enthalten.}]
 {./listings/hadoopAppStart.txt}
 
-\lstinputlisting[label=lst:hadoopAppKill,
+\lstinputlisting[label=lst:hadoopAppKill,style=plain,
 caption={[Vorzeitiges Beenden einer Anwendung]
     Vorzeitiges Beenden einer Anwendung.
-    Hier wird die in \autoref{lst:hadoopAppStart} gestartete Anwendung vorzeitig beendet.},
-float,style=plain]
+    Hier wird die in \autoref{lst:hadoopAppStart} gestartete Anwendung vorzeitig beendet.}]
 {./listings/hadoopAppKill.txt}
 
 %\lstinputlisting[label=lst:hadoopAttemptListCmd,

@@ -1,41 +1,40 @@
-public void SimulateHadoop()
+private static TimeSpan _MinStepTime = new TimeSpan(0, 0, 0, 20);
+private static int _BenchmarkSeed = Environment.TickCount;
+private static int _StepCount = 3;
+private static bool _PrecreatedInputs = true;
+private static double _FaultActivationProbability = 0.4;
+private static double _FaultRepairProbability = 0.5;
+private static int _HostsCount = 1;
+private static int _NodeBaseCount = 4;
+private static int _ClientCount = 1;
+
+private Model InitModel()
 {
-  ModelSettings.FaultActivationProbability = 0.0;
-  ModelSettings.FaultRepairProbability = 1.0;
+  ModelSettings.HostMode = ModelSettings.EHostMode.Multihost;
+  ModelSettings.HostsCount = _HostsCount;
+  ModelSettings.NodeBaseCount = _NodeBaseCount;
+  ModelSettings.IsPrecreateBenchInputs = _PrecreatedInputs;
+  ModelSettings.RandomBaseSeed = _BenchmarkSeed;
   
-  ExecuteSimulation();
+  var model = Model.Instance;
+  model.InitModel(appCount: _StepCount, clientCount: _ClientCount);
+  model.Faults.SuppressActivations();
+  
+  return model;
 }
 
-private void ExecuteSimulation(bool isWithFaults)
+private FaultTuple[] CollectYarnNodeFaults(Model model)
 {
-  var origModel = InitModel();
-  
-  var wasFatalError = false;
-  try
-  {
-    var simulator = new SafetySharpSimulator(origModel);
-    var faults = CollectYarnNodeFaults((Model)simulator.Model);
+  return (from node in model.Nodes
     
-    SimulateBenchmarks();
+    from faultField in node.GetType().GetFields()
+    where typeof(Fault).IsAssignableFrom(faultField.FieldType)
     
-    for(var i = 0; i < _StepCount; i++)
-    {
-      OutputUtilities.PrintStepStart();
-      var stepStartTime = DateTime.Now;
-      
-      if(isWithFaults)
-        HandleFaults(faults);
-      simulator.SimulateStep();
-      
-      var stepTime = DateTime.Now - stepStartTime;
-      OutputUtilities.PrintSteptTime(stepTime);
-      if(stepTime < ModelSettings.MinStepTime)
-        Thread.Sleep(ModelSettings.MinStepTime - stepTime);
-      
-      OutputUtilities.PrintFullTrace(((Model)simulator.Model).Controller);
-    }
+    let attr = faultField.GetCustomAttribute<NodeFaultAttribute>()
+    where attr != null
     
-    OutputUtilities.PrintExecutionFinish();
-  }
-  // catch/finally
+    let fault = (Fault)faultField.GetValue(node)
+    
+    select Tuple.Create(fault, attr, node)
+  ).ToArray();
 }

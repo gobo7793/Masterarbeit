@@ -8,12 +8,11 @@ Im Rahmen dieser Masterarbeit relevant waren vom \ac{RM} die Rückgaben der List
 Vom \ac{TLS} relevant waren die Listen für Ausführungen und Container.
 Weitere Informationen zu den hier verwendeten Nutzungsmöglichkeiten sind in der dazugehörigen Dokumentation in \cite{HadoopYarnTlServer271,HadoopRmApi271,HadoopNmApi271} zu finden.
 
-\lstinputlisting[label=lst:hadoopAppListRestRm,
+\lstinputlisting[label=lst:hadoopAppListRestRm,style=json,
 caption={[REST"=-Ausgabe aller Anwendungen vom \acs{RM}]
     REST"=Ausgabe aller Anwendungen vom \ac{RM}.
     Die Liste kann mithilfe verschiedener Query"=Parameter gefiltert werden.\\
-    URL: \url{http://addr:port/ws/v1/cluster/apps}},
-float,style=json]
+    URL: \url{http://addr:port/ws/v1/cluster/apps}}]
 {./listings/hadoopAppListRm.json}
 
 %\lstinputlisting[label=lst:hadoopAppDetailsRestRm,
@@ -30,11 +29,10 @@ float,style=json]
 %float,style=json]
 %{./listings/hadoopAttemptListRm.json}
 
-\lstinputlisting[label=lst:hadoopAttemptListRestTls,
+\lstinputlisting[label=lst:hadoopAttemptListRestTls,style=json,
 caption={[REST"=Ausgabe aller Ausführungen einer Anwendung vom \acs{TLS}]
     REST"=Ausgabe aller Ausführungen einer Anwendung vom \ac{TLS}.\\
-    URL: \url{http://addr:port/ws/v1/applicationhistory/apps/{appid}/appattempts}},
-float,style=json]
+    URL: \url{http://addr:port/ws/v1/applicationhistory/apps/{appid}/appattempts}}]
 {./listings/hadoopAttemptListTls.json}
 
 %\lstinputlisting[label=lst:hadoopContainerListRestRm,

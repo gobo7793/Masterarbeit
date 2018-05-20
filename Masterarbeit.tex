@@ -77,15 +77,17 @@
 \definecolor{bluekeywords}{rgb}{0.13,0.13,1}
 \definecolor{greencomments}{rgb}{0,0.5,0}
 \definecolor{redstrings}{rgb}{0.9,0,0}
-\definecolor{typeidentifier}{RGB}{38, 121,	153}
+\definecolor{typeidentifier}{RGB}{38,121,153}
+\definecolor{backgroundgray}{rgb}{0.95,0.95,0.95}
 \lstdefinestyle{base}{
     basicstyle=\footnotesize\ttfamily,
     frame=single,
+    backgroundcolor=\color{backgroundgray},
     numbers=left,
     numberstyle=\tiny,
     numbersep=7pt,
     breaklines=true,
-    tabsize=3,
+    tabsize=2,
     captionpos=b,
     extendedchars=true,
     showstringspaces=false,
@@ -122,8 +124,7 @@
     stringstyle         = \ifcolonfoundonthisline\JSONstringvaluestyle\fi,
     MoreSelectCharTable =%
     \lst@DefSaveDef{`:}\colon@json{\processColon@json},
-    basicstyle          = \ttfamily,
-    keywordstyle        = \ttfamily\bfseries,
+    keywordstyle        = \bfseries,
 }
 % flip the switch if a colon is found in Pmode
 \newcommand\processColon@json{%

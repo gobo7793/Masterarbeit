@@ -16,13 +16,12 @@ Genauso verhält es sich, wenn ein Node bzw. seine Verbindung wieder aktiviert w
 Außerdem werden die für die auf dem Cluster ausgeführten Anwendungen benötigten \ac{AppMstr} und YARN"=Container aufgrund der komplexen internen Prozesse von Hadoop nicht innerhalb weniger Millisekunden allokiert, sondern benötigen ebenfalls eine gewisse Zeit.
 Aus diesen Gründen darf ein Schritt nicht zu schnell vorüber sein.
 
-\lstinputlisting[label=lst:hadoopSimulationInit,
-caption={[Initialisierung und Ausführung der Simulationen]
-    Initialisierung und Ausführung der Simulationen (gekürzt).},
-float,style=cs]
-{./listings/hadoopSimulationInit.cs}
+\lstinputlisting[label=lst:hadoopSimulation,style=cs,
+caption={[Simulation in dieser Fallstudie]
+    Simulation in dieser Fallstudie (gekürzt).}]
+{./listings/hadoopSimulation.cs}
 
-\autoref{lst:hadoopSimulationInit} zeigt den Ablauf einer Hadoop"=Simulation.
+\autoref{lst:hadoopSimulation} zeigt den Ablauf einer Hadoop"=Simulation.
 Da der Ablauf der Simulation unabhängig von der Aktivierung der Komponentenfehler der gleiche ist, ist hier nur die Variante ohne deren Aktivierung aufgezeigt.
 Im Falle einer Aktivierung der Komponentenfehler unterscheiden sich beide Simulationsvarianten nur durch die Angabe der Wahrscheinlichkeiten zum Aktivieren und Deaktivieren der Komponentenfehler sowie des Übergabeparameters an \texttt{ExecuteSimulation()}.
 Da die einzelnen Schritte einer Simulation eine gewisse Mindestdauer haben, wird nach jedem Schritt geprüft, wie viel Zeit für die Ausführung des Schrittes benötigt wurde.
@@ -33,11 +32,50 @@ Dadurch wird zudem die Simulation beim aktuellen Stand abgebrochen und unabhäng
 
 \subsection{Initialisierung des Modells}\label{sec:simulationModelInit}
 
-% Einfache Variablen
+Bevor das Modell im Simulator ausgeführt werden kann, muss es initialisiert werden.
+Das folgende \autoref{lst:hadoopSimulationInit} zeigt die Definition der Variablen zur Modellinitialisierung sowie die entsprechenden Methoden, die in \autoref{lst:hadoopSimulation} zur Initialisierung aufgerufen werden:
 
+\lstinputlisting[label=lst:hadoopSimulationInit,style=cs,
+caption={Initialisierung des Modells für die Simulation}]
+{./listings/hadoopSimulationInit.cs}
 
-% Variablen mit mehr aktivitäten
+Die einzelnen Variablen für die Simulation werden statisch definiert und beim Initialisieren des Modells in den \texttt{ModelSettings} gespeichert.
+Die dort gespeicherten Werte werden anschließend beim Initialisieren der Modell"=Instanz bzw. während der Ausführung der Simulation genutzt.
 
+Einige Variablen haben lediglich einen Zweck, während andere umfangreichere Auswirkungen besitzen.
+Die einfachen Variablen sind:
+
+\begin{description}
+    \item [\_MinStepTime]
+        Definiert die Mindestdauer eines Schrittes.
+    \item[\_BenchmarkSeed]
+        Gibt den Seed an, mit dem die Zufallsgeneratoren in den Klassen \texttt{BenchmarkController} und \texttt{NodeFaultAttribute} initialisiert werden.
+        Dadurch wird es ermöglicht, einzelne Testfälle erneut ausführen zu können.
+    \item[\_StepCount]
+        Definiert die Anzahl der ausgeführten Schritte.
+    \item[\_FaultActivationProbability]
+        Definiert die grundlegende Häufigkeit zum Injizieren von Komponentenfehlern.
+    \item[\_FaultRepariProbability]
+        Definiert die grundlegende Häufigkeit zum Deaktivieren von Komponentenfehlern.
+    \item[\_HostsCount]
+        Definiert die Anzahl der in der Simulation verwendeten Hosts.
+        Benötigt wird dieser Wert, damit zu jedem verwendeten Host eine SSH"=Verbindung aufgebaut werden kann.
+    \item[\_NodeBaseCount]
+        Definiert die Anzahl der Nodes auf Host1.
+        Auf Host2 wird die Hälfte der Nodes verwendet.
+        Benötigt wird dieser Wert, um mithilfe der REST"=API auf die Hadoop"=Nodes zugreifen zu können, um die Daten der YARN"=Container zu ermitteln.
+    \item[\_ClientCount]
+        Definiert die Anzahl der zu simulierenden Clients.
+        Da jeder Client gleichzeitig nur eine Anwendung startet, wird dadurch gleichzeitig definiert, wie viele Anwendungen gleichzeitig auf dem Cluster ausgeführt werden sollen.
+\end{description}
+
+Eine Besonderheit bildet die Variable \texttt{\_PrecreatedInputs}.
+Sie definiert, ob die ausgeführten Anwendungen auf dem Cluster vorab generierte Eingabedaten nutzen oder alle Eingabedaten während der Ausführung selbst generieren.
+Der Unterschied zwischen beiden Varianten liegt darin, dass vorab generierte Eingabedaten in einem anderen Verzeichnis im \ac{HDFS} gespeichert sind und während der Simulation die Eingabedaten aus diesem Verzeichnis gelesen werden.
+Wenn keine Eingabedaten vorab generiert werden, werden als Eingabeverzeichnisse für die Anwendungen die Ausgabeverzeichnisse der entsprechenden Benchmarks genutzt, die die dafür benötigten Daten generieren.
+Der genaue Ablauf der Bereitstellung der Eingabedaten wird in \todo{Vorabgenerierung der Eingabedaten irgendwo schreiben und hier drauf verweisen} beschrieben.
+
+Die Auswirkungen der in \texttt{InitModel()} definierten Einstellung \texttt{ModelSettings.HostMode} wird in \todo{ModelSettings.HostMode beschrieben und hier verweisen} beschrieben.
 
 \subsection{Ablauf eines Simulations"=Schrittes}\label{sec:simulationStep}
 
@@ -46,6 +84,7 @@ Während die \nameref{sec:simulationFaultActivation} komplett außerhalb des Mod
 Die \nameref{sec:simulationStepOutput} werden direkt von den jeweils betroffenen Komponenten im Rahmen des normalen Loggings durchgeführt.
 
 \subsubsection{Aktivierung der Komponentenfehler}\label{sec:simulationFaultActivation}
+
 
 
 \subsubsection{Ausführung Benchmarks}\label{sec:simulationBenchmarkExecution}
@@ -58,3 +97,7 @@ Die \nameref{sec:simulationStepOutput} werden direkt von den jeweils betroffenen
 
 
 \subsubsection{Ausgaben während eines Schrittes}\label{sec:simulationStepOutput}
+
+
+\subsection{Weitere Möglichkeiten der Simulation}\label{sec:simulationUtilities}
+% noch nicht genannte Methoden/Tests erklären
