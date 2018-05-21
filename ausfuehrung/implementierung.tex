@@ -54,9 +54,12 @@ Die einfachen Variablen sind:
     \item[\_StepCount]
         Definiert die Anzahl der ausgeführten Schritte.
     \item[\_FaultActivationProbability]
-        Definiert die grundlegende Häufigkeit zum Injizieren von Komponentenfehlern.
+        Definiert die generelle Häufigkeit zum Aktivieren von Komponentenfehlern.
+        Ist dieser Wert 0,0, werden grundsätzlich keine Komponentenfehler aktiviert, bei einem Wert von 1,0 werden Komponentenfehler dagegen immer aktiviert.
     \item[\_FaultRepariProbability]
-        Definiert die grundlegende Häufigkeit zum Deaktivieren von Komponentenfehlern.
+        Definiert die generelle Häufigkeit zum Deaktivieren von Komponentenfehlern.
+        Die hier definierte Wahrscheinlichkeit verhält sich analog zu \texttt{\_FaultActivationProbability}.
+        Bei einem Wert von 0,0 werden Komponentenfehler niemals deaktiviert, während sie bei einem Wert von 1,0 im nachfolgenden Schritt immer deaktiviert werden.
     \item[\_HostsCount]
         Definiert die Anzahl der in der Simulation verwendeten Hosts.
         Benötigt wird dieser Wert, damit zu jedem verwendeten Host eine SSH"=Verbindung aufgebaut werden kann.
@@ -75,17 +78,59 @@ Der Unterschied zwischen beiden Varianten liegt darin, dass vorab generierte Ein
 Wenn keine Eingabedaten vorab generiert werden, werden als Eingabeverzeichnisse für die Anwendungen die Ausgabeverzeichnisse der entsprechenden Benchmarks genutzt, die die dafür benötigten Daten generieren.
 Der genaue Ablauf der Bereitstellung der Eingabedaten wird in \todo{Vorabgenerierung der Eingabedaten irgendwo schreiben und hier drauf verweisen} beschrieben.
 
-Die Auswirkungen der in \texttt{InitModel()} definierten Einstellung \texttt{ModelSettings.HostMode} wird in \todo{ModelSettings.HostMode beschrieben und hier verweisen} beschrieben.
+Die Auswirkungen der in \texttt{InitModel()} definierten Einstellung \texttt{ModelSettings.Host""Mode} wird in \todo{ModelSettings.HostMode beschrieben und hier verweisen} beschrieben.
+
+Die direkt im Anschluss an die Initialisierung des Simulators ausgerufene Methode \texttt{CollectYarnNodeFaults()} ermittelt alle im Modell enthaltenen Komponentenfehler, die mit dem \texttt{NodeFaultAttribute} markiert sind.
+Die gefundenen Komponentenfehler werden als Array aus Tupel, bestehend aus dem Komponentenfehler selbst, dem Attribut sowie dem dazugehörigen Node zurückgegeben.
+Die jeweiligen Instanzen der Attribute und Nodes werden für die in \autoref{sec:simulationFaultActivation} beschriebene Aktivierung der dazugehörigen Komponentenfehler benötigt.
 
 \subsection{Ablauf eines Simulations"=Schrittes}\label{sec:simulationStep}
 
 Der Ablauf eines Schrittes lässt sich in die folgenden fünf Abschnitte einteilen.
-Während die \nameref{sec:simulationFaultActivation} komplett außerhalb des Modells durch den Simulator erfolgt, werden die anderen Abschnitte durch den \texttt{YarnController} innerhalb des Modells durchgeführt.
+Während die \nameref{sec:simulationFaultActivation} komplett außerhalb des Modells und durch den Simulator erfolgt, werden die anderen Abschnitte durch den \texttt{YarnController} innerhalb des Modells während der Ausführung eines Simulations"=Schrittes durchgeführt.
 Die \nameref{sec:simulationStepOutput} werden direkt von den jeweils betroffenen Komponenten im Rahmen des normalen Loggings durchgeführt.
 
-\subsubsection{Aktivierung der Komponentenfehler}\label{sec:simulationFaultActivation}
+\subsubsection{Aktivierung und Deaktivierung der Komponentenfehler}\label{sec:simulationFaultActivation}
 
+Die Aktivierung der Komponentenfehler läuft in jeweils drei Schritten ab.
+Der erste Schritt ist die Prüfung, ob der Fehler bereits aktiviert wurde.
+Bei einem derzeit nicht injizierten Komponentenfehler, wird im zweiten Schritt geprüft, ob der Fehler aktiviert werden soll bevor er im dritten Schritt aktiviert und damit zur Injizierung im realen Cluster durch den \sS"=Simulator freigegeben wird.
 
+Zur Entscheidung, ob ein Komponentenfehler aktiviert wird, hängt von folgenden Parametern ab:
+
+\begin{itemize}
+    \item Von der Auslastung des Nodes im vorhergehenden Simulationsschritt,
+    \item von der in \texttt{ModelSettings.FaultActivationProbability} definierten generellen Wahrscheinlichkeit zur Fehleraktivierung,
+    \item sowie von einer Zufallszahl.
+\end{itemize}
+
+Zur Entscheidung, ob ein Komponentenfehler aktiviert wird, werden diese Parameter miteinander verrechnet und somit Entschieden, ob er aktiviert wird:
+
+\begin{algorithm}
+    \label{alg:faultActivation}
+    \caption{Entscheidung zur Aktivierung von Komponentenfehlern}
+    \begin{algorithmic}[1]
+        \STATE $nodeUsage \gets (memUsage + cpuUsage) / 2$
+        \IF{$nodeUsage < 0.1$}
+            \STATE $nodeUsage \gets 0.1$
+        \ENDIF
+        \IF{$nodeUsage > 0.9$}
+            \STATE $nodeUsage \gets 0.9$
+        \ENDIF
+        \STATE $faultProbability \gets 1 - (nodeUsage * ActivationProbability * 2)$
+        \STATE $randomValue \gets GetRandomDouble()$
+        \IF{$faultProbability < randomValue$}
+            \RETURN \TRUE \COMMENT{Activate}
+        \ELSE
+            \RETURN \FALSE \COMMENT{No activation}
+        \ENDIF
+    \end{algorithmic}
+\end{algorithm}
+
+Die Entscheidung zur Deaktivierung eines Komponentenfehlers verhält sich analog.
+Anstatt der generellen Aktivierungswahrscheinlichkeit in \texttt{ModelSettings.Fault""ActivationProbability} wird die generelle Wahrscheinlichkeit zur Deaktivierung in \texttt{ModelSettings.FaultRepairProbability} genutzt.
+Außerdem spielt bei der Deaktivierung die Auslastung des Nodes zum Zeitpunkt der Aktivierung eine Rolle.
+Der grundlegende Algorithmus zur Entscheidung ist jedoch gleich.
 
 \subsubsection{Ausführung Benchmarks}\label{sec:simulationBenchmarkExecution}
 
