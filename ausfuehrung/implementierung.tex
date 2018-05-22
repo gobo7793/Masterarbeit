@@ -87,8 +87,8 @@ Die jeweiligen Instanzen der Attribute und Nodes werden für die in \autoref{sec
 \subsection{Ablauf eines Simulations"=Schrittes}\label{sec:simulationStep}
 
 Der Ablauf eines Schrittes lässt sich in die folgenden fünf Abschnitte einteilen.
-Während die \nameref{sec:simulationFaultActivation} komplett außerhalb des Modells und durch den Simulator erfolgt, werden die anderen Abschnitte durch den \texttt{YarnController} innerhalb des Modells während der Ausführung eines Simulations"=Schrittes durchgeführt.
-Die \nameref{sec:simulationStepOutput} werden direkt von den jeweils betroffenen Komponenten im Rahmen des normalen Loggings durchgeführt.
+Während die \nameref{sec:simulationFaultActivation} komplett außerhalb des Modells und durch den Simulator erfolgt (durch die in \autoref{lst:hadoopSimulation} aufgerufene \texttt{HandleFaults()}"=Methode), werden die anderen Abschnitte durch die \texttt{Update()}"=Methode des \texttt{YarnController}s innerhalb des Modells während der Ausführung eines Simulations"=Schrittes ausgeführt.
+Die \nameref{sec:simulationStepOutput} werden dagegen gemischt durchgeführt.
 
 \subsubsection{Aktivierung und Deaktivierung der Komponentenfehler}\label{sec:simulationFaultActivation}
 
@@ -134,6 +134,18 @@ Der grundlegende Algorithmus zur Entscheidung ist jedoch gleich.
 
 \subsubsection{Ausführung Benchmarks}\label{sec:simulationBenchmarkExecution}
 
+Damit die Ausführung der Benchmarks vor dem Monitoring der Anwendungen sowie dem Auswerten der Constraints durch das Oracle stattfindet, wird die Ausführung der Benchmarks ebenfalls durch den \texttt{YarnController} gestartet.
+Dazu wird für jeden Client die entsprechende Methode aufgerufen, welche ihrerseits den in \autoref{sec:appImplementation} erläuterten \texttt{BenchmarkController} nutzt, um den folgenden Benchmark zu bestimmen und im Falle eines Wechsels des Benchmarks diesen zu starten:
+
+\lstinputlisting[label=lst:hadoopSimulationStartBenchmark,style=cs,
+caption={[Auswahl und Start des nachfolgenden Benchmarks]
+    Auswahl und Start des nachfolgenden Benchmarks. Die Methode \texttt{BenchmarkController.ChangeBenchmark()} ist in \autoref{lst:benchmarkChanging} zu sehen.}]
+{./listings/hadoopSimulationStartBenchmark.cs}
+
+Da ein Client auf dem Cluster nur eine Anwendung gleichzeitig ausführt, wird zunächst der zuvor ausgeführte Benchmark abgebrochen.
+Bevor der neue Benchmark im Anschluss auf dem Cluster gestartet werden kann, wird zunächst geprüft, ob das Ausgabeverzeichnis der Anwendung im \ac{HDFS} vorhanden ist und gelöscht, da die Anwendung auf dem Cluster andernfalls nicht gestartet werden kann.
+Beim Starten der zum Benchmark zugehörigen Anwendung wird zunächst solange gewartet, bis der Anwendung vom \ac{RM} eine \emph{Application ID} zugewiesen wurde, da diese in einer \texttt{YarnApp}"=Instanz sowie in \texttt{Client.CurrentExecutingAppId} gespeichert wird.
+Sollte keine \texttt{YarnApp}"=Instanz mehr verfügbar sein, wird stattdessen eine \texttt{OutOfMemoryException} ausgelöst, da während der Simulation keine neuen Instanzen erzeugt werden dürfen.
 
 \subsubsection{Monitoring der ausgeführten Anwendungen}\label{sec:simulationMonitoring}
 
