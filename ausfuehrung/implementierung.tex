@@ -139,7 +139,8 @@ Dazu wird für jeden Client die entsprechende Methode aufgerufen, welche ihrerse
 
 \lstinputlisting[label=lst:hadoopSimulationStartBenchmark,style=cs,
 caption={[Auswahl und Start des nachfolgenden Benchmarks]
-    Auswahl und Start des nachfolgenden Benchmarks. Die Methode \texttt{BenchmarkController.ChangeBenchmark()} ist in \autoref{lst:benchmarkChanging} zu sehen.}]
+    Auswahl und Start des nachfolgenden Benchmarks.
+    Die Methode \texttt{BenchmarkController.ChangeBenchmark()} ist in \autoref{lst:benchmarkChanging} zu sehen.}]
 {./listings/hadoopSimulationStartBenchmark.cs}
 
 Da ein Client auf dem Cluster nur eine Anwendung gleichzeitig ausführt, wird zunächst der zuvor ausgeführte Benchmark abgebrochen.
@@ -149,6 +150,30 @@ Sollte keine \texttt{YarnApp}"=Instanz mehr verfügbar sein, wird stattdessen ei
 
 \subsubsection{Monitoring der ausgeführten Anwendungen}\label{sec:simulationMonitoring}
 
+Bevor das Monitoring der Anwendungen durchgeführt wird, wird zunächst drei Sekunden gewartet, bis der \ac{AppMstr} sowie weitere Container der Anwendung gestartet wurden.
+Die Wartezeit ist prinzipiell optional, wird hier jedoch genutzt, damit die Auslastung des Clusters besser ermittelt werden kann.
+
+Beim Monitoring werden zunächst die Daten der Nodes, danach die der Anwendungen, ihrer Attempts und zum Abschluss deren Container ermittelt.
+Für das Monitoring selbst gib es zwei Ausführungsvarianten.
+Die eine Variante liegt darin, dass jede \texttt{IYarnComponent} (also Nodes, Anwendungen, Attempts und Container) jeweils ihre eigenen Daten ermittelt.
+Entwickelt wurde diese Variante vor allem für das Monitoring durch die entsprechenden Kommandozeilen"=Befehle.
+Die zweite Variante, welche optimal zur Nutzung der REST"=API von Hadoop ist, liegt darin, dass die jeweils übergeordnete Komponente alle Daten für all ihre jeweils untergeordneten Komponenten ermittelt und zur Speicherung übergibt.
+Unterschieden werden die beiden Variante durch die Variable \texttt{IYarnComponent.IsSelfMonitoring}:
+
+\lstinputlisting[label=lst:hadoopSimulationMonitoring,style=cs,
+caption={[Monitoring der Anwendungen]
+    Monitoring der Anwendungen (gekürzt).
+    Wenn \texttt{IsSelfMonitoring} auf \texttt{false} gesetzt ist, werden die Daten der Anwendung selbst bereits vom \texttt{YarnController} ermittelt und mithilfe von \texttt{YarnApp.SetStatus} gespeichert, analog zu den Attempts, deren Status hier bereits gespeichert wird.}]
+{./listings/hadoopSimulationMonitoring.cs}
+
+Die \texttt{OutOfMemoryException} im vorangegangenen \autoref{lst:hadoopSimulationMonitoring} ist analog zur gleichen Ausnahme beim Starten der Anwendung und wird dann ausgelöst, wenn bereits alle \texttt{YarnAppAttempt}"=Instanzen für diese Anwendung belegt sind.
+
+Das Monitoring der Container bietet eine Besonderheit.
+Während bei Anwendungen und Attempts auch die Daten von beendeten Anwendungen ermittelt und gespeichert werden, ist dies bei beendeten Containern nicht der Fall.
+Das Monitoring für Container wird nur für derzeit aktive Container durchgeführt.
+Dies schließt die Nutzung des \ac{TLS} von Hadoop ein.
+Während bei den Anwendungen und Attempts auch solche, deren Daten ausschließlich beim \ac{TLS} gespeichert sind, ermittelt werden, werden die Daten des \ac{TLS} bei Containern nur als Ergänzung der Daten von derzeit ausgeführten Containern vom \ac{RM} genutzt.
+Zudem werden bei jedem Schritt die zuvor ausgeführten Container gelöscht bzw. deren Instanzen geleert, bevor die Daten der derzeit ausgeführten Container ermittelt werden.
 
 \subsubsection{Prüfungen durch das Oracle}\label{sec:simulationOracle}
 
