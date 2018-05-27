@@ -33,17 +33,17 @@ Dadurch wird zudem die Simulation beim aktuellen Stand abgebrochen und unabhäng
 \subsection{Initialisierung des Modells}\label{sec:simulationModelInit}
 
 Bevor das Modell im Simulator ausgeführt werden kann, muss es initialisiert werden.
-Das folgende \autoref{lst:hadoopSimulationInit} zeigt die Definition der Variablen zur Modellinitialisierung sowie die entsprechenden Methoden, die in \autoref{lst:hadoopSimulation} zur Initialisierung aufgerufen werden:
+Das folgende \autoref{lst:hadoopSimulationInit} zeigt die Definition der Felder zur Modellinitialisierung sowie die entsprechenden Methoden, die in \autoref{lst:hadoopSimulation} zur Initialisierung aufgerufen werden:
 
 \lstinputlisting[label=lst:hadoopSimulationInit,style=cs,
 caption={Initialisierung des Modells für die Simulation}]
 {./listings/hadoopSimulationInit.cs}
 
-Die einzelnen Variablen für die Simulation werden statisch definiert und beim Initialisieren des Modells in den \texttt{ModelSettings} gespeichert.
+Die einzelnen Felder für die Simulation werden statisch definiert und beim Initialisieren des Modells in den \texttt{ModelSettings} gespeichert.
 Die dort gespeicherten Werte werden anschließend beim Initialisieren der Modell"=Instanz bzw. während der Ausführung der Simulation genutzt.
 
-Einige Variablen haben lediglich einen Zweck, während andere umfangreichere Auswirkungen besitzen.
-Die einfachen Variablen sind:
+Einige Felder haben lediglich einen Zweck, während andere umfangreichere Auswirkungen besitzen.
+Die einfachen Felder sind:
 
 \begin{description}
     \item [\_MinStepTime]
@@ -179,7 +179,7 @@ Zudem werden bei jedem Schritt die zuvor ausgeführten Container gelöscht bzw. 
 
 Im Anschluss an das Monitoring erfolgt die Prüfung der Constraints durch das Oracle.
 Das Oracle prüft hierbei analog zum Monitoring zunächst die Nodes und danach die Anwendungen, Attempts und Container auf ihre Constraints.
-Hierbei wird geprüft, ob die in \todo{verweis zu Anforderungen} in Form der Constraints für die jeweiligen Komponenten noch erfüllt werden können.
+Hierbei wird zunächst geprüft, ob die in \todo{verweis zu Anforderungen} beschrieben funktionalen Anforderungen an Hadoop in Form der Constraints für die jeweiligen Komponenten noch erfüllt werden können.
 Ist das nicht der Fall, wird de geloggt und die weiteren Komponenten geprüft.
 
 Das Oracle prüft auch, ob für das Cluster eine weitere Rekonfiguration möglich ist.
@@ -190,6 +190,10 @@ caption={Prüfung nach der Möglichkeit weiterer Rekonfigurationen}]
 {./listings/hadoopSimulationReconf.cs}
 
 Ist eine Rekonfiguration nicht mehr möglich, wird durch die hierbei ausgelöste \texttt{Exception} die gesamte Simulation abgebrochen.
+
+Zum Abschluss eines Schrittes werden die in \todo{behauptungen im evaluationsplan} beschriebenen Behauptungen an das Testverfahren selbst geprüft.
+Hierbei können jedoch nicht alle Behauptungen in Form von Constraints durch das Oracle automatisch während der Ausführung geprüft werden.
+Zudem können auch nicht alle Constraints direkt innerhalb des Modells während der Ausführung eines Simulations"=Schrittes geprüft werden, weshalb außerhalb der Simulation ebenfalls Constraints definiert sind, die zum Abschluss der Simulation geprüft werden.
 
 \subsubsection{Ausgaben während eines Schrittes}\label{sec:simulationStepOutput}
 
@@ -205,7 +209,7 @@ Einige weitere Parameter, die direkt während der Ausführung eines Schrittes au
 \end{itemize}
 
 Die beim Monitoring ermittelten Daten werden nach der Ausführung eines Schrittes ausgegeben.
-Ausgegeben und im Log gespeichert werden dabei folgende Eigenschaften der jeweiligen Komponenten bzw. Klassen: \todo{Auflistung in der Form zum Evaluationsplan, hier eher das Format}
+Die in \todo{Verweis auf Evaluationsplan-Ausgaben} definierten Ausgaben der Eigenschaften der jeweiligen Komponenten werden im folgenden Format ausgegeben:
 
 \begin{itemize}
     \item Für jeden Node der \texttt{YarnNode}"=Klasse:
