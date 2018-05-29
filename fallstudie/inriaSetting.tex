@@ -1,10 +1,13 @@
 \section{Adaptive Komponente in Hadoop}\label{sec:inriaSetting}
 
+\todo{Text besser an neue unterabschnitte anpassen}
 Eine normale Hadoop"=Installation besitzt keine adaptive Komponente, sondern rein statische Einstellungen.
 Um damit Hadoop zu optimieren, müssen die Einstellungen immer manuell auf den jeweils benötigten Anwendungstyp angepasst werden.
 Dazu gibt es auch bereits verschiedene Scheduler, den \emph{Fair Scheduler}, welcher alle Anwendungen ausführt und ihnen gleich viele Ressourcen zuteilt, und den \emph{Capacity Scheduler}.
 Letzterer sorgt dafür, dass nur eine bestimmte Anzahl an Anwendungen pro Benutzter gleichzeitig ausgeführt wird und teilt ihnen so viele Ressourcen zu, wie benötigt werden bzw. der Benutzter nutzen darf.
 Entwickelt wurde der Capacity Scheduler vor allem für Cluster, die von mehreren Organisationen gemeinsam verwendet werden und sicherstellen soll, dass jede Organisation eine Mindestmenge an Ressourcen zur Verfügung hat \cite{HadoopCapScheduler271}.
+
+\subsection{MARP"=Werte}\label{sec:selfbalancingMarp}
 
 Je nach Bedarf besitzt der Capacity Scheduler entsprechende Einstellungen, um \zB den verfügbaren Speicher pro Container festzulegen.
 Eine weitere Einstellung des Schedulers ist \acl{MARP}, auch \acs{MARP} gennant\acused{MARP}, der angibt, wie viele Prozent der gesamten Ressourcen durch \ac{AppMstr}"=Container genutzt werden dürfen \cite{HadoopCapScheduler271}.
@@ -30,3 +33,32 @@ Die Selfbalancing"=Komponente passt daher den \ac{MARP}"=Wert abhängig von der 
 So wird der \ac{MARP}"=Wert verringert, wenn die Speicherauslastung sehr hoch ist, und erhöht, wenn die Speicherauslastung sehr niedrig ist \cite{zhang2016}.
 Dadurch wird es ermöglicht, dass die maximal mögliche Anzahl an Anwendungen ausgeführt werden kann.
 Die Evaluation von \citeauthor{zhang2016} ergab zudem, dass die dynamische Anpassung des \ac{MARP}"=Wertes darüber hinaus auch effizienter ist als eine manuelle, statische Optimierung.
+
+\subsection{Analyse der Selfbalancing"=Komponente}\label{sec:selfbalancingAnalysis}
+
+% aus was besteht die Komponente
+Da in dieser Fallstudie auch Mutationstests zum Einsatz kommen, bei denen die Selfbalancing"=Komponente entsprechend verändert wird (vgl. \autoref{sec:implMutationTests}), wurde die Komponente zunächst analyisiert.
+Sie besteht aus folgenden vier Java"=Klassen und drei Shell"=Scripten:
+
+\begin{itemize}
+    \item Java"=Klassen:
+    \begin{itemize}
+        \item \texttt{controller.Controller}
+        \item \texttt{effectuator.Effectuator}
+        \item \texttt{monitor.ControlNodeMonitor}
+        \item \texttt{monitor.MemUtilization}
+    \end{itemize}
+    \item Shell"=Scripte:
+    \begin{itemize}
+        \item \texttt{selfTuning-CapacityScheduler.sh}
+        \item \texttt{selfTuning-controlNode.sh}
+        \item \texttt{selfTuning-mem-controlNode.sh}
+    \end{itemize}
+\end{itemize}
+
+Um Messfehler auszugleichen bzw. zu reduzieren nutzt die Komponente zudem einen Kalman"=Filter, welcher in Form der Open"=Source"=Bibliotek JKalman\footnote{\url{https://jkalman.sourceforge.io/}} eingebunden ist.
+\todo{literatur zum kalman?}
+
+% was machen die .sh
+
+% was machen die .java
