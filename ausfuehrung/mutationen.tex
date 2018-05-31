@@ -1,5 +1,7 @@
 \section{Implementierungen für Mutationstests}\label{sec:implMutationTests}
 
-Da in dieser Arbeit nicht nur Hadoop bzw. die adaptive Komponente getestet werden soll, sondern vor allem das in den vorherigen Abschnitten und Kapiteln beschriebene Modell und Simulation zum Testen, wurden auch einige Mutationstests entwickelt.
-Implementiert wurden die Mutationstests in der bereits in \autoref{sec:inriaSetting} beschriebenen, adaptiven Komponente, wodurch einzelne Bestandteile der Komponente fehlerhaft gemacht wurden und daher nicht mehr korrekt funktionieren.
-
+Da in dieser Arbeit nicht nur Hadoop bzw. die Selfbalancing"=Komponente getestet werden soll, sondern vor allem das in den vorherigen Abschnitten und Kapiteln beschriebene Modell und Simulation zum Testen, wurden auch einige Mutationstests entwickelt.
+Implementiert wurden die Mutationstests in der bereits in \autoref{sec:inriaSetting} beschriebenen, Selfbalancing"=Komponente, wodurch einzelne Bestandteile fehlerhaft gemacht wurden und daher nicht mehr korrekt funktionieren.
+Konkret wurden hierbei die Monitoring"=Möglichkeiten eingeschränkt.
+Dazu wird zum einen verhindert, dass die Anzahl der aktiven und wartenden Anwendungen in die \emph{controlLog}"=Datei geschrieben werden.
+Zum anderen wird verhindert, dass die Menge des verwendeten Arbeitsspeichers durch die derzeit ausgeführten Anwendnungen in der \emph{memLog}"=Datei gespeichert wird.
