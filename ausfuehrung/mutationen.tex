@@ -2,6 +2,17 @@
 
 Da in dieser Arbeit nicht nur Hadoop bzw. die Selfbalancing"=Komponente getestet werden soll, sondern vor allem das in den vorherigen Abschnitten und Kapiteln beschriebene Modell und Simulation zum Testen, wurden auch einige Mutationstests entwickelt.
 Implementiert wurden die Mutationstests in der bereits in \autoref{sec:inriaSetting} beschriebenen, Selfbalancing"=Komponente, wodurch einzelne Bestandteile fehlerhaft gemacht wurden und daher nicht mehr korrekt funktionieren.
-Konkret wurden hierbei die Monitoring"=Möglichkeiten eingeschränkt.
-Dazu wird zum einen verhindert, dass die Anzahl der aktiven und wartenden Anwendungen in die \emph{controlLog}"=Datei geschrieben werden.
-Zum anderen wird verhindert, dass die Menge des verwendeten Arbeitsspeichers durch die derzeit ausgeführten Anwendnungen in der \emph{memLog}"=Datei gespeichert wird.
+Hierfür wurden drei Mutationsszenarien entwickelt:
+
+\begin{description}
+    \item [mut1: Einschränkung des Monitoring]
+        Hierfür wurden die Monitoring"=Möglichkeiten der Selfbalancing"=Komponente eingeschränkt.
+        Es wird dabei verhindert, dass die Anzahl der aktiven und wartenden Jobs in die \emph{controlLog}"=Datei geschrieben werden, aus welcher der Controller der Komponente die Daten ermittelt.
+        Ebenso wurde verhindert, dass der Anteil des von Anwendungscontainer benötigten Arbeitsspeichers des Clusters in der \emph{memLog}"=Datei gespeichert wird.
+        Dadurch erhält der Controller der Selfbalancing"=Komponente nicht mehr alle benötigten Daten, um den \ac{MARP}"=Wert auf einen optimalen Wert anpassen zu können.
+    \item [mut2]
+    \item [mut3]
+\end{description}
+
+Für jedes der drei Szenarien wurde ein entsprechendes Szenario im Rahmen der Plattform Hadoop"=Benchmark entwickelt.
+Dadurch ist es möglich, die einzelnen Szenarien genauso zu starten, wie ein Testfall ohne Mutationstest.
