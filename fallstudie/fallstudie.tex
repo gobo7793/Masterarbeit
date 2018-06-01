@@ -1,10 +1,13 @@
-\chapter{Aufbau der Fallstudie}\label{sec:fallstudie}
+\chapter{Aufbau der Fallstudie}
+\label{sec:fallstudie}
 
-In der Fallstudie im Rahmen dieser Masterarbeit wird \textbf{Apache\texttrademark Hadoop\textregistered}\footnote{\url{https://hadoop.apache.org/}} mithilfe eines modellbasierten Tests getestet.
-Da Hadoop normalerweise keine adaptive Komponente besitzt, wurde Hadoop mit der von \citeauthor{zhang2016} entwickelten selbst"=adaptiven Komponente erweitert und ein Cluster mithilfe der ebenfalls von \citeauthor{zhang2016} entwickelten Plattform Hadoop"=Benchmark erstellt.
+Im Rahmen dieser Masterarbeit soll nun mithilfe von Hadoop und der Selfbalancing"=Komponente eine Fallstudie durchgeführt werden, durch die ermittelt wird, unter welchen Umständen eine Testautoamtisierung möglich ist.
+Dazu werden zunächst Anforderungen an das Hadoop"=System selbst gestellt, die es im Rahmen dieser Tests erfüllen soll.
+Neben diesen funktionalen Anforderungen werden aber auch Anforderungen an das Testsystem selbst gestellt, die durch die Tests selbst erfüllt sein sollen.
+Zur Realisierung dieser Tests wird für das reale Cluster die von \citeauthor{zhang2016} entwickelte Plattform Hadoop"=Benchmark genutzt.
 
-\todo{(funktionale) Anforderungen einfügen}
+\input{./fallstudie/anforderungen}
 
-\input{./fallstudie/inriaSetting}
+\input{./fallstudie/evaluationsplan}
 
 \input{./fallstudie/aufbauCluster}

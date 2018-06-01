@@ -1,46 +1,21 @@
-\addchap{Verzeichnisse}
+%\addchap{Verzeichnisse}
 
+\addcontentsline{toc}{chapter}{Literatur}
+%\renewcommand\refname{Literatur}
+\printbibliography
+
+\addcontentsline{toc}{chapter}{Abbildungsverzeichnis}
 %\renewcommand{\listfigurename}{Abbildungen}
 \listoffigures
 
+\addcontentsline{toc}{chapter}{Listings}
 %\renewcommand{\lstlistlistingname}{Listings}
 \lstlistoflistings
 
+\addcontentsline{toc}{chapter}{Tabellenverzeichnis}
 %\renewcommand{\listtablename}{Tabellen}
 \listoftables
 
-\todo{Algorithmen-Vezeichnis...}
+\addcontentsline{toc}{chapter}{Verzeichnis der Algorithmen}
 %\renewcommand{\listalgorithmname}{Algorithmen}
-%\listofalgorithms
-
-%\section*{Abkürzungen}\addcontentsline{toc}{section}{Abkürzungen}
-\addsec{Abkürzungsverzeichnis}%\addcontentsline{toc}{section}{Abkürzungsverzeichnis}
-\begin{acronym}[AppMstr]
-    \acro{AM}{ApplicationManager}
-    \acro{AppMstr}{ApplicationMaster}
-    \acro{DCCA}{Deductive Cause-Consequence Analysis}
-    \acro{HDFS}{Hadoop Distributed File System}
-    \acro{MARP}{\texttt{maximum-am-resource-percent}}
-    \acro{MC}{Model Checking}
-    \acro{MCr}[MC]{Model Checker}
-    \acro{NM}{NodeManager}
-    \acro{RM}{ResourceManager}
-    \acro{ss}[S\#]{Safety Sharp}
-    \acro{SWIM}{Statistical Workload Injector for Mapreduce}
-    \acro{TLS}{Timeline-Server}
-    
-    \acro{dfw}{\texttt{TestDFSIO -write}}
-    \acro{rtw}{\texttt{randomtextwriter}}
-    \acro{tg}{\texttt{teragen}}
-    \acro{dfr}{\texttt{TestDFSIO -read}}
-    \acro{wc}{\texttt{wordcount}}
-    \acro{rw}{\texttt{randomwriter}}
-    \acro{so}{\texttt{sort}}
-    \acro{tsr}{\texttt{terasort}}
-    \acro{pi}{\texttt{pi}}
-    \acro{pt}{\texttt{pentomino}}
-    \acro{tms}{\texttt{testmapredsort}}
-    \acro{tvl}{\texttt{teravalidate}}
-    \acro{sl}{\texttt{sleep}}
-    \acro{fl}{\texttt{fail}}
-\end{acronym}
+\listofalgorithms

@@ -1,14 +1,15 @@
-\section{Adaptive Komponente in Hadoop}\label{sec:inriaSetting}
+\section{Adaptive Komponente in Hadoop}
+\label{sec:inriaSetting}
 
 \todo{Text besser an neue unterabschnitte anpassen}
-\todo{Nach Grundlagen verschieben?}
 Eine normale Hadoop"=Installation besitzt keine adaptive Komponente, sondern rein statische Einstellungen.
 Um damit Hadoop zu optimieren, müssen die Einstellungen immer manuell auf den jeweils benötigten Anwendungstyp angepasst werden.
 Dazu gibt es auch bereits verschiedene Scheduler, den \emph{Fair Scheduler}, welcher alle Anwendungen ausführt und ihnen gleich viele Ressourcen zuteilt, und den \emph{Capacity Scheduler}.
 Letzterer sorgt dafür, dass nur eine bestimmte Anzahl an Anwendungen pro Benutzter gleichzeitig ausgeführt wird und teilt ihnen so viele Ressourcen zu, wie benötigt werden bzw. der Benutzter nutzen darf.
 Entwickelt wurde der Capacity Scheduler vor allem für Cluster, die von mehreren Organisationen gemeinsam verwendet werden und sicherstellen soll, dass jede Organisation eine Mindestmenge an Ressourcen zur Verfügung hat \cite{HadoopCapScheduler271}.
 
-\subsection{MARP"=Werte}\label{sec:selfbalancingMarp}
+\subsection{MARP"=Werte}
+\label{sec:selfbalancingMarp}
 
 Je nach Bedarf besitzt der Capacity Scheduler entsprechende Einstellungen, um \zB den verfügbaren Speicher pro Container festzulegen.
 Eine weitere Einstellung des Schedulers ist \acl{MARP}, auch \acs{MARP} gennant\acused{MARP}, der angibt, wie viele Prozent der gesamten Ressourcen durch \ac{AppMstr}"=Container genutzt werden dürfen \cite{HadoopCapScheduler271}.
@@ -36,7 +37,8 @@ So wird der \ac{MARP}"=Wert verringert, wenn die Speicherauslastung sehr hoch is
 Dadurch wird es ermöglicht, dass die maximal mögliche Anzahl an Anwendungen ausgeführt werden kann.
 Die Evaluation von \citeauthor{zhang2016} ergab zudem, dass die dynamische Anpassung des \ac{MARP}"=Wertes darüber hinaus auch effizienter ist als eine manuelle, statische Optimierung.
 
-\subsection{Analyse der Selfbalancing"=Komponente}\label{sec:selfbalancingAnalysis}
+\subsection{Analyse der Selfbalancing"=Komponente}
+\label{sec:selfbalancingAnalysis}
 
 Da in dieser Fallstudie auch Mutationstests zum Einsatz kommen, bei denen die Selfbalancing"=Komponente entsprechend verändert wird (vgl. \autoref{sec:implMutationTests}), wurde die Komponente zunächst analyisiert.
 Sie besteht aus folgenden vier Java"=Klassen und drei Shell"=Scripten:

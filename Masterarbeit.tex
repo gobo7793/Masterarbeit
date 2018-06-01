@@ -159,24 +159,24 @@
 \g@addto@macro\@floatboxreset\centering
 
 % Verzeichnisse
-\renewcommand\listoffigures{%
-    \addsec{\listfigurename}%
-    \@mkboth{\MakeUppercase\listfigurename}%
-    {\listfigurename}%
-    \@starttoc{lof}%
-}
-\renewcommand\listoftables{%
-    \addsec{\listtablename}%
-    \@mkboth{\MakeUppercase\listtablename}%
-    {\listtablename}%
-    \@starttoc{lot}%
-}
-\renewcommand\lstlistoflistings{%
-    \addsec{\lstlistlistingname}%
-    \@mkboth{\MakeUppercase\lstlistlistingname}%
-    {\lstlistlistingname}%
-    \@starttoc{lol}%
-}
+%\renewcommand\listoffigures{%
+%    \addsec{\listfigurename}%
+%    \@mkboth{\MakeUppercase\listfigurename}%
+%    {\listfigurename}%
+%    \@starttoc{lof}%
+%}
+%\renewcommand\listoftables{%
+%    \addsec{\listtablename}%
+%    \@mkboth{\MakeUppercase\listtablename}%
+%    {\listtablename}%
+%    \@starttoc{lot}%
+%}
+%\renewcommand\lstlistoflistings{%
+%    \addsec{\lstlistlistingname}%
+%    \@mkboth{\MakeUppercase\lstlistlistingname}%
+%    {\lstlistlistingname}%
+%    \@starttoc{lol}%
+%}
 %\renewcommand\listofalgorithms{%
 %    \addsec{\listalgorithmname}%
 %    \@mkboth{\MakeUppercase\listalgorithmname}%
@@ -210,12 +210,12 @@
     \pagenumbering{Roman}
     \include{./abstract}
     
-    % Verzeichnisse
+    % Abkürzungen
     \pagestyle{lists}
     \newpage
     \begin{singlespace}
         \tableofcontents
-        \include{./settings/verzeichnisse}
+        \include{./settings/abkuerzungen}
     \end{singlespace}
     
     % Inhalt
@@ -229,13 +229,12 @@
     \include{./modell/modell}
     \include{./benchmarks/benchmarks}
     \include{./ausfuehrung/ausfuehrung}
+    \include{./evaluation/evaluation}
     
     % Literatur
     \newpage
     \begin{singlespace}
-        \addcontentsline{toc}{chapter}{Literatur}
-        \renewcommand\refname{Literatur}
-        \printbibliography
+        \include{./settings/verzeichnisse}
     \end{singlespace}
     
     % Anhang
