@@ -6,13 +6,16 @@ Implementiert wurden die Mutationstests in der bereits in \autoref{sec:inriaSett
 Hierfür wurden drei Mutationsszenarien entwickelt:
 
 \begin{description}
-    \item [mut1: Einschränkung des Monitoring]
+    \item [mut1: Einschränkungen beim Monitoring] \hfill \\
         Hierfür wurden die Monitoring"=Möglichkeiten der Selfbalancing"=Komponente eingeschränkt.
         Es wird dabei verhindert, dass die Anzahl der aktiven und wartenden Jobs in die \emph{controlLog}"=Datei geschrieben werden, aus welcher der Controller der Komponente die Daten ermittelt.
         Ebenso wurde verhindert, dass der Anteil des von Anwendungscontainer benötigten Arbeitsspeichers des Clusters in der \emph{memLog}"=Datei gespeichert wird.
         Dadurch erhält der Controller der Selfbalancing"=Komponente nicht mehr alle benötigten Daten, um den \ac{MARP}"=Wert auf einen optimalen Wert anpassen zu können.
-    \item [mut2]
-    \item [mut3]
+    \item [mut2] \hfill \\
+        
+    \item [mut3: Neuer MARP"=Wert kann nicht gespeichert werden] \hfill \\
+        Beim dritten Mutationsszenario wird verhindert, dass der von der Selfbalancing"=Komponente ermittelte, neue MARP"=Wert in die Konfiguration von Hadoop übernommen wird.
+        Dazu wird unterbunden, dass der neue Wert in der \texttt{capacity"=scheduler.xml} eingetragen und das anschließende Aktualisieren der Konfiguration durchgeführt wird.
 \end{description}
 
 Für jedes der drei Szenarien wurde ein entsprechendes Szenario im Rahmen der Plattform Hadoop"=Benchmark entwickelt.
