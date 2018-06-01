@@ -58,15 +58,21 @@
 % Zeilenabstand
 \usepackage[onehalfspacing]{setspace}
 \usepackage{enumitem}
-\setlist[itemize]{noitemsep} % noitemsep bei listen
-\renewcommand*{\chapterheadstartvskip}{\vspace*{.5\baselineskip}}% Abstand vor Kapiteltitel
+% noitemsep bei listen
+\setlist[itemize]{noitemsep}
+% Abstand vor Kapiteltitel
+\renewcommand*{\chapterheadstartvskip}{\vspace*{.5\baselineskip}}
 
 % Literatur
-\usepackage[style=numeric-comp,natbib=true,maxitems=1,backend=biber,sorting=none]{biblatex}
+\usepackage[style=numeric-comp,%
+    natbib=true,%
+    maxitems=1,%
+    backend=biber,%
+    sorting=none]{biblatex}
 \usepackage{csquotes}
-\addbibresource{./literatur.bib}
-\addbibresource{./web.bib}
-\addbibresource{./abbildungen.bib}
+\addbibresource{./literatur/literatur.bib}
+\addbibresource{./literatur/web.bib}
+\addbibresource{./literatur/abbildungen.bib}
 % Zeilenumbrüche bei URLs
 \setcounter{biburllcpenalty}{7000}
 \setcounter{biburlucpenalty}{8000}
@@ -208,7 +214,7 @@
     
     % Abstract
     \pagenumbering{Roman}
-    \include{./abstract}
+    \include{./settings/abstract}
     
     % Abkürzungen
     \pagestyle{lists}
