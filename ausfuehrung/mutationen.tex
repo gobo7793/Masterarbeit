@@ -1,4 +1,4 @@
-\section{Implementierungen für Mutationstests}
+\section{Implementierungen der Mutationstests}
 \label{sec:implMutationTests}
 
 Da in dieser Arbeit nicht nur Hadoop bzw. die Selfbalancing"=Komponente getestet werden soll, sondern vor allem das in den vorherigen Abschnitten und Kapiteln beschriebene Modell und Simulation zum Testen, wurden auch einige Mutationstests entwickelt.
@@ -10,9 +10,11 @@ Hierfür wurden drei Mutationsszenarien entwickelt:
         Hierfür wurden die Monitoring"=Möglichkeiten der Selfbalancing"=Komponente eingeschränkt.
         Es wird dabei verhindert, dass die Anzahl der aktiven und wartenden Jobs in die \emph{controlLog}"=Datei geschrieben werden, aus welcher der Controller der Komponente die Daten ermittelt.
         Ebenso wurde verhindert, dass der Anteil des von Anwendungscontainer benötigten Arbeitsspeichers des Clusters in der \emph{memLog}"=Datei gespeichert wird.
-        Dadurch erhält der Controller der Selfbalancing"=Komponente nicht mehr alle benötigten Daten, um den \ac{MARP}"=Wert auf einen optimalen Wert anpassen zu können.
+        Dadurch erhält der Controller der Selfbalancing"=Komponente nicht mehr alle benötigten Daten, um den \ac{MARP}"=Wert auf einen optimalen Wert anpassen zu können und führt daher keinerlei Anpassungen mehr durch.
     \item [mut2: Fehler beim Berechnen der Änderung des MARP"=Wertes] \hfill \\
-        
+        Für das zweite Mutationsszenario wurde die Berechnung des MARP"=Wertes verändert.
+        Konkret wird hierbei der Wert, um den der MARP="Wert erhöht bzw. verringert wird, mit dem Faktor 1,5 multipliziert.
+        Die dadurch deutlich stärker ausfallende Veränderung wird anschließend in die Konfiguration von Hadoop eingetragen.
     \item [mut3: Neuer MARP"=Wert kann nicht gespeichert werden] \hfill \\
         Beim dritten Mutationsszenario wird verhindert, dass der von der Selfbalancing"=Komponente ermittelte, neue MARP"=Wert in die Konfiguration von Hadoop übernommen wird.
         Dazu wird unterbunden, dass der neue Wert in der \texttt{capacity"=scheduler.xml} eingetragen und das anschließende Aktualisieren der Konfiguration durchgeführt wird.
