@@ -109,32 +109,16 @@ Zur Entscheidung, ob ein Komponentenfehler aktiviert wird, hängt von folgenden 
     \item sowie von einer Zufallszahl.
 \end{itemize}
 
-Zur Entscheidung, ob ein Komponentenfehler aktiviert wird, werden diese Parameter miteinander verrechnet und somit Entschieden, ob er aktiviert wird:
+Ob ein Komponentenfehler aktiviert wird, wird folgendermaßen anhand dieser Parameter berechnet:
 
-\begin{algorithm}
-    \caption{Entscheidung zur Aktivierung von Komponentenfehlern}
-    \label{alg:faultActivation}
-    \begin{algorithmic}[1]
-        \STATE $nodeUsage \gets (memUsage + cpuUsage) / 2$
-        \IF{$nodeUsage < 0.1$}
-            \STATE $nodeUsage \gets 0.1$
-        \ENDIF
-        \IF{$nodeUsage > 0.9$}
-            \STATE $nodeUsage \gets 0.9$
-        \ENDIF
-        \STATE $faultProbability \gets 1 - (nodeUsage * ActivationProbability * 2)$
-        \STATE $randomValue \gets GetRandomDouble()$
-        \IF{$faultProbability < randomValue$}
-            \RETURN \TRUE \COMMENT{Activate}
-        \ELSE
-            \RETURN \FALSE \COMMENT{No activation}
-        \ENDIF
-    \end{algorithmic}
-\end{algorithm}
+\lstinputlisting[label=lst:faultActivationCalc,style=cs,
+caption={[Berechnung der Aktivierung von Komponentenfehlern]
+    Berechnung der Aktivierung von Komponentenfehlern (zusammengefasst).}]
+{./listings/faultActivationCalc.cs}
 
 Die Entscheidung zur Deaktivierung eines Komponentenfehlers verhält sich analog.
 Anstatt der generellen Aktivierungswahrscheinlichkeit in \texttt{ModelSettings.Fault""ActivationProbability} wird die generelle Wahrscheinlichkeit zur Deaktivierung in \texttt{ModelSettings.FaultRepairProbability} genutzt.
-Außerdem spielt bei der Deaktivierung die Auslastung des Nodes zum Zeitpunkt der Aktivierung eine Rolle.
+Außerdem spielt bei der Deaktivierung die Auslastung des Nodes zum Zeitpunkt der Aktivierung eine Rolle, welche hierzu in Zeile 7 in \autoref{lst:faultActivationCalc} entsprechend gespeichert wird.
 Der grundlegende Algorithmus zur Entscheidung ist jedoch gleich.
 
 \subsubsection{Ausführung Benchmarks}
@@ -186,11 +170,11 @@ Zudem werden bei jedem Schritt die zuvor ausgeführten Container gelöscht bzw. 
 \label{sec:simulationOracle}
 
 Im Anschluss an das Monitoring erfolgt die Prüfung der Constraints durch das Oracle.
-Das Oracle prüft hierbei analog zum Monitoring zunächst die Nodes und danach die Anwendungen, Attempts und Container auf ihre Constraints.
-Hierbei wird zunächst geprüft, ob die in \todo{verweis zu Anforderungen} beschrieben funktionalen Anforderungen an Hadoop in Form der Constraints für die jeweiligen Komponenten noch erfüllt werden können.
+Das Oracle validiert hierbei analog zum Monitoring zunächst die Nodes und danach die Anwendungen, Attempts und Container auf ihre Constraints.
+Hierbei wird zunächst überprüft, ob die in \autoref{sec:clusterRequirements} beschrieben funktionalen Anforderungen an Hadoop in Form der Constraints für die jeweiligen Komponenten noch erfüllt werden können.
 Ist das nicht der Fall, wird de geloggt und die weiteren Komponenten geprüft.
 
-Das Oracle prüft auch, ob für das Cluster eine weitere Rekonfiguration möglich ist.
+Das Oracle überprüft auch, ob für das Cluster eine weitere Rekonfiguration möglich ist.
 Dies ist dann der Fall, wenn noch mindestens ein Node vorhanden ist, der keine Fehler aufweist und damit den \emph{State} \texttt{Running} hat:
 
 \lstinputlisting[label=lst:hadoopSimulationReconf,style=cs,
@@ -199,15 +183,15 @@ caption={Prüfung nach der Möglichkeit weiterer Rekonfigurationen}]
 
 Ist eine Rekonfiguration nicht mehr möglich, wird durch die hierbei ausgelöste \texttt{Exception} die gesamte Simulation abgebrochen.
 
-Zum Abschluss eines Schrittes werden die in \todo{behauptungen im evaluationsplan} beschriebenen Behauptungen an das Testverfahren selbst geprüft.
-Hierbei können jedoch nicht alle Behauptungen in Form von Constraints durch das Oracle automatisch während der Ausführung geprüft werden.
-Zudem können auch nicht alle Constraints direkt innerhalb des Modells während der Ausführung eines Simulations"=Schrittes geprüft werden, weshalb außerhalb der Simulation ebenfalls Constraints definiert sind, die zum Abschluss der Simulation geprüft werden.
+Zum Abschluss eines Schrittes werden die in \autoref{sec:predictions} beschriebenen Behauptungen an das Testverfahren selbst validiert.
+Hierbei können jedoch nicht alle Behauptungen in Form von Constraints durch das Oracle automatisch während der Ausführung validiert werden.
+Von den implementierten Constraints können zudem nicht alle direkt innerhalb des Modells während der Ausführung eines Simulations"=Schrittes validiert werden, weshalb außerhalb der Simulation ebenfalls Constraints definiert sind, die zum Abschluss der Simulation geprüft werden.
 
 \subsubsection{Ausgaben während eines Schrittes}
 \label{sec:simulationStepOutput}
 
 Während eines Simulationsschrittes werden an verschiedenen Stellen bereits einige Daten ausgegeben.
-Darunter zählen \zB die $faultProbability$ und der $randomValue$ aus Algorithmus \ref{alg:faultActivation}, bevor ein Fehler zur Aktivierung bzw. Deaktivierung markiert wird.
+Darunter zählt \zB die Ausgabe mithilfe von \texttt{Logger.Info()} in \autoref{lst:faultActivationCalc}.
 Auch im Falle einer Aktivierung bzw. Deaktivierung eines Fehlers wird dies im Rahmen eines üblichen Programmlogs direkt in den entsprechenden Methoden ausgegeben.
 Einige weitere Parameter, die direkt während der Ausführung eines Schrittes ausgegeben werden sind:
 
@@ -218,7 +202,7 @@ Einige weitere Parameter, die direkt während der Ausführung eines Schrittes au
 \end{itemize}
 
 Die beim Monitoring ermittelten Daten werden nach der Ausführung eines Schrittes ausgegeben.
-Die in \todo{Verweis auf Evaluationsplan-Ausgaben} definierten Ausgaben der Eigenschaften der jeweiligen Komponenten werden im folgenden Format ausgegeben:
+Die in \autoref{sec:dataOrganisation} definierten Ausgaben der Eigenschaften der jeweiligen Komponenten werden im folgenden Format ausgegeben:
 
 \begin{itemize}
     \item Für jeden Node der \texttt{YarnNode}"=Klasse:

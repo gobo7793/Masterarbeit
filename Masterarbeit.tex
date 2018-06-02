@@ -38,7 +38,7 @@
 
 \newpairofpagestyles[scrheadings]{lists}{%
     \ihead{Verzeichnisse}%
-    }
+}
 
 % Grafiken
 \usepackage{graphicx}
@@ -76,12 +76,6 @@
 % Zeilenumbrüche bei URLs
 \setcounter{biburllcpenalty}{7000}
 \setcounter{biburlucpenalty}{8000}
-
-% Algorithmus
-\usepackage[chapter]{algorithm}
-\usepackage{algorithmic}
-\floatname{algorithm}{Algorithmus}
-\renewcommand*\listalgorithmname{Verzeichnis der Algorithmen}
 
 % Listings
 \usepackage{listings}
@@ -165,30 +159,24 @@
 \g@addto@macro\@floatboxreset\centering
 
 % Verzeichnisse
-%\renewcommand\listoffigures{%
-%    \addsec{\listfigurename}%
-%    \@mkboth{\MakeUppercase\listfigurename}%
-%    {\listfigurename}%
-%    \@starttoc{lof}%
-%}
-%\renewcommand\listoftables{%
-%    \addsec{\listtablename}%
-%    \@mkboth{\MakeUppercase\listtablename}%
-%    {\listtablename}%
-%    \@starttoc{lot}%
-%}
-%\renewcommand\lstlistoflistings{%
-%    \addsec{\lstlistlistingname}%
-%    \@mkboth{\MakeUppercase\lstlistlistingname}%
-%    {\lstlistlistingname}%
-%    \@starttoc{lol}%
-%}
-%\renewcommand\listofalgorithms{%
-%    \addsec{\listalgorithmname}%
-%    \@mkboth{\MakeUppercase\listalgorithmname}%
-%    {\listalgorithmname}%
-%    \@starttoc{loa}%
-%}
+\renewcommand\listoffigures{%
+    \addsec{\listfigurename}%
+    \@mkboth{\MakeUppercase\listfigurename}%
+    {\listfigurename}%
+    \@starttoc{lof}%
+}
+\renewcommand\listoftables{%
+    \addsec{\listtablename}%
+    \@mkboth{\MakeUppercase\listtablename}%
+    {\listtablename}%
+    \@starttoc{lot}%
+}
+\renewcommand\lstlistoflistings{%
+    \addsec{\lstlistlistingname}%
+    \@mkboth{\MakeUppercase\lstlistlistingname}%
+    {\lstlistlistingname}%
+    \@starttoc{lol}%
+}
 
 \makeatother
 
@@ -216,12 +204,11 @@
     \pagenumbering{Roman}
     \include{./settings/abstract}
     
-    % Abkürzungen
-    \pagestyle{lists}
+    % Verzeichnisse
     \newpage
     \begin{singlespace}
         \tableofcontents
-        \include{./settings/abkuerzungen}
+        \include{./settings/verzeichnisse}
     \end{singlespace}
     
     % Inhalt
@@ -236,11 +223,14 @@
     \include{./benchmarks/benchmarks}
     \include{./ausfuehrung/ausfuehrung}
     \include{./evaluation/evaluation}
+    \include{./schluss/schluss}
     
     % Literatur
     \newpage
     \begin{singlespace}
-        \include{./settings/verzeichnisse}
+        \addcontentsline{toc}{chapter}{Literatur}
+        \renewcommand\refname{Literatur}
+        \printbibliography
     \end{singlespace}
     
     % Anhang
