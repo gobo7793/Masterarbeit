@@ -1,4 +1,13 @@
 \section{Funktionale Anforderungen an das Cluster}
 \label{sec:clusterRequirements}
 
+Obwohl in dieser Masterarbeit der Fokus auf Testautomatisierung und Validieren eines Testsystems liegt, müssen auch die funktionalen Anforderungen an das zu testende System berücksichtigt werden.
+Die Anforderungen hierzu wurden bereits ausführlich in \cite{Eberhardinger2018} erläutert.
+Die implementierten Anforderungen sind:
 
+\begin{enumerate}
+    \item Ein Task wird vollständig ausgeführt, sofern er nicht abgebrochen wird
+    \item Kein Task oder Anwendung wird an inaktive, defekte oder nicht verbundene Nodes gesendet
+    \item Die Konfiguration wird aktualisiert, sobald eine entsprechende Regel erfüllt ist
+    \item Defekte oder Verbindungsabbrüche werden erkannt
+\end{enumerate}

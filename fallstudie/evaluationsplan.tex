@@ -1,10 +1,17 @@
 \section{Anforderungen an das Testsystem}
 \label{sec:evaluationPlan}
 
+Um das Testsystem zu validieren, wurde zunächst ein Evaluationsplan aufgestellt.
+In diesem ist festgehalten, was getestet wird, wie die Testfälle aussehen und wie die bei der Ausführung gewonnen Daten organisiert werden.
+
 \subsection{Behauptungen und Variablen}
 \label{sec:predictions}
 
 % Was für Behauptungen wurden aufgestellt
+\begin{enumerate}
+    \setcounter{enumi}{4}
+    \item ABC
+\end{enumerate}
 
 % Was für Variablen wurden dadurch ermittelt
 
@@ -15,7 +22,71 @@
 
 % Bedeutung von Zufall
 
-\subsection{Organisation der Daten}
+\subsection{Organisation und Ausgabe der Daten}
 \label{sec:dataOrganisation}
 
-% Was soll alles ausgegeben werden (umsetzung verweis auf entsprechenden Abschnitt)
+Damit die bei der Ausführung gewonnenen Daten auch zur Evaluation genutzt werden können, wurde hierzu festgelegt, welche Daten während der Ausführung ausgegeben werden.
+Alle relevante Daten werden hierzu während der Ausführung der Testfälle in einer Log"=Datei gespeichert.
+Zur Unterscheidung von einzelnen Ausführungen werden die Daten klar strukturiert.
+Neben den im folgenden beschriebenen Daten werden zudem alle Ein- und Ausgabedaten der SSH"=Verbindungen zwischen \ac{ss} und dem Cluster (vgl. \autoref{sec:aufbauCluster}) in einem eigenen Log gespeichert.
+
+Beim Start der Simulation werden zunächst einige generelle Daten ausgegeben:
+
+\begin{itemize}
+    \item Basis"=Seed für die Zufallsgeneratoren
+    \item Mindestdauer für einen Simulations"=Schritt
+    \item Anzahl der ausgeführten Simulations"=Schritte
+    \item Wahrscheinlichkeiten für Aktivierung und Deaktivierung der Komponentenfehler
+    \item Angabe, ob vorab generierte Eingabedaten genutzt werden oder diese während der Ausführung eines Testfalls generiert werden
+    \item Anzahl genutzter Hosts und Nodes
+    \item Pfade verwendeter Scripte auf den Hosts (vgl. \autoref{sec:aufbauCluster})
+    \item Bei der Nutzung der REST"=API verwendete URL des Controllers
+    \item Auszuführende Benchmarks    
+\end{itemize}
+
+Die Ausgabe der Daten der YARN"=Komponenten wird bei jedem Simulations"=Schritt durchgeführt, damit das Verhalten des Clusters berücksichtigt werden kann.
+Ausgegeben werde hierbei:
+
+\begin{itemize}
+    \item Für jeden Node:
+    \begin{itemize}
+        \item ID bzw. Name des Nodes
+        \item Aktueller Status
+        \item Informationen zur Fehleraktivierung
+        \item Anzahl ausgeführter Container auf dem Node
+        \item Angaben zur Speicherauslastung
+        \item Angaben zur CPU"=Auslastung
+    \end{itemize}
+    
+    \item Für jeden Client:
+    \begin{itemize}
+        \item ID bzw. Name des Clints
+        \item Aktuell ausgeführter Benchmark
+        \item ID der aktuell ausgeführten Anwendung auf dem Cluster
+    \end{itemize}
+
+    \item Für jede Anwendung:
+    \begin{itemize}
+        \item ID der Anwendung
+        \item Bezeichnung der Anwendung
+        \item Aktueller und finaler Status der Anwendung
+        \item ID bzw. Name des Nodes, auf dem der \ac{AppMstr} ausgeführt wird
+    \end{itemize}
+
+    \item Für jeden Attempt:
+    \begin{itemize}
+        \item ID des Attempts
+        \item Aktueller Status des Attempts
+        \item ID des \ac{AppMstr}"=Containers
+        \item ID bzw. Name des Nodes, auf dem der \ac{AppMstr} ausgeführt wird
+    \end{itemize}
+
+    \item Für jeden Container:
+    \begin{itemize}
+        \item ID des Containers
+        \item ID bzw. Name des auszuführenden Nodes
+        \item Aktueller Status des Containers
+    \end{itemize}
+\end{itemize}
+
+Die Details zur Implementierung und dem Ausgabeformat sind in \autoref{sec:simulationStepOutput} erläutert.
