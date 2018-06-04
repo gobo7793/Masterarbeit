@@ -1,26 +1,7 @@
 \chapter{Aufbau des Modells}
 \label{chap:modell}
 
-\begin{wrapfigure}{r}{0.5\columnwidth}
-    \includegraphics[width=0.5\columnwidth]{./images/modelArchitecture.pdf}
-    \caption{Grundlegende Architektur des Gesamtmodells}
-    \label{fig:modelArchitecture}
-\end{wrapfigure}
-
-Die grundlegende Architektur des gesamten Aufbaus besteht aus den drei rechts abgebildeten Schichten.
-Die oberste Schicht bildet das \sS-Modell von Hadoop YARN, welches die relevanten YARN-Komponenten und Komponentenfehler abbildet.
-Das reale Pendant dazu bildet das reale Hadoop-Cluster auf einem eigenen PC als unterste Schicht.
-Die Verbindung zwischen Modell und realem Cluster bildet der Treiber als eigenständige Schicht.
-Der Treiber besteht aus folgenden Komponenten:
-
-\begin{description}
-    \item [Parser] Verarbeitet die Monitoring"=Ausgaben vom realen Cluster und konvertiert diese für die Nutzung im Modell
-    \item [Connector] Abstrahierung der SSH"=Verbindung mit den auszuführenden Befehlen
-    \item [SSH-Verbindung] Verbindung zum Cluster"=PC
-\end{description}
-
-Auf den Treiber bzw. das reale System wird meist mithilfe des Parsers zugegriffen.
-Lediglich zum Starten von Anwendungen, zum Aktivieren bzw. Deaktivieren von Komponentenfehlern u.\,Ä. auf dem realen Cluster wird direkt der Connector genutzt.
+\todo{EInführung in Kapitel}
 
 \todo{Multihost-Mode irgendwo erklären}
 

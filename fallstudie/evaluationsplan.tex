@@ -10,7 +10,14 @@ In diesem ist festgehalten, was getestet wird, wie die Testfälle aussehen und w
 % Was für Behauptungen wurden aufgestellt
 \begin{enumerate}
     \setcounter{enumi}{4}
-    \item ABC
+    \item Der jeweils aktuelle Status des Clusters wird erkannt und im Modell gespeichert
+    \item Defekte Nodes und Verbindungsabbrüche werden erkannt
+    \item Im Modell implementierte Komponentenfehler werden im realen Cluster injiziert und repariert
+    \item Wenn alle Nodes defekt sind, wird erkannt, dass sich das Cluster nicht mehr rekonfigurieren kann
+    \item Ein Test kann vollautomatisch ausgeführt werden
+    \item Das Cluster kann ohne Auswirkungen auf die Funktionsweise auf einem oder beiden Hosts ausgeführt werden
+    \item Es können mehrere Benchmark"=Anwendungen gleichzeitig gestartet und ausgeführt werden
+    \item Ein Testfall kann zeitlich unabhängig und mehrmals ausgeführt werden
 \end{enumerate}
 
 % Was für Variablen wurden dadurch ermittelt
