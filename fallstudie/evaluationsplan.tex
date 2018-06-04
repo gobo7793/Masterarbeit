@@ -18,9 +18,23 @@ In diesem ist festgehalten, was getestet wird, wie die Testfälle aussehen und w
 \subsection{Generierung der Testfälle}
 \label{sec:testcaseGeneration}
 
-% Wovon hängen Testfälle ab
+Die Generierung der Testfälle hängt von mehreren Faktoren ab.
+Zum einen ist ein Testfall abhängig von der Größe des Clusters, also ob das Cluster auf einem oder beiden Hosts ausgeführt wird und aus wie vielen Nodes das Cluster besteht.
+Relevant zur Unterscheidung von Testfällen sind aber auch die ausgeführten Anwendungen.
+Da die Auswahl der ausgeführten Anwendungen nicht manuell bestimmt werden soll, wird hierfür ein Transitionssystem verwendet.
+Mithilfe dieses Transitionssystems, in dem die Wahrscheinlichkeiten von Wechsel zwischen zwei Anwendungen definiert sind, soll während der Ausführung eines Testfalls zufällig eine nachfolgende Anwendung ausgewählt werden.
+Da zum Testen des Clusters der \ac{ss}"=Simulator eingesetzt wird, hängt die Anzahl der Anwendungen primär von der Anzahl der ausgeführten Simulations"=Schritte ab.
+Ein weiterer Faktor zur Anzahl der Anwendungen ist die Anzahl an simulierten Clients, da auch getestet werden soll, wie sich das Cluster bei der Ausführung von mehreren parallel gestarteten Anwendungen verhält.
+Die zu injizierenden Komponentenfehler, mit denen defekte Nodes und Verbindungsausfälle simuliert werden, werden ebenfalls zufallsbasiert ausgewählt.
+Dies gilt auch für das Deaktivieren der Komponentenfehlern.
 
-% Bedeutung von Zufall
+Die Auswahl der nachfolgenden Anwendungen und die Entscheidung über die Aktivierung und Deaktivierung der Komponentenfehlern wird daher mithilfe eines Zufallsgenerators realisiert.
+Hierbei soll jedoch kein echter Zufallsgenerator zum Einsatz kommen, sondern ein Pseudo"=Zufallsgenerator.
+Da ein Pseudo"=Zufallsgenerator seine Werte mithilfe eines Start"=\emph{Seeds} auswählt, besteht somit die Möglichkeit durch die Verwendung eines bestimmten Seeds, einen Testfall jederzeit wiederholen zu können.
+Zur Auswahl der ersten Testfälle werden daher zeitbasierte Seeds verwendet.
+Diese Seeds werden bei der Ausführung notiert und für andere Testfälle verwendet, bei denen andere Punkte der Konfiguration wie \zB die Größe des Clusters, abgeändert werden.
+Dadurch ist es möglich, die Auswirkungen einzelner Parameter zu testen und zu evaluieren.
+\todo{Wo wird Seed wie genutzt? am besten in implementierung davon!}
 
 \subsection{Organisation und Ausgabe der Daten}
 \label{sec:dataOrganisation}
