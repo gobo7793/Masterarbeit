@@ -52,25 +52,32 @@ Die einfachen Felder sind:
 \begin{description}
     \item [\_MinStepTime] \hfill \\
         Definiert die Mindestdauer eines Schrittes.
+        
     \item[\_BenchmarkSeed] \hfill \\
-        Gibt den Seed an, mit dem die Zufallsgeneratoren in den Klassen \texttt{BenchmarkController} und \texttt{NodeFaultAttribute} initialisiert werden.
+        Gibt den Seed an, mit dem die Zufallsgeneratoren in den Klassen \texttt{Benchmark""Controller} und \texttt{NodeFaultAttribute} initialisiert werden.
         Dadurch wird es ermöglicht, einzelne Testfälle erneut ausführen zu können.
+        
     \item[\_StepCount] \hfill \\
         Definiert die Anzahl der ausgeführten Schritte.
+        
     \item[\_FaultActivationProbability] \hfill \\
         Definiert die generelle Häufigkeit zum Aktivieren von Komponentenfehlern.
         Ist dieser Wert 0,0, werden grundsätzlich keine Komponentenfehler aktiviert, bei einem Wert von 1,0 werden Komponentenfehler dagegen immer aktiviert.
+        
     \item[\_FaultRepariProbability] \hfill \\
         Definiert die generelle Häufigkeit zum Deaktivieren von Komponentenfehlern.
-        Die hier definierte Wahrscheinlichkeit verhält sich analog zu \texttt{\_FaultActivationProbability}.
+        Die hier definierte Wahrscheinlichkeit verhält sich analog zu \texttt{\_FaultActivation""Probability}.
         Bei einem Wert von 0,0 werden Komponentenfehler niemals deaktiviert, während sie bei einem Wert von 1,0 im nachfolgenden Schritt immer deaktiviert werden.
+        
     \item[\_HostsCount] \hfill \\
         Definiert die Anzahl der in der Simulation verwendeten Hosts.
         Benötigt wird dieser Wert, damit zu jedem verwendeten Host eine SSH"=Verbindung aufgebaut werden kann.
+        
     \item[\_NodeBaseCount] \hfill \\
         Definiert die Anzahl der Nodes auf Host1.
         Auf Host2 wird die Hälfte der Nodes verwendet.
         Benötigt wird dieser Wert, um mithilfe der REST"=API auf die Hadoop"=Nodes zugreifen zu können, um die Daten der YARN"=Container zu ermitteln.
+        
     \item[\_ClientCount] \hfill \\
         Definiert die Anzahl der zu simulierenden Clients.
         Da jeder Client gleichzeitig nur eine Anwendung startet, wird dadurch gleichzeitig definiert, wie viele Anwendungen gleichzeitig auf dem Cluster ausgeführt werden sollen.

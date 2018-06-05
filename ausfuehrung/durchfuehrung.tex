@@ -1,7 +1,30 @@
 \section{Durchführung der Tests}
 \label{sec:testExecution}
 
-% systematik
 Vor der Durchführung aller Testfälle wurde zunächst eine Systematik entwickelt, nach welcher die Testfälle durchgeführt werden.
+Die Grundlage hierzu bilden die in \autoref{sec:testcaseGeneration} und in \autoref{sec:implTestcases} beschriebenen Variablen bzw. Punkte, die einen Testfall definieren.
+Ebenfalls eine Rolle spielen die in \autoref{sec:implMutationTests} beschriebenen Mutationsszenarien.
 
-% übersicht ausgeführter testfälle
+Für die verschiedenen Punkte, die einen Testfall definieren, wurden folgende Werte verwendet:
+
+\begin{table}[h]
+    \begin{tabu}{c|[2pt]c|c|c}
+    	             & Wert 1 & Wert 2 & Wert 3 \\ \tabucline[2pt]{-}
+    	    Seed     & XXX    &  XXX   &  XXX   \\ \hline
+    	KF"=Wahrsch. & 0      &  0,3   &  \\ \hline
+    	Hosts/Nodes  & 1/4    &  2/6   &  \\ \hline
+    	  Clients    & 1      &   2    &
+    \end{tabu}
+    \caption[Übersicht der zur Testfallgenerierung genutzten Werte]
+        {Übersicht der zur Testfallgenerierung genutzten Werte.
+        Zur Aktivierung und Deaktivierung von Komponentenfehlern wird die jeweils gleiche generelle Wahrscheinlichkeit genutzt.
+        Es wird zudem nur zwischen der Anzahl der Hosts unterschieden, die Anzahl der Nodes pro Host bleibt jeweils gleich.}
+    \label{tab:testCaseOverview}
+\end{table}
+
+Zur Festlegung der Werte zur generellen Wahrscheinlichkeiten zur Aktivierung bzw. Deaktivierung von Komponentenfehlern wurden zunächst verschiedene Werte simuliert.
+\todo{Hinschreiben, dass je über 10.000 mögliche aktivierungen/deaktivierung simuliert wurden?}
+Die für die Testfälle ausgewählten Werte stellen hierbei eine ausgewogene Aktivierung bzw. Deaktivierung der Komponentenfehler bei unterschiedlichen Auslastungsgraden der Nodes dar.
+
+Insgesamt ergeben die angegebenen Werte 24 Testfälle, die jeweils mit und ohne Mutationen im realen Cluster ausgeführt werden.
+Jeder Testfall wird zudem einmal mit 5 sowie einmal mit 15 Simulations"=Schritten ausgeführt, was für die Evaluation eine Datenbasis von 96 Testausführungen ergibt.
