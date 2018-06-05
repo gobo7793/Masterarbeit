@@ -30,7 +30,8 @@ Da die einzelnen Schritte einer Simulation eine gewisse Mindestdauer haben, wird
 Liegt die Zeit unterhalb der Mindestdauer für einen Schritt, wird die Ausführung des nächsten Schrittes solange hinausgezögert, bis die Mindestdauer des Schrittes erreicht wurde.
 
 Wenn während der Simulation eine im Modell nicht behandelte \texttt{Exception} auftritt, dann wird diese außerhalb der Simulation abgefangen und geloggt.
-Dadurch wird zudem die Simulation beim aktuellen Stand abgebrochen und unabhängig von aufgetretenen \texttt{Exception}s Nodes mit injizierten Komponentenfehlern neu gestartet.
+Dadurch wird zudem die Simulation beim aktuellen Stand abgebrochen.
+Nach Abschluss der Simulation werden immer alle zu dem Zeitpunkt mit Komponentenfehlern injizierten Nodes neu gestartet.
 
 \subsection{Initialisierung des Modells}
 \label{sec:simulationModelInit}
@@ -49,28 +50,28 @@ Einige Felder haben lediglich einen Zweck, während andere umfangreichere Auswir
 Die einfachen Felder sind:
 
 \begin{description}
-    \item [\_MinStepTime]
+    \item [\_MinStepTime] \hfill \\
         Definiert die Mindestdauer eines Schrittes.
-    \item[\_BenchmarkSeed]
+    \item[\_BenchmarkSeed] \hfill \\
         Gibt den Seed an, mit dem die Zufallsgeneratoren in den Klassen \texttt{BenchmarkController} und \texttt{NodeFaultAttribute} initialisiert werden.
         Dadurch wird es ermöglicht, einzelne Testfälle erneut ausführen zu können.
-    \item[\_StepCount]
+    \item[\_StepCount] \hfill \\
         Definiert die Anzahl der ausgeführten Schritte.
-    \item[\_FaultActivationProbability]
+    \item[\_FaultActivationProbability] \hfill \\
         Definiert die generelle Häufigkeit zum Aktivieren von Komponentenfehlern.
         Ist dieser Wert 0,0, werden grundsätzlich keine Komponentenfehler aktiviert, bei einem Wert von 1,0 werden Komponentenfehler dagegen immer aktiviert.
-    \item[\_FaultRepariProbability]
+    \item[\_FaultRepariProbability] \hfill \\
         Definiert die generelle Häufigkeit zum Deaktivieren von Komponentenfehlern.
         Die hier definierte Wahrscheinlichkeit verhält sich analog zu \texttt{\_FaultActivationProbability}.
         Bei einem Wert von 0,0 werden Komponentenfehler niemals deaktiviert, während sie bei einem Wert von 1,0 im nachfolgenden Schritt immer deaktiviert werden.
-    \item[\_HostsCount]
+    \item[\_HostsCount] \hfill \\
         Definiert die Anzahl der in der Simulation verwendeten Hosts.
         Benötigt wird dieser Wert, damit zu jedem verwendeten Host eine SSH"=Verbindung aufgebaut werden kann.
-    \item[\_NodeBaseCount]
+    \item[\_NodeBaseCount] \hfill \\
         Definiert die Anzahl der Nodes auf Host1.
         Auf Host2 wird die Hälfte der Nodes verwendet.
         Benötigt wird dieser Wert, um mithilfe der REST"=API auf die Hadoop"=Nodes zugreifen zu können, um die Daten der YARN"=Container zu ermitteln.
-    \item[\_ClientCount]
+    \item[\_ClientCount] \hfill \\
         Definiert die Anzahl der zu simulierenden Clients.
         Da jeder Client gleichzeitig nur eine Anwendung startet, wird dadurch gleichzeitig definiert, wie viele Anwendungen gleichzeitig auf dem Cluster ausgeführt werden sollen.
 \end{description}
@@ -166,7 +167,7 @@ Dies schließt die Nutzung des \ac{TLS} von Hadoop ein.
 Während bei den Anwendungen und Attempts auch solche, deren Daten ausschließlich beim \ac{TLS} gespeichert sind, ermittelt werden, werden die Daten des \ac{TLS} bei Containern nur als Ergänzung der Daten von derzeit ausgeführten Containern vom \ac{RM} genutzt.
 Zudem werden bei jedem Schritt die zuvor ausgeführten Container gelöscht bzw. deren Instanzen geleert, bevor die Daten der derzeit ausgeführten Container ermittelt werden.
 
-\subsubsection{Prüfungen durch das Oracle}
+\subsubsection{Validierung durch das Oracle}
 \label{sec:simulationOracle}
 
 Im Anschluss an das Monitoring erfolgt die Prüfung der Constraints durch das Oracle.
@@ -190,60 +191,25 @@ Von den implementierten Constraints können zudem nicht alle direkt innerhalb de
 \subsubsection{Ausgaben während eines Schrittes}
 \label{sec:simulationStepOutput}
 
-Während eines Simulationsschrittes werden an verschiedenen Stellen bereits einige Daten ausgegeben.
-Darunter zählt \zB die Ausgabe mithilfe von \texttt{Logger.Info()} in \autoref{lst:faultActivationCalc}.
-Auch im Falle einer Aktivierung bzw. Deaktivierung eines Fehlers wird dies im Rahmen eines üblichen Programmlogs direkt in den entsprechenden Methoden ausgegeben.
-Einige weitere Parameter, die direkt während der Ausführung eines Schrittes ausgegeben werden sind:
+Die wesentlichen Ausgaben während eines Tests wurden bereits in \autoref{sec:dataOrganisation} definiert und beschrieben.
+Neben diesen Daten werden im Programmlog weitere Daten gespeichert, damit die Ausführung eines Testfalles besser nachvollzogen werden kann.
+Zudem werden alle Ein"= und Ausgabedaten der SSH"=Verbindungen zwischen dem Modell und dem realen Cluster in einer eigenen Log"=Datei gespeichert.
+Dieses SSH"=Log dient dazu, die Ursache von unerwarteten Fehlern herauszufinden.
+
+Neben den bereits beschriebenen Daten werden im Programmlog folgende Daten gespeichert:
 
 \begin{itemize}
-    \item Der vom \texttt{BenchmarkController} ausgewählte Benchmark
-    \item Die Komponenten von ungültigen Constraints
+    \item Ausführung der Erstellung von vorab generierten Eingabedaten
+    \item Verbundene SSH"=Verbindungen mit ihrer ID zur besseren Zuordnung im SSH"=Log
+    \item Vollständiger Pfad des Setup"=Scriptes (vgl. \autoref{sec:aufbauCluster})
+    \item URL des Controllers zur Nutzung der REST"=API
+    \item Derzeit vom \texttt{BenchmarkController} ausgewählte Benchmarks
+    \item Ausführung von Komponentenfehlern
+    \item Welche Constraints bei welchen Komponenten verletzt wurden
     \item Die Information, wenn eine Rekonfiguration nicht möglich ist (vgl. \autoref{lst:hadoopSimulationReconf})
 \end{itemize}
 
-Die beim Monitoring ermittelten Daten werden nach der Ausführung eines Schrittes ausgegeben.
-Die in \autoref{sec:dataOrganisation} definierten Ausgaben der Eigenschaften der jeweiligen Komponenten werden im folgenden Format ausgegeben:
-
-\begin{itemize}
-    \item Für jeden Node der \texttt{YarnNode}"=Klasse:
-    \begin{itemize}
-        \item \texttt{NodeId}
-        \item \texttt{State}
-        \item \texttt{IsActive}
-        \item \texttt{IsConnected}
-        \item \texttt{RunningContainerCount}
-        \item \texttt{MemoryUsed}, \texttt{MemoryAvailable}, \texttt{MemoryUsage}
-        \item \texttt{CpuUsed}, \texttt{CpuUsed}, \texttt{CpuUsed}
-    \end{itemize}
-
-    \item Für jeden Client der \texttt{Client}"=Klasse:
-    \begin{itemize}
-        \item \texttt{ClientId}
-        \item \texttt{BenchController.CurrentBenchmark.Name}
-        \item \texttt{CurrentExecutingAppId}
-    \end{itemize}
-        \item Für jede Anwendung eines Clients der \texttt{YarnApp}"=Klasse:
-        \begin{itemize}
-            \item \texttt{AppId}
-            \item \texttt{Name}
-            \item \texttt{State}
-            \item \texttt{FinalStatus}
-            \item \texttt{AmHostId}, \texttt{AmHost.State}
-        \end{itemize}
-            \item Für jeden Attempt einer Anwendung der \texttt{YarnAppAttempt}"=Klasse:
-            \begin{itemize}
-                \item \texttt{AttemptId}
-                \item \texttt{State}
-                \item \texttt{AmContainerId}
-                \item \texttt{AmHostId}, \texttt{AmHost.State}
-            \end{itemize}
-                \item Für jeden Container eines Attempts der \texttt{YarnAppContainer}"=Klasse:
-                \begin{itemize}
-                    \item \texttt{ContainerId}
-                    \item \texttt{HostId}
-                    \item \texttt{State}
-                \end{itemize}
-\end{itemize}
+Der Programmlog und das exakte Ausgabeformat für eine Ausführung der Simulation findet sich in \autoref{app:outputFormat}.
 
 \subsection{Weitere mit der Simulation zusammenhängende Methoden}
 \label{sec:simulationUtilities}

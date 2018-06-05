@@ -1,0 +1,132 @@
+Precreate Benchmark input data into InputData
+SSH connected to hadoop@swtse143.informatik.uni-augsburg.de (cmdFauH1)
+...
+=================  START  =====================================
+Starting Simulation test
+Base benchmark seed: 8661265
+Min Step time:       00:00:25
+Step count:          3
+Fault probability:   0,4
+Fault repair prob.:  0,5
+Inputs precreated:   True
+Host mode:           Multihost
+Hosts count:         1
+Node base count:     4
+Full node count:     4
+Setup script path:   ~/hadoop-benchmark/multihost.sh -q
+Controller url:      http://localhost:8088
+Simulating Benchmarks for Client 1 with Seed 8661266:
+Step 0: teragen
+Step 1: teragen
+Step 2: terasort
+=================  Step: 0  =====================================
+Fault NodeConnectionErrorFault@compute-1
+Activation probability: 0,92 < 0,815143610264707
+Fault NodeDeadFault@compute-1
+Activation probability: 0,92 < 0,220206529004595
+Fault NodeConnectionErrorFault@compute-2
+Activation probability: 0,92 < 0,985366507426541
+Fault NodeDeadFault@compute-2
+Activation probability: 0,92 < 0,342338338653715
+...
+Stop connection on node compute-2
+Selected Benchmark client1: teragen
+Step Duration: 00:00:23.6864268
+...
+=== Node compute-2:45454 ===
+    State:         LOST
+    IsActive:      True
+    IsConnected:   False
+    Container Cnt: 0
+    Mem used/free: 0/0 (0,000)
+    CPU used/free: 0/0 (0,000)
+=== Node compute-3:45454 ===
+    State:         RUNNING
+    IsActive:      True
+    IsConnected:   True
+    Container Cnt: 1
+    Mem used/free: 1024/7168 (0,125)
+    CPU used/free: 1/7 (0,125)
+=== Node compute-4:45454 ===
+    State:         RUNNING
+    IsActive:      True
+    IsConnected:   True
+    Container Cnt: 2
+    Mem used/free: 3072/5120 (0,375)
+    CPU used/free: 2/6 (0,250)
+=== Client client1 ===
+    Current executing bench:  teragen
+    Current executing app id: application_1527514612110_0022
+    === App application_1527514612110_0022 ===
+        Name:        TeraGen
+        State:       RUNNING
+        FinalStatus: UNDEFINED
+        IsKillable:  True
+        AM Host:     compute-4:45454 (RUNNING)
+        === Attempt appattempt_1527514612110_0022_000001 ===
+            State:        None
+            AM Container: container_1527514612110_0022_01_000001
+            AM Host:      compute-4:45454 (RUNNING)
+          === Container container_1527514612110_0022_01_000003@compute-3:45454: RUNNING
+          === Container container_1527514612110_0022_01_000001@compute-4:45454: RUNNING
+          === Container container_1527514612110_0022_01_000002@compute-4:45454: KILLING
+=================  Step: 1  =====================================
+...
+Fault NodeConnectionErrorFault@compute-2
+Repairing probability: 0,9 > 0,627997327888383
+Fault NodeDeadFault@compute-2
+Activation probability: 0,92 < 0,166343716981981
+...
+Fault NodeConnectionErrorFault@compute-4
+Activation probability: 0,75 < 0,803721676023547
+Fault NodeDeadFault@compute-4
+Activation probability: 0,75 < 0,0112022128939639
+Start connection on node compute-2
+Stop connection on node compute-4
+Selected Benchmark client1: teragen
+YARN component not valid: Constraint 0 in compute-2:45454
+YARN component not valid: Constraint 1 in compute-2:45454
+Step Duration: 00:00:18.6516724
+...
+=== Node compute-2:45454 ===
+    State:         LOST
+    IsActive:      True
+    IsConnected:   True
+    Container Cnt: 0
+    Mem used/free: 0/0 (0,000)
+    CPU used/free: 0/0 (0,000)
+=== Node compute-3:45454 ===
+    State:         RUNNING
+    IsActive:      True
+    IsConnected:   True
+    Container Cnt: 0
+    Mem used/free: 0/8192 (0,000)
+    CPU used/free: 0/8 (0,000)
+=== Node compute-4:45454 ===
+    State:         LOST
+    IsActive:      True
+    IsConnected:   False
+    Container Cnt: 0
+    Mem used/free: 0/0 (0,000)
+    CPU used/free: 0/0 (0,000)
+=== Client client1 ===
+    Current executing bench:  teragen
+    Current executing app id: application_1527514612110_0022
+    === App application_1527514612110_0022 ===
+        Name:        TeraGen
+        State:       FINISHED
+        FinalStatus: SUCCEEDED
+        IsKillable:  False
+        AM Host:     compute-4:45454 (LOST)
+        === Attempt appattempt_1527514612110_0022_000001 ===
+            State:        FINISHED
+            AM Container: container_1527514612110_0022_01_000001
+            AM Host:      compute-4:45454 (LOST)
+...
+Simulation Duration: 00:01:35.7230150
+Finishing test.
+Activated Faults:    3
+Repaired Faults      2
+=================  Finish  =====================================
+Starting node compute-3 after fault activation.
+
