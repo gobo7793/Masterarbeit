@@ -1,9 +1,8 @@
 \chapter{Implementierung und Ausführung der Tests}
 \label{chap:testExecution}
 
-Um nun Testfälle ausführen zu können, wurde zunächst eine Simulation erstellt, mit der einzelne Testfälle ohne die Aktivierung von Komponentenfehlern ausgeführt werden können.
-Die Simulation dient vor allem als Vergleichswert für die Evaluation der gesamten Fallstudie.
-Neben der Simulation wurde aber auch ein Analysetest erstellt, bei dem das \sS-Framework die implementierten Komponentenfehler aktiviert und so ermittelt, ob sich das reale Cluster so verhält, wie es erwartet wird.
+Die Ausführung der Testfälle findet im Rahmen einer Simulation mithilfe des \ac{ss}"=Simulators statt.
+Hierfür wurde eine entsprechende Klasse \texttt{SimulationTests} entwickelt, mit der die Simulation und andere damit zusammenhängende Vorgänge und Methoden mithilfe des Test"=Frameworks \emph{NUnit} ausgeführt werden können.
 
 \input{./ausfuehrung/simulation}
 
