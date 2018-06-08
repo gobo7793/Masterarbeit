@@ -6,9 +6,10 @@ public void SimulateHadoop()
   ExecuteSimulation();
 }
 
-private void ExecuteSimulation(bool isWithFaults)
+private void ExecuteSimulation()
 {
   var origModel = InitModel();
+  var isWithFaults = _FaultActivationProbability > 0.000001;
   
   var wasFatalError = false;
   try

@@ -8,6 +8,5 @@ public bool IsReconfPossible()
     Logger.Error("No reconfiguration possible!");
     throw new Exception("No reconfiguration possible!");
   }
-  
   return true;
 }

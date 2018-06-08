@@ -1,6 +1,7 @@
 private static TimeSpan _MinStepTime = new TimeSpan(0, 0, 0, 20);
 private static int _BenchmarkSeed = Environment.TickCount;
 private static int _StepCount = 3;
+private static bool _RecreatePreInputs = false;
 private static bool _PrecreatedInputs = true;
 private static double _FaultActivationProbability = 0.25;
 private static double _FaultRepairProbability = 0.5;
