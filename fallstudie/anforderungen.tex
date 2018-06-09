@@ -2,8 +2,7 @@
 \label{sec:clusterRequirements}
 
 Obwohl in dieser Masterarbeit der Fokus auf Testautomatisierung und Validieren eines Testsystems liegt, müssen auch die funktionalen Anforderungen an das zu testende System berücksichtigt werden.
-Die Anforderungen hierzu wurden bereits ausführlich in \cite{Eberhardinger2018} erläutert.
-Die implementierten Anforderungen sind:
+Folgende Anforderungen wurden hierfür bereits in \cite{Eberhardinger2018} spezifiziert:
 
 \begin{enumerate}
     \item Ein Task wird vollständig ausgeführt, sofern er nicht abgebrochen wird
@@ -11,3 +10,12 @@ Die implementierten Anforderungen sind:
     \item Die Konfiguration wird aktualisiert, sobald eine entsprechende Regel erfüllt ist
     \item Defekte oder Verbindungsabbrüche werden erkannt
 \end{enumerate}
+
+\todo{generelles wie Benchmarks oder ss hier erklören}
+
+Da die Auswahl der ausgeführten Anwendungen nicht manuell bestimmt werden soll, wird hierfür ein Transitionssystem verwendet.
+Mithilfe dieses Transitionssystems, in dem die Wahrscheinlichkeiten von Wechsel zwischen zwei Anwendungen definiert sind, soll während der Ausführung eines Testfalls zufällig eine nachfolgende Anwendung ausgewählt werden.
+Da zum Testen des Clusters der \ac{ss}"=Simulator eingesetzt wird, hängt die Anzahl der Anwendungen primär von der Anzahl der ausgeführten Simulations"=Schritte ab.
+Ein weiterer Faktor zur Anzahl der Anwendungen ist die Anzahl an simulierten Clients, da auch getestet werden soll, wie sich das Cluster bei der Ausführung von mehreren parallel gestarteten Anwendungen verhält.
+
+Diese funktionalen Anforderungen sind ebenso wie die Anforderungen an das Testsystem selbst (vgl. \autoref{sec:predictions}) im Modell zu implementieren.

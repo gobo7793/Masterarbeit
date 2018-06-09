@@ -7,7 +7,9 @@ In diesem ist festgehalten, was getestet wird, wie die Testfälle aussehen und w
 \subsection{Behauptungen und Variablen}
 \label{sec:predictions}
 
-% Was für Behauptungen wurden aufgestellt
+Neben den in \autoref{sec:clusterRequirements} genannten funktionalen Anforderungen, bestehen an das gesamte Testsystem weitere Anforderungen.
+Zur Evaluation des Testsystems wurden hierbei folgende, weiteren Anforderungen bzw. Behauptungen aufgestellt:
+
 \begin{enumerate}
     \setcounter{enumi}{4}
     \item Der jeweils aktuelle Status des Clusters wird erkannt und im Modell gespeichert
@@ -20,26 +22,43 @@ In diesem ist festgehalten, was getestet wird, wie die Testfälle aussehen und w
     \item Ein Testfall kann zeitlich unabhängig und mehrmals ausgeführt werden
 \end{enumerate}
 
-% Was für Variablen wurden dadurch ermittelt
+Möglichst viele Anforderungen sollen, sofern möglich, im Testsystem implementiert werden, sodass sie in Form von \emph{Constraints} während der Ausführung der Tests bereits automatisch validiert werden können (vgl. \todo{abschnitt constraints impl}).
+
+Basierend auf den Anforderungen wurden folgende unabhängigen Variablen zur Evaluation ermittelt:
+
+\begin{itemize}
+    \item Anzahl der Hosts und Nodes
+    \item Anzahl der Clients
+    \item Anzahl der Simulations"=Schritte
+    \item \emph{Seed} für Zufallsgeneratoren
+    \item Generelle Wahrscheinlichkeit zur Aktivierung und Deaktivierung der Komponentenfehler
+\end{itemize}
+
+Basierend auf den unabhängigen Variablen wurden folgende abhängigen Variablen ermittelt:
+
+\begin{itemize}
+    \item Art und Anzahl der aktivierten und deaktivierten Komponentenfehler
+    \item Anzahl erfolgreich bzw. nicht erfolgreich beendeter Anwendungen
+    \item Anzahl abgebrochener Anwendungen
+\end{itemize}
+
+Diese Variablen werden dazu genutzt, um einerseits einzelne Testfälle zu definieren, andererseits auch als primäre Kennzahlen im Rahmen der Evaluation in \autoref{chap:evaluation}.
 
 \subsection{Generierung der Testfälle}
 \label{sec:testcaseGeneration}
 
-Die Generierung der Testfälle hängt von mehreren Faktoren ab.
-Zum einen ist ein Testfall abhängig von der Größe des Clusters, also ob das Cluster auf einem oder beiden Hosts ausgeführt wird und aus wie vielen Nodes das Cluster besteht.
-Relevant zur Unterscheidung von Testfällen sind aber auch die ausgeführten Anwendungen.
-Da die Auswahl der ausgeführten Anwendungen nicht manuell bestimmt werden soll, wird hierfür ein Transitionssystem verwendet.
-Mithilfe dieses Transitionssystems, in dem die Wahrscheinlichkeiten von Wechsel zwischen zwei Anwendungen definiert sind, soll während der Ausführung eines Testfalls zufällig eine nachfolgende Anwendung ausgewählt werden.
-Da zum Testen des Clusters der \ac{ss}"=Simulator eingesetzt wird, hängt die Anzahl der Anwendungen primär von der Anzahl der ausgeführten Simulations"=Schritte ab.
-Ein weiterer Faktor zur Anzahl der Anwendungen ist die Anzahl an simulierten Clients, da auch getestet werden soll, wie sich das Cluster bei der Ausführung von mehreren parallel gestarteten Anwendungen verhält.
-Die zu injizierenden Komponentenfehler, mit denen defekte Nodes und Verbindungsausfälle simuliert werden, werden ebenfalls zufallsbasiert ausgewählt.
-Dies gilt auch für das Deaktivieren der Komponentenfehlern.
+Die Testfälle werden anhand der im vorherigen \autoref{sec:predictions} genannten unabhängigen Variablen definiert.
+Ein Testfall ist somit zum einen Abhängig von der Größe des Clusters, also ob das Cluster auf einem oder beiden Hosts ausgeführt wird und aus wie vielen Nodes das Cluster besteht.
+Mithilfe des Seeds für die Zufallsgeneratoren werden die ausgeführten Anwendungen anhand des Transitionssystems ermittelt.
+Die Anzahl der insgesamt ausgeführten Anwendungen wird primär von der Anzahl der Simulations"=Schritte sowie der Anzahl der Clients bestimmt.
+Die zu injizierenden und zu reparierenden Komponentenfehler, mit denen defekte Nodes und Verbindungsausfälle simuliert werden, werden zum Teil mithilfe des ausgewählt.
+Neben einem normalen Test soll zudem ein Mutationstest ausgeführt werden, bei denen das \ac{SuT} verändert wird (also mutiert), um somit validieren zu können, ob die Tests auch bei einem fehlerhaften \ac{SuT} korrekt sind.
 
-Die Auswahl der nachfolgenden Anwendungen und die Entscheidung über die Aktivierung und Deaktivierung der Komponentenfehlern wird daher mithilfe eines Zufallsgenerators realisiert.
-Hierbei soll jedoch kein echter Zufallsgenerator zum Einsatz kommen, sondern ein Pseudo"=Zufallsgenerator.
-Da ein Pseudo"=Zufallsgenerator seine Werte mithilfe eines Start"=\emph{Seeds} auswählt, besteht somit die Möglichkeit durch die Verwendung eines bestimmten Seeds, einen Testfall jederzeit wiederholen zu können.
-Die verwendeten Seeds sollen hierbei basierend auf einem weiteren, zeitbasiertem Seed, ermittelt werden.
+Der in dieser Fallstudie verwendete Zufallsgenerator des .NET"=Frameworks ist hierbei kein \emph{echter} Zufallsgenerator, sondern ein Pseudo"=Zufallsgenerator, der mithilfe mathematischer Formeln anhand eines Start"=Seeds Zufallszahlen ermittelt, die anschließend zur Auswahl der Anwendungen und Komponentenfehlern genutzt werden.
+Da standardmäßig ein zeitbasierter Seed zur Initialisierung des Zufallsgenerators genutzt wird, muss zur Wiederausführbarkeit einzelner Testfälle der Seed der Zufallsgeneratoren manuell festgelegt werden können.
 \todo{Wo wird Seed wie genutzt? am besten in implementierung davon!}
+
+Die Auswahl der konkreten Testfälle ist in \autoref{sec:selectTestcases} beschrieben, die Details zu deren Implementierung in \autoref{sec:implTestcases}.
 
 \subsection{Organisation und Ausgabe der Daten}
 \label{sec:dataOrganisation}
@@ -48,16 +67,22 @@ Damit die bei der Ausführung gewonnenen Daten auch zur Evaluation genutzt werde
 Alle relevante Daten werden hierzu während der Ausführung der Testfälle in einer Log"=Datei gespeichert.
 Zur Unterscheidung von einzelnen Ausführungen werden die Daten klar strukturiert.
 
-Beim Start der Simulation werden zunächst einige generelle Daten ausgegeben:
+Beim Start eines Testfalls sollen daher zunächst einige generelle Daten ausgegeben werden:
 
 \begin{itemize}
     \item Basis"=Seed für die Zufallsgeneratoren
-    \item Mindestdauer für einen Simulations"=Schritt
+    \item Wahrscheinlichkeit für Aktivierung und Deaktivierung der Komponentenfehler
+    \item Anzahl genutzter Hosts, Nodes und Clients
     \item Anzahl der ausgeführten Simulations"=Schritte
-    \item Wahrscheinlichkeiten für Aktivierung und Deaktivierung der Komponentenfehler
+    \item Angabe, ob ein normaler Test oder ein Mutationstest ausgeführt wird
+\end{itemize}
+
+Im Rahmen der Simulation können weitere Daten ausgegeben werden, wie \zB:
+
+\begin{itemize}
     \item Angabe, ob vorab generierte Eingabedaten genutzt werden oder diese während der Ausführung eines Testfalls generiert werden
-    \item Anzahl genutzter Hosts und Nodes
-    \item Auszuführende Benchmarks    
+    \item Mindestdauer für einen Simulations"=Schritt
+    \item Auszuführende Benchmarks pro Client
 \end{itemize}
 
 Die Ausgabe der Daten der YARN"=Komponenten wird bei jedem Simulations"=Schritt durchgeführt, damit das Verhalten des Clusters berücksichtigt werden kann.
@@ -105,4 +130,4 @@ Ausgegeben werde hierbei:
     \end{itemize}
 \end{itemize}
 
-Die Details zur Implementierung und dem Ausgabeformat sind in \autoref{sec:simulationStepOutput} erläutert.
+Die Details zur Implementierung und dem Ausgabeformat während der Ausführung der Simulation sind in \autoref{sec:simulationStepOutput} erläutert, die zur Ausgabe der generellen Testfalldaten in \autoref{sec:implTestcases}. Ein Beispiel einer möglichen Ausgabe für einen Testfall findet sich in \autoref{app:outputFormat}.
