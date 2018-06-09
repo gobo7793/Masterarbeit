@@ -38,9 +38,7 @@ Dies gilt auch für das Deaktivieren der Komponentenfehlern.
 Die Auswahl der nachfolgenden Anwendungen und die Entscheidung über die Aktivierung und Deaktivierung der Komponentenfehlern wird daher mithilfe eines Zufallsgenerators realisiert.
 Hierbei soll jedoch kein echter Zufallsgenerator zum Einsatz kommen, sondern ein Pseudo"=Zufallsgenerator.
 Da ein Pseudo"=Zufallsgenerator seine Werte mithilfe eines Start"=\emph{Seeds} auswählt, besteht somit die Möglichkeit durch die Verwendung eines bestimmten Seeds, einen Testfall jederzeit wiederholen zu können.
-Zur Auswahl der ersten Testfälle werden daher zeitbasierte Seeds verwendet.
-Diese Seeds werden bei der Ausführung notiert und für andere Testfälle verwendet, bei denen andere Punkte der Konfiguration wie \zB die Größe des Clusters, abgeändert werden.
-Dadurch ist es möglich, die Auswirkungen einzelner Parameter zu testen und zu evaluieren.
+Die verwendeten Seeds sollen hierbei basierend auf einem weiteren, zeitbasiertem Seed, ermittelt werden.
 \todo{Wo wird Seed wie genutzt? am besten in implementierung davon!}
 
 \subsection{Organisation und Ausgabe der Daten}

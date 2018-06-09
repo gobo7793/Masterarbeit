@@ -1,24 +1,10 @@
 \section{Implementierungen der Mutationstests}
 \label{sec:implMutationTests}
 
-Da in dieser Arbeit nicht nur Hadoop bzw. die Selfbalancing"=Komponente getestet werden soll, sondern vor allem das in den vorherigen Abschnitten und Kapiteln beschriebene Modell und Simulation zum Testen, wurden auch einige Mutationstests entwickelt.
-Implementiert wurden die Mutationstests in der bereits in \autoref{sec:inriaSetting} beschriebenen, Selfbalancing"=Komponente, wodurch einzelne Bestandteile fehlerhaft gemacht wurden und daher nicht mehr korrekt funktionieren.
-Hierfür wurden drei Mutationsszenarien entwickelt:
+Da in dieser Fallstudie nicht nur Hadoop bzw. die Selfbalancing"=Komponente getestet werden soll, sondern vor allem das in den vorherigen Abschnitten und Kapiteln beschriebene Modell und Simulation zum Testen, wurde auch ein Mutationstest erstellt.
+Wie bereits in \autoref{sec:aufbauCluster} erwähnt, geschah dies im Rahmen eines neuen Szenarios der Plattform Hadoop"=Benchmark.
+\todo{Beschreiben}
 
-\begin{description}
-    \item [mut1: Einschränkungen beim Monitoring] \hfill \\
-        Hierfür wurden die Monitoring"=Möglichkeiten der Selfbalancing"=Komponente eingeschränkt.
-        Es wird dabei verhindert, dass die Anzahl der aktiven und wartenden Jobs in die \emph{controlLog}"=Datei geschrieben werden, aus welcher der Controller der Komponente die Daten ermittelt.
-        Ebenso wurde verhindert, dass der Anteil des von Anwendungscontainer benötigten Arbeitsspeichers des Clusters in der \emph{memLog}"=Datei gespeichert wird.
-        Dadurch erhält der Controller der Selfbalancing"=Komponente nicht mehr alle benötigten Daten, um den \ac{MARP}"=Wert auf einen optimalen Wert anpassen zu können und führt daher keinerlei Anpassungen mehr durch.
-    \item [mut2: Fehler beim Berechnen der Änderung des MARP"=Wertes] \hfill \\
-        Für das zweite Mutationsszenario wurde die Berechnung des MARP"=Wertes verändert.
-        Konkret wird hierbei der Wert, um den der MARP="Wert erhöht bzw. verringert wird, mit dem Faktor 1,5 multipliziert.
-        Die dadurch deutlich stärker ausfallende Veränderung wird anschließend in die Konfiguration von Hadoop eingetragen.
-    \item [mut3: Neuer MARP"=Wert kann nicht gespeichert werden] \hfill \\
-        Beim dritten Mutationsszenario wird verhindert, dass der von der Selfbalancing"=Komponente ermittelte, neue MARP"=Wert in die Konfiguration von Hadoop übernommen wird.
-        Dazu wird unterbunden, dass der neue Wert in der \texttt{capacity"=scheduler.xml} eingetragen und das anschließende Aktualisieren der Konfiguration durchgeführt wird.
-\end{description}
-
-Für jedes der drei Szenarien wurde ein entsprechendes Szenario im Rahmen der Plattform Hadoop"=Benchmark entwickelt.
-Dadurch ist es möglich, die einzelnen Szenarien genauso zu starten, wie einen Testfall ohne Mutationstest.
+Zur Entwicklung des Mutationsszenarios wurden mithilfe des Universalmutators insgesamt \todo{Anzahl aller mutationen)} Mutationen generiert.
+Von allen generierten Mutationen wurde für jede der vier Java"=Klasse zufällig eine valide Mutation ausgewählt.
+Die hierbei erzeugte, mutierte Selfbalancing"=Komponente wird in einem dafür entwickelten Docker"=Image gespeichert, was den Kern des Mutationsszenarios darstellt.

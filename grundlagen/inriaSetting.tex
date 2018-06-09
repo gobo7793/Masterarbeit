@@ -41,7 +41,7 @@ Die Evaluation von \citeauthor{zhang2016} ergab zudem, dass die dynamische Anpas
 \label{sec:selfbalancingAnalysis}
 
 Da in dieser Fallstudie auch Mutationstests zum Einsatz kommen, bei denen die Selfbalancing"=Komponente entsprechend verändert wird (vgl. \autoref{sec:implMutationTests}), wurde die Komponente zunächst analyisiert.
-Sie besteht aus folgenden vier Java"=Klassen und drei Shell"=Scripten:
+Sie besteht aus folgenden vier Java"=Klassen, welche den Kern der Komponente darstellen, und drei Shell"=Scripten, die als Verbindung zum Hadoop"=Cluster dienen:
 
 \begin{itemize}
     \item Java"=Klassen:
@@ -62,7 +62,6 @@ Sie besteht aus folgenden vier Java"=Klassen und drei Shell"=Scripten:
 Um Messfehler auszugleichen bzw. zu reduzieren nutzt die Komponente zudem einen Kalman"=Filter, welcher in Form der Open"=Source"=Bibliotek JKalman\footnote{\url{https://jkalman.sourceforge.io/}} eingebunden ist.
 \todo{literatur zum kalman?}
 
-% was machen die .sh
 Die drei Shell-Scripte dienen zur Interaktion zwischen dem Controller der Selfbalancing"=Komponente und Hadoop selbst.
 Sie werden von den beiden Monitor"=Klassen sekündlich gestartet und ermitteln basierend auf den Logs die Auslastung des Clusters.
 Mithilfe von \texttt{selfTuning-controlNode.sh}, das von \texttt{ControlNodeMonitor} gestartet wird, wird die Anzahl an aktiven und wartenden YARN"=Jobs ermittelt und anschließend in die \texttt{controlNodeLog}"=Datei geschrieben.
