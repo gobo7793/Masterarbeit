@@ -52,7 +52,7 @@ Ein Testfall ist somit zum einen Abhängig von der Größe des Clusters, also ob
 Mithilfe des Seeds für die Zufallsgeneratoren werden die ausgeführten Anwendungen anhand des Transitionssystems ermittelt.
 Die Anzahl der insgesamt ausgeführten Anwendungen wird primär von der Anzahl der Simulations"=Schritte sowie der Anzahl der Clients bestimmt.
 Die zu injizierenden und zu reparierenden Komponentenfehler, mit denen defekte Nodes und Verbindungsausfälle simuliert werden, werden zum Teil mithilfe des ausgewählt.
-Neben einem normalen Test soll zudem ein Mutationstest ausgeführt werden, bei denen das \ac{SuT} verändert wird (also mutiert), um somit validieren zu können, ob die Tests auch bei einem fehlerhaften \ac{SuT} korrekt sind.
+Zudem sollen neben den Tests mit einem normalen Cluster zusätzliche Mutationstest mit einer veränderten Selfbalancing"=Komponente ausgeführt werden.
 
 Der in dieser Fallstudie verwendete Zufallsgenerator des .NET"=Frameworks ist hierbei kein \emph{echter} Zufallsgenerator, sondern ein Pseudo"=Zufallsgenerator, der mithilfe mathematischer Formeln anhand eines Start"=Seeds Zufallszahlen ermittelt, die anschließend zur Auswahl der Anwendungen und Komponentenfehlern genutzt werden.
 Da standardmäßig ein zeitbasierter Seed zur Initialisierung des Zufallsgenerators genutzt wird, muss zur Wiederausführbarkeit einzelner Testfälle der Seed der Zufallsgeneratoren manuell festgelegt werden können.
