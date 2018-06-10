@@ -1,26 +1,37 @@
 [Test]
-[TestCase(514633513, 0.3, 2, 1, 15)]
-// ...
-public void ExecuteCaseStudy(int benchmarkSeed, double faultProbability, int hostsCount, int clientCount,  int stepCount)
+[TestCaseSource(nameof(GetTestCases))]
+public void ExecuteCaseStudy(int benchmarkSeed,
+    double faultProbability, int hostsCount, int clientCount,
+    int stepCount, bool isMutated)
 {
-  // For all test cases
-  _MinStepTime = new TimeSpan(0, 0, 0, 25);
-  _RecreatePreInputs = true;
-  _PrecreatedInputs = true;
-  _NodeBaseCount = 4;
-
-  // Specific test cases
-  _BenchmarkSeed = benchmarkSeed;
-  _FaultActivationProbability = faultProbability;
-  _FaultRepairProbability = faultProbability;
-  _HostsCount = hostsCount;
-  _ClientCount = clientCount;
-
-  _StepCount = stepCount;
-
+  // Write test case parameter to log
+  
+  StartCluster(hostsCount, isMutated);
+  Thread.Sleep(7000); // wait for startup
+  
+  Logger.Info("Setting up test case");
+  var simTest = new SimulationTests
+  {
+      MinStepTime = new TimeSpan(0, 0, 0, 25),
+      RecreatePreInputs = true,
+      PrecreatedInputs = true,
+      NodeBaseCount = 4,
+  
+      BenchmarkSeed = benchmarkSeed,
+      FaultActivationProbability = faultProbability,
+      FaultRepairProbability = faultProbability,
+      HostsCount = hostsCount,
+      ClientCount = clientCount,
+  
+      StepCount = stepCount,
+  };
+  
   // execute
-  SimulateHadoopFaults();
-
+  simTest.SimulateHadoopFaults();
+  
+  StopCluster();
+  
   // move logs
-  MoveCaseStudyLogs();
+  MoveCaseStudyLogs(benchmarkSeed, faultProbability, hostsCount,
+      clientCount, stepCount, isMutated);
 }

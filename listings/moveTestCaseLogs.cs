@@ -1,17 +1,4 @@
-private void MoveCaseStudyLogs()
-{
-  var origLogDir = $@"{Environment.CurrentDirectory}\logs";
-  var todayStrLong = DateTime.Today.ToString("yyyy-MM-dd");
-  var origLogFile = $@"{origLogDir}\{todayStrLong}.log";
-  var origSshLog = $@"{origLogDir}\{todayStrLong}-sshout.log";
-
-  var caseStudyLogDir = $@"{Environment.CurrentDirectory}\testingHadoopCaseStudyLogs";
-  var todayStrShort = DateTime.Today.ToString("yyMMdd");
-  var filename = $"{_BenchmarkSeed:X8}-{_FaultActivationProbability:F1}-{_HostsCount:D1}-{_ClientCount:D1}-{_StepCount:D2}-{todayStrShort}";
-  var newLogFile = $@"{caseStudyLogDir}\{filename}.log";
-  var newSshLog = $@"{caseStudyLogDir}\{filename}-ssh.log";
-
-  Directory.CreateDirectory(caseStudyLogDir);
-  File.Move(origLogFile, newLogFile);
-  File.Move(origSshLog, newSshLog);
-}
+var todayStrShort = DateTime.Today.ToString("yyMMdd");
+var mutatedInt = isMutated ? 1 : 0;
+var faultProbStr = faultProbability.ToString(CultureInfo.InvariantCulture);
+var filename = $"{benchmarkSeed:X8}-{faultProbStr}-{hostsCount:D1}-{clientCount:D1}-{stepCount:D2}-{mutatedInt:D1}-{todayStrShort}";
