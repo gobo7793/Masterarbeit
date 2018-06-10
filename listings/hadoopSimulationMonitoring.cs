@@ -6,14 +6,14 @@ public void MonitorStatus()
     if(parsed != null)
       SetStatus(parsed);
   }
-  
+
   var parsedAttempts = Parser.ParseAppAttemptList(AppId);
   foreach(var parsed in parsedAttempts)
   {
-    var attempt = // get existing or empty attempt
+    var attempt = // get existing or empty attempt instance
     if(attempt == null)
       // throw OutOfMemoryException
-   
+
     attempt.AppId = AppId;
     attempt.IsSelfMonitoring = IsSelfMonitoring;
     if(IsSelfMonitoring)

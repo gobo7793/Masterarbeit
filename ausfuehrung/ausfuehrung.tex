@@ -1,8 +1,9 @@
 \chapter{Implementierung und Ausführung der Tests}
 \label{chap:testExecution}
 
-Die Ausführung der Testfälle findet im Rahmen einer Simulation mithilfe des \ac{ss}"=Simulators statt.
-Hierfür wurde eine entsprechende Klasse \texttt{SimulationTests} entwickelt, mit der die Simulation und andere damit zusammenhängende Vorgänge und Methoden mithilfe des Test"=Frameworks \emph{NUnit} ausgeführt werden können.
+Zur Ausführung der Testfälle wurde zunächst eine Simulation entwickelt, welche mithilfe des \ac{ss}"=Simulators ausgeführt werden kann.
+Alle hierfür relevanten Methoden wurden in der Klasse \texttt{SimulationTests} zusammengefasst, welche wiederum als Basis für die Ausführung der Testfälle selbst dient.
+Die Implementierung und Ausführung der Testfälle wird mithilfe der hierfür entwickelten Klasse \ac{CaseStudyTests} durchgeführt.
 
 \input{./ausfuehrung/simulation}
 

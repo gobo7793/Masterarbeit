@@ -1,43 +1,49 @@
+[Test]
 public void SimulateHadoop()
 {
   ModelSettings.FaultActivationProbability = 0.0;
   ModelSettings.FaultRepairProbability = 1.0;
   
-  ExecuteSimulation();
+  var execRes = ExecuteSimulation();
+  Assert.IsTrue(execRes, "fatal error occured, see log for details");
 }
 
-private void ExecuteSimulation()
+private bool ExecuteSimulation()
 {
-  var origModel = InitModel();
-  var isWithFaults = _FaultActivationProbability > 0.000001;
+  var model = InitModel();
+  var isWithFaults = FaultActivationProbability > 0.000001; // prevent inaccuracy
   
   var wasFatalError = false;
   try
   {
-    var simulator = new SafetySharpSimulator(origModel);
+    // init simulation
+    var simulator = new SafetySharpSimulator(model);
     var simModel = (Model)simulator.Model;
     var faults = CollectYarnNodeFaults(simModel);
-    
+
     SimulateBenchmarks();
-    
-    for(var i = 0; i < _StepCount; i++)
+
+    // do simuluation
+    for(var i = 0; i < StepCount; i++)
     {
       OutputUtilities.PrintStepStart();
       var stepStartTime = DateTime.Now;
-      
+
       if(isWithFaults)
         HandleFaults(faults);
       simulator.SimulateStep();
-      
+
       var stepTime = DateTime.Now - stepStartTime;
-      OutputUtilities.PrintSteptTime(stepTime);
+      OutputUtilities.PrintDuration(stepTime);
       if(stepTime < ModelSettings.MinStepTime)
         Thread.Sleep(ModelSettings.MinStepTime - stepTime);
-      
+
       OutputUtilities.PrintFullTrace(simModel.Controller);
     }
-    
-    OutputUtilities.PrintExecutionFinish();
+
+    // collect fault counts and check constraint
   }
   // catch/finally
+  
+  return !wasFatalError;
 }
