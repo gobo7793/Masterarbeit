@@ -18,11 +18,11 @@ Für die verschiedenen Variablen, die einen Testfall definieren, wurden folgende
 
 \begin{table}[h]
     \begin{tabu}{c|[2pt]c|c|c}
-        & Wert 1    &   Wert 2    &  Wert 3   \\ \tabucline[2pt]{-}
-        Seed     & 105838460 & -2044864785 & 514633513 \\ \hline
-        KF"=Wahrsch. & 0         &     0,3     &  \\ \hline
-        Hosts/Nodes  & 1/4       &     2/6     &  \\ \hline
-        Clients    & 1         &      2      &
+    	             & Wert 1    &   Wert 2   &   Wert 3   \\ \tabucline[2pt]{-}
+    	    Seed     & 0xE99032B & 0x4F009539 & 0x319140E0 \\ \hline
+    	KF"=Wahrsch. & 0         &     0,3    &  \\ \hline
+    	Hosts/Nodes  & 1/4       &     2/6    &  \\ \hline
+    	  Clients    & 1         &      2     &
     \end{tabu}
     \caption[Übersicht der zur Testfallgenerierung genutzten Werte]
     {Übersicht der zur Testfallgenerierung genutzten Werte.
@@ -33,12 +33,11 @@ Für die verschiedenen Variablen, die einen Testfall definieren, wurden folgende
 
 Zur Ermittlung der drei verwendeten Seeds wurde folgender Programmcode ausgeführt:
 
-\todo{wirklich verwendete seeds hinschreiben (listing und tabelle)}
 \lstinputlisting[label=lst:generateTestCaseSeeds,style=cs,
 caption={Ermittlung der für die Testfälle genutzten Seeds}]
 {./listings/generateTestCaseSeeds.cs}
 
-Zur Festlegung der Werte zur generellen Wahrscheinlichkeiten zur Aktivierung bzw. Deaktivierung von Komponentenfehlern wurden zunächst über 20.000 mögliche Aktivierungen mit verschiedenen generellen Warhscheinlichkeiten und Auslastungsgraden der Nods simuliert.
+Zur Festlegung der Werte zur generellen Wahrscheinlichkeiten zur Aktivierung bzw. Deaktivierung von Komponentenfehlern wurden zunächst über 20.000 mögliche Aktivierungen mit verschiedenen generellen Wahrscheinlichkeiten und Auslastungsgraden der Nodes simuliert.
 Der für die Testfälle ausgewählte Wert stellt hierbei eine ausgewogene Aktivierung bzw. Deaktivierung der Komponentenfehler bei unterschiedlichen Auslastungsgraden der Nodes dar.
 
 Insgesamt ergeben die angegebenen Werte 24 Testfälle, die jeweils mit und ohne Mutationen im realen Cluster ausgeführt werden.

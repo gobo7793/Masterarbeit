@@ -12,7 +12,7 @@ public IEnumerable GetTestCases()
 
 private IEnumerable GetSeeds()
 {
-  yield return 123;
-  yield return 456;
-  yield return 789;
+  yield return 0xE99032B;
+  yield return 0x4F009539;
+  yield return 0x319140E0;
 }
