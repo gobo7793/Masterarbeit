@@ -12,6 +12,11 @@ caption={[Methode zur Ausführung der Testfälle]
 
 Das Starten und Beenden des jeweiligen Cluster dient der automatisierten Ausführung aller Testfälle inkl. denen mit der mutierten Selfbalancing"=Komponente.
 Dadurch ist es möglich, das Cluster neben dem normalen Szenario auch im Mutationsszenario zu starten.
+Durch das Beenden des Clusters im Finally"=Block ist es möglich, bei einer abgebrochenen Simulation andere Testfälle regulär auszuführen, da dadurch das Cluster regulär beendet wird und die Daten des abgebrochenen Testfalls wie bei einem erfolgreichen Test gespeichert werden.
+
+Da die verwendeten Connectoren bzw. SSH"=Verbindungen prinzipiell nur einmal initialisiert werden müssen und anschließend für alle auszuführenden Testfälle verwendet werden können, werden diese einmalig in \texttt{InitInstances()} initialisiert und anschließend bei jedem Testfall wiederverwendet.
+In \texttt{ResetInstances()} wird somit nur die zuvor genutzte Modell"=Instanz gelöscht sowie einige statische Zählvariablen zurückgesetzt.
+
 Mithilfe der im \texttt{TestCaseSourceAttribute} referenzierten Methode \texttt{GetTestCases()} werden die implementierten Testfälle ermittelt:
 
 \lstinputlisting[label=lst:getTestCases,style=cs,
