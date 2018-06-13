@@ -1,13 +1,14 @@
 public IEnumerable GetTestCases()
 {
-  foreach(var seed in GetSeeds())
-  foreach(var prob in GetFaultProbabilities())
-  foreach(var hosts in GetHostCounts())
-  foreach(var clients in GetClientCounts())
-  foreach(var steps in GetStepCounts())
-  foreach(var isMut in GetIsMutated())
-    yield return new TestCaseData(seed, prob, hosts,
-        clients, steps, isMut);
+  return from seed in GetSeeds()
+         from prob in GetFaultProbabilities()
+         from hosts in GetHostCounts()
+         from clients in GetClientCounts()
+         from steps in GetStepCounts()
+         from isMut in GetIsMutated()
+
+         where clients * steps <= MaxPossibleAppCount
+         select new TestCaseData(seed, prob, hosts, clients, steps, isMut);
 }
 
 private IEnumerable GetSeeds()

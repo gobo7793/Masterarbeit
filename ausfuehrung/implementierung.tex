@@ -25,6 +25,10 @@ caption={[Implementierung der Testfälle]
     Die hier nicht gezeigten Methoden zur Rückgabe der Implementierten Werte wie \texttt{GetFaultProbabilities()} sind nach dem gleichen Schema aufgebaut wie \texttt{GetSeeds()}.}]
 {./listings/getTestCases.cs}
 
+Hierbei werden nur Testfälle generiert, bei denen die Anzahl an maximal möglichen ausgeführten Anwendungen den Wert in der Eigenschaft \texttt{MaxPossibleAppCount} nicht überschreitet.
+Dies dient dazu, um eine \texttt{StackOverflowException} durch den \ac{ss}"=Simulator zu verhindern, da bei einer zu großen Anzahl an Anwendungen (und damit auch Attempts und Container) nicht genügen Arbeitsspeicher zur Verfügung steht (vgl. \autoref{sec:sSharp} und \todo{sobald yarn-modell neu steht, hier auf architektur der anwendungen, attempts und container verweisen}).
+Zur Ausführung der Testfälle dieser Fallstudie wurde dieser Wert auf 12 gesetzt, womit Testfälle mit zwei simulierten Clients und zwölf Simulations"=Schritten nicht ausgeführt werden.
+
 Damit die bei der Ausführung der Tests generierten Logs einfacher zur Evaluation genutzt werden können, werden die angefallenen Logdateien nach jeder Ausführung in ein entsprechendes Verzeichnis verschoben.
 Hierbei werden die Logdateien gleichzeitig gemäß der Testfallparameter wie folgt umbenannt:
 

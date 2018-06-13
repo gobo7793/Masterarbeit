@@ -41,7 +41,9 @@ Zur Festlegung der Werte zur generellen Wahrscheinlichkeiten zur Aktivierung bzw
 Der für die Testfälle ausgewählte Wert stellt hierbei eine ausgewogene Aktivierung bzw. Deaktivierung der Komponentenfehler bei unterschiedlichen Auslastungsgraden der Nodes dar.
 
 Insgesamt ergeben die angegebenen Werte 24 Testfälle, die jeweils mit und ohne Mutationen im realen Cluster ausgeführt werden.
-Jeder Testfall wird zudem je einmal mit 5 sowie 15 Simulations"=Schritten ausgeführt, was für die Evaluation eine Datenbasis von 96 ausgeführten Testfällen ergibt.
+Die meisten Testfälle werden je einmal mit 5 sowie 12 Simulations"=Schritten ausgeführt.
+Ausgenommen hiervon sind Testfälle mit 2 simulierten Clients und 12 Simulations"=Schritten, die nicht ausgeführt werden (vgl. \autoref{sec:implTestcases}).
+Insgesamt ergibt das für die Simulation somit eine Datenbasis von 72 ausgeführten Testfällen.
 
 Die Mindestdauer für einen Simulations"=Schritt wurde in allen Fällen auf 25 Sekunden festgelegt, da hierbei ein Großteil der ausgeführten Anwendungen auf dem Cluster erfolgreich beendet werden können ohne vorab von der nachfolgenden Anwendung beendet zu werden und dies auch eine zur Rekonfiguration von Hadoop ausreichende Zeitspanne darstellt.
 Die Eingabedaten für die Anwendungen wurden vor jedem Testfall neu generiert.
