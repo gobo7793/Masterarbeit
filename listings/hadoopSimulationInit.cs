@@ -1,13 +1,13 @@
-internal TimeSpan MinStepTime = new TimeSpan(0, 0, 0, 25);
-internal int BenchmarkSeed = Environment.TickCount;
-internal int StepCount = 3;
-internal bool RecreatePreInputs = false;
-internal bool PrecreatedInputs = true;
-internal double FaultActivationProbability = 0.25; // 0.0 -> inactive, 1.0 -> always
-internal double FaultRepairProbability = 0.5; // 0.0 -> inactive, 1.0 -> always
-internal int HostsCount = 1;
-internal int NodeBaseCount = 4;
-internal int ClientCount = 2;
+public TimeSpan MinStepTime { get; set; } = new TimeSpan(0, 0, 0, 25);
+public int BenchmarkSeed { get; set; } = Environment.TickCount;
+public int StepCount { get; set; } = 3;
+public bool PrecreatedInputs { get; set; } = true;
+public bool RecreatePreInputs { get; set; } = false;
+public double FaultActivationProbability { get; set; } = 0.25;
+public double FaultRepairProbability { get; set; } = 0.5;
+public int HostsCount { get; set; } = 1;
+public int NodeBaseCount { get; set; } = 4;
+public int ClientCount { get; set; } = 2;
 
 private Model InitModel()
 {

@@ -2,15 +2,26 @@
 \label{sec:selectTestcases}
 
 Die im in \autoref{sec:testcaseGeneration} beschriebenen Testfälle werden mithilfe verschiedener Variablen implementiert.
-Relevant für die Ausführung eines Testfalles sind folgende, bereits in \autoref{lst:hadoopSimulationInit} gezeigte, Felder:
+Relevant für die Ausführung eines Testfalles sind folgende, bereits in \autoref{lst:hadoopSimulationInit} gezeigte, Eigenschaften:
 
 \lstinputlisting[label=lst:hadoopTest,style=cs,linerange={2-2,6-10},
 caption={Zur Definition eines Testfalls relevante Felder}]
 {./listings/hadoopSimulationInit.cs}
 
-Da die jeweiligen Auswirkungen der Felder bereits in \autoref{sec:simulationModelInit} erläutert wurden, wird an dieser Stelle hierauf verweisen.
+Da die jeweiligen Auswirkungen der Eigenschaften bereits in \autoref{sec:simulationModelInit} erläutert wurden, wird an dieser Stelle hierauf verweisen.
 
 Zur Festlegung dieser Variablen und damit der Testfälle wurde zunächst eine Systematik entwickelt, nach welcher die Testfälle durchgeführt werden.
+Hierfür wurden mithilfe des folgenden Programmcodes zunächst zwei Seeds ermittelt, welche als Basisseeds für die weiteren Testfälle dienen:
+
+\lstinputlisting[label=lst:generateTestCaseSeeds,style=cs,
+caption={Ermittlung der für die Testfälle genutzten Basisseeds}]
+{./listings/generateTestCaseSeeds.cs}
+
+Zur Festlegung der Werte zur generellen Wahrscheinlichkeiten zur Aktivierung bzw. Deaktivierung von Komponentenfehlern wurden zunächst über 20.000 mögliche Aktivierungen mit verschiedenen generellen Wahrscheinlichkeiten und Auslastungsgraden der Nodes simuliert.
+Der dabei für die Testfälle ausgewählte Wert von 0,3 stellt hierbei eine ausgewogene Aktivierung bzw. Deaktivierung der Komponentenfehler bei unterschiedlichen Auslastungsgraden der Nodes dar.
+
+
+
 Die Grundlage hierzu bilden die in \autoref{sec:testcaseGeneration} und \autoref{lst:hadoopTest} beschriebenen und gezeigten Variablen, die einen Testfall definieren.
 Ebenfalls eine Rolle spielen das in \autoref{sec:implMutationTests} beschriebene Mutationsszenario.
 

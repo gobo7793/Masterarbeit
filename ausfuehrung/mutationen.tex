@@ -1,9 +1,10 @@
 \section{Implementierungen der Mutationstests}
 \label{sec:implMutationTests}
 
+\todo{Was ist universalmutator hierher, siehe notizen meeting 9}
 Da in dieser Fallstudie nicht nur Hadoop bzw. die Selfbalancing"=Komponente getestet werden soll, sondern vor allem das in den vorherigen Abschnitten und Kapiteln beschriebene Modell und Simulation zum Testen, wurde auch ein Mutationstest erstellt.
 Wie bereits in \autoref{sec:aufbauCluster} erwähnt, geschah dies im Rahmen eines neuen Szenarios der Plattform Hadoop"=Benchmark.
 
-Zur Entwicklung des Mutationsszenarios wurden mithilfe des Universalmutators insgesamt 776 Mutationen generiert.
+Zur Entwicklung des Mutationsszenarios wurden mithilfe des Universalmutators insgesamt 776\todo{nur valide Mutanten} Mutationen generiert.
 Von allen generierten Mutationen wurde für jede der vier Java"=Klasse zufällig eine valide Mutation ausgewählt.
 Die hierbei erzeugte, mutierte Selfbalancing"=Komponente wird in einem dafür entwickelten Docker"=Image gespeichert, was den Kern des Mutationsszenarios darstellt.

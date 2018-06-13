@@ -11,7 +11,7 @@ Neben den in \autoref{sec:clusterRequirements} genannten funktionalen Anforderun
 Zur Evaluation des Testsystems wurden hierbei folgende, weiteren Anforderungen bzw. Behauptungen aufgestellt:
 
 \begin{enumerate}
-    \setcounter{enumi}{4}
+    \item Der \ac{MARP}"=Wert ändert sich basierend auf den derzeit ausgeführten Anwendungen
     \item Der jeweils aktuelle Status des Clusters wird erkannt und im Modell gespeichert
     \item Defekte Nodes und Verbindungsabbrüche werden erkannt
     \item Im Modell implementierte Komponentenfehler werden im realen Cluster injiziert und repariert
@@ -37,6 +37,7 @@ Basierend auf den Anforderungen wurden folgende unabhängigen Variablen zur Eval
 Basierend auf den unabhängigen Variablen wurden folgende abhängigen Variablen ermittelt:
 
 \begin{itemize}
+    \item Verhältnis zwischen \ac{AppMstr} und normalen Anwendungs"=Containern
     \item Art und Anzahl der aktivierten und deaktivierten Komponentenfehler
     \item Anzahl erfolgreich bzw. nicht erfolgreich beendeter Anwendungen
     \item Anzahl abgebrochener Anwendungen
