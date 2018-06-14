@@ -1,10 +1,23 @@
 \section{Implementierungen der Mutationstests}
 \label{sec:implMutationTests}
 
-\todo{Was ist universalmutator hierher, siehe notizen meeting 9}
-Da in dieser Fallstudie nicht nur Hadoop bzw. die Selfbalancing"=Komponente getestet werden soll, sondern vor allem das in den vorherigen Abschnitten und Kapiteln beschriebene Modell und Simulation zum Testen, wurde auch ein Mutationstest erstellt.
-Wie bereits in \autoref{sec:aufbauCluster} erwähnt, geschah dies im Rahmen eines neuen Szenarios der Plattform Hadoop"=Benchmark.
+Zur Entwicklung der Mutationstest wurde der von \citeauthor{Groce2018} in \cite{Groce2018} vorgestellte \textbf{Universalmutator}\footnote{\url{https://github.com/agroce/universalmutator}} genutzt.
+Der Universalmutator ist ein Tool, das den vorhandenen Quellcode eines Programmes so verändert, sodass damit Mutationstests durchgeführt werden können.
+Diese werden vor allem in der Forschung eingesetzt, um Testsysteme zu verifizieren, in dem das \ac{SuT} verändert wird.
+Ziel hierbei ist es, zu erkennen, dass das \ac{SuT} verändert wurde bzw. nicht korrekt funktioniert.
+\todo{Allgemeines zu Mutationstests in Grundlagen?}
 
-Zur Entwicklung des Mutationsszenarios wurden mithilfe des Universalmutators insgesamt 776\todo{nur valide Mutanten} Mutationen generiert.
-Von allen generierten Mutationen wurde für jede der vier Java"=Klasse zufällig eine valide Mutation ausgewählt.
-Die hierbei erzeugte, mutierte Selfbalancing"=Komponente wird in einem dafür entwickelten Docker"=Image gespeichert, was den Kern des Mutationsszenarios darstellt.
+Der Universalmutator kann zum Entwickeln von Mutationstests hierbei nicht nur innerhalb einer bestimmten Umgebung bzw. Programmiersprache, sondern prinzipiell für alle Programmiersprachen eingesetzt werden.
+Dies wird dadurch ermöglicht, dass die vom Universalmutator generierten Mutationen basierend auf einem oder mehreren Regelsätze durchgeführt werden und somit der Quellcode mutiert wird.
+So kann vom Universalmutator Quellcode \uA in den Sprachen Python, Java, C/C++ oder Swift mutiert werden \cite{Groce2018}.
+
+Da bei der Ausführung des Universalmutators auch zahlreiche Mutanten generiert werden, die nicht kompiliert bzw. ausgeführt werden können, nutzt das Tool die Compiler der jeweiligen Sprache zur Validierung der generierten Mutationen.
+Ein validierter Mutant zeichnet sich hierbei dadurch aus, dass dieser durch den Original"=Compiler der jeweiligen Sprache kompiliert werden kann und die generierten Objektdateien bzw. Bytecode nicht dem nicht-mutierten Original oder anderen bereits generierten Mutationen entsprechen \cite{Groce2018}.
+Diese Validierung kann mithilfe von entsprechenden Startparametern durch ein benutzerdefiniertes Programm durchgeführt werden oder alternativ nicht durchgeführt werden \cite{Groce2018,UniversalmutatorSourceGenmutants}.
+
+Da in dieser Fallstudie nicht nur Hadoop bzw. die Selfbalancing"=Komponente getestet werden soll, sondern vor allem das in den vorherigen Abschnitten und Kapiteln beschriebene Testsystem, wurde auch ein Mutationstest erstellt.
+Der hierbei generierten Mutationen wurden im Rahmen eines neuen Szenarios in der Plattform Hadoop"=Benchmark gespeichert (vgl. \autoref{sec:aufbauCluster}).
+
+Zur Entwicklung des Mutationsszenarios wurden mithilfe des Universalmutators insgesamt 431 valide Mutationen aus dem Quellcode der Selfbalancing"=Komponente generiert.
+Von allen validen Mutationen wurde für jede der vier Java"=Klassen zufällig eine Mutation ausgewählt, aus der die mutierte Selfbalancing"=Komponente erzeugt wurde.
+Die mutierte Komponente wurde anschließend einem speziell hierfür entwickelten Docker"=Image gespeichert, was den Kern des Mutationsszenarios darstellt.
