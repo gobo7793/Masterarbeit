@@ -11,52 +11,23 @@ caption={Zur Definition eines Testfalls relevante Felder}]
 Da die jeweiligen Auswirkungen der Eigenschaften bereits in \autoref{sec:simulationModelInit} erläutert wurden, wird an dieser Stelle hierauf verweisen.
 
 Zur Festlegung dieser Variablen und damit der Testfälle wurde zunächst eine Systematik entwickelt, nach welcher die Testfälle durchgeführt werden.
-Hierfür wurden mithilfe des folgenden Programmcodes zunächst zwei Seeds ermittelt, welche als Basisseeds für die weiteren Testfälle dienen:
+Hierfür wurden mithilfe des folgenden Programmcodes zunächst zwei Seeds ermittelt::
 
 \lstinputlisting[label=lst:generateTestCaseSeeds,style=cs,
 caption={Ermittlung der für die Testfälle genutzten Basisseeds}]
 {./listings/generateTestCaseSeeds.cs}
 
-Zur Festlegung der Werte zur generellen Wahrscheinlichkeiten zur Aktivierung bzw. Deaktivierung von Komponentenfehlern wurden zunächst über 20.000 mögliche Aktivierungen mit verschiedenen generellen Wahrscheinlichkeiten und Auslastungsgraden der Nodes simuliert.
-Der dabei für die Testfälle ausgewählte Wert von 0,3 stellt hierbei eine ausgewogene Aktivierung bzw. Deaktivierung der Komponentenfehler bei unterschiedlichen Auslastungsgraden der Nodes dar.
+Die beiden ermittelten Seeds 0x36159C73 und 0x60E70223 wurden jeweils bei jeder Konfiguration zwischen den anderen Variablen genutzt.
 
-\todo{ab hier ersetzen}
+Zur Festlegung der Werte zur generellen Wahrscheinlichkeiten zur Aktivierung bzw. Deaktivierung von Komponentenfehlern wurden zunächst über 20.000 mögliche Aktivierungen und Deaktivierungen mit verschiedenen generellen Wahrscheinlichkeiten und Auslastungsgraden der Nodes simuliert.
+Der dabei für alle Testfälle ausgewählte Wert von 0,3 stellt hierbei eine ausgewogene Aktivierung bzw. Deaktivierung der Komponentenfehler bei unterschiedlichen Auslastungsgraden der Nodes dar.
 
-Die Grundlage hierzu bilden die in \autoref{sec:testcaseGeneration} und \autoref{lst:hadoopTest} beschriebenen und gezeigten Variablen, die einen Testfall definieren.
-Ebenfalls eine Rolle spielen das in \autoref{sec:implMutationTests} beschriebene Mutationsszenario.
+Die Anzahl der Hosts wurde bei den meisten Testfällen auf 2 festgelegt, die Anzahl der Nodes pro Host wurde bei allen Testfällen auf 4 festgelegt, was 4 bzw. 6 Nodes macht.
+Die Anzahl der Simulations"=Schritte wurde variiert, wodurch einige Testfälle mit 5, andere mit 10 Simulations"=Schritten ausgeführt werden.
+Ebenso variiert wurde die Anzahl der simulierten Clients, die meist bei 4 simulierten Clients liegt, bei einigen Testfällen aber auch bei 2 oder 6.
 
-Für die verschiedenen Variablen, die einen Testfall definieren, wurden folgende Werte verwendet:
-
-\begin{table}[h]
-    \begin{tabu}{c|[2pt]c|c|c}
-    	             & Wert 1    &   Wert 2   &   Wert 3   \\ \tabucline[2pt]{-}
-    	    Seed     & 0xE99032B & 0x4F009539 & 0x319140E0 \\ \hline
-    	KF"=Wahrsch. & 0         &     0,3    &  \\ \hline
-    	Hosts/Nodes  & 1/4       &     2/6    &  \\ \hline
-    	  Clients    & 1         &      2     &
-    \end{tabu}
-    \caption[Übersicht der zur Testfallgenerierung genutzten Werte]
-    {Übersicht der zur Testfallgenerierung genutzten Werte.
-        Zur Aktivierung und Deaktivierung von Komponentenfehlern wird die jeweils gleiche generelle Wahrscheinlichkeit genutzt.
-        Es wird zudem nur zwischen der Anzahl der Hosts unterschieden, die Anzahl der Nodes pro Host bleibt jeweils gleich (4 auf Host1, 2 auf Host2).}
-    \label{tab:testCaseOverview}
-\end{table}
-
-Zur Ermittlung der drei verwendeten Seeds wurde folgender Programmcode ausgeführt:
-
-\lstinputlisting[label=lst:generateTestCaseSeeds,style=cs,
-caption={Ermittlung der für die Testfälle genutzten Seeds}]
-{./listings/generateTestCaseSeeds.cs}
-
-Zur Festlegung der Werte zur generellen Wahrscheinlichkeiten zur Aktivierung bzw. Deaktivierung von Komponentenfehlern wurden zunächst über 20.000 mögliche Aktivierungen mit verschiedenen generellen Wahrscheinlichkeiten und Auslastungsgraden der Nodes simuliert.
-Der für die Testfälle ausgewählte Wert stellt hierbei eine ausgewogene Aktivierung bzw. Deaktivierung der Komponentenfehler bei unterschiedlichen Auslastungsgraden der Nodes dar.
-
-Insgesamt ergeben die angegebenen Werte 24 Testfälle, die jeweils mit und ohne Mutationen im realen Cluster ausgeführt werden.
-Die meisten Testfälle werden je einmal mit 5 sowie 12 Simulations"=Schritten ausgeführt.
-Ausgenommen hiervon sind Testfälle mit 2 simulierten Clients und 12 Simulations"=Schritten, die nicht ausgeführt werden (vgl. \autoref{sec:implTestcases}).
-Insgesamt ergibt das für die Simulation somit eine Datenbasis von 72 ausgeführten Testfällen.
-
-\todo{bis hier ersetzen}
+Alle Testfälle wurden je einmal mit der Selfbalancing"=Komponente ohne Mutationen und im Mutationsszenario ausgeführt.
+Insgesamt wurden so 40 Testfälle definiert, die als Datenbasis für die Evaluation dienen.
 
 Die Mindestdauer für einen Simulations"=Schritt wurde in allen Fällen auf 25 Sekunden festgelegt, da hierbei ein Großteil der ausgeführten Anwendungen auf dem Cluster erfolgreich beendet werden können.
 Dies ist vor allem für die Generierung der Eingabedaten für nachfolgende Anwendungen wichtig, da die generierten Daten von abgebrochenen Anwendungen nicht von nachfolgenden Anwendungen genutzt werden können.
