@@ -20,7 +20,7 @@ caption={Ermittlung der für die Testfälle genutzten Basisseeds}]
 Zur Festlegung der Werte zur generellen Wahrscheinlichkeiten zur Aktivierung bzw. Deaktivierung von Komponentenfehlern wurden zunächst über 20.000 mögliche Aktivierungen mit verschiedenen generellen Wahrscheinlichkeiten und Auslastungsgraden der Nodes simuliert.
 Der dabei für die Testfälle ausgewählte Wert von 0,3 stellt hierbei eine ausgewogene Aktivierung bzw. Deaktivierung der Komponentenfehler bei unterschiedlichen Auslastungsgraden der Nodes dar.
 
-
+\todo{ab hier ersetzen}
 
 Die Grundlage hierzu bilden die in \autoref{sec:testcaseGeneration} und \autoref{lst:hadoopTest} beschriebenen und gezeigten Variablen, die einen Testfall definieren.
 Ebenfalls eine Rolle spielen das in \autoref{sec:implMutationTests} beschriebene Mutationsszenario.
@@ -56,5 +56,9 @@ Die meisten Testfälle werden je einmal mit 5 sowie 12 Simulations"=Schritten au
 Ausgenommen hiervon sind Testfälle mit 2 simulierten Clients und 12 Simulations"=Schritten, die nicht ausgeführt werden (vgl. \autoref{sec:implTestcases}).
 Insgesamt ergibt das für die Simulation somit eine Datenbasis von 72 ausgeführten Testfällen.
 
-Die Mindestdauer für einen Simulations"=Schritt wurde in allen Fällen auf 25 Sekunden festgelegt, da hierbei ein Großteil der ausgeführten Anwendungen auf dem Cluster erfolgreich beendet werden können ohne vorab von der nachfolgenden Anwendung beendet zu werden und dies auch eine zur Rekonfiguration von Hadoop ausreichende Zeitspanne darstellt.
-Die Eingabedaten für die Anwendungen wurden vor jedem Testfall neu generiert.
+\todo{bis hier ersetzen}
+
+Die Mindestdauer für einen Simulations"=Schritt wurde in allen Fällen auf 25 Sekunden festgelegt, da hierbei ein Großteil der ausgeführten Anwendungen auf dem Cluster erfolgreich beendet werden können.
+Dies ist vor allem für die Generierung der Eingabedaten für nachfolgende Anwendungen wichtig, da die generierten Daten von abgebrochenen Anwendungen nicht von nachfolgenden Anwendungen genutzt werden können.
+Zudem stellt dies eine ausreichende Zeitspanne zur Rekonfiguration von Hadoop dar.
+Bei der Ausführung der Testfälle zur Evaluation wurden Eingabedaten nicht vorab generiert, sondern während der Ausführung von den Anwendungen direkt generiert.
