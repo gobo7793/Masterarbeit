@@ -3,7 +3,7 @@
 
 Da mithilfe der Plattform Hadoop"=Benchmark ein komplettes Hadoop"=Cluster auf einem PC ausgeführt werden kann und dieses speziell für die Forschung entwickelt wurde, wurde die Plattform für diese Fallstudie als Basis genutzt
 Da Docker und Hadoop vor allem für den Einsatz in einer Linux"=Umgebung entwickelt wurden, werden für die Fallstudie zwei physische Hosts genutzt, auf denen das Cluster wahlweise auf einem oder auf beiden Hosts ausgeführt werden kann.
-Zudem wird auf einem Host eine VM mit Windows 10 ausgeführt, das zum Ausführen des .NET"=Frameworks bzw. \sS benötigt wird.
+Zudem wird auf einem Host eine VM mit Windows 10 ausgeführt, das zum Ausführen des .NET"=Frameworks bzw. \ac{ss} benötigt wird.
 Beide zum Einsatz kommenden Hosts sind jeweils mit einem Intel Core i5"=4570 @ 3,2 GHz x 4, 16 GB Arbeitsspeicher sowie einer SSD ausgestattet, auf der Ubuntu 16.04 LTS installiert ist.
 Die Verbindung von Windows zu Linux auf beiden Hosts wird mithilfe von SSH"=Verbindungen umgesetzt.
 Um den Ressourcenbedarf durch die von docker"=machine erzeugten VMs zu reduzieren, werden die Docker"=Container direkt auf den physischen Hosts ausgeführt:
@@ -20,6 +20,7 @@ Um den Ressourcenbedarf durch die von docker"=machine erzeugten VMs zu reduziere
 Durch die leicht veränderte Architektur stehen dem Cluster daher mehr Ressourcen zur Verfügung.
 Zudem wird es mithilfe von von \emph{Docker Swarm} so ermöglicht, das Hadoop"=Cluster auf beiden Hosts auszuführen.
 Neben der auf Host1 ausgeführten Basis des Clusters besteht die Möglichkeit, die auf Host2 ausgeführten Hadoop"=Nodes optional zum Cluster hinzuzufügen.
+\todo{Basisanzahl Nodes erläutern}
 Ein weiterer Unterschied zur originalen Plattform besteht darin, dass der Hadoop"=\ac{TLS} ebenfalls gestartet wird.
 Zudem wurden einige Einstellungen von Hadoop so angepasst, dass defekte Nodes schneller erkannt werden.
 

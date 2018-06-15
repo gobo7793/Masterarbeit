@@ -1,4 +1,4 @@
 var todayStrShort = DateTime.Today.ToString("yyMMdd");
-var mutated = isMutated ? 'T' : 'F';
+var mutated = isMutated ? "MT" : "MF";
 var faultProbStr = faultProbability.ToString(CultureInfo.InvariantCulture);
-var filename = $"{benchmarkSeed:X8}-{faultProbStr}-{hostsCount:D1}-{clientCount:D1}-{stepCount:D2}-{mutated}-{todayStrShort}";
+var filename = $"0x{benchmarkSeed:X8}-{faultProbStr}F-{hostsCount:D1}H-{clientCount:D1}C-{stepCount:D2}S-{mutated}-{todayStrShort}";

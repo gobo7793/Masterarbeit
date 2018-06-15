@@ -11,7 +11,7 @@ caption={Zur Definition eines Testfalls relevante Felder}]
 Da die jeweiligen Auswirkungen der Eigenschaften bereits in \autoref{sec:simulationModelInit} erläutert wurden, wird an dieser Stelle hierauf verweisen.
 
 Zur Festlegung dieser Variablen und damit der Testfälle wurde zunächst eine Systematik entwickelt, nach welcher die Testfälle durchgeführt werden.
-Hierfür wurden mithilfe des folgenden Programmcodes zunächst zwei Seeds ermittelt::
+Hierfür wurden mithilfe des folgenden Programmcodes zunächst zwei Seeds ermittelt:
 
 \lstinputlisting[label=lst:generateTestCaseSeeds,style=cs,
 caption={Ermittlung der für die Testfälle genutzten Basisseeds}]
@@ -22,14 +22,17 @@ Die beiden ermittelten Seeds 0x36159C73 und 0x60E70223 wurden jeweils bei jeder 
 Zur Festlegung der Werte zur generellen Wahrscheinlichkeiten zur Aktivierung bzw. Deaktivierung von Komponentenfehlern wurden zunächst über 20.000 mögliche Aktivierungen und Deaktivierungen mit verschiedenen generellen Wahrscheinlichkeiten und Auslastungsgraden der Nodes simuliert.
 Der dabei für alle Testfälle ausgewählte Wert von 0,3 stellt hierbei eine ausgewogene Aktivierung bzw. Deaktivierung der Komponentenfehler bei unterschiedlichen Auslastungsgraden der Nodes dar.
 
-Die Anzahl der Hosts wurde bei den meisten Testfällen auf 2 festgelegt, die Anzahl der Nodes pro Host wurde bei allen Testfällen auf 4 festgelegt, was 4 bzw. 6 Nodes macht.
+Die Anzahl der Hosts wurde bei einigen Testfällen auf 1 festgelegt, bei den meisten Testfällen liegt diese jedoch bei 2.
+Die Node"=Basisanzahl wurde auf 4 festgelegt, da hierbei das Cluster eine ausreichende Größe besitzt und jedem Node ausreichend Ressourcen zur Verfügung stehen, um Anwendungen auszuführen.
+Bei einer zu hohen Basisanzahl erhält jeder einzelne Node geringere Ressourcen, was vor allem die Ausführung bei ressourcenintensiven Anwendungen wie \zB \acl{pt} behindert, während bei einer zu geringen das Cluster sehr klein ist und daher keine ausreichende Evaluationsbasis bietet.
 Die Anzahl der Simulations"=Schritte wurde variiert, wodurch einige Testfälle mit 5, andere mit 10 Simulations"=Schritten ausgeführt werden.
-Ebenso variiert wurde die Anzahl der simulierten Clients, die meist bei 4 simulierten Clients liegt, bei einigen Testfällen aber auch bei 2 oder 6.
+Ebenso variiert wurde die Anzahl der simulierten Clients, , die im Bereich von 2, 4 oder 6 Clients liegt.
 
 Alle Testfälle wurden je einmal mit der Selfbalancing"=Komponente ohne Mutationen und im Mutationsszenario ausgeführt.
-Insgesamt wurden so 40 Testfälle definiert, die als Datenbasis für die Evaluation dienen.
+Von den hiermit möglichen 48 Testfällen wurden die möglichen Teställe mit einem Host und sechs simulierten Clients sowie die möglichen Testfälle mit zwei simulierten Clients und zehn Simulations"=Schritten nicht ausgeführt.
+Das ergibt für die Evaluation somit eine Datenbasis von 32 ausgeführten Testfällen.
 
-Die Mindestdauer für einen Simulations"=Schritt wurde in allen Fällen auf 25 Sekunden festgelegt, da hierbei ein Großteil der ausgeführten Anwendungen auf dem Cluster erfolgreich beendet werden können.
-Dies ist vor allem für die Generierung der Eingabedaten für nachfolgende Anwendungen wichtig, da die generierten Daten von abgebrochenen Anwendungen nicht von nachfolgenden Anwendungen genutzt werden können.
-Zudem stellt dies eine ausreichende Zeitspanne zur Rekonfiguration von Hadoop dar.
 Bei der Ausführung der Testfälle zur Evaluation wurden Eingabedaten nicht vorab generiert, sondern während der Ausführung von den Anwendungen direkt generiert.
+Daher wurde die Mindestdauer für einen Simulations"=Schritt in allen Fällen auf 25 Sekunden festgelegt, da hierbei ein Großteil der ausgeführten Anwendungen auf dem Cluster erfolgreich beendet werden können.
+Eine Ausreichende Mindestdauer ist vor allem für die Generierung der Eingabedaten für nachfolgende Anwendungen wichtig, da nicht vollständig generierte Daten von abgebrochenen Anwendungen nicht von nachfolgenden Anwendungen genutzt werden können.
+Zudem stellt dies eine ausreichende Zeitspanne zur Rekonfiguration von Hadoop dar.
