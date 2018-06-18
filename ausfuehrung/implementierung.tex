@@ -15,7 +15,7 @@ Dadurch ist es möglich, das Cluster neben dem normalen Szenario auch im Mutatio
 Durch das Beenden des Clusters im Finally"=Block ist es möglich, bei einer abgebrochenen Simulation andere Testfälle regulär auszuführen, da dadurch das Cluster regulär beendet wird und die Daten des abgebrochenen Testfalls wie bei einem erfolgreichen Test gespeichert werden.
 
 Da die verwendeten Connectoren bzw. SSH"=Verbindungen prinzipiell nur einmal initialisiert werden müssen und anschließend für alle auszuführenden Testfälle verwendet werden können, werden diese einmalig in \texttt{InitInstances()} initialisiert und anschließend bei jedem Testfall wiederverwendet.
-In \texttt{ResetInstances()} wird somit nur die zuvor genutzte Modell"=Instanz gelöscht sowie einige statische Zählvariablen zurückgesetzt.
+Eine möglicherweise bereits zuvor verwendete Modell"=Instanz wird hier jedoch in jedem Fall genauso wie einige statische Zählvariablen gelöscht bzw. zurückgesetzt.
 
 Mithilfe der im \texttt{TestCaseSourceAttribute} referenzierten Methode \texttt{GetTestCases()} werden die implementierten Testfälle ermittelt:
 
@@ -25,12 +25,10 @@ caption={[Implementierung der Testfälle]
     Die hier nicht gezeigten Methoden zur Rückgabe der Implementierten Werte wie \texttt{GetFaultProbabilities()} sind nach dem gleichen Schema aufgebaut wie \texttt{GetSeeds()}.}]
 {./listings/getTestCases.cs}
 
-Hierbei werden nur Testfälle generiert, bei denen die Anzahl an maximal möglichen ausgeführten Anwendungen den Wert in der Eigenschaft \texttt{MaxPossibleAppCount} nicht überschreitet.
-Dies dient dazu, um eine \texttt{StackOverflowException} durch den \ac{ss}"=Simulator zu verhindern, da bei einer zu großen Anzahl an Anwendungen (und damit auch Attempts und Container) nicht genügen Arbeitsspeicher zur Verfügung steht (vgl. \autoref{sec:sSharp} und \todo{sobald yarn-modell neu steht, hier auf architektur der anwendungen, attempts und container verweisen}).
-Zur Ausführung der Testfälle dieser Fallstudie wurde dieser Wert auf 12 gesetzt, womit Testfälle mit zwei simulierten Clients und zwölf Simulations"=Schritten nicht ausgeführt werden.
+Hierbei werden nur Testfälle generiert, auf denen die in \autoref{sec:selectTestcases} genannten Bedingungen zutreffen, womit anstatt den möglichen 48 Testfällen nur die gewählten 32 generiert werden.
 
 Damit die bei der Ausführung der Tests generierten Logs einfacher zur Evaluation genutzt werden können, werden die angefallenen Logdateien nach jeder Ausführung in ein entsprechendes Verzeichnis verschoben.
-Hierbei werden die Logdateien gleichzeitig gemäß der Testfallparameter wie folgt umbenannt:
+Hierbei werden die Logdateien gemäß der Testfallparameter wie folgt umbenannt:
 
 \lstinputlisting[label=lst:moveTestCaseLogs,style=cs,
 caption={Bestimmung des Dateinamens zur Umbenennung der Logdateien}]

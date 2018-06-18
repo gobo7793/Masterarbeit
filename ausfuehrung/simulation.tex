@@ -214,12 +214,13 @@ Dieses SSH"=Log dient dazu, die Ursache von unerwarteten Fehlern herauszufinden.
 Neben den bereits beschriebenen Daten werden im Programmlog folgende Daten gespeichert:
 
 \begin{itemize}
-    \item Ausführung der Erstellung von vorab generierten Eingabedaten
     \item Verbundene SSH"=Verbindungen mit ihrer ID zur besseren Zuordnung im SSH"=Log
+    \item Ausführung der Erstellung von vorab generierten Eingabedaten
     \item Vollständiger Pfad des Setup"=Scriptes (vgl. \autoref{sec:aufbauCluster})
     \item URL des Controllers zur Nutzung der REST"=API
-    \item Derzeit vom \texttt{BenchmarkController} ausgewählte Benchmarks
+    \item Vorschau auf bzw. derzeit vom \texttt{BenchmarkController} ausgewählte Benchmarks
     \item Ausführung von Komponentenfehlern
+    \item Diagnostik"=Daten der YARN"=Komponenten
     \item Welche Constraints bei welchen Komponenten verletzt wurden
     \item Die Information, wenn eine Rekonfiguration nicht möglich ist (vgl. \autoref{lst:hadoopSimulationReconf})
 \end{itemize}

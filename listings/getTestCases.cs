@@ -7,13 +7,13 @@ public IEnumerable GetTestCases()
          from steps in GetStepCounts()
          from isMut in GetIsMutated()
 
-         where clients * steps <= MaxPossibleAppCount
+         where !(hosts == 1 && clients >= 6)
+         where !(clients <= 2 && steps >= 10)
          select new TestCaseData(seed, prob, hosts, clients, steps, isMut);
 }
 
-private IEnumerable GetSeeds()
+private IEnumerable<int> GetSeeds()
 {
-  yield return 0xE99032B;
-  yield return 0x4F009539;
-  yield return 0x319140E0;
+  yield return 0xAB4FEDD;
+  yield return 0x11399D3;
 }
