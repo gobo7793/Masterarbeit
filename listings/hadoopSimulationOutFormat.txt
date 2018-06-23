@@ -1,132 +1,165 @@
-Precreate Benchmark input data into InputData
-SSH connected to hadoop@swtse143.informatik.uni-augsburg.de (cmdFauH1)
-...
+Starting Case Study test
+Parameter:
+  benchmarkSeed=    0x0AB4FEDD (179633885)
+  faultProbability= 0,3
+  hostsCount=       1
+  clientCount=      2
+  stepCount=        5
+  isMutated=        False
+Start cluster on 1 hosts (mutated: False)
+Is cluster started: True
+Setting up test case
 =================  START  =====================================
 Starting Simulation test
-Base benchmark seed: 8661265
+Base benchmark seed: 179633885
 Min Step time:       00:00:25
-Step count:          3
-Fault probability:   0,4
-Fault repair prob.:  0,5
-Inputs precreated:   True
+Step count:          5
+Fault probability:   0,3
+Fault repair prob.:  0,3
+Inputs precreated:   False
 Host mode:           Multihost
 Hosts count:         1
 Node base count:     4
 Full node count:     4
 Setup script path:   ~/hadoop-benchmark/multihost.sh -q
 Controller url:      http://localhost:8088
-Simulating Benchmarks for Client 1 with Seed 8661266:
-Step 0: teragen
-Step 1: teragen
-Step 2: terasort
+Simulating Benchmarks for Client 1 with Seed 179633886:
+Step 0: dfsiowrite
+Step 1: dfsiowrite
+Step 2: dfsioread
+Step 3: dfsioread
+Step 4: dfsioread
+Simulating Benchmarks for Client 2 with Seed 179633887:
+Step 0: randomwriter
+Step 1: randomwriter
+Step 2: randomwriter
+Step 3: pi
+Step 4: pi
 =================  Step: 0  =====================================
 Fault NodeConnectionErrorFault@compute-1
-Activation probability: 0,92 < 0,815143610264707
+Activation probability: 0,94 < 0,536382840264767
 Fault NodeDeadFault@compute-1
-Activation probability: 0,92 < 0,220206529004595
+Activation probability: 0,94 < 0,0263571413356611
 Fault NodeConnectionErrorFault@compute-2
-Activation probability: 0,92 < 0,985366507426541
+Activation probability: 0,94 < 0,0658538276636292
 Fault NodeDeadFault@compute-2
-Activation probability: 0,92 < 0,342338338653715
-...
-Stop connection on node compute-2
-Selected Benchmark client1: teragen
-Step Duration: 00:00:23.6864268
-...
-=== Node compute-2:45454 ===
-    State:         LOST
-    IsActive:      True
-    IsConnected:   False
-    Container Cnt: 0
-    Mem used/free: 0/0 (0,000)
-    CPU used/free: 0/0 (0,000)
-=== Node compute-3:45454 ===
+Activation probability: 0,94 < 0,405010061992803
+Fault NodeConnectionErrorFault@compute-3
+Activation probability: 0,94 < 0,662199801608082
+Fault NodeDeadFault@compute-3
+Activation probability: 0,94 < 0,666254943546958
+Fault NodeConnectionErrorFault@compute-4
+Activation probability: 0,94 < 0,194108738188682
+Fault NodeDeadFault@compute-4
+Activation probability: 0,94 < 0,763726766111202
+Selected Benchmark client1: dfsiowrite
+Selected Benchmark client2: randomwriter
+Checking SuT constraints.
+Checking test constraints
+ YARN component not valid: Constraint 0 in Controller
+Step Duration: 00:00:42.5186656
+=== Controller ===
+MARP Value on start: 0,1
+MARP value on end:   0,1
+=== Node compute-1:45454 ===
     State:         RUNNING
     IsActive:      True
     IsConnected:   True
-    Container Cnt: 1
-    Mem used/free: 1024/7168 (0,125)
-    CPU used/free: 1/7 (0,125)
-=== Node compute-4:45454 ===
+    Container Cnt: 4
+    Mem used/free: 4096/4096 (0,500)
+    CPU used/free: 4/4 (0,500)
+    Health Report: 
+=== Node compute-2:45454 ===
+    State:         RUNNING
+    IsActive:      True
+    IsConnected:   True
+    Container Cnt: 8
+    Mem used/free: 8192/0 (1,000)
+    CPU used/free: 8/0 (1,000)
+    Health Report: 
+=== Node compute-3:45454 ===
     State:         RUNNING
     IsActive:      True
     IsConnected:   True
     Container Cnt: 2
-    Mem used/free: 3072/5120 (0,375)
+    Mem used/free: 4096/4096 (0,500)
     CPU used/free: 2/6 (0,250)
-=== Client client1 ===
-    Current executing bench:  teragen
-    Current executing app id: application_1527514612110_0022
-    === App application_1527514612110_0022 ===
-        Name:        TeraGen
-        State:       RUNNING
-        FinalStatus: UNDEFINED
-        IsKillable:  True
-        AM Host:     compute-4:45454 (RUNNING)
-        === Attempt appattempt_1527514612110_0022_000001 ===
-            State:        None
-            AM Container: container_1527514612110_0022_01_000001
-            AM Host:      compute-4:45454 (RUNNING)
-          === Container container_1527514612110_0022_01_000003@compute-3:45454: RUNNING
-          === Container container_1527514612110_0022_01_000001@compute-4:45454: RUNNING
-          === Container container_1527514612110_0022_01_000002@compute-4:45454: KILLING
-=================  Step: 1  =====================================
-...
-Fault NodeConnectionErrorFault@compute-2
-Repairing probability: 0,9 > 0,627997327888383
-Fault NodeDeadFault@compute-2
-Activation probability: 0,92 < 0,166343716981981
-...
-Fault NodeConnectionErrorFault@compute-4
-Activation probability: 0,75 < 0,803721676023547
-Fault NodeDeadFault@compute-4
-Activation probability: 0,75 < 0,0112022128939639
-Start connection on node compute-2
-Stop connection on node compute-4
-Selected Benchmark client1: teragen
-YARN component not valid: Constraint 0 in compute-2:45454
-YARN component not valid: Constraint 1 in compute-2:45454
-Step Duration: 00:00:18.6516724
-...
-=== Node compute-2:45454 ===
-    State:         LOST
-    IsActive:      True
-    IsConnected:   True
-    Container Cnt: 0
-    Mem used/free: 0/0 (0,000)
-    CPU used/free: 0/0 (0,000)
-=== Node compute-3:45454 ===
+    Health Report: 
+=== Node compute-4:45454 ===
     State:         RUNNING
     IsActive:      True
     IsConnected:   True
     Container Cnt: 0
     Mem used/free: 0/8192 (0,000)
     CPU used/free: 0/8 (0,000)
-=== Node compute-4:45454 ===
-    State:         LOST
-    IsActive:      True
-    IsConnected:   False
-    Container Cnt: 0
-    Mem used/free: 0/0 (0,000)
-    CPU used/free: 0/0 (0,000)
+    Health Report: 
 === Client client1 ===
-    Current executing bench:  teragen
-    Current executing app id: application_1527514612110_0022
-    === App application_1527514612110_0022 ===
-        Name:        TeraGen
-        State:       FINISHED
-        FinalStatus: SUCCEEDED
-        IsKillable:  False
-        AM Host:     compute-4:45454 (LOST)
-        === Attempt appattempt_1527514612110_0022_000001 ===
+    Current executing bench:  dfsiowrite
+    Current executing app id: application_1529401644907_0001
+    === App application_1529401644907_0001 ===
+        Name:        hadoop-mapreduce-client-jobclient-2.7.1-tests.jar
+        State:       RUNNING
+        FinalStatus: UNDEFINED
+        IsKillable:  True
+        AM Host:     compute-3:45454 (RUNNING)
+        Diagnostics: 
+        === Attempt appattempt_1529401644907_0001_000001 ===
+            State:        None
+            AM Container: container_1529401644907_0001_01_000001
+            AM Host:      compute-3:45454 (RUNNING)
+            Cont. Count:  13
+            Detected Cnt: 13
+            Diagnostics:  
+=== Client client2 ===
+    Current executing bench:  randomwriter
+    Current executing app id: application_1529401644907_0002
+    === App application_1529401644907_0002 ===
+        Name:        random-writer
+        State:       RUNNING
+        FinalStatus: UNDEFINED
+        IsKillable:  True
+        AM Host:     compute-3:45454 (RUNNING)
+        Diagnostics: 
+        === Attempt appattempt_1529401644907_0002_000001 ===
             State:        FINISHED
-            AM Container: container_1527514612110_0022_01_000001
-            AM Host:      compute-4:45454 (LOST)
+            AM Container: container_1529401644907_0002_01_000001
+            AM Host:      compute-3:45454 (RUNNING)
+            Cont. Count:  2
+            Detected Cnt: 2
+            Diagnostics:  
 ...
-Simulation Duration: 00:01:35.7230150
-Finishing test.
-Activated Faults:    3
-Repaired Faults      2
+=================  Step: 2  =====================================
+...
+Fault NodeConnectionErrorFault@compute-3
+Activation probability: 0,8875 < 0,799780692346292
+Fault NodeDeadFault@compute-3
+Activation probability: 0,8875 < 0,962228187807942
+...
+Stop node compute-3
+Selected Benchmark client1: dfsioread
+Selected Benchmark client2: randomwriter
+Checking SuT constraints.
+Checking test constraints
+ YARN component not valid: Constraint 0 in Controller
+Step Duration: 00:00:42.7485612
+...
 =================  Finish  =====================================
-Starting node compute-3 after fault activation.
-
+Final status of the cluster:
+...
+Finishing test.
+Simulation Duration: 00:02:44.3497896
+Successfull Steps:    5
+Activated Faults:     5/40
+Repaired Faults:      3
+Last detected MARP:   0,1
+Executed apps:        4
+Successed apps:       3
+Failed apps:          1
+Killed apps:          0
+Executed attempts:    5
+Detected containers:  36
+Checked Constraints:  270 SuT / 261 Test
+Failed Constraints:   3 SuT / 6 Test
+Killing running apps.
+Stop cluster
+Is cluster stopped: True
