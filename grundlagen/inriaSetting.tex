@@ -59,8 +59,10 @@ Sie besteht aus folgenden vier Java"=Klassen, welche den Kern der Komponente dar
     \end{itemize}
 \end{itemize}
 
-Um Messfehler auszugleichen bzw. zu reduzieren nutzt die Komponente zudem einen Kalman"=Filter, welcher in Form der Open"=Source"=Bibliotek JKalman\footnote{\url{https://jkalman.sourceforge.io/}} eingebunden ist.
-\todo{literatur zum kalman?}
+Um den Zustand von Hadoop korrekt zu ermitteln, wird ein Kalman"=Filter in Form der Open"=Source"=Bibliotek JKalman\footnote{\url{https://jkalman.sourceforge.io/}} genutzt.
+Der Kalman"=Filter wurde von \citeauthor{Kalman1960} erstmals in \cite{Kalman1960} beschrieben und dient, um \enquote{aus verrauschten und teils redundanten Messungen die Zustände und Parameter des Systems zu schätzen} und lässt sich aufgrund seines Aufbaus auch für Echtzeitanwendungen nutzen \cite{Marchthaler2017}.
+Als einfaches Anwendungsbeispiel hierfür ist in \cite{Marchthaler2017} die Apollo"=Mondlandefähre genannt, \citeauthor{Strukov2001} nutzte ihn in \cite{Strukov2001} aber auch zur Reduktion der Komplexität im Controlling.
+Für weitere Informationen zum Kalman"=Filter wie seinen Aufbau, Funktionsweise und Anwendung sei hier auf entsprechende Fachliteratur wie \zB \cite{Kim2016,Simon2006,Aggoun2004} verwiesen.
 
 Die drei Shell-Scripte dienen zur Interaktion zwischen dem Controller der Selfbalancing"=Komponente und Hadoop selbst.
 Sie werden von den beiden Monitor"=Klassen sekündlich gestartet und ermitteln basierend auf den Logs die Auslastung des Clusters.

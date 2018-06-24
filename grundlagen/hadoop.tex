@@ -1,24 +1,39 @@
 \section{Apache Hadoop}
 \label{sec:hadoop}
 
-\textbf{Apache\texttrademark Hadoop\textregistered}\footnote{\url{https://hadoop.apache.org/}} ist ein Open"=Source"=Software"=Projekt, welches die Verarbeitung von großen Datenmengen auf einem verteilten System ermglicht.
-Hadoop wird von der \emph{Apache Foundation} entwickelt und enthält verschiedene vollständig skalierbare Komponenten.
-Es ist daher möglich, ein Hadoop"=Cluster auf nur einem einzelnen PC, aber auch verteilt auf ein ganzen Serverzentrum auszuführen.
+\textbf{Apache\texttrademark Hadoop\textregistered}\footnote{\url{https://hadoop.apache.org/}} ist ein Open"=Source"=Software"=Projekt, welches die Verarbeitung von großen Datenmengen auf einem verteilten System ermöglicht.
+Hadoop wird von der \emph{Apache Foundation} entwickelt und stellt und enthält verschiedene vollständig skalierbare Komponenten.
+Es ist daher möglich, ein Hadoop"=Cluster auf nur einem einzelnen PC, aber auch verteilt auf zahlreichen Servern auszuführen.
+Hadoop ermöglicht es dadurch, sehr einfach Anwendungen auszuführen, um große Datenmengen zu verarbeiten.
+Die für das Cluster, und damit den Anwendungen, verfügbaren Ressourcen beschränken sich lediglich auf die Summe der verfügbaren Ressourcen aller Hosts, auf denen das Cluster ausgeführt wird.
+
 Hadoop besteht aus folgenden Kernmodulen \cite{HadoopHomePage}:
 
 \begin{description}
-	\item[Hadoop Common] Gemeinsam genutzte Kernkomponenten
-	\item[Hadoop YARN] Framework zur Verteilung und Ausführung von Anwendungen und das dazugehörige Ressourcen"=Management
-	\item[\acl{HDFS}] Kurz \acs{HDFS}, Verteiltes Dateisystem\acused{HDFS}
-	\item[Hadoop MapReduce] YARN"=Basiertes System zum Verarbeiten von großen Datenmengen
+	\item[Hadoop Common] \hfill \\
+        Gemeinsam genutzte Kernkomponenten
+	\item[Hadoop \acs{YARN} (\acl{YARN}\acused{YARN})] \hfill \\
+        Framework zur Verteilung und Ausführung von Anwendungen und das dazugehörige Ressourcen"=Management
+	\item[\acl{HDFS}] \hfill \\
+        Kurz \acs{HDFS}\acused{HDFS}, verteiltes Dateisystem
+	\item[Hadoop \acl{MR}] \hfill \\
+        Kurz \acs{MR}\acused{MR}, Implementierung des \ac{MR}"=Ansatzes zum Verarbeiten von großen Datenmengen, nutzt \ac{YARN} zur Ausführung der Anwendungen
 \end{description}
 
-Hadoop ermöglicht es dadurch, sehr einfach Anwendungen auszuführen, um große Datenmengen zu verarbeiten.
-Die für das Cluster verfügbaren Ressourcen beschränken sich lediglich auf die Summe der verfügbaren Ressourcen aller Hosts, auf denen das Cluster ausgeführt wird.
+Aufgrund seiner Verbreitung stellt Hadoop eine der wichtigsten Implementierungen des \ac{MR}"=Ansatzes dar \cite{PoweredByHadoop}.
+Die Eingabe"= und Ausgabedaten sind hierbei als \emph{Key"=Value}"=Paare definiert, die mithilfe des \ac{MR}"=Frameworks verarbeitet werden.
+Hierbei werden zunächst die eingelesenen Eingabedaten in kleine und dadurch einfach zu verarbeitende Datenmengen aufgeteilt.
+Die geteilten Daten werden dann in mehreren, parallel ausgeführten Map"=Tasks verarbeitet und zwischengespeichert.
+Die zwischengespeicherten Daten werden anschließend von einem oder mehreren Reduce"=Tasks zusammengeführt und in die Ausgabedateien geschrieben.
+Das Framework ist hierbei sehr Fehlertolerant, da ein fehlerhafter Task jederzeit neu gestartet werden kann \cite{Dean2008,Dean2010}.
+Zur Speicherung der Ein-, Zwischen- und Ausgabedaten wird im Falle von Hadoop das \ac{HDFS} genutzt \cite{HadoopMapRedTutorial271}.
+Für weitere Details zum \ac{MR}"=Framework sei auf \cite{Dean2008} und \cite{Dean2010} verwiesen, eine ausführliche Betrachtung des \ac{MR}"=Frameworks mit Vorteilen und Problemen lässt sich in \cite{Lee2012} finden.
 
-Die Kernidee der Architektur von \textbf{YARN} ist die Trennung vom Ressourcenmanagement und Scheduling.
-Dazu besitzt der Master bzw. \emph{Controller} den \ac{RM}, welcher für das gesamte System zuständig ist und die Anwendungen im System verteilt und überwacht und somit auch als \emph{Load"=Balancer} agiert.
-Dem gegenüber stehen die Slave"=\emph{Nodes}, auf denen die Anwendungen ausgeführt werden:
+Da das \ac{MR}"=Framework bzw. seine Implementierung in Hadoop nicht perfekt ist und in der Praxis zum Teil auch zweckentfremdet wurde, wurde in \cite{Vavilapalli2013} das \textbf{\ac{YARN}}"=Framework vorgestellt.
+Die Kernidee ist hierbei die Trennung von Ressourcenmanagement und Scheduling vom eigentlichen Programm.
+In diesem Kontext bildet der \ac{MR}"=Ansatz eine mögliche Anwendung, die mithilfe des \ac{YARN}"=Frameworks ausgeführt wird \cite{Vavilapalli2013}.
+
+Ein Hadoop"=Cluster mit dem \ac{YARN}"=Framework besteht aus zwei wesentlichen Komponenten, dem \emph{Controller} mit \ac{RM} und den angeschlossenen \emph{Nodes}:
 
 \begin{figure}[h]
     \includegraphics{./images/yarn_architecture.png}
@@ -27,22 +42,20 @@ Dem gegenüber stehen die Slave"=\emph{Nodes}, auf denen die Anwendungen ausgef�
     \label{fig:yarnarch}
 \end{figure}
 
-Der \ac{RM} besteht aus zwei Kernkomponenten, dem \ac{AM} und dem \emph{Scheduler}.
+Der \ac{RM} dient hierbei als \emph{Load"=Balancer} für das gesamte Cluster und besteht aus dem \ac{AM} und dem \emph{Scheduler}, die eigentliche Ausführung der Anwendungen findet auf den Nodes statt.
 Der \ac{AM} ist für die Annahme und Ausführung von einzelnen Anwendungen zuständig, denen der Scheduler die dafür notwendigen Ressourcen im Cluster zuteilt.
-
-Der \ac{NM} eines jeden Nodes überwacht die Ressourcen seines jeweiligen Nodes sowie der auf dem Node ausgeführten Anwendungs"=Container und übermittelt diese dem \ac{RM}.
+Jeder Node besitzt einen \ac{NM}, der für die Überwachung der Ressourcen auf dem jeweiligen Node sowie der auf dem Node ausgeführten Anwendungs"=Container zuständig ist und diese Daten dem \ac{RM} übermittelt.
 
 Jede YARN"=Anwendung bzw. Job besteht aus einer oder mehreren Ausführungsinstanzen, genannt \emph{Attempts}.
+Jeder Attempt besitzt einen eigenen \ac{AppMstr}, welcher das Monitoring der Anwendung und die Kommunikation mit dem \ac{RM} und \ac{NM} übernimmt und die dafür benötigten Informationen bereitstellt \cite{HadoopYarnArch271}.
 Die eigentliche Ausführung einer Anwendung findet in den bereits erwähnten \emph{Containern} statt, die jeweils einem Attempt zugeordnet sind.
 Container können auf einem beliebigen Node ausgeführt werden und repräsentieren die Ausführung eines Tasks innerhalb der Anwendung.
-Ein besonderer Container bildet hierbei der \ac{AppMstr}.
-Er übernimmt das Monitoring der Anwendung und die Kommunikation mit dem \ac{RM} und \ac{NM} und stellt die dafür benötigten Informationen bereit \cite{HadoopYarnArch271}.
 \todo{Evtl. noch ein paar Infos zur Node-Erkennung und zeitlichen abläufen}
 
-Ein weiterer Bestandteil von Hadoop bzw. YARN ist der \ac{TLS}.
-Er ist speziell dafür entwickelt, die Metadaten und Logs der YARN"=Anwendungen zu speichern und jederzeit, also als Anwendungshistorie, auszugeben \cite{HadoopYarnTlServer271}.
+Ein weiterer Bestandteil von Hadoop bzw. \ac{YARN} ist der \ac{TLS}.
+Er ist speziell dafür entwickelt, die Metadaten und Logs der \ac{YARN}"=Anwendungen zu speichern und jederzeit, also als Anwendungshistorie, auszugeben \cite{HadoopYarnTlServer271}.
 
-Das \textbf{\ac{HDFS}} basiert auf der gleichen Architektur wie YARN und besitzt ebenfalls einen Master und mehrere Slaves:
+Das \textbf{\ac{HDFS}} basiert auf einer ähnlichen Architektur wie \ac{YARN} und besitzt ebenfalls einen Controller und mehrere Nodes:
 
 \begin{figure}[h]
     \includegraphics{./images/hdfsarchitecture.png}
@@ -51,15 +64,9 @@ Das \textbf{\ac{HDFS}} basiert auf der gleichen Architektur wie YARN und besitzt
     \label{fig:hdfsarch}
 \end{figure}
 
-Der \emph{NameNode} dient als Master für die Verwaltung des Dateisystems und reguliert den Zugriff auf die darauf gespeicherten Daten.
-Unterstützt wird der NameNode vom \emph{Secondary NameNode}, der Teile der internen Datenverwaltung des \ac{HDFS} durchführt \cite{HadoopHdfsGuide271}].
-Die Daten selbst werden in mehrere Blöcke aufgeteilt auf den \emph{DataNodes} gespeichert.
+Der \emph{NameNode} dient als Controller für die Verwaltung des Dateisystems und reguliert den Zugriff auf die darauf gespeicherten Daten.
+Unterstützt wird der NameNode vom \emph{Secondary NameNode}, der Teile der internen Datenverwaltung des \ac{HDFS} durchführt \cite{HadoopHdfsGuide271}.
+Die Daten selbst werden in mehreren Blöcke aufgeteilt auf den \emph{DataNodes} gespeichert.
 Um den Zugriff auf die Daten im Falle eines Node"=Ausfalls zu gewährleisten, wird jeder Block auf anderen Nodes repliziert.
 Dateioperationen (wie Öffnen oder Schließen) werden direkt auf den DataNodes ausgeführt.
 Sie sind darüber hinaus auch dafür verantwortlich, dass die gespeicherten Daten gelesen und beschrieben werden können \cite{HadoopHdfsDesc271}.
-
-\textbf{MapReduce} bietet analog zu YARN die Möglichkeit, Anwendungen mit einem großen Ressourcenbedarf auf einem gesamten Cluster auszuführen.
-Dazu werden bei einem MapReduce"=Job die Eingabedaten aufgeteilt, anschließend von den sog. \emph{Map Tasks} verarbeitet und deren Ausgaben von den sog. \emph{Reduce Tasks} geordnet.
-\todo{Literatur für weitere Infos zu MR?}
-Für die Ein- und Ausgabe der Daten wird in der Regel das \acs{HDFS}, für die Ausführung der einzelnen Tasks YARN genutzt \cite{HadoopMapRedTutorial271}.
-Die MapReduce"=Komponente von Hadoop kann auch als Vorgänger von YARN angesehen werden, da YARN auch als \emph{MapReduce Next Gen} bzw. \emph{MRv2} bezeichnet wird und aufgrund der API"=Kompatibilität von YARN jede MapReduce"=Anwendung in der Regel auch auf YARN ausgeführt werden kann \cite{HadoopYarnArch271,HadoopYarnOverview271}.
