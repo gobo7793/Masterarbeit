@@ -10,13 +10,17 @@ In den Spalten \emph{Ausgeführt} und \emph{Dauer} ist angegeben, wie viele Simu
 \begin{table}
     \begin{tabu}{c|[1.5pt]c|c|c|c|c|[1.5pt]c|c}
         \# & Seed      & Hosts & Clients & Schritte & Mutation & Ausgeführt & Dauer \\ \tabucline[1.5pt]{-}
-        1  & 0xAB4FEDD &   1   &    2    &    5     &   nein   &     5      & 2:44  \\ \hline
+        \begin{tabular}{@{}c@{}}1.1\\1.2\end{tabular}
+           & 0xAB4FEDD &   1   &    2    &    5     &   nein   &
+                                    \begin{tabular}{@{}c@{}}5\\5\end{tabular} &
+                                        \begin{tabular}{@{}c@{}}2:44\\2:56\end{tabular}
+                                                                                    \\ \hline
         2  & 0xAB4FEDD &   1   &    2    &    5     &    ja    &     5      & 2:34  \\ \hline
         3  & 0xAB4FEDD &   1   &    4    &    5     &   nein   &     5      & 5:52  \\ \hline
         4  & 0xAB4FEDD &   1   &    4    &    5     &    ja    &     2      & 3:13  \\ \hline
         \begin{tabular}{@{}c@{}}5.1\\5.2\end{tabular}
            & 0xAB4FEDD &   1   &    4    &    10    &   nein   &
-                                  \begin{tabular}{@{}c@{}}2\\2\end{tabular} &
+                                    \begin{tabular}{@{}c@{}}2\\2\end{tabular} &
                                         \begin{tabular}{@{}c@{}}3:35\\3:23\end{tabular}
                                                                                     \\ \hline
         6  & 0xAB4FEDD &   1   &    4    &    10    &    ja    &     2      & 3:14  \\ \hline

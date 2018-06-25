@@ -225,6 +225,21 @@ Neben den bereits beschriebenen Daten werden im Programmlog folgende Daten gespe
     \item Die Information, wenn eine Rekonfiguration nicht möglich ist (vgl. \autoref{lst:hadoopSimulationReconf})
 \end{itemize}
 
+Nach Abschluss der Simulation wird ein erneutes Monitoring des gesamten Clusters durchgeführt und der hierbei ermittelte Status als finaler Clusterstatus ausgegeben.
+Zudem werden einige statistische Kenndaten zur Simulation ausgegeben:
+
+\begin{itemize}
+    \item Gesamtdauer der Simulation
+    \item Anzahl erfolgreicher Schritte
+    \item Anzahl der maximal möglichen, aktivierbaren Komponentenfehler
+    \item Anzahl aktivierter und deaktivierter Komponentenfehler
+    \item Letzter ermittelter \ac{MARP}"=Wert
+    \item Anzahl aller ausgeführten, erfolgreicher, nicht erfolgreicher sowie abgebrochener Anwendungen
+    \item Anzahl aller ausgeführten Attempts
+    \item Anzahl aller während der Ausführung erkannten Container
+    \item Anzahl aller validierten Constraints und fehlerhaften Constraints, getrennt nach \ac{SuT}- und Testsystem"=Constraints
+\end{itemize}
+
 Ein möglicher Programmlog sowie das exakte Ausgabeformat für eine Ausführung eines Testfalls findet sich in \autoref{app:outputFormat}.
 
 \subsection{Weitere mit der Simulation zusammenhängende Methoden}
