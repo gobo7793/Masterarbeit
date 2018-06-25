@@ -7,8 +7,24 @@
 \label{sec:marpValueResults}
 
 % Ergebnisse MARP-Werte
+Bei der Betrachtung der \ac{MARP}"=Werte lässt sich generell sagen, dass die Selfbalancing"=Komponente den Wert selbstständig anpasst.
+Während bei allen Testfällen mit dem Mutationsszenario der \ac{MARP}"=Wert unverändert blieb, wurde er bei 15 von 19 Ausführungen der 16 Testfälle ohne Mutationsszenario verändert:
+
+\begin{table}[h]
+    \begin{tabular}{l|c|c|c|c|c|c|c|c|c|c}
+    	Testfall &  1.1  &  1.2  &   3   &  5.1  &  5.2  &  7.1  &  7.2  &   9   &  11   &  13   \\ \hline
+    	Wert     & 0,100 & 0,100 & 0,474 & 0,242 & 0,100 & 0,100 & 1,000 & 0,269 & 0,539 & 0,356 \\
+        \multicolumn{11}{c}{} \\
+    	Testfall &  15   &  17   &  19   &  21   &  23   &  25   &  27   &  29   &  31   &  \\ \hline
+    	Wert     & 0,368 & 0,731 & 0,430 & 0,335 & 0,498 & 0,521 & ,0819 & 0,273 & 0,333 &
+    \end{tabular}
+    \caption{Finale \ac{MARP}"=Werte der Ausführungen ohne Mutationsszenario}
+    \label{tab:finalMarpValues}
+\end{table}
 
 % Warum einige MARP-Werte nicht geändert?
+Da er in den Testfällen \#1 und \#7 bei der ersten Ausführung nicht verändert wurde, wurden beide Testfälle erneut ausgeführt, wobei der \ac{MARP}"=Wert bei letzterem mehrmals geändert wurde, bevor er im finalen Clusterstatus den Wert 1 erhielt.
+Im Testfall \#1 wurde der Wert dagegen bei keiner der beiden Ausführungen verändert.
 
 \subsection{Aktivierung und Deaktivierung der Komponentenfehler}
 \label{sec:faultInjectionEval}
