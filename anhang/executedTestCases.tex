@@ -9,55 +9,60 @@ In den Spalten \emph{Ausgeführt} und \emph{Dauer} ist angegeben, wie viele Simu
 
 \begin{table}
     \begin{tabu}{c|[1.5pt]c|c|c|c|c|[1.5pt]c|c}
-        \# & Seed      & Hosts & Clients & Schritte & Mutation & Ausgeführt & Dauer \\ \tabucline[1.5pt]{-}
+    	\# & Seed      & Hosts & Clients & Schritte & Mutationen & Ausgeführt & Dauer \\ \tabucline[1.5pt]{-}
         \begin{tabular}{@{}c@{}}1.1\\1.2\end{tabular}
-           & 0xAB4FEDD &   1   &    2    &    5     &   nein   &
+           & 0xAB4FEDD &   1   &    2    &    5     &   keine    &
                                     \begin{tabular}{@{}c@{}}5\\5\end{tabular} &
-                                        \begin{tabular}{@{}c@{}}2:44\\2:56\end{tabular}
-                                                                                    \\ \hline
-        2  & 0xAB4FEDD &   1   &    2    &    5     &    ja    &     5      & 2:34  \\ \hline
-        3  & 0xAB4FEDD &   1   &    4    &    5     &   nein   &     5      & 5:52  \\ \hline
-        4  & 0xAB4FEDD &   1   &    4    &    5     &    ja    &     2      & 3:13  \\ \hline
+                                            \begin{tabular}{@{}c@{}}2:44\\2:56\end{tabular}
+                                                                                      \\ \hline
+    	2  & 0xAB4FEDD &   1   &    2    &    5     &  1,2,3,4   &     5      & 2:34  \\ \hline
+    	3  & 0xAB4FEDD &   1   &    4    &    5     &   keine    &     5      & 5:52  \\ \hline
+    	4  & 0xAB4FEDD &   1   &    4    &    5     &  1,2,3,4   &     2      & 3:13  \\ \hline
+    	6  & 0xAB4FEDD &   1   &    4    &    10    &  1,2,3,4   &     2      & 3:14  \\ \hline
         \begin{tabular}{@{}c@{}}5.1\\5.2\end{tabular}
-           & 0xAB4FEDD &   1   &    4    &    10    &   nein   &
+           & 0xAB4FEDD &   1   &    4    &    10    &   keine    &
                                     \begin{tabular}{@{}c@{}}2\\2\end{tabular} &
-                                        \begin{tabular}{@{}c@{}}3:35\\3:23\end{tabular}
-                                                                                    \\ \hline
-        6  & 0xAB4FEDD &   1   &    4    &    10    &    ja    &     2      & 3:14  \\ \hline
+                                            \begin{tabular}{@{}c@{}}3:35\\3:23\end{tabular}
+                                                                                      \\ \hline
         \begin{tabular}{@{}c@{}}7.1\\7.2\end{tabular}
-           & 0xAB4FEDD &   2   &    2    &    5     &   nein   &
+           & 0xAB4FEDD &   2   &    2    &    5     &   keine    &
                                     \begin{tabular}{@{}c@{}}5\\5\end{tabular} &
-                                        \begin{tabular}{@{}c@{}}2:49\\2:56\end{tabular}
-                                                                                    \\ \hline
-        8  & 0xAB4FEDD &   2   &    2    &    5     &    ja    &     5      & 2:23  \\ \hline
-        9  & 0xAB4FEDD &   2   &    4    &    5     &   nein   &     5      & 7:13  \\ \hline
-        10 & 0xAB4FEDD &   2   &    4    &    5     &    ja    &     5      & 7:42  \\ \hline
-        11 & 0xAB4FEDD &   2   &    4    &    10    &   nein   &     10     & 12:16 \\ \hline
-        12 & 0xAB4FEDD &   2   &    4    &    10    &    ja    &     10     & 11:36 \\ \hline
-        13 & 0xAB4FEDD &   2   &    6    &    5     &   nein   &     5      & 8:02  \\ \hline
-        14 & 0xAB4FEDD &   2   &    6    &    5     &    ja    &     5      & 6:24  \\ \hline
-        15 & 0xAB4FEDD &   2   &    6    &    10    &   nein   &     5      & 8:41  \\ \hline
-        16 & 0xAB4FEDD &   2   &    6    &    10    &    ja    &     5      & 9:26  \\ \tabucline[1.5pt]{-}
-        17 & 0x11399D3 &   1   &    2    &    5     &   nein   &     5      & 3:07  \\ \hline
-        18 & 0x11399D3 &   1   &    2    &    5     &    ja    &     5      & 3:02  \\ \hline
-        19 & 0x11399D3 &   1   &    4    &    5     &   nein   &     5      & 5:25  \\ \hline
-        20 & 0x11399D3 &   1   &    4    &    5     &    ja    &     3      & 3:22  \\ \hline
-        21 & 0x11399D3 &   1   &    4    &    10    &   nein   &     3      & 4:17  \\ \hline
-        22 & 0x11399D3 &   1   &    4    &    10    &    ja    &     3      & 2:50  \\ \hline
-        23 & 0x11399D3 &   2   &    2    &    5     &   nein   &     5      & 4:25  \\ \hline
-        24 & 0x11399D3 &   2   &    2    &    5     &    ja    &     5      & 4:22  \\ \hline
-        25 & 0x11399D3 &   2   &    4    &    5     &   nein   &     5      & 4:53  \\ \hline
-        26 & 0x11399D3 &   2   &    4    &    5     &    ja    &     5      & 5:47  \\ \hline
-        27 & 0x11399D3 &   2   &    4    &    10    &   nein   &     10     & 10:30 \\ \hline
+                                            \begin{tabular}{@{}c@{}}2:49\\2:56\end{tabular}
+                                                                                      \\ \hline
+    	8  & 0xAB4FEDD &   2   &    2    &    5     &  1,2,3,4   &     5      & 2:23  \\ \hline
+    	9  & 0xAB4FEDD &   2   &    4    &    5     &   keine    &     5      & 7:13  \\ \hline
+        \begin{tabular}{@{}c@{}}10.1\\10.2\\10.3\\10.4\\10.5\end{tabular}
+           & 0xAB4FEDD &   2   &    4    &    5     &
+               \begin{tabular}{@{}c@{}}1,2,3,4\\1\\2\\3\\4\end{tabular} &
+                        \begin{tabular}{@{}c@{}}5\\ \\ \\ \\ \end{tabular} &
+                                \begin{tabular}{@{}c@{}}7:42\\ \\ \\ \\ \end{tabular}
+                                                                                      \\ \hline
+    	11 & 0xAB4FEDD &   2   &    4    &    10    &   keine    &     10     & 12:16 \\ \hline
+    	12 & 0xAB4FEDD &   2   &    4    &    10    &  1,2,3,4   &     10     & 11:36 \\ \hline
+    	13 & 0xAB4FEDD &   2   &    6    &    5     &   keine    &     5      & 8:02  \\ \hline
+    	14 & 0xAB4FEDD &   2   &    6    &    5     &  1,2,3,4   &     5      & 6:24  \\ \hline
+    	15 & 0xAB4FEDD &   2   &    6    &    10    &   keine    &     5      & 8:41  \\ \hline
+    	16 & 0xAB4FEDD &   2   &    6    &    10    &  1,2,3,4   &     5      & 9:26  \\ \tabucline[1.5pt]{-}
+    	17 & 0x11399D3 &   1   &    2    &    5     &   keine    &     5      & 3:07  \\ \hline
+    	18 & 0x11399D3 &   1   &    2    &    5     &  1,2,3,4   &     5      & 3:02  \\ \hline
+    	19 & 0x11399D3 &   1   &    4    &    5     &   keine    &     5      & 5:25  \\ \hline
+    	20 & 0x11399D3 &   1   &    4    &    5     &  1,2,3,4   &     3      & 3:22  \\ \hline
+    	21 & 0x11399D3 &   1   &    4    &    10    &   keine    &     3      & 4:17  \\ \hline
+    	22 & 0x11399D3 &   1   &    4    &    10    &  1,2,3,4   &     3      & 2:50  \\ \hline
+    	23 & 0x11399D3 &   2   &    2    &    5     &   keine    &     5      & 4:25  \\ \hline
+    	24 & 0x11399D3 &   2   &    2    &    5     &  1,2,3,4   &     5      & 4:22  \\ \hline
+    	25 & 0x11399D3 &   2   &    4    &    5     &   keine    &     5      & 4:53  \\ \hline
+    	26 & 0x11399D3 &   2   &    4    &    5     &  1,2,3,4   &     5      & 5:47  \\ \hline
+    	27 & 0x11399D3 &   2   &    4    &    10    &   keine    &     10     & 10:30 \\ \hline
         \begin{tabular}{@{}c@{}}28.1\\28.2\end{tabular}
-           & 0x11399D3 &   2   &    4    &    10    &    ja    &
+           & 0x11399D3 &   2   &    4    &    10    &  1,2,3,4   &
                                     \begin{tabular}{@{}c@{}}7\\7\end{tabular} &
-                                        \begin{tabular}{@{}c@{}}8:17\\7:37\end{tabular}
-                                                                                    \\ \hline
-        29 & 0x11399D3 &   2   &    6    &    5     &   nein   &     5      & 7:03  \\ \hline
-        30 & 0x11399D3 &   2   &    6    &    5     &    ja    &     5      & 6:02  \\ \hline
-        31 & 0x11399D3 &   2   &    6    &    10    &   nein   &     7      & 10:21 \\ \hline
-        32 & 0x11399D3 &   2   &    6    &    10    &    ja    &     7      & 11:08
+                                            \begin{tabular}{@{}c@{}}8:17\\7:37\end{tabular}
+                                                                                      \\ \hline
+    	29 & 0x11399D3 &   2   &    6    &    5     &   keine    &     5      & 7:03  \\ \hline
+    	30 & 0x11399D3 &   2   &    6    &    5     &  1,2,3,4   &     5      & 6:02  \\ \hline
+    	31 & 0x11399D3 &   2   &    6    &    10    &   keine    &     7      & 10:21 \\ \hline
+    	32 & 0x11399D3 &   2   &    6    &    10    &  1,2,3,4   &     7      & 11:08 
     \end{tabu}
     \caption{Übersicht der ausgeführten Testfälle.}
     \label{tab:testCaseOverview}
