@@ -6,28 +6,36 @@
 \subsection{Betrachtung der \ac{MARP}"=Werte}
 \label{sec:marpValueResults}
 
-% Ergebnisse MARP-Werte
 Bei der Betrachtung der \ac{MARP}"=Werte lässt sich generell sagen, dass die Selfbalancing"=Komponente den \ac{MARP}"=Wert entsprechend der Auslastung des Clusters anpasst.
-Während bei allen Testkonfigurationen, bei denen alle 4 Mutationen aktiv waren, der \ac{MARP}"=Wert unverändert blieb, wurde er bei 15 von 19 Ausführungen der 16 Konfigurationen ohne Mutationsszenario verändert:
+Während bei allen Testkonfigurationen, bei denen alle 4 Mutationen aktiv waren, der \ac{MARP}"=Wert unverändert blieb, wurde er bei 16 von 20 Ausführungen der 16 Konfigurationen ohne Mutationen verändert:
 
 \begin{table}[h]
     \begin{tabular}{l|c|c|c|c|c|c|c|c|c|c}
-    	Konf. &  1.1  &  1.2  &   3   &  5.1  &  5.2  &  7.1  &  7.2  &   9   &  11   &  13   \\ \hline
-    	Wert     & 0,100 & 0,100 & 0,474 & 0,242 & 0,100 & 0,100 & 1,000 & 0,269 & 0,539 & 0,356 \\
-        \multicolumn{11}{c}{} \\
-    	Konf. &  15   &  17   &  19   &  21   &  23   &  25   &  27   &  29   &  31   &  \\ \hline
-    	Wert     & 0,368 & 0,731 & 0,430 & 0,335 & 0,498 & 0,521 & ,0819 & 0,273 & 0,333 &
+    	Konf. &  1.1  &  1.2  &   3   &  5.1  &  5.2  &  7.1  &  7.2  &  9.1  &  9.2  &  11   \\ \hline
+    	Wert  & 0,100 & 0,100 & 0,474 & 0,242 & 0,100 & 0,100 & 1,000 & 0,269 & 0,175 & 0,539 \\
+    	\multicolumn{11}{c}{} \\
+    	Konf. &  13   &  15   &  17   &  19   &  21   &  23   &  25   &  27   &  29   &  31   \\ \hline
+    	Wert  & 0,356 & 0,368 & 0,731 & 0,430 & 0,335 & 0,498 & 0,521 & ,0819 & 0,273 & 0,333
     \end{tabular}
     \caption{Finale \ac{MARP}"=Werte der Testkonfigurationen ohne Mutanten}
     \label{tab:finalMarpValues}
 \end{table}
 
-% Warum einige MARP-Werte nicht geändert?
-Da er in den Konfigurationen 1 und 7 bei der jeweils ersten Ausführung nicht verändert wurde, wurden beide Konfigurationen erneut ausgeführt, wobei der \ac{MARP}"=Wert bei letzterem mehrmals geändert wurde, bevor er im finalen Clusterstatus den Wert 1 erhielt.
+Da er in den Konfigurationen 1 und 7 bei der jeweils ersten Ausführung nicht verändert wurde, wurden beide Konfigurationen erneut ausgeführt, wobei der \ac{MARP}"=Wert bei letzterem mehrmals erhöht wurde, bevor er im finalen Clusterstatus auf 1 gesetzt wurde.
 Bei der Konfiguration 1 wurde der Wert dagegen bei keiner der beiden Ausführungen verändert.
+
+Dies liegt sehr wahrscheinlich daran, dass in Konfiguration 1 maximal zwei Anwendungen gleichzeitig gestartet werden.
+In den beiden konkreten Ausführungen wurden die jeweiligen Anwendungen jedoch vergleichsweise schnell beendet.
+Zudem wurden in den zusammen 10 Testfällen nur 8 Anwendungen gestartet, weshalb die Anwendungen auch ohne eine Anpassung des \ac{MARP}"=Wertes genügend Ressourcen zur Verfügung hatten.
+Bei der Testkonfiguration 7 ist dies ähnlich, wobei die gesamte Last auf mehrere Nodes verteilt wird.
+Der Test 7.2 zeigt jedoch auch, dass es stark abhängig davon ist, wie die Last im Cluster verteilt wird.
 
 \subsection{Erkennung der Mutanten}
 \label{sec:killingMutants}
+
+% Generelles, Mutanten wurden fast immer erkannt
+
+% Warum wurden mutanten in #10 wohl erkannt?
 
 \subsection{Aktivierung und Deaktivierung der Komponentenfehler}
 \label{sec:faultInjectionEval}
