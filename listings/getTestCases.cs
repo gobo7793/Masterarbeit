@@ -1,3 +1,5 @@
+public string MutationConfig { get; set; } = "mut1234";
+
 public IEnumerable GetTestCases()
 {
   return from seed in GetSeeds()

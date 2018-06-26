@@ -15,16 +15,17 @@ Da bei der Ausführung des Universalmutators auch zahlreiche Mutanten erzeugt we
 Ein validierter Mutant zeichnet sich hierbei dadurch aus, dass dieser durch den Original"=Compiler der jeweiligen Sprache kompiliert werden kann und die generierten Objektdateien bzw. Bytecode nicht dem nicht-mutierten Original oder anderen bereits generierten Mutationen entsprechen \cite{Groce2018}.
 Diese Validierung kann mithilfe von entsprechenden Startparametern durch ein benutzerdefiniertes Programm durchgeführt werden oder alternativ nicht durchgeführt werden \cite{Groce2018,UniversalmutatorSourceGenmutants}.
 
-Da in dieser Fallstudie nicht nur Hadoop bzw. die Selfbalancing"=Komponente getestet werden soll, sondern vor allem das in den vorherigen Abschnitten und Kapiteln beschriebene Testsystem, wurden auch ein Mutationstests erstellt.
+Da in dieser Fallstudie nicht nur Hadoop bzw. die Selfbalancing"=Komponente getestet werden soll, sondern vor allem das in den vorherigen Abschnitten und Kapiteln beschriebene Testsystem, wurden auch Mutationstests erstellt.
 Hierbei wurden mithilfe des Universalmutators insgesamt 431 valide Mutationen aus dem Quellcode der Selfbalancing"=Komponente generiert.
-Von allen validen Mutationen wurden anschließend zufällig vier Mutanten ausgewählt, welche als Basis für die in dieser Fallstudie verwendeten Mutationstests dienen:
+Von allen validen Mutationen wurden anschließend für jede der vier Klassen der Selfbalancing"=Komponente jeweils ein Mutant zufällig ausgewählt, welche als Basis für die in dieser Fallstudie verwendeten Mutationstests dienen:
 
 \begin{enumerate}
     \item
     Zur Ermittlung der Veränderung des \ac{MARP}"=Wertes muss zunächst der jeweils aktuelle Arbeitsspeicher"=Verbrauch im Cluster eingelesen werden.
-    Dies geschieht im \texttt{Controller} mithilfe einer \texttt{for}"=Schleife, mit der der Speicherverbrauch im Cluster nahezu sekündlich eingelesen wird.
+    Dies geschieht im \texttt{Controller} mithilfe einer \texttt{for}"=Schleife, mit der der Speicherverbrauch im Cluster nahezu sekündlich aus der \texttt{memLog}"=Datei eingelesen wird.
     Der Mutant verändert die Schleifenbedingung, damit die Schleife kein einziges mal ausgeführt wird.
     Dadurch wird verhindert, dass der Speicherverbrauch des Cluster vom \texttt{Controller} eingelesen und verwendet werden kann.
+    Dadurch ist der Speicherverbrauch des Clusters auch nicht für den in \cite{zhang2016} vorgestellten Algorithmus der Selfbalancing"=Komponente verfügbar.
     
     \item 
     Der \texttt{Effectuator} dient dazu, um die Veränderung des \ac{MARP}"=Wertes im Cluster zu speichern.
@@ -33,21 +34,16 @@ Von allen validen Mutationen wurden anschließend zufällig vier Mutanten ausgew
     
     \item
     Mithilfe des \texttt{ControlNodeMonitor} wird das Schell"=Script zum Ermitteln der Anzahl der aktiven \ac{YARN}"=Jobs ausgeführt.
-    Dies geschieht in einem eigenen Thread, der mithilfe einer \texttt{while}"=Schleife, welche solange aktiv ist, solange der Thread aktiv ist.
+    Dies geschieht in einem eigenen Thread, der mithilfe einer \texttt{while}"=Schleife, die solange aktiv ist, solange der Thread aktiv ist.
     Hierbei wird das Script rund einmal pro Sekunde aufgerufen und danach ermittelt, ob hierbei Fehler aufgetreten sind. Hierzu wird einentsprechender \texttt{BufferedReader} geöffnet und der Error"=Stream des Scriptes eingelesen und anschließend von der Selfbalancing"=Komponente ausgegeben.
-    Dies geschieht hierbei mithilfe einer \texttt{while}"=Schleife, die solange den Fehler ausgibt, solange \texttt{readLine()} des \texttt{BufferedReader} nicht \texttt{null} ergibt.
-    Der Mutant kehrt hierbei die Bedingung der Schleife um, sodass die in der Schleife enthaltene Methode \texttt{null} zur Ausgabe übergeben bekommt.
+    Dies geschieht hierbei mithilfe einer \texttt{while}"=Schleife, damit der gesamte Fehlertext ausgegeben werden kann.
+    Die Schleifenbedingung, wonach die Rückgabe des \texttt{BufferedReader}s solange ausgegeben wird, solange sie nicht \texttt{null} ist, wird vom Mutanten so umgekehrt, dass sie solange ausgegeben wird, solange sie \texttt{null} ist.
     
     \item
-    Die Klasse \texttt{MemUtilization} funktioniert analog wie die \texttt{ControlNodeMonitor}"=Klasse, führt jedoch das Script zum Auslesen des Arbeitsspeicher"=Verbrauches im Cluster aus.
+    Die Klasse \texttt{MemUtilization} funktioniert analog wie die \texttt{ControlNodeMonitor}"=Klasse, führt jedoch das Script zum Auslesen des Arbeitsspeicher"=Verbrauches aus dem Cluster aus.
     Dieser Mutant verhindert hierbei die komplette Ausführung des entsprechenden Threads, indem die Bedingung der Schleife für den gesamten Thread so verändert wurde, dass diese nur dann ausgeführt wird, wenn der Thread nicht aktiv ist.
     Dadurch wird verhindert, dass das entsprechende Shell"=Script überhaupt ausgeführt wird und der Speicherverbrauch somit nicht ausgelesen wird.
 \end{enumerate}
 
-Der hierbei generierten Mutationen wurden im Rahmen eines neuen Szenarios in der Plattform Hadoop"=Benchmark gespeichert (vgl. \autoref{sec:aufbauCluster}).
-
-Zur Entwicklung des Mutationsszenarios wurden mithilfe des Universalmutators insgesamt 431 valide Mutationen aus dem Quellcode der Selfbalancing"=Komponente generiert.
-Von allen validen Mutationen wurde für jede der vier Java"=Klassen zufällig eine Mutation ausgewählt, aus der die mutierte Selfbalancing"=Komponente erzeugt wurde.
-Die mutierte Komponente wurde anschließend einem speziell hierfür entwickelten Docker"=Image gespeichert, was den Kern des Mutationsszenarios darstellt.
-
-\todo{Auflistung der 4 Mutanten}
+Für jede Mutation wurde ein Mutationsszenario im Rahmen der Plattform Hadoop"=Benchmark entwickelt, bei dem keine weitere Mutationen enthalten sind (vgl. \autoref{sec:aufbauCluster}).
+Zudem wurde ein weiteres Mutationsszenario entwickelt, bei dem alle vier Mutationen enthalten sind.

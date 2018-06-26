@@ -1,35 +1,35 @@
 \section{Implementierung der Tests}
 \label{sec:implTestcases}
 
-\todo{irgendwo erklären, wie mutationsszenario gesteuert werden kann}
 Genauso wie die Simulation wurde zur Implementierung das NUnit"=Framework sowie zur Ausführung der \emph{ReSharper Unit Test Runner}\footnote{\url{https://www.jetbrains.com/resharper/}} genutzt.
 Alle zur Ausführung der Testfälle der Fallstudie relevanten Methoden wurden zudem in der Klasse \texttt{CaseStudyTests} zusammengefasst, welche die bereits in \autoref{sec:implSimulation} beschriebene Simulation nutzt.
-Zur Ausführung der Testfälle wurde folgende Methode entwickelt, bei der mithilfe von NUnit die Testfälle ermittelt werden:
+Zur Ausführung der Tests wurde folgende Methode entwickelt, bei der mithilfe von NUnit die Testfälle ermittelt werden:
 
 \lstinputlisting[label=lst:executeTestCases,style=cs,
 caption={[Methode zur Ausführung der Testfälle]
     Methode zur Ausführung der Testfälle (gekürzt)}]
 {./listings/executeTestCases.cs}
 
-Das Starten und Beenden des jeweiligen Cluster dient der automatisierten Ausführung aller Testfälle inkl. denen mit der mutierten Selfbalancing"=Komponente.
-Dadurch ist es möglich, das Cluster neben dem normalen Szenario auch im Mutationsszenario zu starten.
+Das Starten und Beenden des jeweiligen Cluster dient der automatisierten Ausführung aller Tests inkl. denen mit der mutierten Selfbalancing"=Komponente.
+Dadurch ist es möglich, das Cluster neben dem normalen Szenario auch in einem Mutationsszenario zu starten.
 Durch das Beenden des Clusters im Finally"=Block ist es möglich, bei einer abgebrochenen Simulation andere Testfälle regulär auszuführen, da dadurch das Cluster regulär beendet wird und die Daten des abgebrochenen Testfalls wie bei einem erfolgreichen Test gespeichert werden.
 
-Da die verwendeten Connectoren bzw. SSH"=Verbindungen prinzipiell nur einmal initialisiert werden müssen und anschließend für alle auszuführenden Testfälle verwendet werden können, werden diese einmalig in \texttt{InitInstances()} initialisiert und anschließend bei jedem Testfall wiederverwendet.
+Da die verwendeten Connectoren bzw. SSH"=Verbindungen prinzipiell nur einmal initialisiert werden müssen und anschließend für alle auszuführenden Testfälle verwendet werden können, werden diese einmalig in \texttt{InitInstances()} initialisiert und anschließend bei jedem weiteren ausgeführten Test wiederverwendet.
 Eine möglicherweise bereits zuvor verwendete Modell"=Instanz wird hier jedoch in jedem Fall genauso wie einige statische Zählvariablen gelöscht bzw. zurückgesetzt.
 
-Mithilfe der im \texttt{TestCaseSourceAttribute} referenzierten Methode \texttt{GetTestCases()} werden die implementierten Testfälle ermittelt:
+Mithilfe der im \texttt{TestCaseSourceAttribute} referenzierten Methode \texttt{GetTestCases()} werden die implementierten Testkonfigurationen ermittelt:
 
 \lstinputlisting[label=lst:getTestCases,style=cs,
-caption={[Implementierung der Testfälle]
+caption={[Implementierung der Testkonfigurationen]
     Implementierung der Testfälle (gekürzt).
-    Die hier nicht gezeigten Methoden zur Rückgabe der Implementierten Werte wie \texttt{GetFaultProbabilities()} sind nach dem gleichen Schema aufgebaut wie \texttt{GetSeeds()}.}]
+    Die hier nicht gezeigten Methoden zur Rückgabe der implementierten Werte wie \texttt{GetFaultProbabilities()} sind nach dem gleichen Schema aufgebaut wie \texttt{GetSeeds()}.
+    Mithilfe der Eigenschaft \texttt{MutationConfig} erfolgt die Auswahl des zu verwendeten Mutationsszenarios.}]
 {./listings/getTestCases.cs}
 
-Hierbei werden nur Testfälle generiert, auf denen die in \autoref{sec:selectTestcases} genannten Bedingungen zutreffen, womit anstatt den möglichen 48 Testfällen nur die gewählten 32 generiert werden.
+Hierbei werden nur Konfigurationen generiert, auf denen die in \autoref{sec:selectTestcases} genannten Bedingungen zutreffen, womit anstatt den möglichen 48 Testfällen nur die gewählten 32 generiert werden.
 
 Damit die bei der Ausführung der Tests generierten Logs einfacher zur Evaluation genutzt werden können, werden die angefallenen Logdateien nach jeder Ausführung in ein entsprechendes Verzeichnis verschoben.
-Hierbei werden die Logdateien gemäß der Testfallparameter wie folgt umbenannt:
+Hierbei werden die Logdateien gemäß der Parameter der Testkonfiguration wie folgt umbenannt:
 
 \lstinputlisting[label=lst:moveTestCaseLogs,style=cs,
 caption={Bestimmung des Dateinamens zur Umbenennung der Logdateien}]
