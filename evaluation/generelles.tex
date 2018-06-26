@@ -1,5 +1,5 @@
-\section{Generelle Erkenntnisse}
-\label{sec:generalResults}
+\section{Erkenntnisse der Evaluation}
+\label{sec:evaluationResults}
 
 \todo{Zusammenfassung}
 
@@ -7,24 +7,24 @@
 \label{sec:marpValueResults}
 
 % Ergebnisse MARP-Werte
-Bei der Betrachtung der \ac{MARP}"=Werte lässt sich generell sagen, dass die Selfbalancing"=Komponente den Wert selbstständig anpasst.
-Während bei allen Testfällen mit dem Mutationsszenario der \ac{MARP}"=Wert unverändert blieb, wurde er bei 15 von 19 Ausführungen der 16 Testfälle ohne Mutationsszenario verändert:
+Bei der Betrachtung der \ac{MARP}"=Werte lässt sich generell sagen, dass die Selfbalancing"=Komponente den \ac{MARP}"=Wert entsprechend der Auslastung des Clusters anpasst.
+Während bei allen Testkonfigurationen, bei denen alle 4 Mutationen aktiv waren, der \ac{MARP}"=Wert unverändert blieb, wurde er bei 15 von 19 Ausführungen der 16 Konfigurationen ohne Mutationsszenario verändert:
 
 \begin{table}[h]
     \begin{tabular}{l|c|c|c|c|c|c|c|c|c|c}
-    	Testfall &  1.1  &  1.2  &   3   &  5.1  &  5.2  &  7.1  &  7.2  &   9   &  11   &  13   \\ \hline
+    	Konf. &  1.1  &  1.2  &   3   &  5.1  &  5.2  &  7.1  &  7.2  &   9   &  11   &  13   \\ \hline
     	Wert     & 0,100 & 0,100 & 0,474 & 0,242 & 0,100 & 0,100 & 1,000 & 0,269 & 0,539 & 0,356 \\
         \multicolumn{11}{c}{} \\
-    	Testfall &  15   &  17   &  19   &  21   &  23   &  25   &  27   &  29   &  31   &  \\ \hline
+    	Konf. &  15   &  17   &  19   &  21   &  23   &  25   &  27   &  29   &  31   &  \\ \hline
     	Wert     & 0,368 & 0,731 & 0,430 & 0,335 & 0,498 & 0,521 & ,0819 & 0,273 & 0,333 &
     \end{tabular}
-    \caption{Finale \ac{MARP}"=Werte der Ausführungen ohne Mutationsszenario}
+    \caption{Finale \ac{MARP}"=Werte der Testkonfigurationen ohne Mutationsszenario}
     \label{tab:finalMarpValues}
 \end{table}
 
 % Warum einige MARP-Werte nicht geändert?
-Da er in den Testfällen \#1 und \#7 bei der ersten Ausführung nicht verändert wurde, wurden beide Testfälle erneut ausgeführt, wobei der \ac{MARP}"=Wert bei letzterem mehrmals geändert wurde, bevor er im finalen Clusterstatus den Wert 1 erhielt.
-Im Testfall \#1 wurde der Wert dagegen bei keiner der beiden Ausführungen verändert.
+Da er in den Konfigurationen 1 und 7 bei der jeweils ersten Ausführung nicht verändert wurde, wurden beide Konfigurationen erneut ausgeführt, wobei der \ac{MARP}"=Wert bei letzterem mehrmals geändert wurde, bevor er im finalen Clusterstatus den Wert 1 erhielt.
+Bei der Konfiguration 1 wurde der Wert dagegen bei keiner der beiden Ausführungen verändert.
 
 \subsection{Aktivierung und Deaktivierung der Komponentenfehler}
 \label{sec:faultInjectionEval}
@@ -42,3 +42,36 @@ Im Testfall \#1 wurde der Wert dagegen bei keiner der beiden Ausführungen verä
 
 % DFSIO Read Mapfail
 
+\subsection{Rekonfiguration nicht möglich}
+\label{sec:noReconfig}
+
+% Rekonffehler #3-6
+
+% Rekonffehler #15/16
+
+% Rekonffehler #19-22
+
+% Rekonffehler #27/28
+
+% Rekonffehler #31/32
+
+\subsection{Nicht erkannte oder gespeicherte \ac{AppMstr}"=Nodes}
+\label{sec:noDetectedHost2}
+
+% NotSaved #7/8
+
+% NoAllok #8
+
+% NoSaved #23-26
+
+\subsection{Nicht erkannte, injizierte bzw. reparierte Komponentenfehler}
+\label{sec:noDetectedFault}
+
+% SuT/Test-Constraint StartNode 4 bei #17-28
+
+\subsection{Nicht gestartete Anwendungen}
+\label{sec:notStartedApps}
+
+% Multiapp-Constraint bei #29-32
+
+% Zu wenig Submitter bei #31/32
