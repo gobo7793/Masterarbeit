@@ -1,21 +1,49 @@
-\section{Implementierungen der Mutationstests}
+\section{Generierung der Mutanten}
 \label{sec:implMutationTests}
 
-Zur Entwicklung der Mutationstest wurde der von \citeauthor{Groce2018} in \cite{Groce2018} vorgestellte \textbf{Universalmutator}\footnote{\url{https://github.com/agroce/universalmutator}} genutzt.
-Der Universalmutator ist ein Tool, das den vorhandenen Quellcode eines Programmes so verändert, sodass damit Mutationstests durchgeführt werden können.
+Zur Entwicklung der für die Mutationstests verwendeten Mutanten wurde der von \citeauthor{Groce2018} in \cite{Groce2018} vorgestellte \textbf{Universalmutator}\footnote{\url{https://github.com/agroce/universalmutator}} genutzt.
+Der Universalmutator ist ein Tool, das den vorhandenen Quellcode eines Programmes verändert, sodass damit Mutationstests durchgeführt werden können.
 Diese werden vor allem in der Forschung eingesetzt, um Testsysteme zu verifizieren, in dem das \ac{SuT} verändert wird.
-Ziel hierbei ist es, zu erkennen, dass das \ac{SuT} verändert wurde bzw. nicht korrekt funktioniert.
+Ziel hierbei ist es, mithilfe des Testsystems zu erkennen, dass das \ac{SuT} verändert wurde bzw. nicht korrekt funktioniert.
 \todo{Allgemeines zu Mutationstests in Grundlagen?}
 
 Der Universalmutator kann zum Entwickeln von Mutationstests hierbei nicht nur innerhalb einer bestimmten Umgebung bzw. Programmiersprache, sondern prinzipiell für alle Programmiersprachen eingesetzt werden.
-Dies wird dadurch ermöglicht, dass die vom Universalmutator generierten Mutationen basierend auf einem oder mehreren Regelsätze durchgeführt werden und somit der Quellcode mutiert wird.
+Dies wird dadurch ermöglicht, dass die vom Universalmutator generierten Mutanten basierend auf einem oder mehreren Regelsätzen durchgeführt werden und damit der Quellcode verändert wird.
 So kann vom Universalmutator Quellcode \uA in den Sprachen Python, Java, C/C++ oder Swift mutiert werden \cite{Groce2018}.
 
-Da bei der Ausführung des Universalmutators auch zahlreiche Mutanten generiert werden, die nicht kompiliert bzw. ausgeführt werden können, nutzt das Tool die Compiler der jeweiligen Sprache zur Validierung der generierten Mutationen.
+Da bei der Ausführung des Universalmutators auch zahlreiche Mutanten erzeugt werden, die nicht kompiliert bzw. ausgeführt werden können, nutzt das Tool die Compiler der jeweiligen Sprache zur Validierung der generierten Mutationen.
 Ein validierter Mutant zeichnet sich hierbei dadurch aus, dass dieser durch den Original"=Compiler der jeweiligen Sprache kompiliert werden kann und die generierten Objektdateien bzw. Bytecode nicht dem nicht-mutierten Original oder anderen bereits generierten Mutationen entsprechen \cite{Groce2018}.
 Diese Validierung kann mithilfe von entsprechenden Startparametern durch ein benutzerdefiniertes Programm durchgeführt werden oder alternativ nicht durchgeführt werden \cite{Groce2018,UniversalmutatorSourceGenmutants}.
 
-Da in dieser Fallstudie nicht nur Hadoop bzw. die Selfbalancing"=Komponente getestet werden soll, sondern vor allem das in den vorherigen Abschnitten und Kapiteln beschriebene Testsystem, wurde auch ein Mutationstest erstellt.
+Da in dieser Fallstudie nicht nur Hadoop bzw. die Selfbalancing"=Komponente getestet werden soll, sondern vor allem das in den vorherigen Abschnitten und Kapiteln beschriebene Testsystem, wurden auch ein Mutationstests erstellt.
+Hierbei wurden mithilfe des Universalmutators insgesamt 431 valide Mutationen aus dem Quellcode der Selfbalancing"=Komponente generiert.
+Von allen validen Mutationen wurden anschließend zufällig vier Mutanten ausgewählt, welche als Basis für die in dieser Fallstudie verwendeten Mutationstests dienen:
+
+\begin{enumerate}
+    \item
+    Zur Ermittlung der Veränderung des \ac{MARP}"=Wertes muss zunächst der jeweils aktuelle Arbeitsspeicher"=Verbrauch im Cluster eingelesen werden.
+    Dies geschieht im \texttt{Controller} mithilfe einer \texttt{for}"=Schleife, mit der der Speicherverbrauch im Cluster nahezu sekündlich eingelesen wird.
+    Der Mutant verändert die Schleifenbedingung, damit die Schleife kein einziges mal ausgeführt wird.
+    Dadurch wird verhindert, dass der Speicherverbrauch des Cluster vom \texttt{Controller} eingelesen und verwendet werden kann.
+    
+    \item 
+    Der \texttt{Effectuator} dient dazu, um die Veränderung des \ac{MARP}"=Wertes im Cluster zu speichern.
+    Dazu wird das entsprechende Shell"=Script mithilfe der \emph{Bash}"=Shell ausgeführt.
+    Der Mutant sorgt dafür, dass anstatt des korrekten Dateipfades der Bash (\texttt{/bin/bash}) ein ungültiger Dateipfad (hier \texttt{\%bin/bash}) aufgerufen wird und somit der neue \ac{MARP}"=Wert nicht in das Cluster übertragen werden kann.
+    
+    \item
+    Mithilfe des \texttt{ControlNodeMonitor} wird das Schell"=Script zum Ermitteln der Anzahl der aktiven \ac{YARN}"=Jobs ausgeführt.
+    Dies geschieht in einem eigenen Thread, der mithilfe einer \texttt{while}"=Schleife, welche solange aktiv ist, solange der Thread aktiv ist.
+    Hierbei wird das Script rund einmal pro Sekunde aufgerufen und danach ermittelt, ob hierbei Fehler aufgetreten sind. Hierzu wird einentsprechender \texttt{BufferedReader} geöffnet und der Error"=Stream des Scriptes eingelesen und anschließend von der Selfbalancing"=Komponente ausgegeben.
+    Dies geschieht hierbei mithilfe einer \texttt{while}"=Schleife, die solange den Fehler ausgibt, solange \texttt{readLine()} des \texttt{BufferedReader} nicht \texttt{null} ergibt.
+    Der Mutant kehrt hierbei die Bedingung der Schleife um, sodass die in der Schleife enthaltene Methode \texttt{null} zur Ausgabe übergeben bekommt.
+    
+    \item
+    Die Klasse \texttt{MemUtilization} funktioniert analog wie die \texttt{ControlNodeMonitor}"=Klasse, führt jedoch das Script zum Auslesen des Arbeitsspeicher"=Verbrauches im Cluster aus.
+    Dieser Mutant verhindert hierbei die komplette Ausführung des entsprechenden Threads, indem die Bedingung der Schleife für den gesamten Thread so verändert wurde, dass diese nur dann ausgeführt wird, wenn der Thread nicht aktiv ist.
+    Dadurch wird verhindert, dass das entsprechende Shell"=Script überhaupt ausgeführt wird und der Speicherverbrauch somit nicht ausgelesen wird.
+\end{enumerate}
+
 Der hierbei generierten Mutationen wurden im Rahmen eines neuen Szenarios in der Plattform Hadoop"=Benchmark gespeichert (vgl. \autoref{sec:aufbauCluster}).
 
 Zur Entwicklung des Mutationsszenarios wurden mithilfe des Universalmutators insgesamt 431 valide Mutationen aus dem Quellcode der Selfbalancing"=Komponente generiert.

@@ -18,13 +18,16 @@ Während bei allen Testkonfigurationen, bei denen alle 4 Mutationen aktiv waren,
     	Konf. &  15   &  17   &  19   &  21   &  23   &  25   &  27   &  29   &  31   &  \\ \hline
     	Wert     & 0,368 & 0,731 & 0,430 & 0,335 & 0,498 & 0,521 & ,0819 & 0,273 & 0,333 &
     \end{tabular}
-    \caption{Finale \ac{MARP}"=Werte der Testkonfigurationen ohne Mutationsszenario}
+    \caption{Finale \ac{MARP}"=Werte der Testkonfigurationen ohne Mutanten}
     \label{tab:finalMarpValues}
 \end{table}
 
 % Warum einige MARP-Werte nicht geändert?
 Da er in den Konfigurationen 1 und 7 bei der jeweils ersten Ausführung nicht verändert wurde, wurden beide Konfigurationen erneut ausgeführt, wobei der \ac{MARP}"=Wert bei letzterem mehrmals geändert wurde, bevor er im finalen Clusterstatus den Wert 1 erhielt.
 Bei der Konfiguration 1 wurde der Wert dagegen bei keiner der beiden Ausführungen verändert.
+
+\subsection{Erkennung der Mutanten}
+\label{sec:killingMutants}
 
 \subsection{Aktivierung und Deaktivierung der Komponentenfehler}
 \label{sec:faultInjectionEval}

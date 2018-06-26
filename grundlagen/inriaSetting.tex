@@ -65,7 +65,7 @@ Als einfaches Anwendungsbeispiel hierfür ist in \cite{Marchthaler2017} die Apol
 Für weitere Informationen zum Kalman"=Filter wie seinen Aufbau, Funktionsweise und Anwendung sei hier auf entsprechende Fachliteratur wie \zB \cite{Kim2016,Simon2006,Aggoun2004} verwiesen.
 
 Die drei Shell-Scripte dienen zur Interaktion zwischen dem Controller der Selfbalancing"=Komponente und Hadoop selbst.
-Sie werden von den beiden Monitor"=Klassen sekündlich gestartet und ermitteln basierend auf den Logs die Auslastung des Clusters.
+Die beiden zuletzt genannten Scripte werden von den beiden Monitor"=Klassen sekündlich gestartet und ermitteln basierend auf den Logs die Auslastung des Clusters.
 Mithilfe von \texttt{selfTuning-controlNode.sh}, das von \texttt{ControlNodeMonitor} gestartet wird, wird die Anzahl an aktiven und wartenden YARN"=Jobs ermittelt und anschließend in die \texttt{controlNodeLog}"=Datei geschrieben.
 Durch die Ausführung von \texttt{selfTuning-mem-controlNode.sh} (gestartet durch \texttt{MemUtilization}) wird dagegen die Auslastung des Arbeitsspeichers ermittelt und in die \texttt{memLog}"=Datei geschrieben.
 
