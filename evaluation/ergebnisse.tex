@@ -108,7 +108,7 @@ Anhand der Datenbasis lassen sich vier Gründe für das nicht erfolgreiche Absch
 \begin{itemize}
     \item Der \ac{AppMstr} ist nicht mehr erreichbar, da der auszuführende Node aufgrund eines Komponentenfehlers nicht mehr erreichbar ist und der \ac{AppMstr} nach einiger Zeit mit dem Fehler \emph{\ac{AppMstr}"=Timeout} als abgebrochen markiert wird
     \item Die den \ac{AppMstr} zugewiesenen Nodes sind vollständig ausgelastet, wodurch der \ac{AppMstr} selbst nicht ausgeführt werden kann und dieser nach einiger Zeit mit dem Fehler \emph{\ac{AppMstr}"=Timeout} abgebrochen wird
-    \item Während der Ausführung einer \ac{MR}"=Anwendung wird ein Fehler im Map"=Task festgestellt
+    \item Während der Ausführung einer \ac{MR}"=Anwendung wird ein Fehler im Map"=Task festgestellt \todo{weil benötigte Dateien nicht im cluster vorhanden sind, weil Nodes damit zwischenzeitlich beendet wurden}
     \item Der \ac{AppMstr} wird mit dem Exitcode -100 beendet
 \end{itemize}
 
