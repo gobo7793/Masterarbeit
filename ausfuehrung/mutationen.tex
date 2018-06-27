@@ -35,15 +35,19 @@ Von allen validen Mutationen wurden anschließend für jede der vier Klassen der
     \item
     Mithilfe des \texttt{ControlNodeMonitor} wird das Schell"=Script zum Ermitteln der Anzahl der aktiven \ac{YARN}"=Jobs ausgeführt.
     Dies geschieht in einem eigenen Thread, der mithilfe einer \texttt{while}"=Schleife, die solange aktiv ist, solange der Thread aktiv ist.
-    Hierbei wird das Script rund einmal pro Sekunde aufgerufen und danach ermittelt, ob hierbei Fehler aufgetreten sind. Hierzu wird einentsprechender \texttt{BufferedReader} geöffnet und der Error"=Stream des Scriptes eingelesen und anschließend von der Selfbalancing"=Komponente ausgegeben.
-    Dies geschieht hierbei mithilfe einer \texttt{while}"=Schleife, damit der gesamte Fehlertext ausgegeben werden kann.
-    Die Schleifenbedingung, wonach die Rückgabe des \texttt{BufferedReader}s solange ausgegeben wird, solange sie nicht \texttt{null} ist, wird vom Mutanten so umgekehrt, dass sie solange ausgegeben wird, solange sie \texttt{null} ist.
-    
+    Hierbei wird das Script rund einmal pro Sekunde aufgerufen und danach ermittelt, ob bei der Ausführung des Shell"=Scriptes Fehler aufgetreten sind.
+    Dazu wird ein entsprechender \texttt{BufferedReader} geöffnet und der Error"=Stream des Scriptes eingelesen und anschließend von der Selfbalancing"=Komponente ausgegeben.
+    Umgesetzt wird das mithilfe einer \texttt{while}"=Schleife, die solange den Fehler ausgibt, solange die mithilfe von \texttt{BufferedReader.readLine()} ausgelesene Fehlermeldung nicht \texttt{null} ist, also noch weiteren Text enthält.
+    Der Mutant ändert die Schleifenbedingung nun so ab, dass die Schleife durchlaufen wird, solange die Fehlermeldung keinen Text enthält, \texttt{readLine()} also \texttt{null} zurück gibt.
+    Dadurch wird der \texttt{ControlNodeMonitor} in einer Dauerschleife gefangen und die Anzahl der aktiven \ac{YARN}"=Jobs wird einmalig direkt nach dem Start der Selfbalancing"=Komponente ermittelt.
+            
     \item
     Die Klasse \texttt{MemUtilization} funktioniert analog wie die \texttt{ControlNodeMonitor}"=Klasse, führt jedoch das Script zum Auslesen des Arbeitsspeicher"=Verbrauches aus dem Cluster aus.
     Dieser Mutant verhindert hierbei die komplette Ausführung des entsprechenden Threads, indem die Bedingung der Schleife für den gesamten Thread so verändert wurde, dass diese nur dann ausgeführt wird, wenn der Thread nicht aktiv ist.
     Dadurch wird verhindert, dass das entsprechende Shell"=Script überhaupt ausgeführt wird und der Speicherverbrauch somit nicht ausgelesen wird.
 \end{enumerate}
+
+Aufgrund der verwendeten Mutationen erhält die Selfbalancing"=Komponente bei jedem einzelnen Mutanten bereits nicht alle benötigten Informationen zur Anpassung des \ac{MARP}"=Wertes bzw. kann die Änderung des Wertes nicht in der Konfiguration des Clusters speichern.
 
 Für jede Mutation wurde ein Mutationsszenario im Rahmen der Plattform Hadoop"=Benchmark entwickelt, bei dem keine weitere Mutationen enthalten sind (vgl. \autoref{sec:aufbauCluster}).
 Zudem wurde ein weiteres Mutationsszenario entwickelt, bei dem alle vier Mutationen enthalten sind.

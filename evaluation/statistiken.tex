@@ -3,24 +3,24 @@
 
 Die Dauer aller Simulationen betrug 4:06:03 Stunden, die gesamte Ausführungsdauer inkl. Starten und Beenden des Clusters bei jeder Konfiguration betrug 5:07:47 Stunden.
 Von den 280 Testfällen, die ausgeführt hätten sollen, wurden nur 215 Testfälle (77 \%) ausgeführt.
-Der Grund für den Abbruch von 13 Tests liegt im in \autoref{sec:simulationOracle} beschriebenen Abbruch der Simulation, wenn keine Rekonfiguration des Clusters mehr möglich ist, also bei allen Nodes ein Komponentenfehler injiziert und dies beim Monitoring erkannt wurde.
+Der Grund für den Abbruch von 13 Tests liegt im in \autoref{sec:simulationOracle} beschriebenen Abbruch der Simulation, wenn keine Rekonfiguration des Clusters mehr möglich ist, also bei allen Nodes des Clusters ein Komponentenfehler injiziert und dies beim Monitoring erkannt wurde.
 
 Insgesamt wurde bei allen Tests 419 Komponentenfehler aktiviert (14 \% von 2980 möglichen), von denen jedoch nicht alle injiziert wurden, da bei einigen Testfällen beide Komponentenfehler der Nodes gleichzeitig aktiviert wurden.
 In diesen Fällen überwog die Aktivierung es Komponentenfehlers, der den Node komplett beendet.
 Von allen aktivierten Komponentenfehlern wurden während der Simulationen 251 Komponentenfehler deaktiviert bzw. repariert, was eine Quote von 60 \% ergibt.
 In 4 der ausgeführten Testfällen wurde jedoch kein einziger Komponentenfehler deaktiviert, weshalb die Tests der Konfigurationen 4, 5.1, 5.2 und 6 entsprechend frühzeitig abgebrochen wurden.
 
-Bei den 42 Tests wurden 393 Anwendungen im Cluster gestartet, von denen 200 (51 \%) erfolgreich beendet wurden, nicht erfolgreich waren 102 (26 \%).
-Vorzeitig abgebrochen wurden 49 Anwendungen (12 \%), was 42 Anwendungen macht, die am Ende der Simulationen noch ausgeführt wurden.
+Bei den 42 Tests wurden 393 Anwendungen im Cluster gestartet, von denen 200 (51 \%) erfolgreich beendet wurden, aufgrund eines Fehlers vorzeitig beendet bzw. gefailt waren 102 Anwendungen (26 \%).
+Vorzeitig abgebrochen wurden 49 Anwendungen (12 \%), was 42 Anwendungen macht, die zum Ende der Simulationen noch ausgeführt wurden.
 Nicht eingerechnet sind hier 25 nicht gestartete Anwendungen, die Gründe hierfür sind in \autoref{sec:notStartedApps} erläutert.
-Für die gestarteten Anwendungen wurden 532 Attempts mit einem \ac{AppMstr} allokiert, was 1,35 Attempts pro Anwendung ergibt.
-Auffällig ist hierbei, dass mit 200 Attempts ein Attempt mehr aufgrund eines \ac{AppMstr}"=Timeouts abgebrochen wurde, als erfolgreich beendet wurden.
+Für die gestarteten Anwendungen wurden 532 Attempts mit einem \ac{AppMstr} zugewiesen, was im Schnitt 1,35 Attempts pro Anwendung ergibt.
+Auffällig ist hierbei, dass mit 200 Attempts ein Attempt mehr aufgrund eines \ac{AppMstr}"=Timeouts abgebrochen wurde, als während der Simulation erfolgreich beendet wurden (199 Attempts).
 30 weitere Attempts wurden aufgrund eines Fehlers im Map"=Task abgebrochen, 12 weitere terminierten mit dem Exitcode -100, was ebenfalls auf Fehler hindeutet.
-Das macht dadurch eine Quote von 45,5 \% aller Attempts, die nicht erfolgreich abgeschlossen werden konnten.
+Das ergibt dadurch eine Quote von 45,5 \% aller gestarteten Attempts, die nicht erfolgreich abgeschlossen werden konnten.
 Beim Monitoring wurden 3039 Anwendungs"=Container erkannt, was im Schnitt 7,73 Container pro Anwendung bzw. 5,71 pro Attempt ergibt.
 Da bei den zu startenden Anwendungen einige kleine und einige sehr ressourcenintensive Anwendungen enthalten sind (vgl. \autoref{sec:appSelection}), kann sich die Anzahl der Container zwischen den einzelnen Anwendungen sehr unterscheiden.
 
 Vom Oracle wurden bei allen Tests zusammengezählt 74.051 Constraints validiert, von denen 541 falsifiziert wurden (0,73 \%).
-Die meisten ungültigen Constraints hatten hierbei die Konfigurationen 31 und 32 mit 40 bzw. 42 Constraints (von jeweils 5140 geprüften), die höchste Quote Konfiguration 8 mit 1,97 \% (13 von 661) der Constraints.
-Der Hauptgrund für die teilweise sehr hohe Anzahl an ungültiger Constraints vor allem liegt darin, dass die Constraints für fehlerhaften Anwendungen auch in nachfolgenden Testfällen innerhalb einer Ausführung einer Testkonfiguration als ungültig erkannt werden.
+Die meisten falsifizierten Constraints hatten hierbei die Tests der Konfigurationen 31 und 32 mit 40 bzw. 42 Constraints (von jeweils 5140 geprüften), die höchste Quote Konfiguration 8 mit 1,97 \% der Constraints (13 von 661).
+Der Hauptgrund für die teilweise sehr hohe Anzahl an falsifizierten Constraints vor allem liegt darin, dass die Constraints für fehlerhaften Anwendungen auch in nachfolgenden Testfällen innerhalb einer Ausführung einer Testkonfiguration entsprechend erkannt werden.
 Dies resultiert in bis zu 34 ungültigen Constraints für fehlerhafte Anwendungen bei den einzelnen Tests.

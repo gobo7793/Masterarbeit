@@ -1,7 +1,7 @@
 \section{Erkenntnisse der Evaluation}
 \label{sec:evaluationResults}
 
-\todo{Zusammenfassung}
+\todo{Zusammenfassung, hier erwähnen, dass MUT schneller und weniger failapps hatte?}
 
 \subsection{Betrachtung der \ac{MARP}"=Werte}
 \label{sec:marpValueResults}
@@ -24,30 +24,93 @@ Während bei allen Testkonfigurationen, bei denen alle 4 Mutationen aktiv waren,
 Da er in den Konfigurationen 1 und 7 bei der jeweils ersten Ausführung nicht verändert wurde, wurden beide Konfigurationen erneut ausgeführt, wobei der \ac{MARP}"=Wert bei letzterem mehrmals erhöht wurde, bevor er im finalen Clusterstatus auf 1 gesetzt wurde.
 Bei der Konfiguration 1 wurde der Wert dagegen bei keiner der beiden Ausführungen verändert.
 
-Dies liegt sehr wahrscheinlich daran, dass in Konfiguration 1 maximal zwei Anwendungen gleichzeitig gestartet werden.
-In den beiden konkreten Ausführungen wurden die jeweiligen Anwendungen jedoch vergleichsweise schnell beendet.
-Zudem wurden in den zusammen 10 Testfällen nur 8 Anwendungen gestartet, weshalb die Anwendungen auch ohne eine Anpassung des \ac{MARP}"=Wertes genügend Ressourcen zur Verfügung hatten.
-Bei der Testkonfiguration 7 ist dies ähnlich, wobei die gesamte Last auf mehrere Nodes verteilt wird.
-Der Test 7.2 zeigt jedoch auch, dass es stark abhängig davon ist, wie die Last im Cluster verteilt wird.
+Die nicht durchgeführte Änderung des \ac{MARP}"=Wertes in Konfiguration 1 liegt sehr wahrscheinlich daran, dass in hier nur im ersten der fünf Testfälle zwei Anwendungen gleichzeitig gestartet werden.
+Dadurch wurden in allen 10 Testfällen zusammen nur 8 Anwendungen gestartet, die Hälfte davon jeweils beim ersten Testfall.
+Da zudem 4 der 8 Anwendungen nur kleine Anwendungen (\acl{rtw} und \acl{pi}) sind und diese entsprechend schnell beendet werden können, steht den wesentlich ressourcenintensiveren Anwendungen \acl{dfw} und \acl{dfr} das gesamte Cluster nahezu exklusiv zur Verfügung.
+Daher stehen den Anwendungen ausreichend Ressourcen zur Verfügung, was eine Anpassung des \ac{MARP}"=Wertes unnötig erscheinen lässt und daher durch die Selfbalancing"=Komponente nicht durchgeführt wird.
+
+Bei der Testkonfiguration 7 ist dies ähnlich, wobei die gesamte Last auf mehr Nodes verteilt werden kann.
+Der Test 7.2 und der hier deutlich veränderte \ac{MARP}"=Wert im Vergleich zu Test 7.1 ohne Anpassung zeigt jedoch auch, dass es stark abhängig davon ist, wie die Last im Cluster verteilt wird.
+Bestätigt wird dies durch die Tests 9.1 und 9.2, da bei letzterem weniger Komponentenfehler injiziert wurden und sich die Last entsprechend besser verteilen konnte.
+Dadurch war im Test 9.2 ein um rund 0,1 niedrigerer \ac{MARP}"=Wert als im Test 9.1 nötig.
+
+Auffällig war zudem, dass der \ac{MARP}"=Wert in den Testausführungen 7.2, 9.1 und 23 nicht direkt im ersten Testfall verändert wurde, sondern erst bei der Ausführung von Testfällen im späteren Verlauf der jeweiligen Tests.
+Als Resultat wurde daher in 9 der 15 Testfälle zunächst das hierfür genutzte Constraint als ungültig validiert.
 
 \subsection{Erkennung der Mutanten}
 \label{sec:killingMutants}
 
 % Generelles, Mutanten wurden fast immer erkannt
+Da die Selfbalancing"=Komponente den \ac{MARP}"=Wert basierend auf der aktuellen Auslastung des Clusters anpasst, konnte anhand der Betrachtung der \ac{MARP}"=Werte auch geprüft werden, ob die implementierten Mutationen vom Testsystem erkannt wurden.
+Um das zu bewerkstelligen wurden von den 16 Testkonfigurationen mit einem Mutationsszenario 22 Testausführungen durchgeführt (vgl. \autoref{app:overviewExecutedTestCases}).
+
+Zunächst wurde das Mutationsszenario genutzt, in dem alle vier Mutationen enthalten sind (vgl. \autoref{sec:implMutationTests}).
+Bei jeder der 17 Testausführungen mit allen Mutanten wurden diese basierend auf dem Constraint zur Erkennung des \ac{MARP}"=Wertes erkannt.
+Eine Besonderheit bildet hier jedoch der Test 2, der den korrespondierenden Mutationstest zur Konfiguration 1 darstellt, bei der bei beiden Ausführungen der \ac{MARP}"=Wert nicht verändert wurde.
+Bei Test 2 kann daher nicht eindeutig festgestellt werden, ob der Mutant erkannt wurde, oder ob aufgrund der gestarteten Anwendungen der \ac{MARP}"=Wert nicht verändert wurde (vgl. Vermutungen zu Testkonfiguration 1 in \autoref{tab:finalMarpValues}).
+
+Anders ist dies im Vergleich der Ausführungen der Testkonfigurationen 7 und 8.
+Durch die massive Veränderung des \ac{MARP}"=Wertes im Test 7.2 auf den finalen Wert von 1 kann davon ausgegangen werden, dass die Mutanten der Konfiguration 8 erkannt wurden.
+Dies wird dadurch gestützt, dass bei Konfiguration 8 im Gegensatz zur korrespondieren Testkonfiguration 3 der 4 gestarteten Anwendungen gefailt sind.
+Zudem stellt das ein Indiz dafür dar, dass der Mutant in Konfiguration 2 erkannt worden sein könnte.
 
 % Warum wurden mutanten in #10 wohl erkannt?
+Während bei jeder Konfiguration ein Mutationsszenario mit jeweils allen vier Mutanten genutzt wurde, wurde die Testkonfiguration 10 zusätzlich mit jeweils einem Mutanten ausgeführt.
+Ziel hierbei war es zu validieren, ob einzelne Mutanten ebenfalls vom Testsystem erkannt werden oder zur Erkennung der Mutanten vom Testsystem eine Kombination aus mehreren Mutaten nötig ist.
+Hierzu wurde die Testkonfiguration 10 mit unterschiedlichen Mutationsszenarien der Plattform Hadoop"=Benchmark ausgeführt, bei denen jeweils ein Mutant aktiv ist.
+Die Auswahl dieser Testkonfiguration hierfür liegt darin begründet, dass hier das Cluster auf beiden Hosts mit sechs Nodes gestartet wird, auf denen bis zu vier Anwendungen gleichzeitig gestartet werden.
+Zudem wurde beim Test 9.2 festgestellt, dass sich der \ac{MARP}"=Wert auch direkt im ersten ausgeführten Testfall ändern kann und es gab bei den Ausführungen der Konfiguration 9 keine weiteren ungültigen Constraints als fehlerhafte Anwendungen.
+
+Einige Ergebnisse der hierfür 5 ausgeführten Tests sind sehr unterschiedlich.
+So variiert die Anzahl der aktivierten und deaktivierten Komponentenfehler zwischen 7 und 11 bzw. 5 und 9, sowie die Anzahl der gefailten Anwendungen zwischen 1 und 3.
+Gemein haben alle Tests jedoch, dass der \ac{MARP}"=Wert bei allen 5 Tests nicht verändert wurde, womit alle Mutationen erkannt wurden.
+Damit kann festgestellt werden, dass jeder der vier in \autoref{sec:implMutationTests} beschriebenen Mutanten durch das entwickelte Testsystem erkannt wird.
 
 \subsection{Aktivierung und Deaktivierung der Komponentenfehler}
 \label{sec:faultInjectionEval}
 
-% Verhalten der Faults?
+Die Aktivierung und Deaktivierung der Komponentenfehler in einem Testfall hängt neben dem zur Berechnung benötigtem Seed vor allem von den zuvor ausgeführten Testfällen einer Testkonfiguration ab (vgl. \autoref{sec:simulationFaultActivation}).
+Daher werden abhängig von der Lastverteilung im Cluster auch bei einer mehrmaligen Ausführung der gleichen Konfiguration \uU unterschiedliche Komponentenfehler aktiviert.
+
+Im Vergleich zwischen korrespondierenden Konfigurationen, die sich nur in der Nutzung des Mutationsszenarios unterschieden, wurde nur 5 mal die gleiche Anzahl an Komponentenfehler aktiviert, bei der Deaktivierung der Komponentenfehler besitzen nur 3 korrespondierende Konfigurationen die gleiche Anzahl.
+Die Anzahl der aktivierten und deaktivierten Komponentenfehler unterschied sich dagegen in 8 bzw. 7 korrespondierenden Testkonfigurationen um jeweils einen Komponentenfehler.
+In allen anderen Ausführungen von korrespondierenden Konfigurationen unterschied sich die Anzahl um jeweils mehr als einen Komponentenfehler.
+Mit 20 aktivierten Komponentenfehlern wurden bei der Ausführung der Testkonfiguration 32 die meisten aktiviert, die meisten Komponentenfehler deaktiviert wurden bei den Konfigurationen 11 und 12 mit jeweils 15 Stück.
+Nur im Test zur Konfiguration 2 wurden mit 3 Stück alle aktivierten Komponentenfehler während der Simulation auch wieder deaktiviert.
+In den Tests 4, 5.1, 5.2 und 6 wurden jeweils 6 oder 7 Komponentenfehler aktiviert, jedoch keine deaktiviert, weshalb diese Tests bereits beim 3. ausgeführten Testfall gemäß \autoref{sec:simulationOracle} abgebrochen wurden.
+
+Im Vergleich zwischen den Tests von korrespondierenden Testkonfigurationen sind die Tests der Konfigurationen 1 und 2 auffällig.
+Während beim Test 1.1 mit 5 Komponentenfehlern bzw. beim Test 1.2 mit 7 Komponentenfehlern jeweils rund jeder achte mögliche Komponentenfehler aktiviert wurde, wurden beim Test 2 lediglich 3 Komponentenfehler für 4 Nodes in 5 Testfällen (insgesamt also 40 mögliche Komponentenfehler) aktiviert.
+Eine geringere Quote weist lediglich Test 9.2 auf, bei dem mit 4 von 60 möglichen Komponentenfehler nur 7 \% aktiviert wurden.
+Die Testkonfiguration 9 ist auch deshalb auffällig, da im Test 9.1 fast dreimal so viele Komponentenfehler, also 11 Stück, aktiviert wurden.
+Auch in den korrespondierenden Tests der Konfiguration 10 liegt die Anzahl der aktivierten Komponentenfehler mit 7 bis 11 jeweils mehr als doppelt so hoch wie in Test 9.2.
+
+Auffällig ist zudem, dass bei korrespondierenden Testkonfigurationen mit unterschiedlicher Anzahl an aktivierten Komponentenfehlern die niedrigere Anzahl meist die Mutationstests aufweisen.
+Nur bei den Tests 27 und 28.1 sowie bei den Tests 31 und 32 weisen die Tests ohne Mutationsszenario die niedrigere Anzahl auf.
+\todo{auf diskussion der selfbalancing komponenten verweisen als grund}
 
 \subsection{Nicht erfolgreich abgeschlossene Anwendungen}
 \label{sec:failedAppsEval}
 
-% Was ist bei der Anzahl der gefailten Apps aufgefallen?
+Wie bereits erwähnt, sind rund ein viertel aller gestarteten Anwendungen gefailt, was im Schnitt 2,4 Anwendungen pro ausgeführten Test ergibt.
+Die meisten gefailten Apps sind hierbei mit 9 bzw. 8 bei den Tests 31 und 32 zu finden.
+Auffällig ist zudem der Vergleich zwischen den Tests 19 und 20.
+Während bei der Ausführung der Testkonfiguration 19 ganze 5 Anwendungen gefailt sind, ist bei der Ausführung des Tests 20 keine einzige gefailt.
+Auffallend ist zudem, dass bei Konfigurationen mit Mutationsszenario fast immer weniger oder gleich viele Anwendungen gefailt sind als bei den korrespondierenden Konfigurationen ohne Mutationsszenario.
+Eine Ausnahme bildet der Test 8, bei dem 3 Anwendungen gefailt sind, während bei den Tests 7.1 und 7.2 jeweils keine Anwendung gefailt ist.
+Eine weitere Ausnahme bildet der Test 9.2, bei dem eine Anwendung mehr gefailt ist als im Test 10.3, die restlichen Tests der Konfigurationen 9 und 10 verhalten sich jedoch wie andere korrespondierende Testkonfigurationen.
+
+\todo{irgendwie noch die anzahl an failapp constraints einbauen}
 
 % Warum sind Apps gefailt?
+Anhand der Datenbasis lassen sich vier Gründe für das nicht erfolgreiche Abschließen der Anwendungen ausmachen:
+
+\begin{itemize}
+    \item Der \ac{AppMstr} ist nicht mehr erreichbar, da der auszuführende Node aufgrund eines Komponentenfehlers nicht mehr erreichbar ist und der \ac{AppMstr} nach einiger Zeit mit dem Fehler \emph{\ac{AppMstr}"=Timeout} als abgebrochen markiert wird
+    \item Die den \ac{AppMstr} zugewiesenen Nodes sind vollständig ausgelastet, wodurch der \ac{AppMstr} selbst nicht ausgeführt werden kann und dieser nach einiger Zeit mit dem Fehler \emph{\ac{AppMstr}"=Timeout} abgebrochen wird
+    \item Während der Ausführung einer \ac{MR}"=Anwendung wird ein Fehler im Map"=Task festgestellt
+    \item Der \ac{AppMstr} wird mit dem Exitcode -100 beendet
+\end{itemize}
 
 % Kuriose Steps: AppMstr auf zb Node1 -> Stop -> AppMstr zb Node 5 -> Stop -> App Failed
 
