@@ -71,6 +71,9 @@ Damit kann festgestellt werden, dass jeder der vier in \autoref{sec:implMutation
 
 Die Aktivierung und Deaktivierung der Komponentenfehler in einem Testfall hängt neben dem zur Berechnung benötigtem Seed vor allem von den zuvor ausgeführten Testfällen einer Testkonfiguration ab (vgl. \autoref{sec:simulationFaultActivation}).
 Daher werden abhängig von der Lastverteilung im Cluster auch bei einer mehrmaligen Ausführung der gleichen Konfiguration \uU unterschiedliche Komponentenfehler aktiviert.
+Unterschieden werden muss hierbei zudem zwischen aktivierten und injizierten Komponentenfehlern.
+Während beide implementierten Komponentenfehler für einen Node in einem Testfall auch gleichzeitig aktiviert werden konnten, wurde gemäß \todo{Abschnitt mit Komponentenfehler im Node} in so einem Fall jedoch nur der \texttt{NodeDead}"=Fehler im Cluster injiziert.
+Die Deaktivierung bzw. das Reparieren der Komponentenfehler verhält sich analog hierzu.
 
 Im Vergleich zwischen korrespondierenden Konfigurationen, die sich nur in der Nutzung des Mutationsszenarios unterschieden, wurde nur 5 mal die gleiche Anzahl an Komponentenfehler aktiviert, bei der Deaktivierung der Komponentenfehler besitzen nur 3 korrespondierende Konfigurationen die gleiche Anzahl.
 Die Anzahl der aktivierten und deaktivierten Komponentenfehler unterschied sich dagegen in 8 bzw. 7 korrespondierenden Testkonfigurationen um jeweils einen Komponentenfehler.
@@ -88,33 +91,48 @@ Auch in den korrespondierenden Tests der Konfiguration 10 liegt die Anzahl der a
 Auffällig ist zudem, dass bei korrespondierenden Testkonfigurationen mit unterschiedlicher Anzahl an aktivierten Komponentenfehlern die niedrigere Anzahl meist die Mutationstests aufweisen.
 Nur bei den Tests 27 und 28.1 sowie bei den Tests 31 und 32 weisen die Tests ohne Mutationsszenario die niedrigere Anzahl auf.
 \todo{auf diskussion der selfbalancing komponenten verweisen als grund}
+\todo{Unterschied aktiviert/injiziert}
 
-\subsection{Nicht erfolgreich abgeschlossene Anwendungen}
+\subsection{Nicht vollständig abgeschlossene Anwendungen}
 \label{sec:failedAppsEval}
 
 Wie bereits erwähnt, sind rund ein viertel aller gestarteten Anwendungen gefailt, was im Schnitt 2,4 Anwendungen pro ausgeführten Test ergibt.
-Die meisten gefailten Apps sind hierbei mit 9 bzw. 8 bei den Tests 31 und 32 zu finden.
+Die meisten gefailten Anwendungen sind hierbei mit 9 bzw. 8 bei den Tests 31 und 32 zu finden.
 Auffällig ist zudem der Vergleich zwischen den Tests 19 und 20.
 Während bei der Ausführung der Testkonfiguration 19 ganze 5 Anwendungen gefailt sind, ist bei der Ausführung des Tests 20 keine einzige gefailt.
 Auffallend ist zudem, dass bei Konfigurationen mit Mutationsszenario fast immer weniger oder gleich viele Anwendungen gefailt sind als bei den korrespondierenden Konfigurationen ohne Mutationsszenario.
 Eine Ausnahme bildet der Test 8, bei dem 3 Anwendungen gefailt sind, während bei den Tests 7.1 und 7.2 jeweils keine Anwendung gefailt ist.
 Eine weitere Ausnahme bildet der Test 9.2, bei dem eine Anwendung mehr gefailt ist als im Test 10.3, die restlichen Tests der Konfigurationen 9 und 10 verhalten sich jedoch wie andere korrespondierende Testkonfigurationen.
 
-\todo{irgendwie noch die anzahl an failapp constraints einbauen}
+Bei der Betrachtung der Constraints, welche die in \autoref{sec:clusterRequirements} definierte Anforderung umsetzen, dass Anwendungen vollständig ausgeführt werden, solange sie nicht manuell bzw. durch das Testsystem vorzeitig abgebrochen werden, fällt auf, dass die Anzahl der ungültigen Validierungen durch das Oracle mit kumuliert 317 ungültigen Constraints mehr als die Hälfte aller ungültigen Constraints ausmacht (58,6 \% ).
+Im Schnitt ergibt das somit 7,5 ungültige Constraints pro Test bzw. 1,4 ungültige Constraints pro durch das Oracle überprüften Testfall.
+Die auf den ersten Blick sehr hohe Anzahl an ungültigen Constraints resultiert daraus, dass eine gefailte Anwendung bei jedem nachfolgenden Testfall bei einer Testausführung erneut durch das Oracle entsprechend validiert wurde.
+Aussagekräftiger ist daher die Anzahl von 102 nicht vollständig abgeschlossenen Anwendungen.
 
-% Warum sind Apps gefailt?
-Anhand der Datenbasis lassen sich vier Gründe für das nicht erfolgreiche Abschließen der Anwendungen ausmachen:
+Anhand der Datenbasis lassen sich vier Ursachen für nicht vollständig ausgeführte Anwendungen ausmachen:
 
 \begin{itemize}
     \item Der \ac{AppMstr} ist nicht mehr erreichbar, da der auszuführende Node aufgrund eines Komponentenfehlers nicht mehr erreichbar ist und der \ac{AppMstr} nach einiger Zeit mit dem Fehler \emph{\ac{AppMstr}"=Timeout} als abgebrochen markiert wird
     \item Die den \ac{AppMstr} zugewiesenen Nodes sind vollständig ausgelastet, wodurch der \ac{AppMstr} selbst nicht ausgeführt werden kann und dieser nach einiger Zeit mit dem Fehler \emph{\ac{AppMstr}"=Timeout} abgebrochen wird
-    \item Während der Ausführung einer \ac{MR}"=Anwendung wird ein Fehler im Map"=Task festgestellt \todo{weil benötigte Dateien nicht im cluster vorhanden sind, weil Nodes damit zwischenzeitlich beendet wurden}
-    \item Der \ac{AppMstr} wird mit dem Exitcode -100 beendet
+    \item Während der Ausführung einer \ac{MR}"=Anwendung wird ein Fehler im Map"=Task festgestellt, der dazu führt, dass der Task abgebrochen wird.
+    Dieser Fehler kam bei den hier ausgeführten Tests lediglich bei der Anwendung \acl{dfr} vor, wenn die zuvor generierten Eingabedaten für diesen Benchmark aufgrund aktivierter Komponentenfehler nicht mehr im Cluster vorhanden waren.
+    Zwar werden Dateien im \ac{HDFS} immer auf mehr als einem Node gespeichert (vgl. \autoref{sec:hadoop}), jedoch ist es möglich, dass die für die Anwendung benötigten Daten auf Nodes repliziert wurden, die alle beendet wurden.
+    Dies führte dazu, dass die benötigten Daten nicht gefunden werden können bzw. bereits im \ac{HDFS} als fehlerhaft markiert sind.
+    Dadurch wird im Map"=Task ein Fehler ausgelöst, der die gesamte Anwendung vorzeitig beendet.
+    \item Der \ac{AppMstr} wird mit dem Exitcode -100 beendet\todo{why???}
 \end{itemize}
 
-% Kuriose Steps: AppMstr auf zb Node1 -> Stop -> AppMstr zb Node 5 -> Stop -> App Failed
+Hierbei werden aufgrund eines \ac{AppMstr}"=Timeouts zunächst nur die Attempts mit dem entsprechenden Fehler abgebrochen, nicht jedoch die Anwendung selbst.
+Die Anwendung selbst wird in so einem Fall erst dann als gefailt abgebrochen, sobald zwei Attempts aufgrund eines Timeouts abgebrochen werden mussten.
+Wenn ein Attempt mit dem Exitcode -100 terminiert, wird unabhängig von zuvor ausgeführten Attempts ein erneuter Attempt mit entsprechendem \ac{AppMstr} gestartet.
 
-% DFSIO Read Mapfail
+% Kuriose Steps: AppMstr auf zb Node1 -> Stop -> AppMstr zb Node 5 -> Stop -> App Failed
+Bei einigen der \ac{AppMstr}"=Timeouts aufgrund der Aktivierung von Komponentenfehler lässt sich zudem ein spezielles Muster erkennen.
+Hierbei wurde in einem zuvor ausgeführten Testfall regulär auf einem Node ein \ac{AppMstr} einer Anwendung allokiert.
+Nun kann es passieren, dass für diesen Node ein Komponentenfehler injiziert wird, was dazu führt, dass der Node nicht mehr erreichbar ist und der \ac{AppMstr} aufgrund eines Timeouts als beendet markiert wird.
+Hierbei wird direkt im Anschluss ein neuer \ac{AppMstr} allokiert, was auch dazu führt, dass die Anwendung nun einen zweiten Attempt besitzt, nachdem der erste aufgrund des Timeouts abgebrochen wurde.
+Nun kann es dabei passieren, dass dies noch während der Aktivierung von Komponentenfehlern innerhalb eines Simulations"=Schrittes geschieht, wodurch es möglich ist, dass der auszuführende Node des zweiten \ac{AppMstr} ebenfalls aufgrund eines im gleichen Testfall injizierten Komponentenfehlers nicht mehr erreichbar ist.
+Dadurch wird der zweite \ac{AppMstr} bzw. Attempt aufgrund des Timeouts vorzeitig als abgebrochen markiert und die gesamte Anwendung dadurch gefailt.
 
 \subsection{Rekonfiguration nicht möglich}
 \label{sec:noReconfig}
