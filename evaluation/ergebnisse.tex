@@ -40,7 +40,6 @@ Als Resultat wurde daher in 9 der 15 Testfälle zunächst das hierfür genutzte 
 \subsection{Erkennung der Mutanten}
 \label{sec:killingMutants}
 
-% Generelles, Mutanten wurden fast immer erkannt
 Da die Selfbalancing"=Komponente den \ac{MARP}"=Wert basierend auf der aktuellen Auslastung des Clusters anpasst, konnte anhand der Betrachtung der \ac{MARP}"=Werte auch geprüft werden, ob die implementierten Mutationen vom Testsystem erkannt wurden.
 Um das zu bewerkstelligen wurden von den 16 Testkonfigurationen mit einem Mutationsszenario 22 Testausführungen durchgeführt (vgl. \autoref{app:overviewExecutedTestCases}).
 
@@ -54,7 +53,6 @@ Durch die massive Veränderung des \ac{MARP}"=Wertes im Test 7.2 auf den finalen
 Dies wird dadurch gestützt, dass bei Konfiguration 8 im Gegensatz zur korrespondieren Testkonfiguration 3 der 4 gestarteten Anwendungen gefailt sind.
 Zudem stellt das ein Indiz dafür dar, dass der Mutant in Konfiguration 2 erkannt worden sein könnte.
 
-% Warum wurden mutanten in #10 wohl erkannt?
 Während bei jeder Konfiguration ein Mutationsszenario mit jeweils allen vier Mutanten genutzt wurde, wurde die Testkonfiguration 10 zusätzlich mit jeweils einem Mutanten ausgeführt.
 Ziel hierbei war es zu validieren, ob einzelne Mutanten ebenfalls vom Testsystem erkannt werden oder zur Erkennung der Mutanten vom Testsystem eine Kombination aus mehreren Mutaten nötig ist.
 Hierzu wurde die Testkonfiguration 10 mit unterschiedlichen Mutationsszenarien der Plattform Hadoop"=Benchmark ausgeführt, bei denen jeweils ein Mutant aktiv ist.
@@ -91,7 +89,6 @@ Auch in den korrespondierenden Tests der Konfiguration 10 liegt die Anzahl der a
 Auffällig ist zudem, dass bei korrespondierenden Testkonfigurationen mit unterschiedlicher Anzahl an aktivierten Komponentenfehlern die niedrigere Anzahl meist die Mutationstests aufweisen.
 Nur bei den Tests 27 und 28.1 sowie bei den Tests 31 und 32 weisen die Tests ohne Mutationsszenario die niedrigere Anzahl auf.
 \todo{auf diskussion der selfbalancing komponenten verweisen als grund}
-\todo{Unterschied aktiviert/injiziert}
 
 \subsection{Nicht vollständig abgeschlossene Anwendungen}
 \label{sec:failedAppsEval}
@@ -126,26 +123,62 @@ Hierbei werden aufgrund eines \ac{AppMstr}"=Timeouts zunächst nur die Attempts 
 Die Anwendung selbst wird in so einem Fall erst dann als gefailt abgebrochen, sobald zwei Attempts aufgrund eines Timeouts abgebrochen werden mussten.
 Wenn ein Attempt mit dem Exitcode -100 terminiert, wird unabhängig von zuvor ausgeführten Attempts ein erneuter Attempt mit entsprechendem \ac{AppMstr} gestartet.
 
-% Kuriose Steps: AppMstr auf zb Node1 -> Stop -> AppMstr zb Node 5 -> Stop -> App Failed
 Bei einigen der \ac{AppMstr}"=Timeouts aufgrund der Aktivierung von Komponentenfehler lässt sich zudem ein spezielles Muster erkennen.
 Hierbei wurde in einem zuvor ausgeführten Testfall regulär auf einem Node ein \ac{AppMstr} einer Anwendung allokiert.
 Nun kann es passieren, dass für diesen Node ein Komponentenfehler injiziert wird, was dazu führt, dass der Node nicht mehr erreichbar ist und der \ac{AppMstr} aufgrund eines Timeouts als beendet markiert wird.
 Hierbei wird direkt im Anschluss ein neuer \ac{AppMstr} allokiert, was auch dazu führt, dass die Anwendung nun einen zweiten Attempt besitzt, nachdem der erste aufgrund des Timeouts abgebrochen wurde.
 Nun kann es dabei passieren, dass dies noch während der Aktivierung von Komponentenfehlern innerhalb eines Simulations"=Schrittes geschieht, wodurch es möglich ist, dass der auszuführende Node des zweiten \ac{AppMstr} ebenfalls aufgrund eines im gleichen Testfall injizierten Komponentenfehlers nicht mehr erreichbar ist.
-Dadurch wird der zweite \ac{AppMstr} bzw. Attempt aufgrund des Timeouts vorzeitig als abgebrochen markiert und die gesamte Anwendung dadurch gefailt.
+Dadurch wird der zweite \ac{AppMstr} bzw. Attempt aufgrund des Timeouts vorzeitig als abgebrochen markiert und die gesamte Anwendung dadurch abgebrochen.
 
-\subsection{Rekonfiguration nicht möglich}
+\subsection{Rekonfiguration des Clusters nicht möglich}
 \label{sec:noReconfig}
 
-% Rekonffehler #3-6
+Insgesamt 13 der 42 ausgeführten Tests wurden vorzeitig abgebrochen, da eine Rekonfiguration des Clusters nicht möglich war.
+Dies entspricht dem in \autoref{sec:simulationOracle} definierten Verhalten, wenn alle Nodes des Clusters aufgrund eines Komponentenfehlers beendet werden.
+Im Folgenden wird für die betroffenen Testkonfigurationen und Tests jeweils getrennt betrachtet, weshalb es dazu kam.
 
-% Rekonffehler #15/16
+\subsubsection{Testkonfigurationen 3 bis 6}
+\label{sec:noReconf36}
 
-% Rekonffehler #19-22
+Erstmalig ist ein Abbruch im Test 4 aufgetreten, auch die weiteren korrespondierende Tests der Konfigurationen 5 und 6 wurden abgebrochen.
+Hier waren bereits beim 3. Testfall alle verfügbaren Nodes beendet, was auffällig ist, vor allem da damit die Hälfte der Tests mit dem ersten Seed und dem Cluster auf einem Host vorzeitig abgebrochen wurden.
+Dies liegt einerseits daran, dass im Gegensatz zu den beiden Konfigurationen mit nur zwei Clients hier bis zu vier Anwendungen gleichzeitig gestartet werden, was die Last auf den Nodes deutlich erhöht.
+In Test 3, welcher somit theoretisch ebenfalls abgebrochen werden hätte müssen, wurden 11 Anwendungen im Cluster gestartet.
+Dies liegt an der geringeren Auslastung eines einzelnen Nodes im Gegensatz zu den anderen Tests.
+In den abgebrochenen Tests hatte Node 4 im ersten Testfall eine hohe bzw. sehr hohe Auslastung, im Test 3 jedoch nur eine mittlere.
+Diese mittlere Auslastung reichte jedoch aus, um den Node im ausgeführten 3. Testfall gemäß \todo{deaktivieren von komponentenfehler} wieder zu aktivieren, während die anderen noch aktiven Nodes spätestens in diesem Testfall einen Komponentenfehler injiziert bekamen.
+Durch diesen einen nun weiterhin ausgeführten Node ist es dem Cluster daher möglich gewesen, sich im Test 3 zu rekonfigurieren.
 
-% Rekonffehler #27/28
+\subsubsection{Testkonfigurationen 15 und 16}
+\label{sec:noReconf1516}
 
-% Rekonffehler #31/32
+Die Ausführung der Tests 13 bzw. 14 und 15 bzw. 16 unterscheidet sich nur in der Anzahl der Testfälle der jeweiligen Testkonfiguration.
+Dementsprechend wurden die äquivalenten Tests 13 und 14 im Gegensatz zu den beiden anderen vollständig ausgeführt, da der Abbruch der Tests 15 und 16 im sechsten ausgeführten Testfall stattfand.
+Die Nodes hatten in den vier Tests folgende Auslastung:
+
+\begin{table}[h]
+    \begin{tabular}{c|cccc}
+    	        Test          & 13 & 14 & 15 & 16 \\ \hline
+    	  Fehlerhafte Nodes   & 2  & 2  & 3  & 1  \\
+    	Auslastung in Prozent & 47 & 97 & 96 & 98
+    \end{tabular}
+    \caption[Status der Nodes im fünften Testfall der Tests 13 bis 16]
+        {Status der Nodes im fünften Testfall der Tests 13 bis 16.
+        Der Wert der Auslastung ist die kumulierte Auslastung aller noch aktiven Nodes.}
+    \label{tab:loadTests1316}
+\end{table}
+
+Bei den beiden betroffenen Tests 15 und 16 sehr hohe Auslastung der noch aktven Nodes im 5. Testfall führte im darauf folgenden Testfall dazu, dass bei allen noch aktiven Nodes ein Komponentenfehler aktiviert wurde.
+Daher wurden die beiden Tests im jeweils 6. ausgeführten Testfall abgebrochen.
+
+\subsubsection{Testkonfigurationen 19 bis 22}
+\label{sec:noReconf1922}
+
+\subsubsection{Testkonfigurationen 27 und 28}
+\label{sec:noReconf2728}
+
+\subsubsection{Testkonfigurationen 31 und 32}
+\label{sec:noReconf3132}
 
 \subsection{Nicht erkannte oder gespeicherte \ac{AppMstr}"=Nodes}
 \label{sec:noDetectedHost2}
