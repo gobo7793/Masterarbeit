@@ -2,6 +2,8 @@
 \label{sec:evaluationResults}
 
 \todo{Zusammenfassung, hier erwähnen, dass MUT schneller und weniger failapps hatte?}
+\todo{Mehr auf Anforderungen verweisen}
+\todo{das heißt defekte nodes!!11}
 
 \subsection{Betrachtung der \ac{MARP}"=Werte}
 \label{sec:marpValueResults}
@@ -109,14 +111,24 @@ Aussagekräftiger ist daher die Anzahl von 102 nicht vollständig abgeschlossene
 Anhand der Datenbasis lassen sich vier Ursachen für nicht vollständig ausgeführte Anwendungen ausmachen:
 
 \begin{itemize}
-    \item Der \ac{AppMstr} ist nicht mehr erreichbar, da der auszuführende Node aufgrund eines Komponentenfehlers nicht mehr erreichbar ist und der \ac{AppMstr} nach einiger Zeit mit dem Fehler \emph{\ac{AppMstr}"=Timeout} als abgebrochen markiert wird
-    \item Die den \ac{AppMstr} zugewiesenen Nodes sind vollständig ausgelastet, wodurch der \ac{AppMstr} selbst nicht ausgeführt werden kann und dieser nach einiger Zeit mit dem Fehler \emph{\ac{AppMstr}"=Timeout} abgebrochen wird
-    \item Während der Ausführung einer \ac{MR}"=Anwendung wird ein Fehler im Map"=Task festgestellt, der dazu führt, dass der Task abgebrochen wird.
-    Dieser Fehler kam bei den hier ausgeführten Tests lediglich bei der Anwendung \acl{dfr} vor, wenn die zuvor generierten Eingabedaten für diesen Benchmark aufgrund aktivierter Komponentenfehler nicht mehr im Cluster vorhanden waren.
-    Zwar werden Dateien im \ac{HDFS} immer auf mehr als einem Node gespeichert (vgl. \autoref{sec:hadoop}), jedoch ist es möglich, dass die für die Anwendung benötigten Daten auf Nodes repliziert wurden, die alle beendet wurden.
-    Dies führte dazu, dass die benötigten Daten nicht gefunden werden können bzw. bereits im \ac{HDFS} als fehlerhaft markiert sind.
-    Dadurch wird im Map"=Task ein Fehler ausgelöst, der die gesamte Anwendung vorzeitig beendet.
-    \item Der \ac{AppMstr} wird mit dem Exitcode -100 beendet\todo{why???}
+    \item
+        Der \ac{AppMstr} ist nicht mehr erreichbar, da der auszuführende Node aufgrund eines Komponentenfehlers nicht mehr erreichbar ist und der \ac{AppMstr} nach einiger Zeit mit dem Fehler \emph{\ac{AppMstr}"=Timeout} als abgebrochen markiert wird.
+    \item
+        Die den \ac{AppMstr} zugewiesenen Nodes sind vollständig ausgelastet, wodurch der \ac{AppMstr} selbst nicht ausgeführt werden kann und dieser nach einiger Zeit mit dem Fehler \emph{\ac{AppMstr}"=Timeout} abgebrochen wird.
+        Dies beinhaltet auch Timeouts, wenn einem \ac{AppMstr} keine Ressourcen in Form eines ausführenden Nodes zugewiesen werden können.
+    \item
+        Während der Ausführung einer \ac{MR}"=Anwendung wird ein Fehler im Map"=Task festgestellt, der dazu führt, dass der Task abgebrochen wird.
+        Dieser Fehler kam bei den hier ausgeführten Tests lediglich bei der Anwendung \acl{dfr} vor, wenn die zuvor generierten Eingabedaten für diesen Benchmark aufgrund aktivierter Komponentenfehler nicht mehr im Cluster vorhanden waren.
+        Zwar werden Dateien im \ac{HDFS} immer auf mehr als einem Node gespeichert (vgl. \autoref{sec:hadoop}), jedoch ist es möglich, dass die für die Anwendung benötigten Daten auf Nodes repliziert wurden, die alle beendet wurden.
+        Dies führte dazu, dass die benötigten Daten nicht gefunden werden können bzw. bereits im \ac{HDFS} als fehlerhaft markiert sind.
+        Dadurch wird im Map"=Task ein Fehler ausgelöst, der die gesamte Anwendung vorzeitig beendet.
+    \item
+        Der \ac{AppMstr} eines Attempts wird mit dem Exitcode -100 beendet.
+        Dieser Fehler kommt dann vor, wenn versucht wird, einen Anwendungs"=Container für den jeweilige Anwendung bzw. Attempt auf einem defekten Node zu starten.
+        Dieser Fehler trat nur dann auf, wenn im ausführende Node des betroffenen \ac{AppMstr} im gleichen Testfall ein Komponentenfehler injiziert wurde und der Node dadurch aufgrund des Defektes ausfiel.
+        Aufgrund der mit dem Fehler verbundene Fehlermeldung \enquote{Container released on a *lost* node} liegt die Vermutung nahe, dass Anwendungs"=Container, hier wahrscheinlich der \ac{AppMstr}, zum Zeitpunkt der Fehlerinjizierung bereits abgeschlossen waren und das Cluster bereits die benötigten Ressourcen wieder freigegeben hat.
+        Da dies jedoch nicht möglich war, wurde der \ac{AppMstr} mit dem entsprechenden Fehler beendet.
+    
 \end{itemize}
 
 Hierbei werden aufgrund eines \ac{AppMstr}"=Timeouts zunächst nur die Attempts mit dem entsprechenden Fehler abgebrochen, nicht jedoch die Anwendung selbst.
@@ -133,8 +145,9 @@ Dadurch wird der zweite \ac{AppMstr} bzw. Attempt aufgrund des Timeouts vorzeiti
 \subsection{Rekonfiguration des Clusters nicht möglich}
 \label{sec:noReconfig}
 
+\todo{Cluster nicht mehr rekonfigurieren auch in Anforderungen}
 Insgesamt 13 der 42 ausgeführten Tests wurden vorzeitig abgebrochen, da eine Rekonfiguration des Clusters nicht möglich war.
-Dies entspricht dem in \autoref{sec:simulationOracle} definierten Verhalten, wenn im Cluster kein aktiver Node vorhanden ist.
+Dies entspricht dem in \autoref{sec:simulationOracle} definierten Verhalten und in \autoref{sec:predictions} gefordertem Verhalten, wenn alle Node im Cluster defekt sind.
 Im Folgenden wird für die betroffenen Testkonfigurationen und Tests betrachtet, weshalb es dazu kam.
 
 \subsubsection{Testkonfigurationen 3 bis 6}
@@ -230,14 +243,40 @@ Bis auf den beendeten Node 2 wurden spätestens im 6. ausgeführten Testfall die
 Zwar wurde im 7. Testfall je ein Komponentenfehler repariert, jedoch im Test ohne Mutationen auch ein weiterer injiziert.
 In Kombination mit den drei bzw. vier aktivierten Komponentenfehlern in Testfall 8 führte das daher dazu, dass kein aktiver Node im Cluster mehr vorhanden war und der Test entsprechend abgebrochen wurde.
 
-\subsection{Nicht erkannte oder gespeicherte \ac{AppMstr}"=Nodes}
-\label{sec:noDetectedHost2}
+\subsection{Nicht erkannte oder gespeicherte Daten des Clusters}
+\label{sec:notDetectedData}
 
-% NotSaved #7/8
+Einige Daten des Clusters wurden nicht im Testsystem gespeichert bzw. im Programmlog ausgegeben.
+Dies verstößt damit gegen die in \autoref{sec:predictions} definierte Anforderung an das Testsystem, dass der jeweils aktuelle Status des Clusters erkannt und im Modell gespeichert werden muss.
+Vorgekommen ist das auf zwei Arten, die im folgenden erläutert werden.
 
-% NoAllok #8
+\subsubsection{Nicht erkannte Nodes auf Host 2}
+\label{sec:notDetectedDataHost2}
 
-% NoSaved #23-26
+Einer der beiden Fälle ist, dass ausführende Nodes von Anwendungen bzw. Attempts nicht erkannt bzw. ausgegeben wurden.
+Hier geht es jedoch nicht um Anwendungen bzw. Attempts, die zwar bereits gestartet wurden, für die aber noch kein \ac{AppMstr} allokiert werden konnte.
+In diesen Fällen ist es daher das normale Verhalten von Hadoop, keinen ausführenden Node anzugeben, da keiner vorhanden ist.
+Wenn dieser Status zu lange anhält, wurden die Attempts bzw. \ac{AppMstr} durch Hadoop mit einem Timeout beendet.
+
+Anders sieht das jedoch in den sechs Tests 7.1, 8 und 23 bis 26 aus.
+In diesen Tests wurden zwar regulär die Daten der Nodes ermittelt und auch in den Logdateien ausgegeben, jedoch nicht alle ausführenden Nodes von Anwendungen und Attempts.
+Konkret betrifft das hier alle Nodes der betroffenen \ac{AppMstr} auf Host 2, da in den betroffenen sechs Tests die Nodes erkannt und auch ausgegeben wurden, wenn sich diese auf Host 1 befunden haben, also Node 1 bis Node 4.
+Während die betroffenen Nodes gemäß des SSH"=Logs fast immer von Hadoop Übertragen wurden, wurden die Nodes auf Host 2 in einigen Tests jedoch nicht gespeichert.
+Zwar tritt hierbei ein gewisses Muster auf (pro Seed die jeweils zuerst ausgeführten Tests mit Nodes auf beiden Hosts), allerdings konnte dieser Fehler nicht gezielt reproduziert werden.
+Bei der erneuten Ausführung der Testkonfiguration 7 (Test 7.2) wurden alle Nodes korrekt erkannt und vom Testsystem im Programmlog gespeichert.
+Zum gegenwärtigen Zeitpunkt kann daher nicht gesagt werden, weshalb die ausführenden Nodes in den betroffenen Testfällen nicht immer gespeichert wurden.
+Es kann nur vermutet werden, dass während dem Parsen der übertragenen Daten mit diesen Daten die betroffenen Nodes im Modell nicht gefunden werden konnten (vgl. \todo{Parser/Node-Speicherung, da erklären, dass Objekt vom Node gespeichert wird und nicht ID}).
+Die Gründe dafür sind jedoch unklar.
+
+\subsubsection{Diagnostic"=Daten von Anwendungen}
+\label{sec:notDetectedDataDiagnostics}
+
+Was bei allen Tests aufgefallen ist, dass die Diagnostic"=Daten von Anwendungen nicht im Programmlog enthalten sind.
+Auch hier wurden die entsprechenden Diagnostic"=Daten von Hadoop an das Testsystem übertragen, dort jedoch nicht gespeichert im Gegensatz zu den Diagnostic"=Daten der Attempts.
+Zur Auswertung der Daten im Rahmen der Evaluation ist dies zwar irrelevant, da dies auch aufgrund der Daten der Attempts geschehen kann, allerdings wird die entsprechende Anforderung an das Testsystem nicht erfüllt, wonach die Daten gespeichert werden müssen.
+
+Eine Analyse ergab, dass die Diagnostic"=Daten der Anwendungen aufgrund eines falsch gesetzten Attributs in der \texttt{ApplicationResult}"=Klasse des Parsers nicht im Testsystem gespeichert werden konnten. \todo{Reflexion: Hätte bei vorabtests erkannt werden müssen!}
+Da die Diagnostic"=Daten der Anwendungen eine Zusammenfassung der gesamten Anwendung darstellen, und alle Diagnostic"=Daten bereits durch die der Attempts vorhanden waren, wurde hier auf erneute Testausführungen verzichtet.
 
 \subsection{Nicht erkannte, injizierte bzw. reparierte Komponentenfehler}
 \label{sec:noDetectedFault}
