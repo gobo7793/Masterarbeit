@@ -1,0 +1,34 @@
+\section{Betrachtung der Komponentenfehler}
+\label{sec:faultEval}
+
+\todo{Umformulieren}
+Die Aktivierung und Deaktivierung der Komponentenfehler in einem Testfall hängt neben dem zur Berechnung benötigtem Seed vor allem von den zuvor ausgeführten Testfällen einer Testkonfiguration ab (vgl. \autoref{sec:simulationFaultActivation}).
+Daher werden abhängig von der Lastverteilung im Cluster auch bei einer mehrmaligen Ausführung der gleichen Konfiguration \uU unterschiedliche Komponentenfehler aktiviert.
+Unterschieden werden muss hierbei zudem zwischen aktivierten und injizierten Komponentenfehlern.
+Während beide implementierten Komponentenfehler für einen Node in einem Testfall auch gleichzeitig aktiviert werden konnten, wurde gemäß \todo{Abschnitt mit Komponentenfehler im Node} in so einem Fall jedoch nur der \texttt{NodeDead}"=Fehler im Cluster injiziert.
+Die Deaktivierung bzw. das Reparieren der Komponentenfehler verhält sich analog hierzu.
+
+\subsection{Aktivierte und deaktivierte Komponentenfehler}
+\label{sec:actDeactFaults}
+
+Im Vergleich zwischen korrespondierenden Konfigurationen, die sich nur in der Nutzung des Mutationsszenarios unterschieden, wurde nur 5 mal die gleiche Anzahl an Komponentenfehler aktiviert, bei der Deaktivierung der Komponentenfehler besitzen nur 3 korrespondierende Konfigurationen die gleiche Anzahl.
+Die Anzahl der aktivierten und deaktivierten Komponentenfehler unterschied sich dagegen in 8 bzw. 7 korrespondierenden Testkonfigurationen um jeweils einen Komponentenfehler.
+In allen anderen Ausführungen von korrespondierenden Konfigurationen unterschied sich die Anzahl um jeweils mehr als einen Komponentenfehler.
+Mit 20 aktivierten Komponentenfehlern wurden bei der Ausführung der Testkonfiguration 32 die meisten aktiviert, die meisten Komponentenfehler deaktiviert wurden bei den Konfigurationen 11 und 12 mit jeweils 15 Stück.
+Nur im Test zur Konfiguration 2 wurden mit 3 Stück alle aktivierten Komponentenfehler während der Simulation auch wieder deaktiviert.
+In den Tests 4, 5.1, 5.2 und 6 wurden jeweils 6 oder 7 Komponentenfehler aktiviert, jedoch keine deaktiviert, weshalb diese Tests bereits beim 3. ausgeführten Testfall gemäß \autoref{sec:simulationOracle} abgebrochen wurden.
+
+Im Vergleich zwischen den Tests von korrespondierenden Testkonfigurationen sind die Tests der Konfigurationen 1 und 2 auffällig.
+Während beim Test 1.1 mit 5 Komponentenfehlern bzw. beim Test 1.2 mit 7 Komponentenfehlern jeweils rund jeder achte mögliche Komponentenfehler aktiviert wurde, wurden beim Test 2 lediglich 3 Komponentenfehler für 4 Nodes in 5 Testfällen (insgesamt also 40 mögliche Komponentenfehler) aktiviert.
+Eine geringere Quote weist lediglich Test 9.2 auf, bei dem mit 4 von 60 möglichen Komponentenfehler nur 7 \% aktiviert wurden.
+Die Testkonfiguration 9 ist auch deshalb auffällig, da im Test 9.1 fast dreimal so viele Komponentenfehler, also 11 Stück, aktiviert wurden.
+Auch in den korrespondierenden Tests der Konfiguration 10 liegt die Anzahl der aktivierten Komponentenfehler mit 7 bis 11 jeweils mehr als doppelt so hoch wie in Test 9.2.
+
+Auffällig ist zudem, dass bei korrespondierenden Testkonfigurationen mit unterschiedlicher Anzahl an aktivierten Komponentenfehlern die niedrigere Anzahl meist die Mutationstests aufweisen.
+Nur bei den Tests 27 und 28.1 sowie bei den Tests 31 und 32 weisen die Tests ohne Mutationsszenario die niedrigere Anzahl auf.
+\todo{auf diskussion der selfbalancing komponenten verweisen als grund}
+
+\subsection{Nicht erkannte, injizierte bzw. reparierte Komponentenfehler}
+\label{sec:notDetectedFaults}
+
+% SuT/Test-Constraint StartNode 4 bei #17-28

@@ -1,0 +1,64 @@
+\section{Betrachtung der Anwendungen}
+\label{sec:appEval}
+
+\todo{evtl. Umformulieren}
+Bei den Anwendungen sind vor allem zwei Fakten aufgefallen:
+Viele Anwendungen wurden aufgrund von Fehlern beendet und einige Anwendungen, vor allem beim zweiten Seed, konnten nicht gestartet werden.
+Die Gründe hierfür sind vielfältig und sind im Folgenden erläutert.
+
+\subsection{Aufgrund von Fehlern abgebrochene Anwendungen}
+\label{sec:failedApps}
+
+Wie bereits erwähnt, sind rund ein viertel aller gestarteten Anwendungen gefailt, was im Schnitt 2,4 Anwendungen pro ausgeführten Test ergibt.
+Die meisten gefailten Anwendungen sind hierbei mit 9 bzw. 8 bei den Tests 31 und 32 zu finden.
+Auffällig ist zudem der Vergleich zwischen den Tests 19 und 20.
+Während bei der Ausführung der Testkonfiguration 19 ganze 5 Anwendungen gefailt sind, ist bei der Ausführung des Tests 20 keine einzige gefailt.
+Auffallend ist zudem, dass bei Konfigurationen mit Mutationsszenario fast immer weniger oder gleich viele Anwendungen gefailt sind als bei den korrespondierenden Konfigurationen ohne Mutationsszenario.
+Eine Ausnahme bildet der Test 8, bei dem 3 Anwendungen gefailt sind, während bei den Tests 7.1 und 7.2 jeweils keine Anwendung gefailt ist.
+Eine weitere Ausnahme bildet der Test 9.2, bei dem eine Anwendung mehr gefailt ist als im Test 10.3, die restlichen Tests der Konfigurationen 9 und 10 verhalten sich jedoch wie andere korrespondierende Testkonfigurationen.
+
+Bei der Betrachtung der Constraints, welche die in \autoref{sec:clusterRequirements} definierte Anforderung umsetzen, dass Anwendungen vollständig ausgeführt werden, solange sie nicht manuell bzw. durch das Testsystem vorzeitig abgebrochen werden, fällt auf, dass die Anzahl der ungültigen Validierungen durch das Oracle mit kumuliert 317 ungültigen Constraints mehr als die Hälfte aller ungültigen Constraints ausmacht (58,6 \% ).
+Im Schnitt ergibt das somit 7,5 ungültige Constraints pro Test bzw. 1,4 ungültige Constraints pro durch das Oracle überprüften Testfall.
+Die auf den ersten Blick sehr hohe Anzahl an ungültigen Constraints resultiert daraus, dass eine gefailte Anwendung bei jedem nachfolgenden Testfall bei einer Testausführung erneut durch das Oracle entsprechend validiert wurde.
+Aussagekräftiger ist daher die Anzahl von 102 nicht vollständig abgeschlossenen Anwendungen.
+
+Anhand der Datenbasis lassen sich vier Ursachen für nicht vollständig ausgeführte Anwendungen ausmachen:
+
+\begin{itemize}
+    \item
+    Der \ac{AppMstr} ist nicht mehr erreichbar, da der auszuführende Node aufgrund eines Komponentenfehlers nicht mehr erreichbar ist und der \ac{AppMstr} nach einiger Zeit mit dem Fehler \emph{\ac{AppMstr}"=Timeout} als abgebrochen markiert wird.
+    \item
+    Die den \ac{AppMstr} zugewiesenen Nodes sind vollständig ausgelastet, wodurch der \ac{AppMstr} selbst nicht ausgeführt werden kann und dieser nach einiger Zeit mit dem Fehler \emph{\ac{AppMstr}"=Timeout} abgebrochen wird.
+    Dies beinhaltet auch Timeouts, wenn einem \ac{AppMstr} keine Ressourcen in Form eines ausführenden Nodes zugewiesen werden können.
+    \item
+    Während der Ausführung einer \ac{MR}"=Anwendung wird ein Fehler im Map"=Task festgestellt, der dazu führt, dass der Task abgebrochen wird.
+    Dieser Fehler kam bei den hier ausgeführten Tests lediglich bei der Anwendung \acl{dfr} vor, wenn die zuvor generierten Eingabedaten für diesen Benchmark aufgrund aktivierter Komponentenfehler nicht mehr im Cluster vorhanden waren.
+    Zwar werden Dateien im \ac{HDFS} immer auf mehr als einem Node gespeichert (vgl. \autoref{sec:hadoop}), jedoch ist es möglich, dass die für die Anwendung benötigten Daten auf Nodes repliziert wurden, die alle beendet wurden.
+    Dies führte dazu, dass die benötigten Daten nicht gefunden werden können bzw. bereits im \ac{HDFS} als fehlerhaft markiert sind.
+    Dadurch wird im Map"=Task ein Fehler ausgelöst, der die gesamte Anwendung vorzeitig beendet.
+    \item
+    Der \ac{AppMstr} eines Attempts wird mit dem Exitcode -100 beendet.
+    Dieser Fehler kommt dann vor, wenn versucht wird, einen Anwendungs"=Container für den jeweilige Anwendung bzw. Attempt auf einem defekten Node zu starten.
+    Dieser Fehler trat nur dann auf, wenn im ausführende Node des betroffenen \ac{AppMstr} im gleichen Testfall ein Komponentenfehler injiziert wurde und der Node dadurch aufgrund des Defektes ausfiel.
+    Aufgrund der mit dem Fehler verbundene Fehlermeldung \textit{\enquote{Container released on a *lost* node}} liegt die Vermutung nahe, dass Anwendungs"=Container, hier wahrscheinlich der \ac{AppMstr}, zum Zeitpunkt der Fehlerinjizierung bereits abgeschlossen waren und das Cluster bereits die benötigten Ressourcen wieder freigegeben hat.
+    Da dies jedoch nicht möglich war, wurde der \ac{AppMstr} mit dem entsprechenden Fehler beendet.
+    
+\end{itemize}
+
+Hierbei werden aufgrund eines \ac{AppMstr}"=Timeouts zunächst nur die Attempts mit dem entsprechenden Fehler abgebrochen, nicht jedoch die Anwendung selbst.
+Die Anwendung selbst wird in so einem Fall erst dann als gefailt abgebrochen, sobald zwei Attempts aufgrund eines Timeouts abgebrochen werden mussten.
+Wenn ein Attempt mit dem Exitcode -100 terminiert, wird unabhängig von zuvor ausgeführten Attempts ein erneuter Attempt mit entsprechendem \ac{AppMstr} gestartet.
+
+Bei einigen der \ac{AppMstr}"=Timeouts aufgrund der Aktivierung von Komponentenfehler lässt sich zudem ein spezielles Muster erkennen.
+Hierbei wurde in einem zuvor ausgeführten Testfall regulär auf einem Node ein \ac{AppMstr} einer Anwendung allokiert.
+Nun kann es passieren, dass für diesen Node ein Komponentenfehler injiziert wird, was dazu führt, dass der Node nicht mehr erreichbar ist und der \ac{AppMstr} aufgrund eines Timeouts als beendet markiert wird.
+Hierbei wird direkt im Anschluss ein neuer \ac{AppMstr} allokiert, was auch dazu führt, dass die Anwendung nun einen zweiten Attempt besitzt, nachdem der erste aufgrund des Timeouts abgebrochen wurde.
+Nun kann es dabei passieren, dass dies noch während der Aktivierung von Komponentenfehlern innerhalb eines Simulations"=Schrittes geschieht, wodurch es möglich ist, dass der auszuführende Node des zweiten \ac{AppMstr} ebenfalls aufgrund eines im gleichen Testfall injizierten Komponentenfehlers nicht mehr erreichbar ist.
+Dadurch wird der zweite \ac{AppMstr} bzw. Attempt aufgrund des Timeouts vorzeitig als abgebrochen markiert und die gesamte Anwendung dadurch abgebrochen.
+
+\subsection{Nicht gestartete Anwendungen}
+\label{sec:notStartedApps}
+
+% Multiapp-Constraint bei #29-32
+
+% Zu wenig Submitter bei #31/32
