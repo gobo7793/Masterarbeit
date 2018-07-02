@@ -17,6 +17,7 @@ Auffallend ist zudem, dass bei Konfigurationen mit Mutationsszenario fast immer 
 Eine Ausnahme bildet der Test 8, bei dem 3 Anwendungen gefailt sind, während bei den Tests 7.1 und 7.2 jeweils keine Anwendung gefailt ist.
 Eine weitere Ausnahme bildet der Test 9.2, bei dem eine Anwendung mehr gefailt ist als im Test 10.3, die restlichen Tests der Konfigurationen 9 und 10 verhalten sich jedoch wie andere korrespondierende Testkonfigurationen.
 
+\todo{Falscher Alarm beim Wort nennen}
 Bei der Betrachtung der Constraints, welche die in \autoref{sec:clusterRequirements} definierte Anforderung umsetzen, dass Anwendungen vollständig ausgeführt werden, solange sie nicht manuell bzw. durch das Testsystem vorzeitig abgebrochen werden, fällt auf, dass die Anzahl der ungültigen Validierungen durch das Oracle mit kumuliert 317 ungültigen Constraints mehr als die Hälfte aller ungültigen Constraints ausmacht (58,6 \% ).
 Im Schnitt ergibt das somit 7,5 ungültige Constraints pro Test bzw. 1,4 ungültige Constraints pro durch das Oracle überprüften Testfall.
 Die auf den ersten Blick sehr hohe Anzahl an ungültigen Constraints resultiert daraus, dass eine gefailte Anwendung bei jedem nachfolgenden Testfall bei einer Testausführung erneut durch das Oracle entsprechend validiert wurde.
