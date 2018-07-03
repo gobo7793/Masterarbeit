@@ -69,7 +69,8 @@ Dies führte dazu, dass der relevante Node 1 bei den Mutationsstests nicht gesta
 Eine Besonderheit bildet hier zudem Test 21, bei dem der Komponentenfehler vom Testsystem deaktiviert wurde, jedoch nicht repariert werden konnte.
 Dies liegt darin, dass der Docker"=Container nicht mit dem Docker"=Netzwerk verbunden werden konnte.
 Aus diesem Grund wurde vom Oracle bei der Prüfung der Rekonfigurierbarkeit des Clusters der Test entsprechend beendet, da der Node nicht verbunden war.
-Zwar wurde der Fehler von Docker nicht absichtlich oder durch das Testsystem herbeigeführt, jedoch zeigt dies auch, dass der Fehler ebenfalls erkannt werden konnte.
+Zwar wurde der Fehler von Docker nicht absichtlich oder durch das Testsystem herbeigeführt, hat jedoch eine positive, als auch eine negative Seite.
+So wurde auch ein externer, nicht direkt durch die Anforderungen in \autoref{sec:predictions} abgedeckter Fehler erkannt, jedoch auf Kosten der Anforderung, dass im Modell implementierte Komponentenfehler im realen Cluster repariert werden.
 
 \subsection{Testkonfigurationen 27 und 28}
 \label{sec:noReconf2728}

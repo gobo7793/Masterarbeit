@@ -30,7 +30,12 @@ Auch in den korrespondierenden Tests der Konfiguration 10 liegt die Anzahl der a
 Auffällig ist zudem, dass bei korrespondierenden Testkonfigurationen mit unterschiedlicher Anzahl an aktivierten Komponentenfehlern die niedrigere Anzahl meist diejenigen mit Mutationen aufweisen.
 Nur bei den Konfigurationen 9 und 10, 13 und 14, 27 und 28 und 31 und 32 weisen einige Tests ohne Mutationen eine geringere Anzahl an aktivierten Komponentenfehler auf als Tests mit Mutationen.
 Dies liegt wohl auch darin begründet, dass durch den veränderten \ac{MARP}"=Wert die verfügbaren Ressourcen besser an die Anwendungen verteilt werden konnten und bestätigt damit die Funktionalität der von \citeauthor{zhang2016} entwickelten Komponente.
-\todo{auf diskussion der selfbalancing komponenten verweisen als grund?}
+
+Weitere Auffälligkeiten ergeben sich zudem beim Vergleich der Ausführungszeiten der Simulationen.
+Die Tests 9.2, 15, 31.1 sowie 31.2 stellen die einzigen Test ohne Mutationen dar, bei denen die Simulation schneller abgeschlossen wurde als in den korrespondierenden Tests mit Mutationsszenario.
+Da sich das mit der generellen Aussage beim Vergleich der aktivierten Komponentenfehler deckt, kann davon ausgegangen werden, dass die geringere Anzahl an Komponentenfehler zudem die Auswirkung hat, dass Anwendungen schneller gestartet werden können.
+Der Grund hierfür könnte darin liegen, dass bei weniger injizierten Komponentenfehler auch entsprechend weniger Verwaltungsaufwand für bereits ausgeführte Anwendungen nötig ist, wodurch neu gestartete Anwendungen ebenfalls schneller durch das Cluster verarbeitet werden können.
+Um hier jedoch eine fundierte Aussage treffen zu können, wären weitere vergleichende Tests nötig (vgl. \todo{auf Diskussion dazu, evtl. auch mit diskussion zu selfbalancing-komponente verbinden})
 
 \subsection{Nicht erkannte, injizierte bzw. reparierte Komponentenfehler}
 \label{sec:notDetectedFaults}

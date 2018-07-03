@@ -49,7 +49,7 @@ Anhand der Datenbasis lassen sich vier Ursachen für nicht vollständig ausgefü
 
 Hierbei werden aufgrund eines \ac{AppMstr}"=Timeouts zunächst nur die Attempts mit dem entsprechenden Fehler abgebrochen, nicht jedoch die Anwendung selbst.
 Die Anwendung selbst wird in so einem Fall erst dann als gefailt abgebrochen, sobald zwei Attempts aufgrund eines Timeouts abgebrochen werden mussten.
-Wenn ein Attempt mit dem Exitcode -100 terminiert, wird unabhängig von zuvor ausgeführten Attempts ein erneuter Attempt mit entsprechendem \ac{AppMstr} gestartet.
+Wenn ein Attempt mit dem Exitcode -100 terminiert, wird unabhängig von zuvor ausgeführten Attempts ein erneuter Attempt mit entsprechendem \ac{AppMstr} gestartet, wodurch hier die Anforderung, dass ein Task vollständig ausgeführt werden muss, teilweise erfüllt werden kann.
 
 Bei einigen der \ac{AppMstr}"=Timeouts aufgrund der Aktivierung von Komponentenfehler lässt sich zudem ein spezielles Muster erkennen.
 Hierbei wurde in einem zuvor ausgeführten Testfall auf einem Node ein \ac{AppMstr} einer Anwendung ohne Fehler allokiert.
@@ -73,7 +73,7 @@ Analog dazu verhält es sich bei der Anwendung \acl{tvl}, welche wiederum die \a
 \label{sec:notEnoughSubmitter}
 
 Ein unerwarteter Fehler trat bei der Ausführung des Testfalls 31.1 auf.
-Hierbei kam es vor, dass die für die anderen Tests genutzten acht Submitter des Connectors (vgl. \autoref{sec:implementedConnectors}) nicht ausreichend waren.
+Hierbei kam es vor, dass die für die anderen Tests genutzten acht Submitter des Connectors zum Starten von Anwendungen (vgl. \autoref{sec:implementedConnectors}) nicht ausreichend waren.
 Der Test wurde hierbei im achten Testfall abgebrochen, weil keine weiteren freien Submitter zur Verfügung standen.
 Daher wurde der Test zur Konfiguration 31 mit zehn Submittern erneut ausgeführt, wodurch dieser wie in \autoref{sec:noReconf3132} erläutert im achten Testfall aufgrund fehlender Rekonfigurierbarkeit abgebrochen wurde.
 Die Gründe für den Abbruch des Tests 31.1 liegen darin, dass die Docker"=Container der Benchmarks (vgl. \autoref{sec:aufbauCluster}) nicht korrekt beendet wurden und die Submitter daher auf weitere Ausgaben der gestarteten Anwendungen gewartet haben.
