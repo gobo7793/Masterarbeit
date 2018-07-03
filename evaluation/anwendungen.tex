@@ -60,6 +60,19 @@ Dadurch wird der zweite \ac{AppMstr} bzw. Attempt aufgrund des Timeouts vorzeiti
 \subsection{Nicht gestartete Anwendungen}
 \label{sec:notStartedApps}
 
-% Multiapp-Constraint bei #29-32
+Bei den Tests 19, 25 und 27 bis 32 kam es vor, dass zusammengezählt 25 Anwendungen nicht gestartet werden konnten.
+Meistens war die Anwendung \acl{tsr} davon betroffen, einige male die Anwendung \acl{tvl}.
+Ursächlich dafür ist die jeweils hohe Auslastung des Clusters in den Testfällen zuvor, da für die Anwendung \acl{tg} kein \ac{AppMstr} allokiert werden konnte und die Anwendung daher mit einem \ac{AppMstr}"=Timeout (vgl. \autoref{sec:failedApps}) beendet wurde.
+Da benötigte Eingabedaten für Anwendungen jeweils während der Ausführung der Tests \emph{online} generiert wurden, konnten so die benötigten Eingabedaten für die Anwendung \acl{tsr} nicht generiert werden.
+Aufgrund der fehlenden Daten wurde daher die Anwendung direkt wieder abgebrochen, wodurch in 36 Testfällen nicht jeder Client eine Anwendung ausgeführt hat.
+In diesen Fällen wurde als Resultat zudem das Constraint der Anforderung aus \autoref{sec:predictions}, wonach mehrere Benchmark"=Anwendungen gleichzeitig gestartet und ausgeführt werden können, aufgrund der Implementation aus \todo{Constraint-Impl} durch das Oracle als ungültig validiert.
+Analog dazu verhält es sich bei der Anwendung \acl{tvl}, welche wiederum die \acl{tsr}"=Ausgabedaten als Eingabedaten benötigt.
 
-% Zu wenig Submitter bei #31/32
+\subsection{Nicht ausreichend Submitter}
+\label{sec:notEnoughSubmitter}
+
+Während dem Test 31.1 kam es vor, dass die für die anderen Tests genutzten acht Submitter des Connectors (vgl. \autoref{sec:implementedConnectors}) nicht ausreichend waren.
+Der Test wurde hierbei im 8. Testfall abgebrochen, weil keine weiteren freien Submitter zur Verfügung standen.
+Daher wurde der Test zur Konfiguration 31 mit zehn Submittern erneut ausgeführt, wodurch dieser wie in \autoref{sec:noReconf3132} erläutert im 8. Testfall abgebrochen wurde.
+Die Gründe für den Abbruch liegen darin, dass die Docker"=Container der Benchmarks (vgl. \autoref{sec:aufbauCluster}) nicht korrekt beendet wurden und die Submitter daher auf weitere Ausgaben der gestarteten Anwendungen gewartet haben.
+\todo{Warten der submitter (auch im Treiber) nochmal genauer erklären}
