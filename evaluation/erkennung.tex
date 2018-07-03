@@ -11,24 +11,24 @@ Vorgekommen ist das auf zwei Arten, die im folgenden erläutert werden.
 Einer der beiden Fälle ist, dass ausführende Nodes von Anwendungen bzw. Attempts nicht erkannt bzw. ausgegeben wurden.
 Hier geht es jedoch nicht um Anwendungen bzw. Attempts, die zwar bereits gestartet wurden, für die aber noch kein \ac{AppMstr} allokiert werden konnte.
 In diesen Fällen ist es daher das normale Verhalten von Hadoop, keinen ausführenden Node anzugeben, da keiner vorhanden ist.
-Wenn dieser Status zu lange anhält, wurden die Attempts bzw. \ac{AppMstr} durch Hadoop mit einem Timeout beendet.
+Wenn dieser Status zu lange anhält, wurden die Attempts bzw. \ac{AppMstr} durch Hadoop mit einem Timeout beendet (vgl. \autoref{sec:failedApps}).
 
 Anders sieht das jedoch in den sechs Tests 7.1, 8 und 23 bis 26 aus.
 In diesen Tests wurden zwar regulär die Daten der Nodes ermittelt und auch in den Logdateien ausgegeben, jedoch nicht alle ausführenden Nodes von Anwendungen und Attempts.
-Konkret betrifft das hier alle Nodes der betroffenen \ac{AppMstr} auf Host 2, da in den betroffenen sechs Tests die Nodes erkannt und auch ausgegeben wurden, wenn sich diese auf Host 1 befunden haben, also Node 1 bis Node 4.
-Während die betroffenen Nodes gemäß des SSH"=Logs fast immer von Hadoop Übertragen wurden, wurden die Nodes auf Host 2 in einigen Tests jedoch nicht gespeichert.
+Konkret betrifft das hier die beiden auf Host 2 ausgeführten Nodes der betroffenen \ac{AppMstr}.
+In allen sechs betroffenen Tests wurden nur die vier auf Host 1 ausgeführten Nodes als ausführende Nodes der Attempts bzw. Anwendungen erkannt und auch in den Logdateien ausgegeben.
+Die auf Host 2 ausgeführten Nodes wurden gemäß des SSH"=Logs allerdingsn ebenfalls übertragen, sofern den Attempts bzw. Anwendungen ein Node zugewiesen wurde, jedoch wurden diese nicht im Programmlog ausgegeben.
 Zwar tritt hierbei ein gewisses Muster auf (pro Seed die jeweils zuerst ausgeführten Tests mit Nodes auf beiden Hosts), allerdings konnte dieser Fehler nicht gezielt reproduziert werden.
 Bei der erneuten Ausführung der Testkonfiguration 7 (Test 7.2) wurden alle Nodes korrekt erkannt und vom Testsystem im Programmlog gespeichert.
 Zum gegenwärtigen Zeitpunkt kann daher nicht gesagt werden, weshalb die ausführenden Nodes in den betroffenen Testfällen nicht immer gespeichert wurden.
 Es kann nur vermutet werden, dass während dem Parsen der übertragenen Daten mit diesen Daten die betroffenen Nodes im Modell nicht gefunden werden konnten (vgl. \todo{Parser/Node-Speicherung, da erklären, dass Objekt vom Node gespeichert wird und nicht ID}).
-Die Gründe dafür sind jedoch unklar.
 
 \subsection{Diagnostic"=Daten von Anwendungen}
 \label{sec:notSavedAppDiagnostics}
 
-Was bei allen Tests aufgefallen ist, dass die Diagnostic"=Daten von Anwendungen nicht im Programmlog enthalten sind.
-Auch hier wurden die entsprechenden Diagnostic"=Daten von Hadoop an das Testsystem übertragen, dort jedoch nicht gespeichert im Gegensatz zu den Diagnostic"=Daten der Attempts.
-Zur Auswertung der Daten im Rahmen der Evaluation ist dies zwar irrelevant, da dies auch aufgrund der Daten der Attempts geschehen kann, allerdings wird die entsprechende Anforderung an das Testsystem nicht erfüllt, wonach die Daten gespeichert werden müssen.
+Bei allen Tests ist zudem aufgefallen, dass die Diagnostic"=Daten von Anwendungen nicht im Programmlog enthalten sind.
+Genauso wie bei den nicht erkannten Nodes auf Host 2 (vgl. \autoref{sec:notDetectedHost2}) wurden alle Diagnostic"=Daten von Hadoop an das Testsystem übertragen, die der Anwendungen im Gegensatz zu denen der Attempts jedoch nicht gespeichert.
+Zur Auswertung der Daten im Rahmen der Evaluation ist dies zwar irrelevant, da dies auch aufgrund der Daten der Attempts geschehen konnte, allerdings wird dadurch die in \autoref{sec:predictions} definierte Anforderung an das Testsystem nur teilweise erfüllt, wonach der jeweils aktuelle Status des Clusters erkannt und gespeichert wird.
 
 Eine Analyse ergab, dass die Diagnostic"=Daten der Anwendungen aufgrund eines falsch gesetzten Attributs in der \texttt{ApplicationResult}"=Klasse des Parsers nicht im Testsystem gespeichert werden konnten. \todo{Reflexion: Hätte bei vorabtests erkannt werden müssen!}
 Da die Diagnostic"=Daten der Anwendungen eine Zusammenfassung der gesamten Anwendung darstellen, und alle Diagnostic"=Daten bereits durch die der Attempts vorhanden waren, wurde hier auf erneute Testausführungen verzichtet.

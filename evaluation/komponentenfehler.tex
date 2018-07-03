@@ -1,32 +1,36 @@
 \section{Betrachtung der Komponentenfehler}
 \label{sec:faultEval}
 
-\todo{Umformulieren}
-Die Aktivierung und Deaktivierung der Komponentenfehler in einem Testfall hängt neben dem zur Berechnung benötigtem Seed vor allem von den zuvor ausgeführten Testfällen einer Testkonfiguration ab (vgl. \autoref{sec:simulationFaultActivation}).
-Daher werden abhängig von der Lastverteilung im Cluster auch bei einer mehrmaligen Ausführung der gleichen Konfiguration \uU unterschiedliche Komponentenfehler aktiviert.
+Die Aktivierung und Deaktivierung der Komponentenfehler in einem Testfall hängt neben dem zur Berechnung benötigtem Seed vor allem von den zuvor ausgeführten Testfällen bzw. der Lastverteilung bei den zuvor ausgeführten Testfällen eines Tests ab (vgl. \autoref{sec:simulationFaultActivation}).
+Daher wurden abhängig von der Lastverteilung im Cluster auch bei einer mehrmaligen Ausführung der gleichen Konfiguration bei einigen Testausführungen unterschiedliche Komponentenfehler aktiviert.
+
 Unterschieden werden muss hierbei zudem zwischen aktivierten und injizierten Komponentenfehlern.
 Während beide implementierten Komponentenfehler für einen Node in einem Testfall auch gleichzeitig aktiviert werden konnten, wurde gemäß \todo{Abschnitt mit Komponentenfehler im Node} in so einem Fall jedoch nur der \texttt{NodeDead}"=Fehler im Cluster injiziert.
 Die Deaktivierung bzw. das Reparieren der Komponentenfehler verhält sich analog hierzu.
 
+Im Folgenden wird nun ein Überblick über die bei den Tests aktivierten bzw. deaktivierten und nicht injizierten Komponentenfehler bzw. erkannten Injektionen und Reperaturen der Komponentenfehler gegeben.
+
 \subsection{Aktivierte und deaktivierte Komponentenfehler}
 \label{sec:actDeactFaults}
 
-Im Vergleich zwischen korrespondierenden Konfigurationen, die sich nur in der Nutzung des Mutationsszenarios unterschieden, wurde nur 5 mal die gleiche Anzahl an Komponentenfehler aktiviert, bei der Deaktivierung der Komponentenfehler besitzen nur 3 korrespondierende Konfigurationen die gleiche Anzahl.
-Die Anzahl der aktivierten und deaktivierten Komponentenfehler unterschied sich dagegen in 8 bzw. 7 korrespondierenden Testkonfigurationen um jeweils einen Komponentenfehler.
-In allen anderen Ausführungen von korrespondierenden Konfigurationen unterschied sich die Anzahl um jeweils mehr als einen Komponentenfehler.
-Mit 20 aktivierten Komponentenfehlern wurden bei der Ausführung der Testkonfiguration 32 die meisten aktiviert, die meisten Komponentenfehler deaktiviert wurden bei den Konfigurationen 11 und 12 mit jeweils 15 Stück.
+Die Aktivierung und Deaktivierung der Komponentenfehler hing manchmal stark, manchmal weniger stark von der ausgeführten Testkonfiguration ab.
+Im Vergleich zwischen korrespondierenden Konfigurationen, die sich nur in der Nutzung des Mutationsszenarios unterschieden, wurde nur 5 mal bei allen Tests die gleiche Anzahl an Komponentenfehler aktiviert, bei der Deaktivierung der Komponentenfehler besitzen nur 4 korrespondierende Konfigurationen die gleiche Anzahl bei allen Tests.
+Die Anzahl der aktivierten und deaktivierten Komponentenfehler unterschied sich dagegen in 8 bzw. 7 korrespondierenden Testkonfigurationen um einen einen Komponentenfehler in allen Testausführungen.
+Bei den anderen korrespondierenden Konfigurationen unterschied sich die Anzahl bei allen jeweiligen Tests um mehr als einen Komponentenfehler.
+Mit jeweils 20 aktivierten Komponentenfehlern wurden bei den Tests 28.1, 31.1 und 32 die meisten aktiviert, die meisten Komponentenfehler deaktiviert wurden bei den Tests der Konfigurationen 11 und 12 mit jeweils 15 Stück.
 Nur im Test zur Konfiguration 2 wurden mit 3 Stück alle aktivierten Komponentenfehler während der Simulation auch wieder deaktiviert.
-In den Tests 4, 5.1, 5.2 und 6 wurden jeweils 6 oder 7 Komponentenfehler aktiviert, jedoch keine deaktiviert, weshalb diese Tests bereits beim 3. ausgeführten Testfall gemäß \autoref{sec:simulationOracle} abgebrochen wurden.
+In den Tests 4, 5.1, 5.2 und 6 wurden jeweils 6 oder 7 Komponentenfehler aktiviert, jedoch keine deaktiviert, weshalb diese Tests bereits beim 3. ausgeführten Testfall gemäß \autoref{sec:simulationOracle} abgebrochen wurden (vgl. \autoref{sec:noReconf36}).
 
 Im Vergleich zwischen den Tests von korrespondierenden Testkonfigurationen sind die Tests der Konfigurationen 1 und 2 auffällig.
 Während beim Test 1.1 mit 5 Komponentenfehlern bzw. beim Test 1.2 mit 7 Komponentenfehlern jeweils rund jeder achte mögliche Komponentenfehler aktiviert wurde, wurden beim Test 2 lediglich 3 Komponentenfehler für 4 Nodes in 5 Testfällen (insgesamt also 40 mögliche Komponentenfehler) aktiviert.
 Eine geringere Quote weist lediglich Test 9.2 auf, bei dem mit 4 von 60 möglichen Komponentenfehler nur 7 \% aktiviert wurden.
-Die Testkonfiguration 9 ist auch deshalb auffällig, da im Test 9.1 fast dreimal so viele Komponentenfehler, also 11 Stück, aktiviert wurden.
+Die Testkonfiguration 9 ist darüber hinaus auch deshalb auffällig, da im Test 9.1 fast dreimal so viele Komponentenfehler, also 11 Stück, aktiviert wurden.
 Auch in den korrespondierenden Tests der Konfiguration 10 liegt die Anzahl der aktivierten Komponentenfehler mit 7 bis 11 jeweils mehr als doppelt so hoch wie in Test 9.2.
 
-Auffällig ist zudem, dass bei korrespondierenden Testkonfigurationen mit unterschiedlicher Anzahl an aktivierten Komponentenfehlern die niedrigere Anzahl meist die Mutationstests aufweisen.
-Nur bei den Tests 27 und 28.1 sowie bei den Tests 31 und 32 weisen die Tests ohne Mutationsszenario die niedrigere Anzahl auf.
-\todo{auf diskussion der selfbalancing komponenten verweisen als grund}
+Auffällig ist zudem, dass bei korrespondierenden Testkonfigurationen mit unterschiedlicher Anzahl an aktivierten Komponentenfehlern die niedrigere Anzahl meist diejenigen mit Mutationen aufweisen.
+Nur bei den Konfigurationen 9 und 10, 13 und 14, 27 und 28 und 31 und 32 weisen einige Tests ohne Mutationen eine geringere Anzahl an aktivierten Komponentenfehler auf als Tests mit Mutationen.
+Dies liegt wohl auch darin begründet, dass durch den veränderten \ac{MARP}"=Wert die verfügbaren Ressourcen besser an die Anwendungen verteilt werden konnten und bestätigt damit die Funktionalität der von \citeauthor{zhang2016} entwickelten Komponente.
+\todo{auf diskussion der selfbalancing komponenten verweisen als grund?}
 
 \subsection{Nicht erkannte, injizierte bzw. reparierte Komponentenfehler}
 \label{sec:notDetectedFaults}
@@ -50,12 +54,12 @@ Das betraf konkret drei mal das Injizieren eines Komponentenfehlers sowie 16 mal
 \end{table}
 
 Bei den aufgetretenen als ungültig validierten Constraints fällt auf, dass die betroffenen Nodes im jeweils nachfolgenden Testfall mit ihrem jeweils korrekten Status erkannt wurden.
-Die 19 als ungültig markierten Constraints zur Anforderung aus \autoref{sec:predictions}, dass defekte Nodes und Verbindungsabbrüche erkannt werden, wurden somit korrekt, als auch inkorrekt, als ungültig validiert.
+Die 19 als ungültig markierten Constraints zur Anforderung aus \autoref{sec:clusterRequirements} und \autoref{sec:predictions}, dass defekte Nodes und Verbindungsabbrüche erkannt werden, wurden somit korrekt, als auch inkorrekt, als ungültig validiert.
 Dies liegt daran, dass das Cluster bei defekten Nodes erst einige Zeit benötigt, um zu erkennen, dass ein Node ausgefallen ist.
-Auch wenn ein Node nicht mehr defekt ist, benötigt dieser bzw. der \ac{RM} erst einige Zeit, bis erkannt wird, dass der Node wieder verfügbar ist.
-Dies liegt einerseits daran, dass Hadoop bzw. der \ac{RM} nicht kontinuierlich, sondern periodisch nach einer bestimmten Zeitspanne den Status der Nodes prüft und bei nicht erreichbaren Nodes zunächst solange wartet, bis die Verbindung aufgrund eines Timeouts beendet wird.
+Auch wenn ein Node nicht mehr defekt ist, benötigt dieser bzw. der \ac{RM} erst einige Zeit, bis erkannt wird, dass der Node wieder aktiv ist.
+Dies liegt einerseits daran, dass Hadoop bzw. der \ac{RM} nicht kontinuierlich, sondern periodisch nach einer bestimmten Zeitspanne den Status der Nodes prüft und bei nicht erreichbaren Nodes zunächst solange wartet, bis die Abfrage durch einen \emph{Timeout} beendet wird.
 Zwar wurden beide Zeitspannen im getesteten Cluster auf jeweils 10 Sekunden festgelegt, jedoch reichte diese Zeitspanne wohl nicht immer aus, um den Status rechtzeitig zu erkennen.
-Beim Starten bzw. Wiederverbinden eines Nodes sieht dies analog dazu aus, wobei Hadoop auf dem jeweiligen Node hier zunächst gestartet werden muss, bevor es sich dann selbstständig mit dem \ac{RM} verbindet, was beides ebenfalls eine gewisse Zeit benötigt.
+Beim Starten bzw. Wiederverbinden eines Nodes sieht dies analog dazu aus, wobei Hadoop auf dem jeweiligen Node hier zunächst gestartet werden muss, bevor es sich dann selbstständig mit dem \ac{RM} verbindet, was ebenfalls eine gewisse Zeit benötigt.
 Dies wird auch dadurch bestätigt, dass für die betroffenen Nodes in den jeweils nachfolgenden Testfällen bzw. dem finalen Clusterstatus oder in korrespondierenden Tests der Status korrekt erkannt wurde, den die Nodes gemäß aufgrund der Komponentenfehler besitzen sollten.
 
 Eine Besonderheit bilden hierbei zunächst die beiden Tests zur Konfiguration 7.
@@ -66,7 +70,7 @@ Im finalen Clusterstatus ist der Node jedoch wie im Test 7.1 korrekt als aktiv m
 
 Die zweite Besonderheit bilden die Tests der Konfigurationen 17 bis 28.
 Hier wurde in allen Tests der Node 4 im jeweils ersten Testfall direkt vom Cluster getrennt, was noch korrekt erkannt wurde.
-In den Testkonfigurationen 25 bis 28 wurde im nachfolgenden dritten Testfall jedoch der Node direkt wieder vom Netzwerk getrennt, weshalb hier nicht vollständig davon ausgegangen werden kann, dass der Node im zweiten Testfall korrekt wieder mit dem Cluster verbunden wurde.
+In den Testkonfigurationen 25 bis 28 wurde im nachfolgenden dritten Testfall jedoch der Node direkt wieder vom Netzwerk getrennt, weshalb hier nur vermutet werden kann, dass der Node im zweiten Testfall korrekt mit dem Cluster verbunden wurde.
 Davon kann jedoch ausgegangen werden, da in den sechs Tests auf einem Host (Tests 17 bis 22) der Node im nachfolgenden, dritten Testfall nicht verändert wird und auch als aktiv erkannt wurde.
 Auch in den Tests 29 bis 32 wurde alles korrekt erkannt, da hier der Node im ersten Testfall ebenfalls getrennt, im zweiten wieder verbunden, und im dritten Testfall zudem erneut vom Cluster getrennt wird.
 In den Tests 23 bis 28.2 wird der Node dagegen zwar ebenfalls im dritten Testfall wieder vom Cluster getrennt, jedoch wird dies hier auch wieder korrekt erkannt.

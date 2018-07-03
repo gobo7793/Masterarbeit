@@ -1,9 +1,8 @@
 \section{Rekonfiguration des Clusters nicht möglich}
 \label{sec:noReconfig}
 
-\todo{Cluster nicht mehr rekonfigurieren auch in Anforderungen}
 Insgesamt 13 der 42 ausgeführten Tests wurden vorzeitig abgebrochen, da eine Rekonfiguration des Clusters nicht möglich war.
-Dies entspricht dem in \autoref{sec:simulationOracle} definierten Verhalten und in \autoref{sec:predictions} gefordertem Verhalten, wenn alle Node im Cluster defekt sind.
+Dies entspricht dem in \autoref{sec:predictions} gefordertem und in \autoref{sec:simulationOracle} implementierten Verhalten, wenn alle Node im Cluster defekt sind.
 Im Folgenden wird für die betroffenen Testkonfigurationen und Tests betrachtet, weshalb es dazu kam.
 
 \subsection{Testkonfigurationen 3 bis 6}
@@ -11,11 +10,11 @@ Im Folgenden wird für die betroffenen Testkonfigurationen und Tests betrachtet,
 
 Erstmalig ist ein Abbruch im Test 4 aufgetreten, auch die weiteren korrespondierende Tests der Konfigurationen 5 und 6 wurden abgebrochen.
 Hier waren bereits beim 3. Testfall alle verfügbaren Nodes beendet, was auffällig ist, vor allem da damit die Hälfte der Tests mit dem ersten Seed und dem Cluster auf einem Host vorzeitig abgebrochen wurden.
-Dies liegt einerseits daran, dass im Gegensatz zu den beiden Konfigurationen mit nur zwei Clients hier bis zu vier Anwendungen gleichzeitig gestartet werden, was die Last auf den Nodes deutlich erhöht.
+Das liegt einerseits daran, dass im Gegensatz zu den beiden Konfigurationen mit nur zwei Clients hier bis zu vier Anwendungen gleichzeitig gestartet werden, was die Last auf den Nodes deutlich erhöht.
 In Test 3, welcher somit theoretisch ebenfalls abgebrochen werden hätte müssen, wurden 11 Anwendungen im Cluster gestartet.
 Dies liegt an der geringeren Auslastung eines einzelnen Nodes im Gegensatz zu den anderen Tests.
 In den abgebrochenen Tests hatte Node 4 im ersten Testfall eine hohe bzw. sehr hohe Auslastung, im Test 3 jedoch nur eine mittlere.
-Diese mittlere Auslastung reichte jedoch aus, um den Node im ausgeführten 3. Testfall gemäß \todo{deaktivieren von komponentenfehler} wieder zu aktivieren, während die anderen noch aktiven Nodes spätestens in diesem Testfall einen Komponentenfehler injiziert bekamen.
+Diese mittlere Auslastung reichte jedoch aus, um den Node im ausgeführten 3. Testfall gemäß \todo{deaktivieren von komponentenfehler} wieder zu aktivieren, während die anderen noch aktiven Nodes spätestens in diesem Testfall aufgrund der hohen Last einen Komponentenfehler injiziert bekamen.
 Durch diesen einen nun weiterhin ausgeführten Node ist es dem Cluster daher möglich gewesen, sich im Test 3 zu rekonfigurieren.
 
 \subsection{Testkonfigurationen 15 und 16}
@@ -23,7 +22,7 @@ Durch diesen einen nun weiterhin ausgeführten Node ist es dem Cluster daher mö
 
 Die Ausführung der Tests 13 bzw. 14 und 15 bzw. 16 unterscheidet sich nur in der Anzahl der Testfälle der jeweiligen Testkonfiguration.
 Dementsprechend wurden die äquivalenten Tests 13 und 14 im Gegensatz zu den beiden anderen vollständig ausgeführt, da der Abbruch der Tests 15 und 16 im sechsten ausgeführten Testfall stattfand.
-Die Nodes hatten in den vier Tests folgende Auslastung:
+Die Nodes hatten im fünften Testfall der vier Tests folgende Auslastung:
 
 \begin{table}[h]
     \begin{tabular}{c|cccc}
@@ -37,8 +36,9 @@ Die Nodes hatten in den vier Tests folgende Auslastung:
     \label{tab:loadTests1316}
 \end{table}
 
-Bei den beiden betroffenen Tests 15 und 16 sehr hohe Auslastung der noch aktven Nodes im 5. Testfall führte im darauf folgenden Testfall dazu, dass bei allen noch aktiven Nodes ein Komponentenfehler aktiviert wurde.
-Daher wurden die beiden Tests im jeweils 6. ausgeführten Testfall abgebrochen.
+Bei den beiden betroffenen Tests 15 und 16 sehr hohe Auslastung der noch aktven Nodes im fünften Testfall führte im darauf folgenden Testfall dazu, dass bei allen noch aktiven Nodes ein Komponentenfehler aktiviert wurde.
+Daher wurden die beiden Tests im jeweils sechsten ausgeführten Testfall abgebrochen.
+Es ist auch davon auszugehen, dass der Test 14 aufgrund der ebenfalls sehr hohen Auslastung im sechsten Testfall wahrscheinlich ebenfalls abgebrochen worden wäre.
 
 \subsection{Testkonfigurationen 19 bis 22}
 \label{sec:noReconf1922}
@@ -63,7 +63,7 @@ Dies liegt in der Historie des Nodes innerhalb des Tests begründet:
 \end{table}
 
 Die Aktivierung und Deaktivierung der Komponentenfehler in den anderen Nodes ist in allen Tests gleich und daher zur Ermittlung der Gründe des Abbruchs der Testausführung nicht relevant.
-Durch die unterschiedliche Auslastungen in den Testfällen 1 der Tests zwischen Tests ohne Mutationen (19 und 21) und mit Mutationen (20 und 22) wurden unterschiedliche Komponentenfehler aktiviert.
+Durch die unterschiedliche Auslastungen im ersten Testfall der Tests zwischen Tests ohne Mutationen (19 und 21) und mit Mutationen (20 und 22) wurden unterschiedliche Komponentenfehler aktiviert.
 Dies führte dazu, dass der relevante Node 1 bei den Mutationsstests nicht gestartet wurde, während die anderen Nodes beendet wurden wie in den Tests 19 und 21.
 
 Eine Besonderheit bildet hier zudem Test 21, bei dem der Komponentenfehler vom Testsystem deaktiviert wurde, jedoch nicht repariert werden konnte.
@@ -77,24 +77,27 @@ Zwar wurde der Fehler von Docker nicht absichtlich oder durch das Testsystem her
 In den beiden Tests 28.1 und 28.2 wird der Test im 8. Testfall abgebrochen, während Test 27 nach allen 10 Testfällen regulär beendet wird.
 Das liegt daran, dass im 8. Testfall bei den beiden Mutationstests in fünf der sechs Nodes ein Komponentenfehler injiziert wird, von Node 1 wird die Verbindung getrennt, die Nodes 3 bis 6 komplett beendet.
 Im Test 27 ohne Mutationsszenario wird dagegen zwar auch die Verbindung von Node 1 getrennt, aber zusätzlich nur Node 3 beendet, sodass die Nodes 4 bis 6 weiterhin aktiv sind.
-Node 2 wird in allen drei Tests bereits im 3. Testfall beendet, da die Auslastung des Nodes im 2. Testfall bei jeweils über 90 Prozent liegt.
+Node 2 wird in allen drei Tests bereits im dritten Testfall beendet, da die Auslastung des Nodes im zweiten Testfall bei jeweils über 90 Prozent liegt.
 Die übrigen der 19 bzw. 20 aktivierten und zwischen 10 und 13 wieder deaktivierten Komponentenfehlern unterschieden sich in den drei Tests bis auf einzelne, hier nicht relevante, Ausnahmen nicht.
 
-Der Grund für die Injizierung von Komponentenfehlern bei noch allen aktiven Nodes im 8. Testfall liegt in der Auslastung der Nodes im 7. Testfall.
-Diese beträgt im Test 27 ohne Mutationen bei den beiden betroffenen Nodes bei jeweils 100 Prozent, bei den übrigen Nodes ist jedoch keine bzw. eine geringe Auslastung vorhanden.
-In den beiden Tests der Konfiguration 28 ist das Cluster jeweils vollständig Ausgelastet, wodurch die Wahrscheinlichkeit zur Aktivierung der Komponentenfehler im folgenden Testfall stark ansteigt.
+\todo{kürzen und die genaue erklärung auf entsprechende abschnitte verweisen}
+Der Grund für die Injizierung von Komponentenfehlern bei noch allen aktiven Nodes im achten Testfall liegt in der Auslastung der Nodes im siebten Testfall.
+Diese beträgt im Test 27 ohne Mutationen bei den beiden betroffenen Nodes jeweils 100 Prozent, bei den übrigen Nodes ist jedoch keine bzw. eine geringe Auslastung vorhanden.
+In den beiden Tests der Konfiguration 28 ist das Cluster jeweils vollständig ausgelastet, wodurch die Wahrscheinlichkeit zur Aktivierung der Komponentenfehler im folgenden Testfall stark ansteigt.
 Dadurch war es möglich, dass alle noch aktiven Nodes vom Cluster getrennt bzw. beendet wurden und der Test aufgrund fehlender Rekonfigurationsmöglichkeiten abgebrochen wurde.
 
 \subsection{Testkonfigurationen 31 und 32}
 \label{sec:noReconf3132}
 
-Die beiden Tests 31 und 32 verliefen beide ähnlich zueinander.
-Die hohe Anzahl der 19 bzw. 20 aktivierten Komponentenfehler reichten bei jeweils 11 wieder deaktivierten Fehlern aus, um die beiden Tests im 8. Testfall zu beenden.
+Die Tests der Konfigurationen 31 und 32 verliefen ähnlich zueinander.
+Die hohe Anzahl der 19 bzw. 20 aktivierten Komponentenfehler reichten bei jeweils 11 wieder deaktivierten Fehlern aus, um die Tests 31.2 und 32 im achten Testfall abzubrechen.
+Der Test 31.1 verlief zwar ebenfalls ähnlich zu den beiden anderen Tests, wurde jedoch aufgrund fehlender, verfügbaren Submitter des Connectors beendet.
+Die Gründe dafür sind in \autoref{sec:notStartedApps} erläutert, weshalb der Test 31.1 hier nicht genauer betrachtet wird.
 
-Besonders war hier, dass es bei jeweils mehreren Testfällen vorgekommen ist, dass mehr als 3 Komponentenfehler aktiviert bzw. deaktiviert wurden.
-So kam es vor, dass \zB in 3. Testfall bereits eine Rekonfiguration nur deshalb möglich war, weil der zuvor vom Cluster getrennte Node 1 wieder mit dem Cluster verbunden wurde, während die Nodes 2 und 4 bis 6 anderen Nodes getrennt oder beendet wurden, Node 3 wurde bereits im Testfall zuvor beendet.
-Dies trifft auch auf die beiden korrespondierenden Konfigurationen 29 und 30 zu, bei denen nur fünf Testfälle ausgeführt wurden.
+Bei den beiden Tests 31.2 und 32 fällt auf, dass es bei jeweils mehreren Testfällen vorgekommen ist, dass mehr als 3 Komponentenfehler aktiviert bzw. deaktiviert wurden.
+So kam es vor, dass \zB in dritten ausgeführten Testfall bereits eine Rekonfiguration nur deshalb möglich war, weil der zuvor vom Cluster getrennte Node 1 wieder mit dem Cluster verbunden wurde, während die Nodes 2 und 4 bis 6 anderen Nodes getrennt oder beendet wurden, während Node 3 bereits im Testfall zuvor beendet wurde.
+Ebenso verlief der dritte Testfall auch in den beiden Tests der Konfigurationen 29 und 30, bei denen nur fünf Testfälle ausgeführt wurden.
 
-Bis auf den beendeten Node 2 wurden spätestens im 6. ausgeführten Testfall die im 3. Testfall injizierten Komponentenfehler wieder repariert.
-Zwar wurde im 7. Testfall je ein Komponentenfehler repariert, jedoch im Test ohne Mutationen auch ein weiterer injiziert.
-In Kombination mit den drei bzw. vier aktivierten Komponentenfehlern in Testfall 8 führte das daher dazu, dass kein aktiver Node im Cluster mehr vorhanden war und der Test entsprechend abgebrochen wurde.
+Bis auf den beendeten Node 2 wurden spätestens im sechsten ausgeführten Testfall die im dritten Testfall injizierten Komponentenfehler wieder repariert.
+Zwar wurde im siebten Testfall je ein Komponentenfehler repariert, jedoch im Test ohne Mutationen auch ein weiterer injiziert.
+In Kombination mit den drei bzw. vier aktivierten Komponentenfehlern im achten Testfall führte das daher dazu, dass kein aktiver Node im Cluster mehr vorhanden war und der Test entsprechend abgebrochen wurde.

@@ -1,49 +1,50 @@
 \section{Betrachtung der Anwendungen}
 \label{sec:appEval}
 
-\todo{evtl. Umformulieren}
-Bei den Anwendungen sind vor allem zwei Fakten aufgefallen:
+Bei der Betrachtung der Anwendungen sind vor allem zwei Punkte aufgefallen:
 Viele Anwendungen wurden aufgrund von Fehlern beendet und einige Anwendungen, vor allem beim zweiten Seed, konnten nicht gestartet werden.
-Die Gründe hierfür sind vielfältig und sind im Folgenden erläutert.
+Dies widerspricht zum Teil den in \autoref{sec:clusterRequirements} und \autoref{sec:predictions} definierten Anforderungen des Clusters, hat aber mehrere Gründe, die im Folgenden erläutert werden.
 
 \subsection{Aufgrund von Fehlern abgebrochene Anwendungen}
 \label{sec:failedApps}
 
-Wie bereits erwähnt, sind rund ein viertel aller gestarteten Anwendungen gefailt, was im Schnitt 2,4 Anwendungen pro ausgeführten Test ergibt.
-Die meisten gefailten Anwendungen sind hierbei mit 9 bzw. 8 bei den Tests 31 und 32 zu finden.
+Wie bereits erwähnt, sind etwas mehr als ein viertel aller gestarteten Anwendungen gefailt, was im Schnitt 2,6 gefailte Anwendungen pro ausgeführten Test ergibt.
+Die meisten gefailten Anwendungen sind hierbei mit 9 bzw. 8 bei den Tests der Konfigurationen 31 und 32 zu finden.
 Auffällig ist zudem der Vergleich zwischen den Tests 19 und 20.
 Während bei der Ausführung der Testkonfiguration 19 ganze 5 Anwendungen gefailt sind, ist bei der Ausführung des Tests 20 keine einzige gefailt.
-Auffallend ist zudem, dass bei Konfigurationen mit Mutationsszenario fast immer weniger oder gleich viele Anwendungen gefailt sind als bei den korrespondierenden Konfigurationen ohne Mutationsszenario.
+Ebenfalls auffallend ist, dass bei Konfigurationen mit Mutationsszenario fast immer weniger oder gleich viele Anwendungen gefailt sind als bei den korrespondierenden Konfigurationen ohne Mutationsszenario.
 Eine Ausnahme bildet der Test 8, bei dem 3 Anwendungen gefailt sind, während bei den Tests 7.1 und 7.2 jeweils keine Anwendung gefailt ist.
 Eine weitere Ausnahme bildet der Test 9.2, bei dem eine Anwendung mehr gefailt ist als im Test 10.3, die restlichen Tests der Konfigurationen 9 und 10 verhalten sich jedoch wie andere korrespondierende Testkonfigurationen.
 
-\todo{Falscher Alarm beim Wort nennen}
-Bei der Betrachtung der Constraints, welche die in \autoref{sec:clusterRequirements} definierte Anforderung umsetzen, dass Anwendungen vollständig ausgeführt werden, solange sie nicht manuell bzw. durch das Testsystem vorzeitig abgebrochen werden, fällt auf, dass die Anzahl der ungültigen Validierungen durch das Oracle mit kumuliert 317 ungültigen Constraints mehr als die Hälfte aller ungültigen Constraints ausmacht (58,6 \% ).
-Im Schnitt ergibt das somit 7,5 ungültige Constraints pro Test bzw. 1,4 ungültige Constraints pro durch das Oracle überprüften Testfall.
+Bei der Betrachtung der Constraints, welche die in \autoref{sec:clusterRequirements} definierte Anforderung umsetzen, dass Anwendungen vollständig ausgeführt werden, solange sie nicht manuell bzw. durch das Testsystem vorzeitig abgebrochen werden, fällt auf, dass die Anzahl der ungültigen Validierungen durch das Oracle mit kumuliert 343 ungültigen Constraints mehr als die Hälfte aller ungültigen Constraints ausmacht (59,9 \% ).
+Im Schnitt ergibt das somit rund 8 ungültige Constraints pro Test bzw. ca. 1,8 ungültige Constraints pro durch das Oracle überprüften Testfall.
 Die auf den ersten Blick sehr hohe Anzahl an ungültigen Constraints resultiert daraus, dass eine gefailte Anwendung bei jedem nachfolgenden Testfall bei einer Testausführung erneut durch das Oracle entsprechend validiert wurde.
-Aussagekräftiger ist daher die Anzahl von 102 nicht vollständig abgeschlossenen Anwendungen.
+Dadurch sind ein Großteil der als ungültig validierten Constraints ein falscher Alarm, da die entsprechende Anforderung pro Anwendung nur einmal nicht erfüllt werden kann.
+Aussagekräftiger ist daher die Anzahl von 110 nicht vollständig abgeschlossenen bzw. aufgrund eines Fehlers abgebrochenen Anwendungen.
 
 Anhand der Datenbasis lassen sich vier Ursachen für nicht vollständig ausgeführte Anwendungen ausmachen:
 
 \begin{itemize}
     \item
-    Der \ac{AppMstr} ist nicht mehr erreichbar, da der auszuführende Node aufgrund eines Komponentenfehlers nicht mehr erreichbar ist und der \ac{AppMstr} nach einiger Zeit mit dem Fehler \emph{\ac{AppMstr}"=Timeout} als abgebrochen markiert wird.
+        Der \ac{AppMstr} ist nicht mehr erreichbar, da der auszuführende Node aufgrund eines Komponentenfehlers nicht mehr erreichbar ist.
+        Dadurch wird der \ac{AppMstr} nach einiger Zeit mit dem Fehler \emph{\ac{AppMstr}"=Timeout} als abgebrochen markiert.
     \item
-    Die den \ac{AppMstr} zugewiesenen Nodes sind vollständig ausgelastet, wodurch der \ac{AppMstr} selbst nicht ausgeführt werden kann und dieser nach einiger Zeit mit dem Fehler \emph{\ac{AppMstr}"=Timeout} abgebrochen wird.
-    Dies beinhaltet auch Timeouts, wenn einem \ac{AppMstr} keine Ressourcen in Form eines ausführenden Nodes zugewiesen werden können.
+        Die den \ac{AppMstr} zugewiesenen Nodes sind vollständig ausgelastet, wodurch dem \ac{AppMstr} selbst die benötigten Ressourcen nicht allokiert bzw. der \ac{AppMstr} nicht ausgeführt werden kann.
+        Nach einiger Zeit wird der \ac{AppMstr} daher mit dem Fehler \emph{\ac{AppMstr}"=Timeout} abgebrochen.
+        Das beinhaltet auch Timeouts, wenn einem \ac{AppMstr} nicht einmal ein ausführender Node zugewiesen werden kann.
     \item
-    Während der Ausführung einer \ac{MR}"=Anwendung wird ein Fehler im Map"=Task festgestellt, der dazu führt, dass der Task abgebrochen wird.
-    Dieser Fehler kam bei den hier ausgeführten Tests lediglich bei der Anwendung \acl{dfr} vor, wenn die zuvor generierten Eingabedaten für diesen Benchmark aufgrund aktivierter Komponentenfehler nicht mehr im Cluster vorhanden waren.
-    Zwar werden Dateien im \ac{HDFS} immer auf mehr als einem Node gespeichert (vgl. \autoref{sec:hadoop}), jedoch ist es möglich, dass die für die Anwendung benötigten Daten auf Nodes repliziert wurden, die alle beendet wurden.
-    Dies führte dazu, dass die benötigten Daten nicht gefunden werden können bzw. bereits im \ac{HDFS} als fehlerhaft markiert sind.
-    Dadurch wird im Map"=Task ein Fehler ausgelöst, der die gesamte Anwendung vorzeitig beendet.
+        Während der Ausführung einer \ac{MR}"=Anwendung wird ein Fehler im Map"=Task festgestellt, der dazu führt, dass der Task abgebrochen wird.
+        Dieser Fehler kam bei den hier ausgeführten Tests bei der Anwendung \acl{dfr} vor, wenn die zuvor generierten Eingabedaten für diesen Benchmark aufgrund aktivierter Komponentenfehler nicht mehr im Cluster vorhanden waren.
+        Zwar werden Dateien im \ac{HDFS} immer auf mehr als einem Node gespeichert (vgl. \autoref{sec:hadoop}), jedoch ist es möglich, dass die für die Anwendung benötigten Daten auf Nodes repliziert wurden, die alle beendet wurden.
+        Dies führte dazu, dass die benötigten Daten nicht gefunden werden können bzw. bereits im \ac{HDFS} als fehlerhaft markiert sind.
+        Dadurch wird im Map"=Task ein Fehler ausgelöst, der die gesamte Anwendung vorzeitig beendet.
+        Aufgrund eines Fehlers im Map"=Task wird auch die \acl{fl}"=Anwendung beendet, jedoch ist das in diesem Fall das gewünschte Verhalten der Anwendung und zählt daher nicht als Fehler.
     \item
-    Der \ac{AppMstr} eines Attempts wird mit dem Exitcode -100 beendet.
-    Dieser Fehler kommt dann vor, wenn versucht wird, einen Anwendungs"=Container für den jeweilige Anwendung bzw. Attempt auf einem defekten Node zu starten.
-    Dieser Fehler trat nur dann auf, wenn im ausführende Node des betroffenen \ac{AppMstr} im gleichen Testfall ein Komponentenfehler injiziert wurde und der Node dadurch aufgrund des Defektes ausfiel.
-    Aufgrund der mit dem Fehler verbundene Fehlermeldung \textit{\enquote{Container released on a *lost* node}} liegt die Vermutung nahe, dass Anwendungs"=Container, hier wahrscheinlich der \ac{AppMstr}, zum Zeitpunkt der Fehlerinjizierung bereits abgeschlossen waren und das Cluster bereits die benötigten Ressourcen wieder freigegeben hat.
-    Da dies jedoch nicht möglich war, wurde der \ac{AppMstr} mit dem entsprechenden Fehler beendet.
-    
+        Der \ac{AppMstr} eines Attempts wird mit dem Exitcode -100 beendet.
+        Dieser Fehler kommt dann vor, wenn versucht wird, einen Task eines Anwendungs"=Containers der jeweiligen Anwendung bzw. Attempt auf einem defekten Node auszuführen und widerspricht somit zusätzlich der in \autoref{sec:clusterRequirements} Anforderung, dass kein Task oder Anwendung an defekte Nodes gesendet wird.
+        Dieser Fehler trat nur dann auf, wenn im ausführende Node des betroffenen \ac{AppMstr} im gleichen Testfall ein Komponentenfehler injiziert wurde und der Node dadurch ausfiel.
+        Aufgrund der mit dem Fehler verbundene Fehlermeldung \textit{\enquote{Container released on a *lost* node}} liegt die Vermutung nahe, dass Anwendungs"=Container, hier wahrscheinlich der \ac{AppMstr}, zum Zeitpunkt der Fehlerinjizierung bereits abgeschlossen waren und das Cluster die benötigten Ressourcen zu dem Zeitpunkt freigegeben hat.
+        Da dies jedoch nicht möglich war, wurde der \ac{AppMstr} mit dem entsprechenden Fehler beendet.
 \end{itemize}
 
 Hierbei werden aufgrund eines \ac{AppMstr}"=Timeouts zunächst nur die Attempts mit dem entsprechenden Fehler abgebrochen, nicht jedoch die Anwendung selbst.
@@ -51,28 +52,29 @@ Die Anwendung selbst wird in so einem Fall erst dann als gefailt abgebrochen, so
 Wenn ein Attempt mit dem Exitcode -100 terminiert, wird unabhängig von zuvor ausgeführten Attempts ein erneuter Attempt mit entsprechendem \ac{AppMstr} gestartet.
 
 Bei einigen der \ac{AppMstr}"=Timeouts aufgrund der Aktivierung von Komponentenfehler lässt sich zudem ein spezielles Muster erkennen.
-Hierbei wurde in einem zuvor ausgeführten Testfall regulär auf einem Node ein \ac{AppMstr} einer Anwendung allokiert.
+Hierbei wurde in einem zuvor ausgeführten Testfall auf einem Node ein \ac{AppMstr} einer Anwendung ohne Fehler allokiert.
 Nun kann es passieren, dass für diesen Node ein Komponentenfehler injiziert wird, was dazu führt, dass der Node nicht mehr erreichbar ist und der \ac{AppMstr} aufgrund eines Timeouts als beendet markiert wird.
 Hierbei wird direkt im Anschluss ein neuer \ac{AppMstr} allokiert, was auch dazu führt, dass die Anwendung nun einen zweiten Attempt besitzt, nachdem der erste aufgrund des Timeouts abgebrochen wurde.
-Nun kann es dabei passieren, dass dies noch während der Aktivierung von Komponentenfehlern innerhalb eines Simulations"=Schrittes geschieht, wodurch es möglich ist, dass der auszuführende Node des zweiten \ac{AppMstr} ebenfalls aufgrund eines im gleichen Testfall injizierten Komponentenfehlers nicht mehr erreichbar ist.
+Dabei ist es nun möglich, dass dies noch während der Aktivierung von Komponentenfehlern innerhalb des Testfalls geschieht (vgl. \autoref{sec:simulationStep}), wodurch es möglich ist, dass der auszuführende Node des zweiten \ac{AppMstr} ebenfalls aufgrund eines im gleichen Testfall injizierten Komponentenfehlers nicht mehr erreichbar ist.
 Dadurch wird der zweite \ac{AppMstr} bzw. Attempt aufgrund des Timeouts vorzeitig als abgebrochen markiert und die gesamte Anwendung dadurch abgebrochen.
 
 \subsection{Nicht gestartete Anwendungen}
 \label{sec:notStartedApps}
 
-Bei den Tests 19, 25 und 27 bis 32 kam es vor, dass zusammengezählt 25 Anwendungen nicht gestartet werden konnten.
+Bei den Tests 19, 25 und 27 bis 32 kam es vor, dass insgesamt 29 Anwendungen nicht gestartet werden konnten.
 Meistens war die Anwendung \acl{tsr} davon betroffen, einige male die Anwendung \acl{tvl}.
-Ursächlich dafür ist die jeweils hohe Auslastung des Clusters in den Testfällen zuvor, da für die Anwendung \acl{tg} kein \ac{AppMstr} allokiert werden konnte und die Anwendung daher mit einem \ac{AppMstr}"=Timeout (vgl. \autoref{sec:failedApps}) beendet wurde.
-Da benötigte Eingabedaten für Anwendungen jeweils während der Ausführung der Tests \emph{online} generiert wurden, konnten so die benötigten Eingabedaten für die Anwendung \acl{tsr} nicht generiert werden.
-Aufgrund der fehlenden Daten wurde daher die Anwendung direkt wieder abgebrochen, wodurch in 36 Testfällen nicht jeder Client eine Anwendung ausgeführt hat.
+Ursächlich dafür ist die jeweils hohe Auslastung des Clusters in den Testfällen zuvor, bei denen den benötigten \ac{AppMstr} der \acl{tg}"=Anwendungen keine Ressourcen auf den ausführenden Nodes allokiert werden konnte und diese daher mit einem \ac{AppMstr}"=Timeout beendet wurden (vgl. \autoref{sec:failedApps}).
+Da in \autoref{sec:selectTestcases} definiert wurde, dass benötigte Eingabedaten für Anwendungen während der Ausführung der Tests generiert werden, konnten so die benötigten Eingabedaten für die Anwendung \acl{tsr} nicht generiert werden (vgl. \todo{details zu tsort}).
+Aufgrund der fehlenden Daten wurde daher die Anwendung direkt wieder abgebrochen, wodurch in 42 Testfällen nicht jeder Client eine Anwendung ausgeführt hat.
 In diesen Fällen wurde als Resultat zudem das Constraint der Anforderung aus \autoref{sec:predictions}, wonach mehrere Benchmark"=Anwendungen gleichzeitig gestartet und ausgeführt werden können, aufgrund der Implementation aus \todo{Constraint-Impl} durch das Oracle als ungültig validiert.
-Analog dazu verhält es sich bei der Anwendung \acl{tvl}, welche wiederum die \acl{tsr}"=Ausgabedaten als Eingabedaten benötigt.
+Analog dazu verhält es sich bei der Anwendung \acl{tvl}, welche wiederum die \acl{tsr}"=Ausgabedaten als Eingabedaten benötigt (vgl. \todo{details zu tvalidate}).
 
 \subsection{Nicht ausreichend Submitter}
 \label{sec:notEnoughSubmitter}
 
-Während dem Test 31.1 kam es vor, dass die für die anderen Tests genutzten acht Submitter des Connectors (vgl. \autoref{sec:implementedConnectors}) nicht ausreichend waren.
-Der Test wurde hierbei im 8. Testfall abgebrochen, weil keine weiteren freien Submitter zur Verfügung standen.
-Daher wurde der Test zur Konfiguration 31 mit zehn Submittern erneut ausgeführt, wodurch dieser wie in \autoref{sec:noReconf3132} erläutert im 8. Testfall abgebrochen wurde.
-Die Gründe für den Abbruch liegen darin, dass die Docker"=Container der Benchmarks (vgl. \autoref{sec:aufbauCluster}) nicht korrekt beendet wurden und die Submitter daher auf weitere Ausgaben der gestarteten Anwendungen gewartet haben.
+Ein unerwarteter Fehler trat bei der Ausführung des Testfalls 31.1 auf.
+Hierbei kam es vor, dass die für die anderen Tests genutzten acht Submitter des Connectors (vgl. \autoref{sec:implementedConnectors}) nicht ausreichend waren.
+Der Test wurde hierbei im achten Testfall abgebrochen, weil keine weiteren freien Submitter zur Verfügung standen.
+Daher wurde der Test zur Konfiguration 31 mit zehn Submittern erneut ausgeführt, wodurch dieser wie in \autoref{sec:noReconf3132} erläutert im achten Testfall aufgrund fehlender Rekonfigurierbarkeit abgebrochen wurde.
+Die Gründe für den Abbruch des Tests 31.1 liegen darin, dass die Docker"=Container der Benchmarks (vgl. \autoref{sec:aufbauCluster}) nicht korrekt beendet wurden und die Submitter daher auf weitere Ausgaben der gestarteten Anwendungen gewartet haben.
 \todo{Warten der submitter (auch im Treiber) nochmal genauer erklären}
