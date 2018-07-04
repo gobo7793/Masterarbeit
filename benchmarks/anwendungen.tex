@@ -12,7 +12,7 @@ Wie in \autoref{sec:hadoopBenchmark} erwähnt, sind folgende Benchmarks in der P
 
 Jeder Benchmark enthält zum Starten ein jeweiliges Start"=Script, mit dem ein neuer Docker"=Container auf der Controller"=VM gestartet wird, mit dem die Anwendungen des Benchmarks an das Cluster übergeben werden.
 Dass dafür jeweils eigene Docker-Container genutzt werden liegt daran, dass es in Docker"=Umgebungen \emph{best practice} ist, einen Docker"=Container für nur einen Einsatzzweck zu erstellen bzw. zu nutzen.
-Die Hauptgründe dafür sind, dass dadurch die Skalierbarkeit erhöht und die Wiederverwendbarkeit gesteigert wird \cite{DockerBestPractice}.
+Die Hauptgründe dafür sind, dass dadurch die Skalierbarkeit erhöht und die Wiederverwendbarkeit gesteigert wird \cite{DockerfileBestPractice}.
 Daher wurden im Rahmen dieser Arbeit die bestehenden Startscripte der Plattform für die Benchmarks so angepasst, dass die jeweiligen Benchmarks mehrfach gleichzeitig gestartet werden können.
 
 Die \textbf{Hadoop Mapreduce Examples} sind unterschiedliche und meist voneinander unabhängige Anwendungen, die beispielhaft für die meisten Anwendungsfälle in einem produktiv genutzten Cluster sind.

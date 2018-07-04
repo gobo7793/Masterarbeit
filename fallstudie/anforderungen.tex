@@ -2,8 +2,8 @@
 \label{sec:requirements}
 
 Zur Überprüfung des Clusters und des Testssystems selbst werden hierfür jeweils mehrere Anforderungen gestellt.
-Unterschieden wird hierbei zwischen funktionalen Anforderungen an das verwendete Hadoop"=Cluster und Anforderungen an das Testsystem.
-Während die funktionalen Anforderungen ausschließlich vom Cluster erfüllt werden müssen, müssen die Test"=Anforderungen vom gesamten Testsystem erfüllt werden.
+Unterschieden wird hierbei zwischen funktionalen Anforderungen an das \ac{SuT} und Anforderungen an das Testsystem.
+Während die funktionalen Anforderungen ausschließlich vom Hadoop"=Cluster als \ac{SuT} erfüllt werden müssen, müssen die Test"=Anforderungen vom gesamten Testsystem erfüllt werden.
 
 Mithilfe der im Folgenden definierten Anforderungen soll bereits automatisiert geprüft werden können, inwieweit eine Testautomatisierung möglich ist.
 Hierfür werden die Anforderungen, sofern möglich, in Form  Form von Constraints ebenfalls im Modell implementiert.
@@ -12,9 +12,9 @@ Mithilfe dieser Constraints können die Anforderungen somit ebenfalls automatisi
 \subsection{Funktionale Anforderungen an das Cluster}
 \label{sec:functionalRequirements}
 
-Obwohl in dieser Masterarbeit der Fokus auf Testautomatisierung und Validieren eines Testsystems liegt, müssen auch die funktionalen Anforderungen an das zu testende Hadoop"=Cluster berücksichtigt werden.
+Obwohl in dieser Masterarbeit der Fokus auf Testautomatisierung und Validieren eines Testsystems liegt, müssen auch die funktionalen Anforderungen an das \ac{SuT}, also das Hadoop"=Cluster selbst, berücksichtigt werden.
 Da im Rahmen der Publikation \cite{Eberhardinger2018} ebenfalls der in \autoref{sec:clusterSetup} beschriebene und in dieser Fallstudie genutzte Versuchsaufbau genutzt wurde, wurden im Rahmen dieser Fallstudie auch funktionale Anforderungen an das Cluster selbst durch das Oracle geprüft.
-Dies betrifft konkret folgende, bereits in \cite{Eberhardinger2018} definierte, Anforderungen:
+Dies betrifft konkret folgende, bereits in \cite{Eberhardinger2018} definierte, Anforderungen an das \ac{SuT}:
 
 \begin{enumerate}
     \item Ein Task wird vollständig ausgeführt, sofern er nicht abgebrochen wird

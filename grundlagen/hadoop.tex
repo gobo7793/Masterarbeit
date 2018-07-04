@@ -37,8 +37,8 @@ Ein Hadoop"=Cluster mit dem \ac{YARN}"=Framework besteht aus zwei wesentlichen K
 
 \begin{figure}[h]
     \includegraphics{./images/yarn_architecture.png}
-    \caption[Architektur von YARN]
-    {Architektur von YARN (entnommen aus \cite{HadoopYarnArch271})}
+    \caption[Architektur des YARN"=Frameworks]
+    {Architektur des \ac{YARN}"=Frameworks (entnommen aus \cite{HadoopYarnArch271})}
     \label{fig:yarnarch}
 \end{figure}
 
@@ -46,11 +46,15 @@ Der \ac{RM} dient hierbei als \emph{Load"=Balancer} für das gesamte Cluster und
 Der \ac{AM} ist für die Annahme und Ausführung von einzelnen Anwendungen zuständig, denen der Scheduler die dafür notwendigen Ressourcen im Cluster zuteilt.
 Jeder Node besitzt einen \ac{NM}, der für die Überwachung der Ressourcen auf dem jeweiligen Node sowie der auf dem Node ausgeführten Anwendungs"=Container zuständig ist und diese Daten dem \ac{RM} übermittelt.
 
-Jede YARN"=Anwendung bzw. Job besteht aus einer oder mehreren Ausführungsinstanzen, genannt \emph{Attempts}.
+Jede \ac{YARN}"=Anwendung bzw. Job besteht aus einer oder mehreren Ausführungsinstanzen, genannt \emph{Attempts}.
 Jeder Attempt besitzt einen eigenen \ac{AppMstr}, welcher das Monitoring der Anwendung und die Kommunikation mit dem \ac{RM} und \ac{NM} übernimmt und die dafür benötigten Informationen bereitstellt \cite{HadoopYarnArch271}.
 Die eigentliche Ausführung einer Anwendung findet in den bereits erwähnten \emph{Containern} statt, die jeweils einem Attempt zugeordnet sind.
 Container können auf einem beliebigen Node ausgeführt werden und repräsentieren die Ausführung eines Tasks innerhalb der Anwendung.
-\todo{Evtl. noch ein paar Infos zur Node-Erkennung und zeitlichen abläufen}
+
+Zu erwähnen ist hier zudem, dass die Kommunikation zwischen den einzelnen Komponenten nicht in allen Fällen in Echtzeit statt findet.
+Vor allem das Prüfen des generellen Node"=Zustandes durch den \ac{RM} wird bei einer Standard"=Konfiguration in periodischen Abständen von jeweils mehreren Minuten durchgeführt.
+Sollte der \ac{NM} bei solchen Status"=Abfragen zunächst nicht reagieren, wird mehrere Minuten gewartet, bis der Node als defekt erkannt wird.
+Ähnlich verhält es sich bei Zustandsabfragen an den \ac{AppMstr} \cite{HadoopYarnConfig271}.
 
 Ein weiterer Bestandteil von Hadoop bzw. \ac{YARN} ist der \ac{TLS}.
 Er ist speziell dafür entwickelt, die Metadaten und Logs der \ac{YARN}"=Anwendungen zu speichern und jederzeit, also als Anwendungshistorie, auszugeben \cite{HadoopYarnTlServer271}.
@@ -70,3 +74,6 @@ Die Daten selbst werden in mehreren Blöcke aufgeteilt auf den \emph{DataNodes} 
 Um den Zugriff auf die Daten im Falle eines Node"=Ausfalls zu gewährleisten, wird jeder Block auf anderen Nodes repliziert.
 Dateioperationen (wie Öffnen oder Schließen) werden direkt auf den DataNodes ausgeführt.
 Sie sind darüber hinaus auch dafür verantwortlich, dass die gespeicherten Daten gelesen und beschrieben werden können \cite{HadoopHdfsDesc271}.
+
+Das Überprüfen der DataNodes durch den NameNode erfolgt genauso wie bei den entsprechenden \ac{YARN}"=Komponenten periodisch im Abstand von mehreren Minuten.
+Auch hier dauert es bei einer Standard"=Konfiguration daher mehrere Minuten, bis erkannt wird, wenn ein DataNode nicht mehr verfügbar ist \cite{HadoopHdfsConfig271}.

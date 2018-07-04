@@ -56,7 +56,8 @@ Zwar wird standardmäßig ein zeitbasierter Seed zur Initialisierung des Zufalls
 \todo{Wo wird Seed wie genutzt? am besten in implementierung davon!}
 
 Auch die Aktivierung und Deaktivierung von Komponentenfehlern selbst soll während der Ausführung eines Testfalls festgelegt werden, wodurch die Wahrscheinlichkeit für deren Aktivierung bzw. Deaktivierung einen maßgeblichen Einfluss besitzt.
-Da Anwendungen \uU nicht erfolgreich beendet werden können, welche Eingabedaten für andere Anwendungen generieren, kann eine Testkonfiguration mit vorab generierten und im \ac{HDFS} gespeicherten Daten durchgeführt werden, wodurch Eingabedaten für Anwendungen unabhängig vom Status von zuvor ausgeführten Anwendungen verfügbar sind.
+Da Anwendungen, die Eingabedaten für andere Anwendungen generieren, \uU nicht erfolgreich beendet werden können, kann eine Testkonfiguration mit vorab generierten und im \ac{HDFS} gespeicherten Daten durchgeführt werden.
+Dadurch wird es ermöglicht, dass in solchen Tests spätere Anwendungen nicht vom Erfolg der zuvor ausgeführten Anwendungen zur Generierung der Eingabedaten abhängig sind.
 Da einige Tests zudem als Mutationstests durchgeführt werden sollen, muss für eine Testkonfiguration dies entsprechend definiert werden.
 
 Die Auswahl der konkreten Testkonfigurationen in \autoref{sec:selectTestcases} erfolgte im Rahmen der in \autoref{sec:implTestcases} beschriebenen Implementierung der Tests.
@@ -65,7 +66,7 @@ Die Auswahl der konkreten Testkonfigurationen in \autoref{sec:selectTestcases} e
 \label{sec:dataOrganisation}
 
 Damit die bei der Ausführung gewonnenen Daten auch zur Evaluation genutzt werden können, wurde hierzu festgelegt, welche Daten während der Ausführung ausgegeben werden.
-Alle relevante Daten werden hierzu während der Ausführung der Testfälle in einer Log"=Datei gespeichert.
+Alle relevante Daten werden hierzu während der Ausführung der Testfälle in eine Log"=Datei ausgegeben und gespeichert.
 Zur Unterscheidung von einzelnen Ausführungen werden die Daten klar strukturiert.
 
 Beim Start eines Testfalls sollen daher zunächst einige generelle Daten ausgegeben werden:
@@ -86,8 +87,10 @@ Im Rahmen der Simulation können weitere Daten ausgegeben werden, wie \zB:
     \item Auszuführende Benchmarks pro Client
 \end{itemize}
 
-Die Ausgabe der Daten der YARN"=Komponenten wird bei jedem Simulations"=Schritt durchgeführt, damit das Verhalten des Clusters berücksichtigt werden kann.
-Ausgegeben werde hierbei:
+Die Ausgabe der Daten der \ac{YARN}"=Komponenten wird bei jedem erfolgreichen Testfall durchgeführt, damit das Verhalten des Clusters berücksichtigt werden kann.
+Bei nicht erfolgreichen Testfällen wird die Simulation dagegen beendet.
+Für solche Fälle werden nach Abschluss der Simulation erneut die Daten des Clusters ausgelesen und ausgegeben.
+Es können hierbei alle Daten ausgegeben werden, welche erkannt werden können, mindestens jedoch:
 
 \begin{itemize}
     \item Für jeden Node:
@@ -121,13 +124,7 @@ Ausgegeben werde hierbei:
         \item Aktueller Status des Attempts
         \item ID des \ac{AppMstr}"=Containers
         \item ID bzw. Name des Nodes, auf dem der \ac{AppMstr} ausgeführt wird
-    \end{itemize}
-
-    \item Für jeden Container:
-    \begin{itemize}
-        \item ID des Containers
-        \item ID bzw. Name des auszuführenden Nodes
-        \item Aktueller Status des Containers
+        \item Anzahl der derzeit ausgeführten Container
     \end{itemize}
 \end{itemize}
 
