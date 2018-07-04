@@ -2,7 +2,7 @@
 \label{sec:noReconfig}
 
 Insgesamt 13 der 42 ausgeführten Tests wurden vorzeitig abgebrochen, da eine Rekonfiguration des Clusters nicht möglich war.
-Dies entspricht dem in \autoref{sec:predictions} gefordertem und in \autoref{sec:simulationOracle} implementierten Verhalten, wenn alle Node im Cluster defekt sind.
+Dies entspricht dem in \autoref{sec:testRequirements} gefordertem und in \autoref{sec:simulationOracle} implementierten Verhalten, wenn alle Node im Cluster defekt sind.
 Im Folgenden wird für die betroffenen Testkonfigurationen und Tests betrachtet, weshalb es dazu kam.
 
 \subsection{Testkonfigurationen 3 bis 6}
@@ -70,7 +70,7 @@ Eine Besonderheit bildet hier zudem Test 21, bei dem der Komponentenfehler vom T
 Dies liegt darin, dass der Docker"=Container nicht mit dem Docker"=Netzwerk verbunden werden konnte.
 Aus diesem Grund wurde vom Oracle bei der Prüfung der Rekonfigurierbarkeit des Clusters der Test entsprechend beendet, da der Node nicht verbunden war.
 Zwar wurde der Fehler von Docker nicht absichtlich oder durch das Testsystem herbeigeführt, hat jedoch eine positive, als auch eine negative Seite.
-So wurde auch ein externer, nicht direkt durch die Anforderungen in \autoref{sec:predictions} abgedeckter Fehler erkannt, jedoch auf Kosten der Anforderung, dass im Modell implementierte Komponentenfehler im realen Cluster repariert werden.
+So wurde auch ein externer, nicht direkt durch die Anforderungen in \autoref{sec:testRequirements} abgedeckter Fehler erkannt, jedoch auf Kosten der Anforderung, dass im Modell implementierte Komponentenfehler im realen Cluster repariert werden.
 
 \subsection{Testkonfigurationen 27 und 28}
 \label{sec:noReconf2728}

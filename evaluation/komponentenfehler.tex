@@ -59,7 +59,7 @@ Das betraf konkret drei mal das Injizieren eines Komponentenfehlers sowie 16 mal
 \end{table}
 
 Bei den aufgetretenen als ungültig validierten Constraints fällt auf, dass die betroffenen Nodes im jeweils nachfolgenden Testfall mit ihrem jeweils korrekten Status erkannt wurden.
-Die 19 als ungültig markierten Constraints zur Anforderung aus \autoref{sec:clusterRequirements} und \autoref{sec:predictions}, dass defekte Nodes und Verbindungsabbrüche erkannt werden, wurden somit korrekt, als auch inkorrekt, als ungültig validiert.
+Die 19 als ungültig markierten Constraints zu den Anforderungen aus \autoref{sec:requirements}, dass defekte Nodes und Verbindungsabbrüche erkannt werden, wurden somit korrekt, als auch inkorrekt, als ungültig validiert.
 Dies liegt daran, dass das Cluster bei defekten Nodes erst einige Zeit benötigt, um zu erkennen, dass ein Node ausgefallen ist.
 Auch wenn ein Node nicht mehr defekt ist, benötigt dieser bzw. der \ac{RM} erst einige Zeit, bis erkannt wird, dass der Node wieder aktiv ist.
 Dies liegt einerseits daran, dass Hadoop bzw. der \ac{RM} nicht kontinuierlich, sondern periodisch nach einer bestimmten Zeitspanne den Status der Nodes prüft und bei nicht erreichbaren Nodes zunächst solange wartet, bis die Abfrage durch einen \emph{Timeout} beendet wird.

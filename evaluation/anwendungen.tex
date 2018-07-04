@@ -3,7 +3,7 @@
 
 Bei der Betrachtung der Anwendungen sind vor allem zwei Punkte aufgefallen:
 Viele Anwendungen wurden aufgrund von Fehlern beendet und einige Anwendungen, vor allem beim zweiten Seed, konnten nicht gestartet werden.
-Dies widerspricht zum Teil den in \autoref{sec:clusterRequirements} und \autoref{sec:predictions} definierten Anforderungen des Clusters, hat aber mehrere Gründe, die im Folgenden erläutert werden.
+Dies widerspricht zum Teil den in \autoref{sec:requirements} definierten Anforderungen, hat aber mehrere Gründe, die im Folgenden erläutert werden.
 
 \subsection{Aufgrund von Fehlern abgebrochene Anwendungen}
 \label{sec:failedApps}
@@ -16,7 +16,7 @@ Ebenfalls auffallend ist, dass bei Konfigurationen mit Mutationsszenario fast im
 Eine Ausnahme bildet der Test 8, bei dem 3 Anwendungen gefailt sind, während bei den Tests 7.1 und 7.2 jeweils keine Anwendung gefailt ist.
 Eine weitere Ausnahme bildet der Test 9.2, bei dem eine Anwendung mehr gefailt ist als im Test 10.3, die restlichen Tests der Konfigurationen 9 und 10 verhalten sich jedoch wie andere korrespondierende Testkonfigurationen.
 
-Bei der Betrachtung der Constraints, welche die in \autoref{sec:clusterRequirements} definierte Anforderung umsetzen, dass Anwendungen vollständig ausgeführt werden, solange sie nicht manuell bzw. durch das Testsystem vorzeitig abgebrochen werden, fällt auf, dass die Anzahl der ungültigen Validierungen durch das Oracle mit kumuliert 343 ungültigen Constraints mehr als die Hälfte aller ungültigen Constraints ausmacht (59,9 \% ).
+Bei der Betrachtung der Constraints, welche die in \autoref{sec:functionalRequirements} definierte Anforderung umsetzen, dass Anwendungen vollständig ausgeführt werden, solange sie nicht manuell bzw. durch das Testsystem vorzeitig abgebrochen werden, fällt auf, dass die Anzahl der ungültigen Validierungen durch das Oracle mit kumuliert 343 ungültigen Constraints mehr als die Hälfte aller ungültigen Constraints ausmacht (59,9 \% ).
 Im Schnitt ergibt das somit rund 8 ungültige Constraints pro Test bzw. ca. 1,8 ungültige Constraints pro durch das Oracle überprüften Testfall.
 Die auf den ersten Blick sehr hohe Anzahl an ungültigen Constraints resultiert daraus, dass eine gefailte Anwendung bei jedem nachfolgenden Testfall bei einer Testausführung erneut durch das Oracle entsprechend validiert wurde.
 Dadurch sind ein Großteil der als ungültig validierten Constraints ein falscher Alarm, da die entsprechende Anforderung pro Anwendung nur einmal nicht erfüllt werden kann.
@@ -41,7 +41,7 @@ Anhand der Datenbasis lassen sich vier Ursachen für nicht vollständig ausgefü
         Aufgrund eines Fehlers im Map"=Task wird auch die \acl{fl}"=Anwendung beendet, jedoch ist das in diesem Fall das gewünschte Verhalten der Anwendung und zählt daher nicht als Fehler.
     \item
         Der \ac{AppMstr} eines Attempts wird mit dem Exitcode -100 beendet.
-        Dieser Fehler kommt dann vor, wenn versucht wird, einen Task eines Anwendungs"=Containers der jeweiligen Anwendung bzw. Attempt auf einem defekten Node auszuführen und widerspricht somit zusätzlich der in \autoref{sec:clusterRequirements} Anforderung, dass kein Task oder Anwendung an defekte Nodes gesendet wird.
+        Dieser Fehler kommt dann vor, wenn versucht wird, einen Task eines Anwendungs"=Containers der jeweiligen Anwendung bzw. Attempt auf einem defekten Node auszuführen und widerspricht somit zusätzlich der in \autoref{sec:functionalRequirements} Anforderung, dass kein Task oder Anwendung an defekte Nodes gesendet wird.
         Dieser Fehler trat nur dann auf, wenn im ausführende Node des betroffenen \ac{AppMstr} im gleichen Testfall ein Komponentenfehler injiziert wurde und der Node dadurch ausfiel.
         Aufgrund der mit dem Fehler verbundene Fehlermeldung \textit{\enquote{Container released on a *lost* node}} liegt die Vermutung nahe, dass Anwendungs"=Container, hier wahrscheinlich der \ac{AppMstr}, zum Zeitpunkt der Fehlerinjizierung bereits abgeschlossen waren und das Cluster die benötigten Ressourcen zu dem Zeitpunkt freigegeben hat.
         Da dies jedoch nicht möglich war, wurde der \ac{AppMstr} mit dem entsprechenden Fehler beendet.
@@ -66,7 +66,7 @@ Meistens war die Anwendung \acl{tsr} davon betroffen, einige male die Anwendung 
 Ursächlich dafür ist die jeweils hohe Auslastung des Clusters in den Testfällen zuvor, bei denen den benötigten \ac{AppMstr} der \acl{tg}"=Anwendungen keine Ressourcen auf den ausführenden Nodes allokiert werden konnte und diese daher mit einem \ac{AppMstr}"=Timeout beendet wurden (vgl. \autoref{sec:failedApps}).
 Da in \autoref{sec:selectTestcases} definiert wurde, dass benötigte Eingabedaten für Anwendungen während der Ausführung der Tests generiert werden, konnten so die benötigten Eingabedaten für die Anwendung \acl{tsr} nicht generiert werden (vgl. \todo{details zu tsort}).
 Aufgrund der fehlenden Daten wurde daher die Anwendung direkt wieder abgebrochen, wodurch in 42 Testfällen nicht jeder Client eine Anwendung ausgeführt hat.
-In diesen Fällen wurde als Resultat zudem das Constraint der Anforderung aus \autoref{sec:predictions}, wonach mehrere Benchmark"=Anwendungen gleichzeitig gestartet und ausgeführt werden können, aufgrund der Implementation aus \todo{Constraint-Impl} durch das Oracle als ungültig validiert.
+In diesen Fällen wurde als Resultat zudem das Constraint der Anforderung aus \autoref{sec:testRequirements}, wonach mehrere Benchmark"=Anwendungen gleichzeitig gestartet und ausgeführt werden können, aufgrund der Implementation aus \todo{Constraint-Impl} durch das Oracle als ungültig validiert.
 Analog dazu verhält es sich bei der Anwendung \acl{tvl}, welche wiederum die \acl{tsr}"=Ausgabedaten als Eingabedaten benötigt (vgl. \todo{details zu tvalidate}).
 
 \subsection{Nicht ausreichend Submitter}

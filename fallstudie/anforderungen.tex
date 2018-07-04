@@ -1,8 +1,20 @@
-\section{Funktionale Anforderungen an das Cluster}
-\label{sec:clusterRequirements}
+\section{Anforderungen an das Cluster und Testsystem}
+\label{sec:requirements}
 
-Obwohl in dieser Masterarbeit der Fokus auf Testautomatisierung und Validieren eines Testsystems liegt, müssen auch die funktionalen Anforderungen an das zu testende System berücksichtigt werden.
-Folgende Anforderungen wurden hierfür bereits in \cite{Eberhardinger2018} spezifiziert:
+Zur Überprüfung des Clusters und des Testssystems selbst werden hierfür jeweils mehrere Anforderungen gestellt.
+Unterschieden wird hierbei zwischen funktionalen Anforderungen an das verwendete Hadoop"=Cluster und Anforderungen an das Testsystem.
+Während die funktionalen Anforderungen ausschließlich vom Cluster erfüllt werden müssen, müssen die Test"=Anforderungen vom gesamten Testsystem erfüllt werden.
+
+Mithilfe der im Folgenden definierten Anforderungen soll bereits automatisiert geprüft werden können, inwieweit eine Testautomatisierung möglich ist.
+Hierfür werden die Anforderungen, sofern möglich, in Form  Form von Constraints ebenfalls im Modell implementiert.
+Mithilfe dieser Constraints können die Anforderungen somit ebenfalls automatisiert und bereits während der Testausführung durch das Oracle validiert werden.
+
+\subsection{Funktionale Anforderungen an das Cluster}
+\label{sec:functionalRequirements}
+
+Obwohl in dieser Masterarbeit der Fokus auf Testautomatisierung und Validieren eines Testsystems liegt, müssen auch die funktionalen Anforderungen an das zu testende Hadoop"=Cluster berücksichtigt werden.
+Da im Rahmen der Publikation \cite{Eberhardinger2018} ebenfalls der in \autoref{sec:clusterSetup} beschriebene und in dieser Fallstudie genutzte Versuchsaufbau genutzt wurde, wurden im Rahmen dieser Fallstudie auch funktionale Anforderungen an das Cluster selbst durch das Oracle geprüft.
+Dies betrifft konkret folgende, bereits in \cite{Eberhardinger2018} definierte, Anforderungen:
 
 \begin{enumerate}
     \item Ein Task wird vollständig ausgeführt, sofern er nicht abgebrochen wird
@@ -11,11 +23,26 @@ Folgende Anforderungen wurden hierfür bereits in \cite{Eberhardinger2018} spezi
     \item Defekte oder Verbindungsabbrüche werden erkannt
 \end{enumerate}
 
-\todo{generelles wie Benchmarks oder ss hier erklören}
+\subsection{Anforderungen an das Testsystem}
+\label{sec:testRequirements}
 
-Da die Auswahl der ausgeführten Anwendungen nicht manuell bestimmt werden soll, wird hierfür ein Transitionssystem verwendet.
-Mithilfe dieses Transitionssystems, in dem die Wahrscheinlichkeiten von Wechsel zwischen zwei Anwendungen definiert sind, soll während der Ausführung eines Testfalls zufällig eine nachfolgende Anwendung ausgewählt werden.
-Da zum Testen des Clusters der \ac{ss}"=Simulator eingesetzt wird, hängt die Anzahl der Anwendungen primär von der Anzahl der ausgeführten Simulations"=Schritte ab.
-Ein weiterer Faktor zur Anzahl der Anwendungen ist die Anzahl an simulierten Clients, da auch getestet werden soll, wie sich das Cluster bei der Ausführung von mehreren parallel gestarteten Anwendungen verhält.
+Neben den funktionalen Anforderungen, gibt es weitere Anforderungen an das gesamte Testsystem.
+Diese Anforderungen betreffen das Hadoop"=Cluster, die Selfbalancing"=Komponente, das entwickelte \ac{ss}"=Modell sowie der Treiber zur Kommunikation zwischen Modell und Cluster.
+Konkret sind dies folgende Anforderungen an das Testsystem:
 
-Diese funktionalen Anforderungen sind ebenso wie die Anforderungen an das Testsystem selbst (vgl. \autoref{sec:predictions}) im Modell zu implementieren.
+\begin{enumerate}
+    \item Der \ac{MARP}"=Wert ändert sich basierend auf den derzeit ausgeführten Anwendungen
+    \item Der jeweils aktuelle Status des Clusters wird erkannt und im Modell gespeichert
+    \item Defekte Nodes und Verbindungsabbrüche werden erkannt
+    \item Im Modell implementierte Komponentenfehler werden im realen Cluster injiziert und repariert
+    \item Wenn alle Nodes defekt sind, wird erkannt, dass sich das Cluster nicht mehr rekonfigurieren kann
+    \item Ein Test kann vollautomatisch ausgeführt werden
+    \item Das Cluster kann ohne Auswirkungen auf seine Funktionsweise auf einem oder mehreren Hosts ausgeführt werden
+    \item Es können mehrere Benchmark"=Anwendungen gleichzeitig gestartet und ausgeführt werden
+    \item Tests und Testfälle können zeitlich unabhängig und mehrmals ausgeführt werden
+\end{enumerate}
+
+Die Anforderungen ergänzen und erweitern somit auch die funktionalen Anforderungen an das Cluster.
+
+Eine Besonderheit bildet zudem die fünfte Anforderung, wonach erkannt werden muss, dass im Cluster keine weitere Rekonfiguration möglich ist.
+Wird diese Anforderung verletzt soll der ausgeführte Test abgebrochen werden, während bei den anderen, auch den funktionalen, Anforderungen dies nur durch das Oracle vermerkt werden soll, die Ausführung aber nicht weiter durch das Oracle beeinträcht werden soll.

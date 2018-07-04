@@ -187,7 +187,7 @@ Da Container nur während der der Laufzeit von Anwendungen bzw. Attempts zu dere
 
 Im direkten Anschluss an das Monitoring erfolgt die Validierung der Constraints durch das Oracle.
 Das Oracle validiert hierbei analog zum Monitoring zunächst die Nodes und danach die Anwendungen, Attempts und Container auf ihre Constraints.
-Hierbei wird zunächst überprüft, ob die in \autoref{sec:clusterRequirements} beschrieben funktionalen Anforderungen an Hadoop in Form der in \todo{constraint implementierung} implementierten Constraints für die jeweiligen Komponenten noch erfüllt werden können.
+Hierbei wird zunächst überprüft, ob die in \autoref{sec:functionalRequirements} beschrieben funktionalen Anforderungen an Hadoop in Form der in \todo{constraint implementierung} implementierten Constraints für die jeweiligen Komponenten noch erfüllt werden können.
 Ist das nicht der Fall, wird dies geloggt und die weiteren Komponenten geprüft.
 
 Das Oracle überprüft auch, ob für das Cluster eine weitere Rekonfiguration möglich ist.
@@ -199,7 +199,7 @@ caption={Prüfung nach der Möglichkeit weiterer Rekonfigurationen}]
 
 Ist eine Rekonfiguration nicht mehr möglich, wird durch die hierbei ausgelöste \texttt{Exception} die gesamte Simulation abgebrochen.
 
-Zum Abschluss eines Schrittes werden die in \autoref{sec:predictions} beschriebenen Behauptungen an das Testverfahren selbst validiert.
+Zum Abschluss eines Schrittes werden die in \autoref{sec:testRequirements} beschriebenen Behauptungen an das Testverfahren selbst validiert.
 Hierbei können jedoch nicht alle Behauptungen in Form von Constraints durch das Oracle automatisch während der Ausführung validiert werden.
 Von den implementierten Constraints können zudem nicht alle direkt innerhalb des Modells während der Ausführung eines Simulations"=Schrittes validiert werden, weshalb außerhalb der Simulation ebenfalls Constraints definiert sind, die zum Abschluss der Simulation geprüft werden (vgl. \todo{constraint implementierung}).
 

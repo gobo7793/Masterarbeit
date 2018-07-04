@@ -1,65 +1,65 @@
-\section{Anforderungen an das Testsystem}
+\section{Planung der Tests und der Evaluation}
 \label{sec:evaluationPlan}
 
 Um das Testsystem zu validieren, wurde zunächst ein Evaluationsplan aufgestellt.
-In diesem ist festgehalten, was getestet wird, wie die Testfälle aussehen und wie die bei der Ausführung gewonnen Daten organisiert werden.
+In diesem ist festgehalten, was getestet wird, wie die Testkonfigurationen definiert sind, und wie die bei der Ausführung gewonnen Daten organisiert werden.
 
 \subsection{Behauptungen und Variablen}
-\label{sec:predictions}
+\label{sec:theses}
 
-Neben den in \autoref{sec:clusterRequirements} genannten funktionalen Anforderungen, bestehen an das gesamte Testsystem weitere Anforderungen.
-Zur Evaluation des Testsystems wurden hierbei folgende, weiteren Anforderungen bzw. Behauptungen aufgestellt:
-
-\begin{enumerate}
-    \item Der \ac{MARP}"=Wert ändert sich basierend auf den derzeit ausgeführten Anwendungen
-    \item Der jeweils aktuelle Status des Clusters wird erkannt und im Modell gespeichert
-    \item Defekte Nodes und Verbindungsabbrüche werden erkannt
-    \item Im Modell implementierte Komponentenfehler werden im realen Cluster injiziert und repariert
-    \item Wenn alle Nodes defekt sind, wird erkannt, dass sich das Cluster nicht mehr rekonfigurieren kann
-    \item Ein Test kann vollautomatisch ausgeführt werden
-    \item Das Cluster kann ohne Auswirkungen auf seine Funktionsweise auf einem oder mehreren Hosts ausgeführt werden
-    \item Es können mehrere Benchmark"=Anwendungen gleichzeitig gestartet und ausgeführt werden
-    \item Tests und Testfälle können zeitlich unabhängig und mehrmals ausgeführt werden
-\end{enumerate}
-
-Möglichst viele Anforderungen sollen, sofern möglich, im Testsystem implementiert werden, sodass sie in Form von \emph{Constraints} während der Ausführung der Tests bereits automatisch validiert werden können (vgl. \todo{abschnitt constraints impl}).
-
-Basierend auf den Anforderungen wurden folgende unabhängigen Variablen zur Evaluation ermittelt:
+Als Basis für die Behauptungen und Variablen dienten die in \autoref{sec:requirements} definierten Anforderungen an das Cluster und das Testsystem.
+Sie gehen damit auch einher mit den Behauptungen, welche für die Evaluation aufgestellt werden.
+Basierend auf den Anforderungen wurden daher folgende unabhängigen Variablen zur Evaluation ermittelt:
 
 \begin{itemize}
     \item Anzahl der Hosts und Nodes
     \item Anzahl der Clients
-    \item Anzahl der Simulations"=Schritte
+    \item Anzahl der Testfälle pro Test
     \item \emph{Seed} für Zufallsgeneratoren
     \item Generelle Wahrscheinlichkeit zur Aktivierung und Deaktivierung der Komponentenfehler
 \end{itemize}
 
-Basierend auf den unabhängigen Variablen wurden folgende abhängigen Variablen ermittelt:
+Basierend auf den unabhängigen Variablen wurden \uA folgende abhängigen Variablen ermittelt:
 
 \begin{itemize}
-    \item Verhältnis zwischen \ac{AppMstr} und normalen Anwendungs"=Containern
-    \item Art und Anzahl der aktivierten und deaktivierten Komponentenfehler
-    \item Anzahl erfolgreich bzw. nicht erfolgreich beendeter Anwendungen
-    \item Anzahl abgebrochener Anwendungen
+    \item Anzahl der tatsächlich ausgeführten Testfälle
+    \item Aktivierten und deaktivierte Komponentenfehler
+    \item Anzahl ausgeführter Anwendungen
+    \item Anzahl und Gründe für evtl. nicht vollständig ausgeführte Anwendungen
 \end{itemize}
 
-Diese Variablen werden dazu genutzt, um einerseits einzelne Testfälle zu definieren, andererseits auch als primäre Kennzahlen im Rahmen der Evaluation in \autoref{chap:evaluationResults}.
+Während die unabhängigen Variablen dazu genutzt werden, um Testkonfigurationen zu definieren (vgl. \autoref{sec:testcaseGeneration}), dienen die abhängigen Variablen als wichtige Kennzahlen im Rahmen der Evaluation in \autoref{chap:evaluationResults}.
 
-\subsection{Generierung der Testfälle}
+\subsection{Generierung der Testkonfigurationen}
 \label{sec:testcaseGeneration}
 
-Die Testfälle werden anhand der im vorherigen \autoref{sec:predictions} genannten unabhängigen Variablen definiert.
-Ein Testfall ist somit zum einen Abhängig von der Größe des Clusters, also ob das Cluster auf einem oder beiden Hosts ausgeführt wird und aus wie vielen Nodes das Cluster besteht.
-Mithilfe des Seeds für die Zufallsgeneratoren werden die ausgeführten Anwendungen anhand des Transitionssystems ermittelt.
-Die Anzahl der insgesamt ausgeführten Anwendungen wird primär von der Anzahl der Simulations"=Schritte sowie der Anzahl der Clients bestimmt.
-Die zu injizierenden und zu reparierenden Komponentenfehler, mit denen defekte Nodes und Verbindungsausfälle simuliert werden, werden zum Teil mithilfe des ausgewählt.
-Zudem sollen neben den Tests mit einem normalen Cluster zusätzliche Mutationstest mit einer veränderten Selfbalancing"=Komponente ausgeführt werden.
+Um nun anhand der in \autoref{sec:theses} definierten Variablen die in \autoref{sec:requirements} definierten Anforderungen zu prüfen, sind mehrere Tests nötig.
+Als Basis zur Definition einer Testkonfiguration dienen die in \autoref{sec:theses} definierten unabhängigen Variablen, die durch weitere Angaben ergänzt werden:
 
-Der in dieser Fallstudie verwendete Zufallsgenerator des .NET"=Frameworks ist hierbei kein \emph{echter} Zufallsgenerator, sondern ein Pseudo"=Zufallsgenerator, der mithilfe mathematischer Formeln anhand eines Start"=Seeds Zufallszahlen ermittelt, die anschließend zur Auswahl der Anwendungen und Komponentenfehlern genutzt werden.
-Da standardmäßig ein zeitbasierter Seed zur Initialisierung des Zufallsgenerators genutzt wird, muss zur Wiederausführbarkeit einzelner Testfälle der Seed der Zufallsgeneratoren manuell festgelegt werden können.
+\begin{itemize}
+    \item Anzahl genutzter Hosts
+    \item Basisanzahl der Nodes
+    \item Anzahl simulierter Clients
+    \item Verwendeter Seed für Zufallsgeneratoren
+    \item Anzahl auszuführender Testfälle
+    \item Mindestdauer für einen Testfall
+    \item Nutzung einer oder mehreren Mutationen
+    \item Generelle Wahrscheinlichkeit zur Aktivierung von Komponentenfehlern
+    \item Generelle Wahrscheinlichkeit zur Deaktivierung von Komponentenfehlern
+    \item Verwendung von vorab generierten Eingabedaten
+\end{itemize}
+
+Die Auswahl der ausgeführten Anwendungen erfolgt während der Testausführung anhand des Seeds der Testkonfiguration.
+Zwar werden durch das Transitionssystem wahrscheinlichkeitsbasierend zufällig Anwendungen ausgewählt, jedoch kann dies durch den Charakter des im .NET"=Framework vorhandenen Zufallsgenerators gesteuert werden.
+Der in .NET implementierte Zufallsgenerator ist nämlich kein \emph{echter}, sondern ein Pseudo"=Zufallsgenerator, der mithilfe von mathematischen Formeln und anhand eines Seeds Zufallszahlen berechnet.
+Zwar wird standardmäßig ein zeitbasierter Seed zur Initialisierung des Zufallsgenerators genutzt, durch die Angabe eines spezifischen Seeds kann jedoch die Wiederausführbarkeit der Tests sichergestellt werden.
 \todo{Wo wird Seed wie genutzt? am besten in implementierung davon!}
 
-Die Auswahl der konkreten Testfälle ist in \autoref{sec:selectTestcases} beschrieben, die Details zu deren Implementierung in \autoref{sec:implTestcases}.
+Auch die Aktivierung und Deaktivierung von Komponentenfehlern selbst soll während der Ausführung eines Testfalls festgelegt werden, wodurch die Wahrscheinlichkeit für deren Aktivierung bzw. Deaktivierung einen maßgeblichen Einfluss besitzt.
+Da Anwendungen \uU nicht erfolgreich beendet werden können, welche Eingabedaten für andere Anwendungen generieren, kann eine Testkonfiguration mit vorab generierten und im \ac{HDFS} gespeicherten Daten durchgeführt werden, wodurch Eingabedaten für Anwendungen unabhängig vom Status von zuvor ausgeführten Anwendungen verfügbar sind.
+Da einige Tests zudem als Mutationstests durchgeführt werden sollen, muss für eine Testkonfiguration dies entsprechend definiert werden.
+
+Die Auswahl der konkreten Testkonfigurationen in \autoref{sec:selectTestcases} erfolgte im Rahmen der in \autoref{sec:implTestcases} beschriebenen Implementierung der Tests.
 
 \subsection{Organisation und Ausgabe der Daten}
 \label{sec:dataOrganisation}
