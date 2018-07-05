@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.2">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>260</x>
+      <y>340</y>
+      <w>240</w>
+      <h>240</h>
+    </coordinates>
+    <panel_attributes>YarnApp
+--
+AmHost: YarnNode
+AppId: string
+Diagnostics: string
+FinalStatus: EFinalStatus
+IsKillable: bool
+Name: string
+StartingClient: Client
+State: EAppState
+SutConstraints: Func&lt;bool&gt;[]
+TestConstraints: Func&lt;bool&gt;[]
+--
+MonitorStatus()
+SetStatus()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>580</x>
+      <y>200</y>
+      <w>140</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>/Component/
+--
++ Update()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>370</x>
+      <y>250</y>
+      <w>300</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>280.0;10.0;280.0;40.0;10.0;40.0;10.0;90.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>290</x>
+      <y>570</y>
+      <w>130</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>lt=-()
+m2=IYarnReadable</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>530</x>
+      <y>340</y>
+      <w>240</w>
+      <h>240</h>
+    </coordinates>
+    <panel_attributes>YarnAppAttempt
+--
+AmContainerId: string
+AmHost: YarnNode
+AttemptId: string
+DetectedContainerCount: int
+Diagnostics: string
+RunningContainerCount: int
+State: EAppState
+SutConstraints: Func&lt;bool&gt;[]
+TestConstraints: Func&lt;bool&gt;[]
+--
+MonitorStatus()
+SetStatus()</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>640</x>
+      <y>250</y>
+      <w>30</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;90.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>640</x>
+      <y>250</y>
+      <w>230</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;40.0;210.0;40.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>620</x>
+      <y>570</y>
+      <w>130</w>
+      <h>100</h>
+    </coordinates>
+    <panel_attributes>lt=-()
+m2=IYarnReadable</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>650</x>
+      <y>670</y>
+      <w>170</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>lt=-()
+m2=IYarnReadable</panel_attributes>
+    <additional_attributes>150.0;10.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>800</x>
+      <y>340</y>
+      <w>240</w>
+      <h>370</h>
+    </coordinates>
+    <panel_attributes>YarnNode
+--
+CpuAvailable: long
+CpuUsed: long
+CpuUsage: double
+DetectedContainerCount: int
+HealthReport: string
+IsActive: bool
+IsConnected: bool
+MemoryAvailable: long
+MemoryUsed: long
+MemoryUsage: double
+NodeId: string
+RunningContainerCount: int
+State: ENodeState
+SutConstraints: Func&lt;bool&gt;[]
+TestConstraints: Func&lt;bool&gt;[]
+--
+MonitorStatus()
+SetStatus()
+StartConnection(): bool
+StartNode(): bool
+StopConnection(): bool
+StopNode(): bool</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>850</x>
+      <y>250</y>
+      <w>140</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>/YarnHost/
+--
+Name: string</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>910</x>
+      <y>300</y>
+      <w>30</w>
+      <h>60</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;40.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>440</x>
+      <y>570</y>
+      <w>170</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=1
+m2=4
+Attempts &gt;
+&lt; App</panel_attributes>
+    <additional_attributes>10.0;10.0;10.0;50.0;140.0;50.0;140.0;10.0</additional_attributes>
+  </element>
+</diagram>
