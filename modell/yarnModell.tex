@@ -1,7 +1,27 @@
-\section{YARN"=Modell}
+\section{Implementierung des \acs{YARN}"=Modells}
 \label{sec:yarnModel}
 
 \todo{Komplett neu strukturieren, am besten (inkl. Bild) in einzelne Bestandteile aufteilen, zB Controller, Nodes, Anwendungsmodell, Client, implementierte Komponentenfehler immer direkt mit rein, Fehlerprüfung wohl im Rahmen vom Controller}
+
+\todo{Multihost-Mode irgendwo erklären}
+\todo{irgendwo noch constraints einbauen}
+
+\subsection{Grundlegendes zum \acs{YARN}"=Modell}
+\label{sec:yarnModelBasics}
+
+\subsection{Relevante \acs{YARN}"=Komponenten}
+\label{sec:yarnComponents}
+
+\subsection{Client}
+\label{sec:yarnClient}
+
+\subsection{Controller}
+\label{sec:yarnController}
+
+\subsection{Oracle}
+\label{sec:oracleImpl}
+
+\todo{ab hier alte struktur!}
 
 \begin{figure}
     \includegraphics[width=\columnwidth]{./images/yarnModel.png}
@@ -16,7 +36,7 @@
 Enthalten sind alle hier relevanten Komponenten sowie deren Eigenschaften.
 Als Eigenschaften wurden die Daten aufgenommen, welche mithilfe von Shell"=Kommandos bzw. mithilfe der REST"=API von YARN ermittelt werden können.
 
-\subsection{Modellierte YARN"=Komponenten}\label{sec:yarnComponents}
+\subsection{Modellierte YARN"=Komponenten}%\label{sec:yarnComponents}
 
 Die abstrakte Basisklasse \texttt{YarnHost} stellt die Basis für alle Hosts des Clusters dar, also dem \texttt{YarnController} mit dem \ac{RM}, und dem \texttt{YarnNode}, was einen Node darstellt, auf dem die Anwendungen bzw. deren Container ausgeführt werden.
 Die abstrakte Eigenschaft \texttt{YarnHost.HttpPort} dient als Hilfs"=Eigenschaft, da Controller und Nodes unterschiedliche Ports für die Weboberfläche nutzen, deren URL mit Port in der Eigenschaft \texttt{YarnHost.HttpUrl} abrufbar ist.
@@ -41,7 +61,7 @@ Entsprechend wird in allen Komponenten die Methode \texttt{ReadStatus()} impleme
 Da die REST"=API ermöglicht, alle Daten auch über die reinen Listen zu erhalten anstatt ausschließlich über die Detailausgabe, besteht auch im Modell mithilfe der Eigenschaft \texttt{IsRequireDetailsParsing} das Ermitteln der Daten so einzustellen, dass die übergeordnete YARN"=Komponente bereits alle Daten ermittelt und der Untergeordneten zum Speichern (mittels \texttt{SetStatus()}) übergibt.
 Als Basis dazu dient der \texttt{YarnController}, der dafür die Daten aller Anwendungen ausliest, die wiederum die Daten ihrer Ausführungen auslesen, welche dann die Daten ihrer Container auslesen und den Komponenten zum Speichern übergeben.
 
-\subsection{Implementierung der Komponentenfehler}\label{sec:implementedFaults}
+\subsection{Implementierung der Komponentenfehler}%\label{sec:implementedFaults}
 
 Die Felder \texttt{YarnNode.NodeConnectionError} und \texttt{YarnNode.NodeDead} definieren die Komponentenfehler, wenn ein Node seine Netzwerkverbindung verliert bzw. beendet wird.
 Die aus den Komponentenfehlern resultierenden Effekte werden in den dafür implementierten geschachtelten Klassen definiert.
@@ -55,7 +75,7 @@ caption={[Injizierung eines Komponentenfehlers]
 float,style=cs]
 {./listings/faultInjectionExample.cs}
 
-\subsection{Fehlerüberprüfung}\label{sec:FaultTesting}
+\subsection{Fehlerüberprüfung}%\label{sec:FaultTesting}
 
 Um zu prüfen, ob sich das reale Cluster nach der Aktivierung bzw. Deaktivierung eines Komponentenfehlers korrekt rekonfiguriert, werden \emph{Constraints} genutzt.
 \todo{Verweis zu Anforderungen}
