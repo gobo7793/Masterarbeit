@@ -1,33 +1,46 @@
 \section{Implementierung des \acs{YARN}"=Modells}
 \label{sec:yarnModel}
 
-\todo{Komplett neu strukturieren, am besten (inkl. Bild) in einzelne Bestandteile aufteilen, zB Controller, Nodes, Anwendungsmodell, Client, implementierte Komponentenfehler immer direkt mit rein, Fehlerprüfung wohl im Rahmen vom Controller}
+Das implementierte \ac{YARN}"=Modell besteht, wie bereits in \autoref{sec:modelArchitecture} gezeigt, aus fünf Komponenten und den Komponentenfehlern der hier relevanten \ac{YARN}"=Komponenten.
+Die vier implementierten \ac{YARN}"=Komponenten sind die Anwendungen, ihre Attempts und Container, sowie die Nodes.
+Zudem wurde eine Klasse implementiert, die zur Repräsentation des \ac{RM} dient, welche zudem auch als Controller im Rahmen des Testens mit \ac{ss} dient.
+Einen Überblick über das Zusammenspiel des implementierten \ac{YARN}"=Modells gibt folgendes Klassendiagramm:
+
+\begin{figure}[h]
+    \includegraphics{./images/yarnModel_ls_MA.pdf}
+    \caption[Grundlegender Aufbau des \acs{YARN}"=Modells]
+        {Grundlegender Aufbau des \acs{YARN}"=Modells.
+        Assoziationen und weitere Verbindungen zum Treiber und \acs{ss} sind hier aus Gründen der Übersichtlichkeit nicht dargestellt.}
+    \label{fig:yarnModelClassDiagram}
+\end{figure}
+
+Im Folgenden werden zunächst die gemeinsam genutzten Bestandteile des \ac{YARN}"=Modells erläutert, welche nicht im Klassendiagramm enthalten sind, anschließend die fünf Komponenten des Modells, sowie die implementierten Komponentenfehler und basierend auf den in \autoref{sec:requirements} definierten Anforderungen implementierten Constraints.
+
+\subsection{Gemeinsam genutzte Bestandteile des \acs{YARN}"=Modell}
+\label{sec:yarnModelBasics}
 
 \todo{Multihost-Mode irgendwo erklären}
 \todo{irgendwo noch constraints einbauen}
-
-\subsection{Grundlegendes zum \acs{YARN}"=Modell}
-\label{sec:yarnModelBasics}
 
 \subsection{Relevante \acs{YARN}"=Komponenten}
 \label{sec:yarnComponents}
 
 \begin{figure}[h]
     \includegraphics[width=\columnwidth]{./images/yarnComponents.pdf}
-    \caption[Implementierte \ac{YARN}"=Komponenten mit den wichtigsten Eigenschaften und Methoden]
-        {Implementierte \ac{YARN}"=Komponenten mit den wichtigsten Eigenschaften und Methoden.
+    \caption[Für die Fallstudie relevante, implementierte \acs{YARN}"=Komponenten mit den wichtigsten Eigenschaften und Methoden]
+        {Für die Fallstudie relevante, implementierte \acs{YARN}"=Komponenten mit den wichtigsten Eigenschaften und Methoden.
         Dies sind alle für die spätere Durchführung und zur Ausgabe des Zustandes (vgl. \autoref{sec:dataOrganisation}) wichtigen Eigenschaften und Methoden.
-        Aus Gründen der Übersichtlichkeit sind hier die beiden von \texttt{IYarnReadable} bereitgestellten, relevanten Eigenschaften \texttt{PreviousParsedComponent} und \texttt{CurrentParsedComponent} sowie die implementierten Komponentenfehler nicht aufgeführt.}
+        Aus Gründen der Übersichtlichkeit sind die implementierten Komponentenfehler, einige der \texttt{IYarnReadable} bereitgestellten, relevanten Eigenschaften und Methoden, sowie die Klasse \texttt{YarnAppContainer} nicht aufgeführt.}
     \label{fig:yarnComponentsClassDiagram}
 \end{figure}
 
-\subsection{Client}
+\subsection{Implementierung des Clients}
 \label{sec:yarnClient}
 
-\subsection{Controller}
+\subsection{Implementierung des Controllers}
 \label{sec:yarnController}
 
-\subsection{Oracle}
+\subsection{Implementierung des Oracles}
 \label{sec:oracleImpl}
 
 \todo{ab hier alte struktur!}
