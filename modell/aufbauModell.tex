@@ -1,7 +1,7 @@
 \section{Grundlegende Architektur des Testmodells}
 \label{sec:modelArchitecture}
 
-Um Hadoop mit der Selfbalancing"=Komponente mit den in \autoref{sec:requirements} beschriebenen Anforderungen prüfen zu können, wird mithilfe des \ac{ss}"=Frameworks ein vereinfachtes Modell der relevanten \ac{YARN}"=Komponenten entwickelt.
+Um Hadoop mit der Selfbalancing"=Komponente mit den in \cref{sec:requirements} beschriebenen Anforderungen prüfen zu können, wird mithilfe des \ac{ss}"=Frameworks ein vereinfachtes Modell der relevanten \ac{YARN}"=Komponenten entwickelt.
 Dieses \ac{YARN}"=Modell wird mithilfe des Treibers mit dem realen Cluster verbunden.
 Daraus resultiert folgende Drei"=Schichten"=Architektur für das gesamte Testmodell:
 
@@ -46,5 +46,5 @@ Er besteht aus folgenden Komponenten:
 Der Parser wird hierbei nur zur Durchführung des Monitoring benötigt und nutzt wiederum den Connector zum abrufen der Daten.
 Andere Befehle und Zugriffe auf das reale Cluster, wie \zB das Injizieren von Komponentenfehlern, werden direkt mithilfe des Connectors durchgeführt.
 
-Die Implementierung des \ac{YARN}"=Modells wird in \autoref{sec:yarnModel} beschrieben, die Implementierung des Treibers in \autoref{sec:sshDriver}.
-Die Umsetzung des realen Clusters wird in \autoref{sec:realCluster} beschrieben.
+Die Implementierung des \ac{YARN}"=Modells wird in \cref{sec:yarnModel} beschrieben, die Implementierung des Treibers in \cref{sec:sshDriver}.
+Die Umsetzung des realen Clusters wird in \cref{sec:realCluster} beschrieben.
