@@ -3,8 +3,8 @@
 
 Das implementierte \ac{YARN}"=Modell besteht, wie bereits in \autoref{sec:modelArchitecture} gezeigt, aus fünf Komponenten und den Komponentenfehlern der hier relevanten \ac{YARN}"=Komponenten.
 Die vier implementierten \ac{YARN}"=Komponenten sind die Anwendungen, ihre Attempts und Container, sowie die Nodes.
-Zudem wurde eine Klasse implementiert, die zur Repräsentation des \ac{RM} dient, welche zudem auch als Controller im Rahmen des Testens mit \ac{ss} dient.
-Einen Überblick über das Zusammenspiel des implementierten \ac{YARN}"=Modells gibt folgendes Klassendiagramm:
+Zudem wurde eine Klasse implementiert, die zur Repräsentation des \ac{RM} dient, und als Controller im Rahmen des Testens mit \ac{ss} dient.
+Einen Überblick über den Aufbau des implementierten \ac{YARN}"=Modells gibt folgendes Klassendiagramm:
 
 \begin{figure}[h]
     \includegraphics{./images/yarnModel_ls_MA.pdf}
@@ -14,16 +14,21 @@ Einen Überblick über das Zusammenspiel des implementierten \ac{YARN}"=Modells 
     \label{fig:yarnModelClassDiagram}
 \end{figure}
 
-Im Folgenden werden zunächst die gemeinsam genutzten Bestandteile des \ac{YARN}"=Modells erläutert, welche nicht im Klassendiagramm enthalten sind, anschließend die fünf Komponenten des Modells, sowie die implementierten Komponentenfehler und basierend auf den in \autoref{sec:requirements} definierten Anforderungen implementierten Constraints.
-
-\subsection{Gemeinsam genutzte Bestandteile des \acs{YARN}"=Modell}
-\label{sec:yarnModelBasics}
+Zunächst werden im Folgenden die relevanten \ac{YARN}"=Komponenten mit ihren Komponentenfehlern erläutert, von denen für diese Fallstudie nicht alle vier benötigt wurden, anschließend die anderen Komponenten des \ac{YARN}"=Modells.
 
 \todo{Multihost-Mode irgendwo erklären}
 \todo{irgendwo noch constraints einbauen}
 
 \subsection{Relevante \acs{YARN}"=Komponenten}
 \label{sec:yarnComponents}
+
+Die vier implementierten, relevanten \ac{YARN}"=Komponenten sind die Anwendungen, ihre Attempts und Container sowie die Nodes des Clusters.
+Obwohl die die Anwendungs"=Container in dieser Fallstudie nicht benötigt werden, waren sie für die in \cite{Eberhardinger2018} beschriebene Fallstudie notwendig, welche ebenfalls mit dem hier beschriebenen Modell durchgeführt wurden.
+
+\subsubsection{Übersicht der implementierten Komponenten}
+\label{sec:yarnComponentsOverview}
+
+Eine Übersicht über die Implementierung der \ac{YARN}"=Komponenten gibt folgendes Klassendiagramm:
 
 \begin{figure}[h]
     \includegraphics[width=\columnwidth]{./images/yarnComponents.pdf}
@@ -33,6 +38,94 @@ Im Folgenden werden zunächst die gemeinsam genutzten Bestandteile des \ac{YARN}
         Aus Gründen der Übersichtlichkeit sind die implementierten Komponentenfehler, einige der \texttt{IYarnReadable} bereitgestellten, relevanten Eigenschaften und Methoden, sowie die Klasse \texttt{YarnAppContainer} nicht aufgeführt.}
     \label{fig:yarnComponentsClassDiagram}
 \end{figure}
+
+Neben den dargestellten Eigenschaften und Methoden wurden zahlreiche weitere implementiert, welche einerseits zur Vollständigkeit der implementierten Komponenten für die Tests in \cite{Eberhardinger2018}, andererseits auch zur Ausführung mithilfe des \ac{ss}"=Frameworks benötigt werden.
+Letztere sind \zB zur Speicherung von Strings notwendig, welche aufgrund der Einschränkungen von \ac{ss} (vgl. \autoref{sec:sSharp}) nicht jederzeit frei genutzt werden können.
+Strings sind im \ac{YARN}"=Modell daher zur Speicherung immer als  \texttt{char}"=Arrays implementiert, werden jedoch zur einfacheren Nutzung im Modell in Strings konvertiert:
+
+\begin{lstlisting}[label=lst:modelCharArrayAsString,style=cs,
+caption={[Implementierung der Eigenschaft AppId]
+    Implementierung der Eigenschaft \texttt{AppId}.
+    Die beiden Methoden \texttt{GetCharArrayAsString} und \texttt{SetCharArrayOnString} führen die Konvertierung in den \texttt{char}"=Array bzw. des \texttt{char}"=Arrays in einen String durch.}]
+public char[] AppIdActual { get; }
+
+[NonSerializable]
+public string AppId
+{
+  get { return ModelUtilities.GetCharArrayAsString(AppIdActual); }
+  set { ModelUtilities.SetCharArrayOnString(AppIdActual, value); }
+}
+\end{lstlisting}
+
+\subsubsection{Implementierung der Komponentenfehler}
+\label{sec:yarnComponentFaults}
+
+\subsubsection{Interface IYarnReadable}
+\label{sec:yarnComponentInterface}
+
+Das Interface \texttt{IYarnReadable} ist das zentrale Erkennungsmerkmal der im Modell abgebildeten und implementierten \ac{YARN}"=Komponenten.
+Es dient zum einen zur Identifikation aller implementierten \ac{YARN}"=Komponenten, andererseits stellt es auch Eigenschaften und Methoden bereit, welche einerseits dem Testen in \ac{ss} dienen, primär aber dem Ermitteln der Daten aus dem realen Cluster:
+
+\begin{itemize}
+    \item \texttt{GetId()}
+    \item \texttt{StatusAsString()}
+    
+    \item \texttt{Parser}
+    \item \texttt{IsSelfMonitoring}
+    \item \texttt{MonitorStatus()}
+    \item \texttt{SetStatus()}
+    
+    \item \texttt{PreviousParsedComponent}
+    \item \texttt{CurrentParsedComponent}
+    \item \texttt{SutConstraints}
+    \item \texttt{TestConstraints}
+\end{itemize}
+
+Die beiden erstgenannten Methoden dienen primär zu Debugging"=Zwecken und zur Rückgabe der ID bzw. der Werte aller Eigenschaften der Komponente als ein String.
+
+Die nachfolgenden vier Eigenschaften und Methoden dienen zum Monitoring der entsprechenden \ac{YARN}"=Komponenten.
+Während die Eigenschaft \texttt{Parser} den zu verwendenden Parser (vgl. \autoref{sec:implementedParsers}) speichert, dient die Eigenschaft \texttt{IsSelfMonito""ring} zur Unterscheidung, ob die Daten einer Komponente von dieser selbst ermittelt werden oder dies die übergeordnete Komponente durchführt.
+Diese Unterscheidung ist nötig, da \ac{YARN} zwei unterschiedliche Möglichkeiten zur Ermittlung der Daten bietet, die Rückgabe der Daten durch die Kommandozeile oder mithilfe der REST"=API.
+Ausführlichere Informationen zu den beiden Varianten sind in \autoref{sec:sshDriver} zu finden, Beispiele für die entsprechenden Rückgaben von Hadoop sind in \autoref{app:hadoopCmds} bzw. \autoref{app:hadoopRestApi} aufgeführt.
+Bei der Nutzung der Kommandozeile zur Ermittlung der Daten eignet sich daher die Selbstermittlung der Daten besser, während bei der Nutzung der Rest"=API die Ermittlung der Daten durch die übergeordnete Komponente geeigneter ist.
+Aus diesem Grund ist auch die Methode \texttt{SetStatus()} definiert, da hier unabhängig von der Datenermittlung der aktuelle Status der Komponente abgespeichert werden kann.
+Die Durchführung des Monitoring findet in beiden Fällen jedoch mithilfe der Methode \texttt{MonitorStatus()} statt:
+
+\begin{lstlisting}[label=lst:monitorAppStatus,style=cs,
+caption={[Implementierung der Methode MonitorStatus() in der Klasse YarnApp]
+    Implementierung der Methode \texttt{MonitorStatus()} in der Klasse \texttt{YarnApp} (gekürzt).
+    Das Monitoring der anderen Komponenten erfolgt analog hierzu.}]
+public void MonitorStatus()
+{
+  if(IsSelfMonitoring)
+  {
+    var parsed = Parser.ParseAppDetails(AppId);
+    if(parsed != null)
+    SetStatus(parsed);
+  }
+  
+  var parsedAttempts = Parser.ParseAppAttemptList(AppId);
+  foreach(var parsed in parsedAttempts)
+  {
+    // search free attempt
+    attempt.IsSelfMonitoring = IsSelfMonitoring;
+    if(IsSelfMonitoring)
+      attempt.AttemptId = parsed.AttemptId;
+    else
+    {
+      attempt.SetStatus(parsed);
+      attempt.MonitorStatus();
+    }
+  }
+}
+\end{lstlisting}
+
+Die vier restlichen Eigenschaften und Methoden dienen zur Auswertung der Komponente durch \ac{ss}.
+Die beiden Eigenschaften \texttt{SutConstraints} und \texttt{TestConstraints} dienen zur Implementierung der in \autoref{sec:requirements} definierten Anforderungen in Form von Constraints.
+Genauere Details hierzu finden sich in \autoref{sec:yarnComponentConstraints}.
+
+\subsubsection{Implementierung der Constraints}
+\label{sec:yarnComponentConstraints}
 
 \subsection{Implementierung des Clients}
 \label{sec:yarnClient}
