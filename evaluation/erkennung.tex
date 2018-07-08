@@ -2,16 +2,16 @@
 \label{sec:notDetectedData}
 
 Einige Daten des Clusters wurden nicht im Testsystem gespeichert bzw. im Programmlog ausgegeben.
-Dies verstößt damit gegen die in \autoref{subsec:testRequirements} definierte Anforderung an das Testsystem, dass der jeweils aktuelle Status des Clusters erkannt und im Modell gespeichert werden muss.
+Dies verstößt damit gegen die in \cref{subsec:testRequirements} definierte Anforderung an das Testsystem, dass der jeweils aktuelle Status des Clusters erkannt und im Modell gespeichert werden muss.
 Vorgekommen ist das auf zwei Arten, die im folgenden erläutert werden.
 
 \subsection{Nicht erkannte Nodes auf Host 2}
 \label{subsec:notDetectedHost2}
 
-Einer der beiden Fälle ist, dass ausführende Nodes von Anwendungen bzw. Attempts nicht erkannt bzw. ausgegeben wurden, wodurch vom Oracle auch Verletzungen gegen die in \autoref{sec:requirements} definierten Anforderungen erkannt wurden, wonach die Konfiguration des Clusters aktualisiert, und der aktuelle Status im Cluster erkannt und im Testmodell gespeichert werden muss.
+Einer der beiden Fälle ist, dass ausführende Nodes von Anwendungen bzw. Attempts nicht erkannt bzw. ausgegeben wurden, wodurch vom Oracle auch Verletzungen gegen die in \cref{sec:requirements} definierten Anforderungen erkannt wurden, wonach die Konfiguration des Clusters aktualisiert, und der aktuelle Status im Cluster erkannt und im Testmodell gespeichert werden muss.
 Hier geht es jedoch nicht um Anwendungen bzw. Attempts, die zwar bereits gestartet wurden, für die aber noch kein \ac{AppMstr} allokiert werden konnte.
 In diesen Fällen ist es daher das normale Verhalten von Hadoop, keinen ausführenden Node anzugeben, da keiner vorhanden ist.
-Wenn dieser Status zu lange anhält, wurden die Attempts bzw. \ac{AppMstr} durch Hadoop mit einem Timeout beendet (vgl. \autoref{subsec:failedApps}).
+Wenn dieser Status zu lange anhält, wurden die Attempts bzw. \ac{AppMstr} durch Hadoop mit einem Timeout beendet (vgl. \cref{subsec:failedApps}).
 
 Anders sieht das jedoch in den sechs Tests 7.1, 8 und 23 bis 26 aus.
 In diesen Tests wurden zwar regulär die Daten der Nodes ermittelt und auch in den Logdateien ausgegeben, jedoch nicht alle ausführenden Nodes von Anwendungen und Attempts.
@@ -28,8 +28,8 @@ Dennoch lässt sich sagen, dass die beiden verletzten Anforderungen nach einer g
 \label{subsec:notSavedAppDiagnostics}
 
 Bei allen Tests ist zudem aufgefallen, dass die Diagnostic"=Daten von Anwendungen nicht im Programmlog enthalten sind.
-Genauso wie bei den nicht erkannten Nodes auf Host 2 (vgl. \autoref{subsec:notDetectedHost2}) wurden alle Diagnostic"=Daten von Hadoop an das Testsystem übertragen, die der Anwendungen im Gegensatz zu denen der Attempts jedoch nicht gespeichert.
-Zur Auswertung der Daten im Rahmen der Evaluation ist dies zwar irrelevant, da dies auch aufgrund der Daten der Attempts geschehen konnte, allerdings wird dadurch die in \autoref{subsec:testRequirements} definierte Anforderung an das Testsystem nur teilweise erfüllt, wonach der jeweils aktuelle Status des Clusters erkannt und gespeichert wird.
+Genauso wie bei den nicht erkannten Nodes auf Host 2 (vgl. \cref{subsec:notDetectedHost2}) wurden alle Diagnostic"=Daten von Hadoop an das Testsystem übertragen, die der Anwendungen im Gegensatz zu denen der Attempts jedoch nicht gespeichert.
+Zur Auswertung der Daten im Rahmen der Evaluation ist dies zwar irrelevant, da dies auch aufgrund der Daten der Attempts geschehen konnte, allerdings wird dadurch die in \cref{subsec:testRequirements} definierte Anforderung an das Testsystem nur teilweise erfüllt, wonach der jeweils aktuelle Status des Clusters erkannt und gespeichert wird.
 
 Eine Analyse ergab, dass die Diagnostic"=Daten der Anwendungen aufgrund eines falsch gesetzten Attributs in der \texttt{ApplicationResult}"=Klasse des Parsers nicht im Testsystem gespeichert werden konnten. \todo{Reflexion: Hätte bei vorabtests erkannt werden müssen!}
 Da die Diagnostic"=Daten der Anwendungen eine Zusammenfassung der gesamten Anwendung darstellen, und alle Diagnostic"=Daten bereits durch die der Attempts vorhanden waren, wurde hier auf erneute Testausführungen verzichtet.

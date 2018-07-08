@@ -6,7 +6,7 @@ Diese Kette definiert die Ausführungsreihenfolge zwischen den einzelnen Anwendu
 Eine zufallsbasierte Markow"=Kette wurde aus dem Grund verwendet, dass auch in der Realität Anwendungen nicht immer in der gleichen Reihenfolge ausgeführt werden und daher auch in der Fallstudie eine unterschiedliche Ausführungsreihenfolge der Anwendungen gewährleistet werden soll.
 Mithilfe der Festlegung eines bestimmten Seeds für den in der Fallstudie benötigten Pseudo"=Zufallsgenerator besteht bei Bedarf dennoch die Möglichkeit, einen Test mit den gleichen Anwendungen wiederholen zu können.
 
-Einige der in \autoref{sec:appOverview} erwähnten Mapreduce Examples werden häufig als Benchmark verwendet.
+Einige der in \cref{sec:appOverview} erwähnten Mapreduce Examples werden häufig als Benchmark verwendet.
 Einige Beispiele dafür sind die Anwendungen \acl{so} und \texttt{grep} (ermittelt Anzahl von Regex"=Übereinstimmungen), die bereits im Referenzpapier zum MapReduce"=Algorithmus als Benchmarks verwendet wurden \cite{Dean2008}.
 \acl{tsr} ist ebenfalls ein weit verbreiteter Benchmark, der die Hadoop"=Implementierung der standardisierten \emph{Sort Benchmarks}\footnote{\url{https://sortbenchmark.org/}} darstellt \cite{Graves2013}.
 Ebenfalls als guter Benchmark dient die Anwendung \acl{wc}, mit der ein großer Datensatz stark verkleinert bzw. zusammengefasst wird und dient daher als gute Repräsentation für Anwendungsarten, bei denen Daten extrahiert werden \cite{Huang2010,Chen2012}.
@@ -85,6 +85,6 @@ Als nachfolgende Anwendungen für die Dummy"=Anwendungen kommen nur Anwendungen 
     \label{tab:transMatrix}
 \end{table}
 
-Für die in \autoref{tab:transMatrix} dargestellte Markow"=Kette der Übergänge zwischen den Anwendungen wurde neben den Ergebnissen aus den Studien zudem berücksichtigt, welche Anwendungen bestimmte Eingabedaten benötigen.
+Für die in \cref{tab:transMatrix} dargestellte Markow"=Kette der Übergänge zwischen den Anwendungen wurde neben den Ergebnissen aus den Studien zudem berücksichtigt, welche Anwendungen bestimmte Eingabedaten benötigen.
 Dadurch wird sichergestellt, dass die für einige Anwendungen benötigten Eingabedaten immer vorhanden sind, da diese ebenfalls im Rahmen der Ausführung der Benchmarks generiert werden.
 Anwendungen ohne Eingabedaten können dagegen fast jederzeit ausgeführt werden.

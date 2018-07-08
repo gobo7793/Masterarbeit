@@ -8,15 +8,64 @@ Im Folgenden sind daher beispielhaft die Ausgaben im JSON"=Format für die Anwen
 Im Rahmen dieser Masterarbeit sind die Rückgaben für Listen von Anwendungen, Attempts, Container und der Nodes vom \ac{RM} und bzw. \ac{NM} (Container) sowie des \ac{TLS} (Attempts und Container)relevant.
 Weitere Informationen zur REST"=API sind in der Dokumentation in \cite{HadoopYarnTlServer271,HadoopRmApi271,HadoopNmApi271} zu finden.
 
-\lstinputlisting[label=lst:hadoopAppListRestRm,style=json,
+\begin{lstlisting}[label=lst:hadoopAppListRestRm,style=cs,
 caption={[REST"=-Ausgabe aller Anwendungen vom \acs{RM}]
     REST"=Ausgabe aller Anwendungen vom \ac{RM}.
     Die Liste kann mithilfe verschiedener Query"=Parameter gefiltert werden.\\
     URL: \url{http://addr:port/ws/v1/cluster/apps}}]
-{./listings/hadoopAppListRm.json}
+{
+  "apps": {
+    "app": [
+      {
+        "id": "application_1518429920717_0001",
+        "user": "root",
+        "name": "QuasiMonteCarlo",
+        "queue": "default",
+        "state": "FINISHED",
+        "finalStatus": "SUCCEEDED",
+        "progress": 100,
+        "trackingUI": "History",
+        "trackingUrl": "http://controller:8088/proxy/application_1518429920717_0001/",
+        "diagnostics": "",
+        "clusterId": 1518429920717,
+        "applicationType": "MAPREDUCE",
+        "applicationTags": "",
+        "startedTime": 1518430260179,
+        "finishedTime": 1518430404123,
+        "elapsedTime": 143944,
+        "amContainerLogs": "http://compute-2:8042/node/containerlogs/container_1518429920717_0001_01_000001/root",
+        "amHostHttpAddress": "compute-2:8042",
+        "allocatedMB": -1,
+        "allocatedVCores": -1,
+        "runningContainers": -1,
+        "memorySeconds": 1756786,
+        "vcoreSeconds": 1546,
+        "preemptedResourceMB": 0,
+        "preemptedResourceVCores": 0,
+        "numNonAMContainerPreempted": 0,
+        "numAMContainerPreempted": 0
+      }
+    ]
+  }
+}
+\end{lstlisting}
 
-\lstinputlisting[label=lst:hadoopAttemptListRestTls,style=json,
+\begin{lstlisting}[label=lst:hadoopAttemptListRestTls,style=cs,
 caption={[REST"=Ausgabe aller Ausführungen einer Anwendung vom \acs{TLS}]
     REST"=Ausgabe aller Ausführungen einer Anwendung vom \ac{TLS}.\\
     URL: \url{http://addr:port/ws/v1/applicationhistory/apps/{appid}/appattempts}}]
-{./listings/hadoopAttemptListTls.json}
+{
+  "appAttempt": [
+    {
+      "appAttemptId": "appattempt_1518429920717_0001_000001",
+      "host": "compute-2",
+      "rpcPort": 46481,
+      "trackingUrl": "http://controller:8088/proxy/application_1518429920717_0001/",
+      "originalTrackingUrl": "http://controller:19888/jobhistory/job/job_1518429920717_0001",
+      "diagnosticsInfo": "",
+      "appAttemptState": "FINISHED",
+      "amContainerId": "container_1518429920717_0001_01_000001"
+    }
+  ]
+}
+\end{lstlisting}

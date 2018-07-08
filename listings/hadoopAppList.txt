@@ -1,7 +1,0 @@
-$ yarn application --list --appStates ALL
-18/02/08 15:37:51 INFO impl.TimelineClientImpl: Timeline service address: http://0.0.0.0:8188/ws/v1/timeline/
-18/02/08 15:37:51 INFO client.RMProxy: Connecting to ResourceManager at controller/10.0.0.3:8032
-18/02/08 15:37:51 INFO client.AHSProxy: Connecting to Application History server at /0.0.0.0:10200
-Total number of applications (application-types: [] and states: [NEW, NEW_SAVING, SUBMITTED, ACCEPTED, RUNNING, FINISHED, FAILED, KILLED]):1
-Application-Id	Application-Name	Application-Type	User	Queue	State	Final-State	Progress	Tracking-URL
-application_1518100641776_0001	QuasiMonteCarlo	MAPREDUCE	root	default	FINISHED	SUCCEEDED	100%	http://controller:19888/jobhistory/job/job_1518100641776_0001

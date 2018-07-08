@@ -7,7 +7,7 @@ Zudem wurde eine Klasse implementiert, die zur Repräsentation des \ac{RM} dient
 Einen Überblick über den Aufbau des implementierten \ac{YARN}"=Modells gibt folgendes Klassendiagramm:
 
 \begin{figure}[h]
-    \includegraphics{./images/yarnModel_ls_MA.pdf}
+    \includegraphics{./resources/yarnModel_ls_MA.pdf}
     \caption[Grundlegender Aufbau des \acs{YARN}"=Modells]
         {Grundlegender Aufbau des \acs{YARN}"=Modells.
         Assoziationen und weitere Verbindungen zum Treiber und \acs{ss} sind hier aus Gründen der Übersichtlichkeit nicht dargestellt.}
@@ -28,7 +28,7 @@ Obwohl die die Anwendungs"=Container in dieser Fallstudie nicht benötigt werden
 Eine Übersicht über die Implementierung der \ac{YARN}"=Komponenten gibt folgendes Klassendiagramm:
 
 \begin{figure}[h]
-    \includegraphics[width=\columnwidth]{./images/yarnComponents.pdf}
+    \includegraphics[width=\columnwidth]{./resources/yarnComponents.pdf}
     \caption[Für die Fallstudie relevante, implementierte \acs{YARN}"=Komponenten mit den wichtigsten Eigenschaften und Methoden]
         {Für die Fallstudie relevante, implementierte \acs{YARN}"=Komponenten mit den wichtigsten Eigenschaften und Methoden.
         Dies sind alle für die spätere Durchführung und zur Ausgabe des Zustandes (vgl. \cref{subsec:dataOrganisation}) wichtigen Eigenschaften und Methoden.
@@ -54,7 +54,7 @@ Die Start"= und Stop"=Methoden sowie die Eigenschaften \texttt{IsActive} und \te
 Diese Eigenschaften und Methoden werden daher auf den folgenden Seiten näher beschrieben.
 
 Neben den dargestellten, relevanten Eigenschaften und Methoden wurden zahlreiche weitere implementiert, welche einerseits zur Vollständigkeit der implementierten Komponenten für die Tests in \cite{Eberhardinger2018}, andererseits auch zur Ausführung mithilfe des \ac{ss}"=Frameworks benötigt werden.
-Letztere sind \zB zur Speicherung von Strings notwendig, welche aufgrund der Einschränkungen von \ac{ss} (vgl. \cref{sec:sSharp}) nicht jederzeit frei genutzt werden können.
+Letztere sind \zB zur Speicherung von Strings notwendig, welche aufgrund der Einschränkungen von \ac{ss} (vgl. \cref{sec:ssharp}) nicht jederzeit frei genutzt werden können.
 Strings sind im \ac{YARN}"=Modell daher zur Speicherung immer als  \texttt{char}"=Arrays implementiert, werden jedoch zur einfacheren Nutzung im Modell in Strings konvertiert:
 
 \begin{lstlisting}[label=lst:modelCharArrayAsString,style=cs,
@@ -73,7 +73,7 @@ public string AppId
 
 Die \texttt{Update()}"=Methoden starten bei allen vier implementierten \ac{YARN}"=Komponenten die jeweiligen Monitoring"=Funktionen, bei \texttt{YarnNode} werden zudem \texttt{StartNode()} und \texttt{StartConnection()} ausgeführt um mögliche zuvor injizierte Komponentenfehler im realen Cluster zu reparieren.
 
-Da bei der Ausführung des Modells durch \ac{ss} keine neuen Instanzen erzeugt werden können (vgl. \cref{sec:sSharp}), dienen die jeweiligen IDs der Komponenten auch als Indikator, ob die jeweilige Komponenten"=Instanz derzeit benötigt wird und somit Daten gespeichert werden sollen.
+Da bei der Ausführung des Modells durch \ac{ss} keine neuen Instanzen erzeugt werden können (vgl. \cref{sec:ssharp}), dienen die jeweiligen IDs der Komponenten auch als Indikator, ob die jeweilige Komponenten"=Instanz derzeit benötigt wird und somit Daten gespeichert werden sollen.
 Daher wird das Monitoring auch nur dann ausgeführt, wenn der Instanz eine nicht leere ID \zB in Form der \texttt{AppId} zugewiesen wurde.
 
 \subsubsection{Implementierung der Komponentenfehler}
@@ -142,7 +142,7 @@ Ob ein Komponentenfehler in einem Testfall aktiviert wird, entscheidet sich anha
 Hierfür sind beide Komponentenfehler mit dem Attribut \texttt{NodeFault} versehen, mit dessen Hilfe entschieden wird, ob ein Komponentenfehler aktiviert oder deaktiviert und somit injiziert bzw. repariert wird.
 Der Entscheidungsprozess hierfür ist in \cref{subsubsec:simulationFaultActivation} beschrieben.
 
-Da beide Fehler zudem auch gleichzeitig aktiviert werden können, wurde \texttt{NodeDeadFault} mithilfe entsprechender \ac{ss}"=Funktionen eine höhere Priorität vergeben, wodurch dieser Vorrang vor dem anderen Komponentenfehler erhält.
+Da beide Fehler zudem auch gleichzeitig aktiviert werden können, wurde \texttt{NodeDead""Fault} mithilfe entsprechender \ac{ss}"=Funktionen eine höhere Priorität vergeben, wodurch dieser Vorrang vor dem anderen Komponentenfehler erhält.
 Dadurch wird in solchen Fällen der Node beendet und nicht zunächst noch vom Netzwerk getrennt.
 
 Zur einfachen Identifikation der aktiven Komponentenfehler dienen die beiden Eigenschaften \texttt{IsActive} und \texttt{IsConnected}.

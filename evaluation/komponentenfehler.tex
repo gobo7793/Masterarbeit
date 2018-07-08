@@ -1,7 +1,7 @@
 \section{Betrachtung der Komponentenfehler}
 \label{sec:faultEval}
 
-Die Aktivierung und Deaktivierung der Komponentenfehler in einem Testfall hängt neben dem zur Berechnung benötigtem Seed vor allem von den zuvor ausgeführten Testfällen bzw. der Lastverteilung bei den zuvor ausgeführten Testfällen eines Tests ab (vgl. \autoref{subsubsec:simulationFaultActivation}).
+Die Aktivierung und Deaktivierung der Komponentenfehler in einem Testfall hängt neben dem zur Berechnung benötigtem Seed vor allem von den zuvor ausgeführten Testfällen bzw. der Lastverteilung bei den zuvor ausgeführten Testfällen eines Tests ab (vgl. \cref{subsubsec:simulationFaultActivation}).
 Daher wurden abhängig von der Lastverteilung im Cluster auch bei einer mehrmaligen Ausführung der gleichen Konfiguration bei einigen Testausführungen unterschiedliche Komponentenfehler aktiviert.
 
 Unterschieden werden muss hierbei zudem zwischen aktivierten und injizierten Komponentenfehlern.
@@ -19,7 +19,7 @@ Die Anzahl der aktivierten und deaktivierten Komponentenfehler unterschied sich 
 Bei den anderen korrespondierenden Konfigurationen unterschied sich die Anzahl bei allen jeweiligen Tests um mehr als einen Komponentenfehler.
 Mit jeweils 20 aktivierten Komponentenfehlern wurden bei den Tests 28.1, 31.1 und 32 die meisten aktiviert, die meisten Komponentenfehler deaktiviert wurden bei den Tests der Konfigurationen 11 und 12 mit jeweils 15 Stück.
 Nur im Test zur Konfiguration 2 wurden mit 3 Stück alle aktivierten Komponentenfehler während der Simulation auch wieder deaktiviert.
-In den Tests 4, 5.1, 5.2 und 6 wurden jeweils 6 oder 7 Komponentenfehler aktiviert, jedoch keine deaktiviert, weshalb diese Tests bereits beim 3. ausgeführten Testfall gemäß \autoref{subsubsec:simulationOracle} abgebrochen wurden (vgl. \autoref{subsec:noReconf36}).
+In den Tests 4, 5.1, 5.2 und 6 wurden jeweils 6 oder 7 Komponentenfehler aktiviert, jedoch keine deaktiviert, weshalb diese Tests bereits beim 3. ausgeführten Testfall gemäß \cref{subsubsec:simulationOracle} abgebrochen wurden (vgl. \cref{subsec:noReconf36}).
 
 Im Vergleich zwischen den Tests von korrespondierenden Testkonfigurationen sind die Tests der Konfigurationen 1 und 2 auffällig.
 Während beim Test 1.1 mit 5 Komponentenfehlern bzw. beim Test 1.2 mit 7 Komponentenfehlern jeweils rund jeder achte mögliche Komponentenfehler aktiviert wurde, wurden beim Test 2 lediglich 3 Komponentenfehler für 4 Nodes in 5 Testfällen (insgesamt also 40 mögliche Komponentenfehler) aktiviert.
@@ -29,7 +29,7 @@ Auch in den korrespondierenden Tests der Konfiguration 10 liegt die Anzahl der a
 
 Auffällig ist zudem, dass bei korrespondierenden Testkonfigurationen mit unterschiedlicher Anzahl an aktivierten Komponentenfehlern die niedrigere Anzahl meist diejenigen mit Mutationen aufweisen.
 Nur bei den Konfigurationen 9 und 10, 13 und 14, 27 und 28 und 31 und 32 weisen einige Tests ohne Mutationen eine geringere Anzahl an aktivierten Komponentenfehler auf als Tests mit Mutationen.
-Dies liegt wohl auch darin begründet, dass durch den veränderten \ac{MARP}"=Wert die verfügbaren Ressourcen besser an die Anwendungen verteilt werden konnten und bestätigt damit die Funktionalität der von \citeauthor{zhang2016} entwickelten Komponente.
+Dies liegt wohl auch darin begründet, dass durch den veränderten \ac{MARP}"=Wert die verfügbaren Ressourcen besser an die Anwendungen verteilt werden konnten und bestätigt damit die Funktionalität der von \citeauthor{Zhang2016} entwickelten Komponente.
 
 Weitere Auffälligkeiten ergeben sich zudem beim Vergleich der Ausführungszeiten der Simulationen.
 Die Tests 9.2, 15, 31.1 sowie 31.2 stellen die einzigen Test ohne Mutationen dar, bei denen die Simulation schneller abgeschlossen wurde als in den korrespondierenden Tests mit Mutationsszenario.
@@ -59,7 +59,7 @@ Das betraf konkret drei mal das Injizieren eines Komponentenfehlers sowie 16 mal
 \end{table}
 
 Bei den aufgetretenen als ungültig validierten Constraints fällt auf, dass die betroffenen Nodes im jeweils nachfolgenden Testfall mit ihrem jeweils korrekten Status erkannt wurden.
-Die 19 als ungültig markierten Constraints zu den Anforderungen aus \autoref{sec:requirements}, dass defekte Nodes und Verbindungsabbrüche erkannt werden, wurden somit korrekt, als auch inkorrekt, als ungültig validiert.
+Die 19 als ungültig markierten Constraints zu den Anforderungen aus \cref{sec:requirements}, dass defekte Nodes und Verbindungsabbrüche erkannt werden, wurden somit korrekt, als auch inkorrekt, als ungültig validiert.
 Dies liegt daran, dass das Cluster bei defekten Nodes erst einige Zeit benötigt, um zu erkennen, dass ein Node ausgefallen ist.
 Auch wenn ein Node nicht mehr defekt ist, benötigt dieser bzw. der \ac{RM} erst einige Zeit, bis erkannt wird, dass der Node wieder aktiv ist.
 Dies liegt einerseits daran, dass Hadoop bzw. der \ac{RM} nicht kontinuierlich, sondern periodisch nach einer bestimmten Zeitspanne den Status der Nodes prüft und bei nicht erreichbaren Nodes zunächst solange wartet, bis die Abfrage durch einen \emph{Timeout} beendet wird.

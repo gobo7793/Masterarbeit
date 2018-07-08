@@ -4,28 +4,80 @@
 Für jede der vier relevanten YARN"=Komponenten können die Daten jeweils als Liste oder als ausführlicher Report ausgegeben werden.
 Im Folgenden sind beispielhaft die dafür notwendigen Befehle für Anwendungen aufgelistet, für Ausführungen, Container und Nodes sind analoge Befehle verfügbar.
 Neben den Monitoring"=Befehlen sind auch einige weitere für diese Arbeit relevante Befehle mit ihren Ausgaben aufgelistet.
-Die Ausgaben zu den Befehlen sind hier zudem auf das wesentliche gekürzt, \uA da Hadoop bei einigen Befehlen ausgibt, über welche Services (in \autoref{lst:hadoopAppListCmd} \zB \ac{TLS}, \ac{RM} und \emph{Application History Server}) die Daten ermittelt werden.
+Die Ausgaben zu den Befehlen sind hier zudem auf das wesentliche gekürzt, \uA da Hadoop bei einigen Befehlen ausgibt, über welche Services (in \cref{lst:hadoopAppListCmd} \zB \ac{TLS}, \ac{RM} und \emph{Application History Server}) die Daten ermittelt werden.
 Weiterführende Informationen zu den einzelnen Befehlen sind in der Dokumentation von Hadoop in \cite{HadoopYarnCmds271} zu finden.
 
-\lstinputlisting[label=lst:hadoopAppListCmd,style=plain,
+\begin{lstlisting}[label=lst:hadoopAppListCmd,style=cs,
 caption={[CMD"=Ausgabe der Anwendungsliste]
     CMD"=Ausgabe der Anwendungsliste.
     Anwendungen können mithilfe der Optionen \mbox{\texttt{-{}-appTypes}} und \mbox{\texttt{-{}-appStates}} gefiltert werden.}]
-{./listings/hadoopAppList.txt}
+$ yarn application --list --appStates ALL
+18/02/08 15:37:51 INFO impl.TimelineClientImpl: Timeline service address: http://0.0.0.0:8188/ws/v1/timeline/
+18/02/08 15:37:51 INFO client.RMProxy: Connecting to ResourceManager at controller/10.0.0.3:8032
+18/02/08 15:37:51 INFO client.AHSProxy: Connecting to Application History server at /0.0.0.0:10200
+Total number of applications (application-types: [] and states: [NEW, NEW_SAVING, SUBMITTED, ACCEPTED, RUNNING, FINISHED, FAILED, KILLED]):1
+Application-Id	Application-Name	Application-Type	User	Queue	State	Final-State	Progress	Tracking-URL
+application_1518100641776_0001	QuasiMonteCarlo	MAPREDUCE	root	default	FINISHED	SUCCEEDED	100%	http://controller:19888/jobhistory/job/job_1518100641776_0001
+\end{lstlisting}
 
-\lstinputlisting[label=lst:hadoopAppDetailsCmd,style=plain,
+\begin{lstlisting}[label=lst:hadoopAppDetailsCmd,style=cs,
 caption={CMD"=Ausgabe des Reports einer Anwendung}]
-{./listings/hadoopAppDetails.txt}
+$ yarn application --status application_1518100641776_0001
+[...]
+Application Report : 
+    Application-Id : application_1518100641776_0001
+    Application-Name : QuasiMonteCarlo
+    Application-Type : MAPREDUCE
+    User : root
+    Queue : default
+    Start-Time : 1518103712160
+    Finish-Time : 1518103799743
+    Progress : 100%
+    State : FINISHED
+    Final-State : SUCCEEDED
+    Tracking-URL : http://controller:19888/jobhistory/job/job_1518100641776_0001
+    RPC Port : 41309
+    AM Host : compute-1
+    Aggregate Resource Allocation : 1075936 MB-seconds, 942 vcore-seconds
+    Diagnostics :
+\end{lstlisting}
 
-\lstinputlisting[label=lst:hadoopAppStart,style=plain,
+\begin{lstlisting}[label=lst:hadoopAppStart,style=cs,
 caption={[Starten einer Anwendung in Hadoop"=Benchmark]
     Starten einer Anwendung in Hadoop"=Benchmark.
-    Hier mit dem Mapreduce Example \acl{pi} und dem Abbruch der Anwendung durch den in \autoref{lst:hadoopAppKill} gezeigten Befehl.
+    Hier mit dem Mapreduce Example \acl{pi} und dem Abbruch der Anwendung durch den in \cref{lst:hadoopAppKill} gezeigten Befehl.
     Die \mbox{\texttt{applicationId}} ist hier in Zeile 13 enthalten.}]
-{./listings/hadoopAppStart.txt}
+$ hadoop-benchmark/benchmarks/hadoop-mapreduce-examples/run.sh pi 20 1000
+Number of Maps  = 20
+Samples per Map = 1000
+Wrote input for Map #0
+[...]
+Starting Job
+18/03/14 13:06:26 INFO impl.TimelineClientImpl: Timeline service address: http://0.0.0.0:8188/ws/v1/timeline/
+18/03/14 13:06:27 INFO client.RMProxy: Connecting to ResourceManager at controller/10.0.0.3:8032
+18/03/14 13:06:27 INFO client.AHSProxy: Connecting to Application History server at /0.0.0.0:10200
+18/03/14 13:06:27 INFO input.FileInputFormat: Total input paths to process : 20
+18/03/14 13:06:27 INFO mapreduce.JobSubmitter: number of splits:20
+18/03/14 13:06:27 INFO mapreduce.JobSubmitter: Submitting tokens for job: job_1520342317799_0002
+18/03/14 13:06:28 INFO impl.YarnClientImpl: Submitted application application_1520342317799_0002
+18/03/14 13:06:28 INFO mapreduce.Job: The url to track the job: http://controller:8088/proxy/application_1520342317799_0002/
+18/03/14 13:06:28 INFO mapreduce.Job: Running job: job_1520342317799_0002
+18/03/14 13:06:34 INFO mapreduce.Job: Job job_1520342317799_0002 running in uber mode : false
+18/03/14 13:06:34 INFO mapreduce.Job:  map 0% reduce 0%
+18/03/14 13:06:58 INFO mapreduce.Job:  map 20% reduce 0%
+18/03/14 13:06:59 INFO mapreduce.Job:  map 60% reduce 0%
+18/03/14 13:07:03 INFO mapreduce.Job:  map 0% reduce 0%
+18/03/14 13:07:03 INFO mapreduce.Job: Job job_1520342317799_0002 failed with state KILLED due to: Application killed by user.
+18/03/14 13:07:03 INFO mapreduce.Job: Counters: 0
+Job Finished in 37.53 seconds
+\end{lstlisting}
 
-\lstinputlisting[label=lst:hadoopAppKill,style=plain,
+\begin{lstlisting}[label=lst:hadoopAppKill,style=cs,
 caption={[Vorzeitiges Beenden einer Anwendung]
     Vorzeitiges Beenden einer Anwendung.
-    Hier wird die in \autoref{lst:hadoopAppStart} gestartete Anwendung vorzeitig beendet.}]
-{./listings/hadoopAppKill.txt}
+    Hier wird die in \cref{lst:hadoopAppStart} gestartete Anwendung vorzeitig beendet.}]
+$ yarn application -kill application_1520342317799_0002
+[...]
+Killing application application_1520342317799_0002
+18/03/14 13:07:02 INFO impl.YarnClientImpl: Killed application application_1520342317799_0002
+\end{lstlisting}

@@ -7,7 +7,7 @@ In diesem ist festgehalten, was getestet wird, wie die Testkonfigurationen defin
 \subsection{Behauptungen und Variablen}
 \label{subsec:theses}
 
-Als Basis für die Behauptungen und Variablen dienten die in \autoref{sec:requirements} definierten Anforderungen an das Cluster und das Testsystem.
+Als Basis für die Behauptungen und Variablen dienten die in \cref{sec:requirements} definierten Anforderungen an das Cluster und das Testsystem.
 Sie gehen damit auch einher mit den Behauptungen, welche für die Evaluation aufgestellt werden.
 Basierend auf den Anforderungen wurden daher folgende unabhängigen Variablen zur Evaluation ermittelt:
 
@@ -28,13 +28,13 @@ Basierend auf den unabhängigen Variablen wurden \uA folgende abhängigen Variab
     \item Anzahl und Gründe für evtl. nicht vollständig ausgeführte Anwendungen
 \end{itemize}
 
-Während die unabhängigen Variablen dazu genutzt werden, um Testkonfigurationen zu definieren (vgl. \autoref{subsec:testcaseGeneration}), dienen die abhängigen Variablen als wichtige Kennzahlen im Rahmen der Evaluation in \autoref{ch:evaluationResults}.
+Während die unabhängigen Variablen dazu genutzt werden, um Testkonfigurationen zu definieren (vgl. \cref{subsec:testcaseGeneration}), dienen die abhängigen Variablen als wichtige Kennzahlen im Rahmen der Evaluation in \cref{ch:evaluationResults}.
 
 \subsection{Generierung der Testkonfigurationen}
 \label{subsec:testcaseGeneration}
 
-Um nun anhand der in \autoref{subsec:theses} definierten Variablen die in \autoref{sec:requirements} definierten Anforderungen zu prüfen, sind mehrere Tests nötig.
-Als Basis zur Definition einer Testkonfiguration dienen die in \autoref{subsec:theses} definierten unabhängigen Variablen, die durch weitere Angaben ergänzt werden:
+Um nun anhand der in \cref{subsec:theses} definierten Variablen die in \cref{sec:requirements} definierten Anforderungen zu prüfen, sind mehrere Tests nötig.
+Als Basis zur Definition einer Testkonfiguration dienen die in \cref{subsec:theses} definierten unabhängigen Variablen, die durch weitere Angaben ergänzt werden:
 
 \begin{itemize}
     \item Anzahl genutzter Hosts
@@ -60,7 +60,7 @@ Da Anwendungen, die Eingabedaten für andere Anwendungen generieren, \uU nicht e
 Dadurch wird es ermöglicht, dass in solchen Tests spätere Anwendungen nicht vom Erfolg der zuvor ausgeführten Anwendungen zur Generierung der Eingabedaten abhängig sind.
 Da einige Tests zudem als Mutationstests durchgeführt werden sollen, muss für eine Testkonfiguration dies entsprechend definiert werden.
 
-Die Auswahl der konkreten Testkonfigurationen in \autoref{sec:selectTestcases} erfolgte im Rahmen der in \autoref{sec:implTestcases} beschriebenen Implementierung der Tests.
+Die Auswahl der konkreten Testkonfigurationen in \cref{sec:selectTestcases} erfolgte im Rahmen der in \cref{sec:implTestcases} beschriebenen Implementierung der Tests.
 
 \subsection{Organisation und Ausgabe der Daten}
 \label{subsec:dataOrganisation}
@@ -128,4 +128,4 @@ Es können hierbei alle Daten ausgegeben werden, welche erkannt werden können, 
     \end{itemize}
 \end{itemize}
 
-Die Details zur Implementierung und dem Ausgabeformat während der Ausführung der Simulation sind in \autoref{subsubsec:simulationStepOutput} erläutert, die zur Ausgabe der generellen Testfalldaten in \autoref{sec:implTestcases}. Ein Beispiel einer möglichen Ausgabe für einen Testfall findet sich in \autoref{app:outputFormat}.
+Die Details zur Implementierung und dem Ausgabeformat während der Ausführung der Simulation sind in \cref{subsubsec:simulationStepOutput} erläutert, die zur Ausgabe der generellen Testfalldaten in \cref{sec:implTestcases}. Ein Beispiel einer möglichen Ausgabe für einen Testfall findet sich in \cref{app:outputFormat}.

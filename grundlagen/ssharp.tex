@@ -1,5 +1,5 @@
 \section{\acl{ss}}
-\label{sec:sSharp}
+\label{sec:ssharp}
 
 \todo{Testen unter SS allgemein genauer erklären}
 \textbf{\acf{ss}} ist ein am \isse der Universität Augsburg entwickeltes Framework zum Testen und Verifizieren von Systemen und Modellen.
@@ -15,9 +15,24 @@ Für einen korrekten Test ist es jedoch wichtig, dass das Modell des Systems ver
 
 Folgendes Beispiel zeigt den typischen, grundlegenden Aufbau einer \ac{ss}-Komponente:
 
-\lstinputlisting[label=lst:ssExample,style=cs,
-caption={Grundlegender Aufbau einer \acs{ss}-Komponente}]
-{./listings/ssExample.cs}
+\begin{lstlisting}[label=lst:ssExample,style=cs,
+caption={Grundlegender Aufbau einer \acs{ss}-Komponente.}]
+public class MyCOmponent : Component
+{
+  // fault definition, also possible: new PermanentFault()
+  public readonly Fault MyFault = new TransientFault();
+  
+  // interaction logic (Fields, Properties, Methods...)
+  
+  // fault effect
+  [FaultEffect(Fault = nameof(MyFault))]
+  internal class MyFaultEffect : MyCOmponent
+  {
+    // fault effect logic
+  }
+}
+\end{lstlisting}
+
 
 Jede Komponente des Modells muss von \texttt{Component} erben, um als \ac{ss}-Komponente definiert zu sein.
 Jede Komponente kann nun temporäre (\texttt{TransientFault}) oder dauerhafte (\texttt{PermanentFault}) Komponentenfehler enthalten, welche zunächst innerhalb der Komponente als Felder definiert werden. 

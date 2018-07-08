@@ -2,13 +2,42 @@
 \label{sec:implTestcases}
 
 Genauso wie die Simulation wurde zur Implementierung das NUnit"=Framework sowie zur Ausführung der \emph{ReSharper Unit Test Runner}\footnote{\url{https://www.jetbrains.com/resharper/}} genutzt.
-Alle zur Ausführung der Testfälle der Fallstudie relevanten Methoden wurden zudem in der Klasse \texttt{CaseStudyTests} zusammengefasst, welche die bereits in \autoref{sec:implSimulation} beschriebene Simulation nutzt.
+Alle zur Ausführung der Testfälle der Fallstudie relevanten Methoden wurden zudem in der Klasse \texttt{CaseStudyTests} zusammengefasst, welche die bereits in \cref{sec:implSimulation} beschriebene Simulation nutzt.
 Zur Ausführung der Tests wurde folgende Methode entwickelt, bei der mithilfe von NUnit die Testfälle ermittelt werden:
 
-\lstinputlisting[label=lst:executeTestCases,style=cs,
+\begin{lstlisting}[label=lst:executeTestCases,style=cs,
 caption={[Methode zur Ausführung der Testfälle]
     Methode zur Ausführung der Testfälle (gekürzt)}]
-{./listings/executeTestCases.cs}
+[Test]
+[TestCaseSource(nameof(GetTestCases))]
+public void ExecuteCaseStudy(int benchmarkSeed, double faultProbability, int hostsCount, int clientCount, int stepCount, bool isMutated)
+{
+  // write test case parameter to log
+  
+  InitInstances();
+  var isFailed = false;
+  try
+  {
+    // Setup
+    StartCluster(hostsCount, isMutated);
+    Thread.Sleep(5000); // wait for startup
+    
+    var simTest = new SimulationTests();
+    // save test case parameter to simTest
+    
+    // Execution
+    simTest.SimulateHadoopFaults();
+  }
+  // catch exceptions and set isFailed=true
+  finally
+  {
+    // Teardown
+    StopCluster();
+    MoveCaseStudyLogs(/* test case parameter */);
+  }
+  Assert.False(isFailed);
+}
+\end{lstlisting}
 
 Das Starten und Beenden des jeweiligen Cluster dient der automatisierten Ausführung aller Tests inkl. denen mit der mutierten Selfbalancing"=Komponente.
 Dadurch ist es möglich, das Cluster neben dem normalen Szenario auch in einem Mutationsszenario zu starten.
@@ -19,20 +48,45 @@ Eine möglicherweise bereits zuvor verwendete Modell"=Instanz wird hier jedoch i
 
 Mithilfe der im \texttt{TestCaseSourceAttribute} referenzierten Methode \texttt{GetTestCases()} werden die implementierten Testkonfigurationen ermittelt:
 
-\lstinputlisting[label=lst:getTestCases,style=cs,
+\begin{lstlisting}[label=lstgetTestCases:,style=cs,
 caption={[Implementierung der Testkonfigurationen]
     Implementierung der Testfälle (gekürzt).
     Die hier nicht gezeigten Methoden zur Rückgabe der implementierten Werte wie \texttt{GetFaultProbabilities()} sind nach dem gleichen Schema aufgebaut wie \texttt{GetSeeds()}.
     Mithilfe der Eigenschaft \texttt{MutationConfig} erfolgt die Auswahl des zu verwendeten Mutationsszenarios.}]
-{./listings/getTestCases.cs}
+public string MutationConfig { get; set; } = "mut1234";
 
-Hierbei werden nur Konfigurationen generiert, auf denen die in \autoref{sec:selectTestcases} genannten Bedingungen zutreffen, womit anstatt den möglichen 48 Testfällen nur die gewählten 32 generiert werden.
+public IEnumerable GetTestCases()
+{
+  return from seed in GetSeeds()
+         from prob in GetFaultProbabilities()
+         from hosts in GetHostCounts()
+         from clients in GetClientCounts()
+         from steps in GetStepCounts()
+         from isMut in GetIsMutated()
+         
+         where !(hosts == 1 && clients >= 6)
+         where !(clients <= 2 && steps >= 10)
+         select new TestCaseData(seed, prob, hosts, clients, steps, isMut);
+}
+
+private IEnumerable<int> GetSeeds()
+{
+  yield return 0xAB4FEDD;
+  yield return 0x11399D3;
+}
+\end{lstlisting}
+
+Hierbei werden nur Konfigurationen generiert, auf denen die in \cref{sec:selectTestcases} genannten Bedingungen zutreffen, womit anstatt den möglichen 48 Testfällen nur die gewählten 32 generiert werden.
 
 Damit die bei der Ausführung der Tests generierten Logs einfacher zur Evaluation genutzt werden können, werden die angefallenen Logdateien nach jeder Ausführung in ein entsprechendes Verzeichnis verschoben.
 Hierbei werden die Logdateien gemäß der Parameter der Testkonfiguration wie folgt umbenannt:
 
-\lstinputlisting[label=lst:moveTestCaseLogs,style=cs,
+\begin{lstlisting}[label=lst:moveTestCaseLogs,style=cs,
 caption={Bestimmung des Dateinamens zur Umbenennung der Logdateien}]
-{./listings/moveTestCaseLogs.cs}
+var todayStrShort = DateTime.Today.ToString("yyMMdd");
+var mutated = isMutated ? "MT" : "MF";
+var faultProbStr = faultProbability.ToString(CultureInfo.InvariantCulture);
+var baseFileName = $"0x{benchmarkSeed:X8}-{faultProbStr}F-{hostsCount:D1}H-{clientCount:D1}C-{stepCount:D2}S-{mutated}-{todayStrShort}";
+\end{lstlisting}
 
 Da beim Monitoring immer die Daten aller auf dem Cluster ausgeführten Anwendungen übertragen und im SSH"=Log gespeichert werden, hat das Neustarten des Clusters bei jedem Testfall zudem den Nebeneffekt, dass im SSH"=Log keine Daten von ausgeführten Anwendungen eines anderen Testfalls enthalten sind.
