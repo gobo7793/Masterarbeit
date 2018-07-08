@@ -1,7 +1,7 @@
 \section{Betrachtung der Komponentenfehler}
 \label{sec:faultEval}
 
-Die Aktivierung und Deaktivierung der Komponentenfehler in einem Testfall hängt neben dem zur Berechnung benötigtem Seed vor allem von den zuvor ausgeführten Testfällen bzw. der Lastverteilung bei den zuvor ausgeführten Testfällen eines Tests ab (vgl. \autoref{sec:simulationFaultActivation}).
+Die Aktivierung und Deaktivierung der Komponentenfehler in einem Testfall hängt neben dem zur Berechnung benötigtem Seed vor allem von den zuvor ausgeführten Testfällen bzw. der Lastverteilung bei den zuvor ausgeführten Testfällen eines Tests ab (vgl. \autoref{subsubsec:simulationFaultActivation}).
 Daher wurden abhängig von der Lastverteilung im Cluster auch bei einer mehrmaligen Ausführung der gleichen Konfiguration bei einigen Testausführungen unterschiedliche Komponentenfehler aktiviert.
 
 Unterschieden werden muss hierbei zudem zwischen aktivierten und injizierten Komponentenfehlern.
@@ -11,7 +11,7 @@ Die Deaktivierung bzw. das Reparieren der Komponentenfehler verhält sich analog
 Im Folgenden wird nun ein Überblick über die bei den Tests aktivierten bzw. deaktivierten und nicht injizierten Komponentenfehler bzw. erkannten Injektionen und Reperaturen der Komponentenfehler gegeben.
 
 \subsection{Aktivierte und deaktivierte Komponentenfehler}
-\label{sec:actDeactFaults}
+\label{subsec:actDeactFaults}
 
 Die Aktivierung und Deaktivierung der Komponentenfehler hing manchmal stark, manchmal weniger stark von der ausgeführten Testkonfiguration ab.
 Im Vergleich zwischen korrespondierenden Konfigurationen, die sich nur in der Nutzung des Mutationsszenarios unterschieden, wurde nur 5 mal bei allen Tests die gleiche Anzahl an Komponentenfehler aktiviert, bei der Deaktivierung der Komponentenfehler besitzen nur 4 korrespondierende Konfigurationen die gleiche Anzahl bei allen Tests.
@@ -19,7 +19,7 @@ Die Anzahl der aktivierten und deaktivierten Komponentenfehler unterschied sich 
 Bei den anderen korrespondierenden Konfigurationen unterschied sich die Anzahl bei allen jeweiligen Tests um mehr als einen Komponentenfehler.
 Mit jeweils 20 aktivierten Komponentenfehlern wurden bei den Tests 28.1, 31.1 und 32 die meisten aktiviert, die meisten Komponentenfehler deaktiviert wurden bei den Tests der Konfigurationen 11 und 12 mit jeweils 15 Stück.
 Nur im Test zur Konfiguration 2 wurden mit 3 Stück alle aktivierten Komponentenfehler während der Simulation auch wieder deaktiviert.
-In den Tests 4, 5.1, 5.2 und 6 wurden jeweils 6 oder 7 Komponentenfehler aktiviert, jedoch keine deaktiviert, weshalb diese Tests bereits beim 3. ausgeführten Testfall gemäß \autoref{sec:simulationOracle} abgebrochen wurden (vgl. \autoref{sec:noReconf36}).
+In den Tests 4, 5.1, 5.2 und 6 wurden jeweils 6 oder 7 Komponentenfehler aktiviert, jedoch keine deaktiviert, weshalb diese Tests bereits beim 3. ausgeführten Testfall gemäß \autoref{subsubsec:simulationOracle} abgebrochen wurden (vgl. \autoref{subsec:noReconf36}).
 
 Im Vergleich zwischen den Tests von korrespondierenden Testkonfigurationen sind die Tests der Konfigurationen 1 und 2 auffällig.
 Während beim Test 1.1 mit 5 Komponentenfehlern bzw. beim Test 1.2 mit 7 Komponentenfehlern jeweils rund jeder achte mögliche Komponentenfehler aktiviert wurde, wurden beim Test 2 lediglich 3 Komponentenfehler für 4 Nodes in 5 Testfällen (insgesamt also 40 mögliche Komponentenfehler) aktiviert.
@@ -38,7 +38,7 @@ Der Grund hierfür könnte darin liegen, dass bei weniger injizierten Komponente
 Um hier jedoch eine fundierte Aussage treffen zu können, wären weitere vergleichende Tests nötig (vgl. \todo{auf Diskussion dazu, evtl. auch mit diskussion zu selfbalancing-komponente verbinden})
 
 \subsection{Nicht erkannte, injizierte bzw. reparierte Komponentenfehler}
-\label{sec:notDetectedFaults}
+\label{subsec:notDetectedFaults}
 
 Bei 18 aller ausgeführten Tests kam es vor, dass ein injizierter bzw. reparierter Komponentenfehler zunächst nicht vom Testsystem erkannt wurde.
 Das betraf konkret drei mal das Injizieren eines Komponentenfehlers sowie 16 mal das Reparieren eines Komponentenfehlers:

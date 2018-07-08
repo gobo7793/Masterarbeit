@@ -9,7 +9,7 @@ Entwickelt wurde der Capacity Scheduler vor allem für Cluster, die von mehreren
 Für diesen Scheduler wurde in \cite{zhang2016} ein selbst"=adaptiver Ansatz vorgestellt, welcher im Folgenden genauer erläutert wird.
 
 \subsection{\acs{MARP}"=Wert}
-\label{sec:selfbalancingMarp}
+\label{subsec:selfbalancingMarp}
 
 Der Capacity Scheduler verschiedene Einstellungen, um ihn für das konkrete Cluster anzupassen.
 So besteht \zB die Möglichkeit, den verfügbaren Speicher pro Anwendungs"=Container festzulegen oder wie viel Ressourcen durch \ac{AppMstr}"=Container beansprucht werden darf.
@@ -38,7 +38,7 @@ Die Evaluation von \citeauthor{zhang2016} ergab zudem, dass Anwendungen dadurch 
 Zudem kann die dynamische Anpassung auch effizienter sein, als eine manuelle, statische Optimierung \cite{zhang2016}.
 
 \subsection{Analyse der Selfbalancing"=Komponente}
-\label{sec:selfbalancingAnalysis}
+\label{subsec:selfbalancingAnalysis}
 
 Da in dieser Fallstudie auch Mutationstests eingesetzt werden, bei denen die Selfbalancing"=Komponente entsprechend verändert wird (Implementierung in \autoref{sec:implMutationTests}), wurde die Komponente zunächst analyisiert.
 Sie besteht aus folgenden vier Java"=Klassen, welche den Kern der Komponente darstellen, und drei Shell"=Scripten, die als Verbindung zum Hadoop"=Cluster dienen:

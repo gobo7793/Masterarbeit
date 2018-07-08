@@ -6,7 +6,7 @@ Das ist zum einen eine reine Simulation ohne die Aktivierung von Komponentenfehl
 Ausgeführt werden können die Tests mithilfe des NUnit"=Frameworks.
 
 \subsection{Grundlegender Aufbau}
-\label{sec:simulationBasics}
+\label{subsec:simulationBasics}
 
 Da im realen Cluster Hadoop kontinuierlich Anpassungen durchführt und Tests in \ac{ss} mit diskreten Schritten durchgeführt werden, muss beachtet werden, dass die Werte, die beim Test ermittelt werden, immer nur Momentaufnahmen darstellen.
 Ebenso muss beachtet werden, dass bei der Deaktivierung von einzelnen Nodes bzw. deren Netzwerkverbindungen diese nicht in Echtzeit, sondern um einige Zeit verzögert erkannt werden und erst nach einer gewissen Zeit aus der Konfiguration des Clusters entfernt werden.
@@ -25,14 +25,14 @@ Da der Ablauf der Simulation unabhängig von der Aktivierung der Komponentenfehl
 Im Falle einer Aktivierung der Komponentenfehler unterscheiden sich beide Simulationsvarianten nur durch die Angabe der generellen Wahrscheinlichkeiten zum Aktivieren und Deaktivieren der Komponentenfehler.
 Da die einzelnen Schritte einer Simulation eine gewisse Mindestdauer haben, wird nach jedem Schritt geprüft, wie viel Zeit für die Ausführung des Schrittes benötigt wurde.
 Liegt die Zeit unterhalb der Mindestdauer für einen Schritt, wird die Ausführung des nächsten Schrittes solange hinausgezögert, bis die Mindestdauer des Schrittes erreicht wurde.
-Weitere zeitliche Verzögerungen während der Ausführung eines Simulations"=Schrittes sind in \autoref{sec:simulationStep} beschrieben.
+Weitere zeitliche Verzögerungen während der Ausführung eines Simulations"=Schrittes sind in \autoref{subsec:simulationStep} beschrieben.
 
 Wenn während der Simulation eine im Modell nicht behandelte \texttt{Exception} auftritt, wird diese außerhalb der Simulation abgefangen und entsprechend geloggt.
 Dadurch wird zudem die Simulation beim aktuellen Stand abgebrochen.
 Nach Abschluss der Simulation werden immer alle zu dem Zeitpunkt mit Komponentenfehlern injizierten Nodes neu gestartet.
 
 \subsection{Initialisierung des Modells}
-\label{sec:simulationModelInit}
+\label{subsec:simulationModelInit}
 
 Bevor das Modell im Simulator ausgeführt werden kann, muss es initialisiert werden.
 Das folgende \autoref{lst:hadoopSimulationInit} zeigt die Definition der Felder zur Modellinitialisierung sowie die entsprechenden Methoden, die in \autoref{lst:hadoopSimulation} zur Initialisierung aufgerufen werden:
@@ -99,19 +99,19 @@ caption={[Ermitteln der Komponentenfehler mit dem NodeFaultAttribute]
 
 Die gefundenen Komponentenfehler werden als Array aus Tupel, bestehend aus dem Komponentenfehler selbst, dem Attribut sowie dem dazugehörigen Node zurückgegeben.
 Zur Speicherung hierfür dient der Typ \texttt{FaultTuple}, welcher ein Alias für das hierfür genutzte \texttt{Tupel<T>} darstellt.
-Die jeweiligen Instanzen der Attribute und Nodes werden für die in \autoref{sec:simulationFaultActivation} beschriebene Aktivierung der dazugehörigen Komponentenfehler benötigt.
+Die jeweiligen Instanzen der Attribute und Nodes werden für die in \autoref{subsubsec:simulationFaultActivation} beschriebene Aktivierung der dazugehörigen Komponentenfehler benötigt.
 Die beiden im Tupel gespeicherten Instanzen des \texttt{IntWrapper} dienen zur Speicherung der Anzahl der Aktivierungen bzw. Deaktivierungen der Komponentenfehler.
 Da der Wert einer Struktur wie \texttt{int} nicht direkt in einem Tupel geändert werden kann, dient die Klasse \texttt{IntWrapper} hierfür als Adapter.
 
 \subsection{Ablauf eines Simulations"=Schrittes}
-\label{sec:simulationStep}
+\label{subsec:simulationStep}
 
 Der Ablauf eines Schrittes lässt sich in die folgenden fünf Abschnitte einteilen.
-Während die \nameref{sec:simulationFaultActivation} komplett außerhalb des ausgeführten Modells erfolgt (durch die in \autoref{lst:hadoopSimulation} aufgerufene \texttt{HandleFaults()}"=Methode), werden die anderen Abschnitte durch die \texttt{Update()}"=Methode des \texttt{YarnController}s innerhalb des Modells während der Ausführung eines Simulations"=Schrittes ausgeführt.
-Die \nameref{sec:simulationStepOutput} werden dagegen gemischt durchgeführt.
+Während die \nameref{subsubsec:simulationFaultActivation} komplett außerhalb des ausgeführten Modells erfolgt (durch die in \autoref{lst:hadoopSimulation} aufgerufene \texttt{HandleFaults()}"=Methode), werden die anderen Abschnitte durch die \texttt{Update()}"=Methode des \texttt{YarnController}s innerhalb des Modells während der Ausführung eines Simulations"=Schrittes ausgeführt.
+Die \nameref{subsubsec:simulationStepOutput} werden dagegen gemischt durchgeführt.
 
 \subsubsection{Aktivierung und Deaktivierung der Komponentenfehler}
-\label{sec:simulationFaultActivation}
+\label{subsubsec:simulationFaultActivation}
 
 Zur Aktivierung der Komponentenfehler gibt es drei Einzelschritte.
 Der erste Schritt ist die Prüfung, ob der Fehler bereits aktiviert wurde.
@@ -138,7 +138,7 @@ Außerdem spielt bei der Deaktivierung die Auslastung des Nodes zum Zeitpunkt de
 Der grundlegende Algorithmus zur Entscheidung ist jedoch gleich.
 
 \subsubsection{Ausführung Benchmarks}
-\label{sec:simulationBenchmarkExecution}
+\label{subsubsec:simulationBenchmarkExecution}
 
 Damit die Ausführung der Benchmarks vor dem Monitoring der Anwendungen sowie dem Auswerten der Constraints durch das Oracle stattfindet, wird die Ausführung der Benchmarks ebenfalls durch den \texttt{YarnController} initiiert.
 Dazu wird vom \texttt{YarnController} aus für jeden Client die entsprechende Methode aufgerufen, welche ihrerseits den in \autoref{sec:appImplementation} erläuterten \texttt{BenchmarkController} nutzt, um den folgenden Benchmark zu bestimmen und im Falle eines Wechsels des Benchmarks diesen zu starten:
@@ -155,11 +155,11 @@ Beim Starten der zum Benchmark zugehörigen Anwendung wird zunächst solange gew
 Sollte keine \texttt{YarnApp}"=Instanz mehr verfügbar sein, wird stattdessen eine \texttt{OutOfMemoryException} ausgelöst, da während der Simulation keine neuen Instanzen erzeugt werden dürfen (vgl. \autoref{sec:sSharp}).
 
 \subsubsection{Monitoring der ausgeführten Anwendungen}
-\label{sec:simulationMonitoring}
+\label{subsubsec:simulationMonitoring}
 
 Bevor das Monitoring der Anwendungen durchgeführt wird, wird zunächst fünf Sekunden gewartet, bis der \ac{AppMstr} sowie weitere Container der Anwendung allokiert bzw. gestartet wurden.
 Diese Wartezeit ist prinzipiell optional, wird hier jedoch genutzt, damit die Auslastung des Clusters besser ermittelt werden kann.
-Die Wartezeit vor dem Monitoring ist bereits in der in\autoref{sec:simulationBasics} beschriebenen Mindestdauer eines Schrittes enthalten.
+Die Wartezeit vor dem Monitoring ist bereits in der in\autoref{subsec:simulationBasics} beschriebenen Mindestdauer eines Schrittes enthalten.
 
 Beim Monitoring werden zunächst die Daten der Nodes, danach die der Anwendungen, ihrer Attempts und zum Abschluss deren Container ermittelt.
 Für das Monitoring selbst gib es zwei Ausführungsvarianten.
@@ -183,11 +183,11 @@ Während bei den Anwendungen und Attempts auch solche, deren Daten ausschließli
 Da Container nur während der der Laufzeit von Anwendungen bzw. Attempts zu deren Ausführung existieren, werden die beim vorherigen Schritt ermittelten Container"=Daten gelöscht, bevor die aktuellen Daten der Container eines Attempts ermittelt werden.
 
 \subsubsection{Validierung durch das Oracle}
-\label{sec:simulationOracle}
+\label{subsubsec:simulationOracle}
 
 Im direkten Anschluss an das Monitoring erfolgt die Validierung der Constraints durch das Oracle.
 Das Oracle validiert hierbei analog zum Monitoring zunächst die Nodes und danach die Anwendungen, Attempts und Container auf ihre Constraints.
-Hierbei wird zunächst überprüft, ob die in \autoref{sec:functionalRequirements} beschrieben funktionalen Anforderungen an Hadoop in Form der in \todo{constraint implementierung} implementierten Constraints für die jeweiligen Komponenten noch erfüllt werden können.
+Hierbei wird zunächst überprüft, ob die in \autoref{subsec:functionalRequirements} beschrieben funktionalen Anforderungen an Hadoop in Form der in \todo{constraint implementierung} implementierten Constraints für die jeweiligen Komponenten noch erfüllt werden können.
 Ist das nicht der Fall, wird dies geloggt und die weiteren Komponenten geprüft.
 
 Das Oracle überprüft auch, ob für das Cluster eine weitere Rekonfiguration möglich ist.
@@ -199,14 +199,14 @@ caption={Prüfung nach der Möglichkeit weiterer Rekonfigurationen}]
 
 Ist eine Rekonfiguration nicht mehr möglich, wird durch die hierbei ausgelöste \texttt{Exception} die gesamte Simulation abgebrochen.
 
-Zum Abschluss eines Schrittes werden die in \autoref{sec:testRequirements} beschriebenen Behauptungen an das Testverfahren selbst validiert.
+Zum Abschluss eines Schrittes werden die in \autoref{subsec:testRequirements} beschriebenen Behauptungen an das Testverfahren selbst validiert.
 Hierbei können jedoch nicht alle Behauptungen in Form von Constraints durch das Oracle automatisch während der Ausführung validiert werden.
 Von den implementierten Constraints können zudem nicht alle direkt innerhalb des Modells während der Ausführung eines Simulations"=Schrittes validiert werden, weshalb außerhalb der Simulation ebenfalls Constraints definiert sind, die zum Abschluss der Simulation geprüft werden (vgl. \todo{constraint implementierung}).
 
 \subsubsection{Ausgaben während eines Schrittes}
-\label{sec:simulationStepOutput}
+\label{subsubsec:simulationStepOutput}
 
-Die wesentlichen Ausgaben während eines Tests wurden bereits in \autoref{sec:dataOrganisation} definiert und beschrieben.
+Die wesentlichen Ausgaben während eines Tests wurden bereits in \autoref{subsec:dataOrganisation} definiert und beschrieben.
 Neben diesen Daten werden im Programmlog weitere Daten gespeichert, damit die Ausführung eines Testfalles besser nachvollzogen werden kann.
 Zudem werden alle Ein"= und Ausgabedaten der SSH"=Verbindungen zwischen dem Modell und dem realen Cluster in einer eigenen Log"=Datei gespeichert.
 Dieses SSH"=Log dient dazu, die Ursache von unerwarteten Fehlern herauszufinden.
@@ -243,7 +243,7 @@ Zudem werden einige statistische Kenndaten zur Simulation ausgegeben:
 Ein möglicher Programmlog sowie das exakte Ausgabeformat für eine Ausführung eines Testfalls findet sich in \autoref{app:outputFormat}.
 
 \subsection{Weitere mit der Simulation zusammenhängende Methoden}
-\label{sec:simulationUtilities}
+\label{subsec:simulationUtilities}
 
 Neben der Ausführung der Simulation mit und ohne der Möglichkeit zur Aktivierung der Komponentenfehler gibt es noch einige weitere Methoden, die mit der Simulation zusammenhängen.
 Darüber besteht die Möglichkeit, die vorab generierten Eingabedaten für die Simulation, ohne die Simulation selbst auszuführen, zu generieren.

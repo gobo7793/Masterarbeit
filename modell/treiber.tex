@@ -1,12 +1,13 @@
 \section{Implementierung des Treibers}
 \label{sec:sshDriver}
 
+\todo{Multihost-Mode irgendwo erklären}
 Im Einführungstext zu diesem Kapitel wurde bereits auf den grundlegenden Aufbau des Treibers eingegangen, der aus den drei einzelnen Komponenten Parser, Connector und der eigentlichen SSH"=Verbindung besteht.
 Der Parser selbst besteht neben dem eigentlichen Parser zudem aus Datenhaltungs"=Klassen für die relevanten YARN"=Komponenten.
 Sie sind außerdem so aufgebaut, dass sie für beide hier implementierten Parser bzw. Connectoren für die Kommandozeilen"=Befehle und die REST"=API genutzt werden können.
 
 \subsection{Integration im Modell}
-\label{sec:modelIntegration}
+\label{subsec:modelIntegration}
 
 Hadoop besitzt zwei primäre Wege, um die Daten vom \ac{RM} bzw. dem \ac{TLS} ausgeben zu können.
 Dies ist zum einen die Kommandozeile, mithilfe der die Daten vom \ac{RM} und vom \ac{TLS} kombiniert ausgegeben werden, und die REST"=API.
@@ -35,7 +36,7 @@ Das Connector"=Interface enthält darüber hinaus Deklarationen, um die im Model
 Architektonisch ist der Treiber zudem so aufgebaut, dass das Modell keine Kontrolle über den vom Parser benötigten Connector besitzt und die SSH"=Verbindung ausschließlich vom Connector gesteuert werden kann.
 
 \subsection{Implementierte Parser}
-\label{sec:implementedParsers}
+\label{subsec:implementedParsers}
 
 Da die Daten für die relevanten Komponenten auf zwei Arten ermittelt werden können und unterschiedliche Ausgaben erzeugen, wurden auch für beide Arten ein Parser (\texttt{CmdParser} und \texttt{RestParser}) entwickelt.
 Da der Parser von außerhalb keinerlei weitere Informationen erhält außer der ID der zu parsenden YARN"=Komponente, ist der Parser selbst dafür verantwortlich, die Daten von einem korrespondierenden Connector zu erhalten.
@@ -63,7 +64,7 @@ Daher werden zur Ermittlung der Container"=Listen alle Nodes abgefragt und ansch
 Die geparsten Daten werden abschließend als das für die YARN"=Komponente vorgesehene Interface zurückgegeben, was anschließend im Modell zum Speichern der Daten genutzt werden kann.
 
 \subsection{Implementierte Connectoren}
-\label{sec:implementedConnectors}
+\label{subsec:implementedConnectors}
 
 Für die beiden Parser wurden die beiden korrespondieren Connectoren \texttt{CmdConnector} und \texttt{RestConnector} entwickelt.
 Während der Connector für die REST"=API nur über eine SSH"=Verbindung verfügt, besteht beim Connector für die Kommandozeile die Möglichkeit, mehrere einzelne SSH"=Verbindungen zu nutzen.
@@ -83,7 +84,7 @@ Während der Datenabruf sowie die Steuerung der Komponentenfehler synchron statt
 Da eine Ausführung einer YARN"=Anwendung längere Zeit in Anspruch nehmen kann, wird dadurch die Ausführung von \sS nicht behindert und es können mehrere Anwendungen parallel ausgeführt werden.
 
 \subsection{SSH"=Verbindung}
-\label{sec:sshConnection}
+\label{subsec:sshConnection}
 
 Die SSH"=Verbindung selbst ist der einzige Bestandteil des Treibers, welches kein entsprechendes Interface benötigt, die SSH"=Verbindung wird ausschließlich vom Connector genutzt.
 Realisiert wird die Verbindung mithilfe des Frameworks SSH.NET,\footnote{\url{https://github.com/sshnet/SSH.NET}} weshalb die SSH"=Verbindung im Treiber nur entsprechende Funktionen zum Aufbauen, Nutzen und Beenden der Verbindung enthält.

@@ -2,29 +2,29 @@
 \label{sec:evaluationResults}
 
 Zusammenfassend basierend auf der vorhandenen Datenbasis der 43 ausgeführten Tests lässt sich sagen, dass sich das entwickelte Testsystem und das Hadoop"=Cluster im Großen und Ganzen so verhält, wie es erwartet werden konnte.
-Dennoch wurden nicht alle der in \autoref{sec:functionalRequirements} definierten funktionalen Anforderungen an das Cluster selbst und der in \autoref{sec:testRequirements} definierten Anforderungen an das gesamte Testsystem vollständig erfüllt.
+Dennoch wurden nicht alle der in \autoref{subsec:functionalRequirements} definierten funktionalen Anforderungen an das Cluster selbst und der in \autoref{subsec:testRequirements} definierten Anforderungen an das gesamte Testsystem vollständig erfüllt.
 Die meisten dieser Anforderungen wurden mithilfe der in \todo{Constraints} definierten Constraints implementiert, wodurch die Anforderungen bei jedem Testfall automatisch validiert werden konnten.
 
 Vor allem die Cluster"=Anforderung, wonach alle Tasks vollständig ausgeführt werden, sofern sie nicht abgebrochen werden, wurde bei den 110 nicht erfolgreichen Anwendungen nicht erfüllt.
-Aber auch bei einigen vollständig ausgeführten Anwendungen wurde diese nicht komplett erfüllt, was die mit dem Exitcode -100 beendeten Attempts zeigen (vgl. \autoref{sec:failedApps}).
+Aber auch bei einigen vollständig ausgeführten Anwendungen wurde diese nicht komplett erfüllt, was die mit dem Exitcode -100 beendeten Attempts zeigen (vgl. \autoref{subsec:failedApps}).
 Bei Attempts mit dem Exitcode -100 wird zudem die Anforderung, dass kein Task an defekte Nodes gesendet wird, verletzt.
 
 Bei der Validierung der Constraints ist es zudem vorgekommen, dass diejenigen für die Anforderungen, dass die Konfiguration aktualisiert sowie der Status des Clusters vom Testsystem erkannt und im Testmodell gespeichert wird, als ungültig validiert wurden.
-Dies waren nach einer genaueren Betrachtung der Gründe hierfür in \autoref{sec:notDetectedHost2} zum Teil jedoch falscher Alarm, wodurch diese Anforderungen zu großen Teilen als erfüllt angesehen werden können.
-Genauso verhält es sich bei den in \autoref{sec:notDetectedFaults} beschriebenen, nicht erkannten, injizierten und reparierten Komponentenfehlern, wonach die Anforderungen, dass defekte Nodes und Verbindungsabbrüche erkannt werden, bei der Betrachtung eines einzelnen Testfalls in 19 Fällen zwar nicht erfüllt, bei der Betrachtung der gesamten Tests jedoch als erfüllt angesehen werden können.
+Dies waren nach einer genaueren Betrachtung der Gründe hierfür in \autoref{subsec:notDetectedHost2} zum Teil jedoch falscher Alarm, wodurch diese Anforderungen zu großen Teilen als erfüllt angesehen werden können.
+Genauso verhält es sich bei den in \autoref{subsec:notDetectedFaults} beschriebenen, nicht erkannten, injizierten und reparierten Komponentenfehlern, wonach die Anforderungen, dass defekte Nodes und Verbindungsabbrüche erkannt werden, bei der Betrachtung eines einzelnen Testfalls in 19 Fällen zwar nicht erfüllt, bei der Betrachtung der gesamten Tests jedoch als erfüllt angesehen werden können.
 
 Auch die Anforderung, dass sich der MARP"=Wert anhand der ausgeführten Anwendungen verändert, wurde nicht immer erfüllt.
 Die Betrachtung der Werte bei den einzelnen Tests in \autoref{sec:marpValueResults} ergab, dass es durchaus möglich ist, dass die bei einem Test ausgeführten Anwendungen nicht ausreichen, damit sich der Wert verändert.
 Dennoch war es anhand dieser Anforderung möglich, die in \autoref{sec:implMutationTests} implementierten Mutanten der Selfbalancing"=Komponente, bis auf einige in \autoref{sec:killingMutants} erläuterte Besonderheiten, in den ausgeführten Tests zu erkennen.
-Auch die Anforderung, dass die in \todo{impl komponentenfehler} implementierten Komponentenfehler im realen Cluster injiziert und repariert werden, konnte aufgrund des in \autoref{sec:noReconf1922} erläuterten Falls nicht immer erfüllt werden.
+Auch die Anforderung, dass die in \todo{impl komponentenfehler} implementierten Komponentenfehler im realen Cluster injiziert und repariert werden, konnte aufgrund des in \autoref{subsec:noReconf1922} erläuterten Falls nicht immer erfüllt werden.
 In diesem Kontext zeigte sich aber, dass immer erkannt werden konnte, wenn keine weitere Rekonfiguration des Clusters möglich ist und diese Anforderung somit erfüllt wird (vgl. \autoref{sec:noReconfig}).
-Zudem konnte in einigen der in \autoref{sec:notStartedApps} erläuterten Fällen die Anforderung, dass mehrere Benchmark"=Anwendungen gleichzeitig gestartet und ausgeführt werden können, nicht erfüllt werden.
+Zudem konnte in einigen der in \autoref{subsec:notStartedApps} erläuterten Fällen die Anforderung, dass mehrere Benchmark"=Anwendungen gleichzeitig gestartet und ausgeführt werden können, nicht erfüllt werden.
 
 Zu einem großen Teil erfüllt werden konnte jedoch die Anforderung, dass ein Test vollautomatisch ausgeführt werden kann.
-Lediglich bei der Ausführung von mehreren Testfällen direkt hintereinander mithilfe der in \autoref{sec:implTestcases} implementierten \texttt{CaseStudyTests}"=Klasse kam es vor, dass genauso wie in \autoref{sec:notEnoughSubmitter} die vom Connector bereitgestellten Submitter zum Starten von Anwendungen nicht ausgereicht haben.
+Lediglich bei der Ausführung von mehreren Testfällen direkt hintereinander mithilfe der in \autoref{sec:implTestcases} implementierten \texttt{CaseStudyTests}"=Klasse kam es vor, dass genauso wie in \autoref{subsec:notEnoughSubmitter} die vom Connector bereitgestellten Submitter zum Starten von Anwendungen nicht ausgereicht haben.
 
 Die genauen Gründe für die verletzten Anforderungen und Constraints sind in den bereits verwiesenen, nachfolgenden Abschnitten erläutert.
 
 Die 43 ausgeführten Tests haben aber auch gezeigt, dass das Cluster ohne Auswirkung auf seine Funktionsweise auf einem oder mehreren Hosts ausgeführt werden kann.
 Auch zeigte sich bei den 7 Testkonfigurationen mit mehrmaligen Ausführungen, dass die Tests und seine Testfälle im Grunde mehrmals ausgeführt werden können.
-Die einzigen Unterschiede bei den jeweiligen Ausführungen waren ausschließlich durch die Verteilung der Last innerhalb des Clusters bedingt, was sich vor allem in direkten Vergleichen zwischen korrespondierenden Tests wie \zB in \autoref{sec:noReconf1922} zeigt.
+Die einzigen Unterschiede bei den jeweiligen Ausführungen waren ausschließlich durch die Verteilung der Last innerhalb des Clusters bedingt, was sich vor allem in direkten Vergleichen zwischen korrespondierenden Tests wie \zB in \autoref{subsec:noReconf1922} zeigt.

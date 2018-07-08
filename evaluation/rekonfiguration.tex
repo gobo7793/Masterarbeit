@@ -2,11 +2,11 @@
 \label{sec:noReconfig}
 
 Insgesamt 13 der 42 ausgeführten Tests wurden vorzeitig abgebrochen, da eine Rekonfiguration des Clusters nicht möglich war.
-Dies entspricht dem in \autoref{sec:testRequirements} gefordertem und in \autoref{sec:simulationOracle} implementierten Verhalten, wenn alle Node im Cluster defekt sind.
+Dies entspricht dem in \autoref{subsec:testRequirements} gefordertem und in \autoref{subsubsec:simulationOracle} implementierten Verhalten, wenn alle Node im Cluster defekt sind.
 Im Folgenden wird für die betroffenen Testkonfigurationen und Tests betrachtet, weshalb es dazu kam.
 
 \subsection{Testkonfigurationen 3 bis 6}
-\label{sec:noReconf36}
+\label{subsec:noReconf36}
 
 Erstmalig ist ein Abbruch im Test 4 aufgetreten, auch die weiteren korrespondierende Tests der Konfigurationen 5 und 6 wurden abgebrochen.
 Hier waren bereits beim 3. Testfall alle verfügbaren Nodes beendet, was auffällig ist, vor allem da damit die Hälfte der Tests mit dem ersten Seed und dem Cluster auf einem Host vorzeitig abgebrochen wurden.
@@ -18,7 +18,7 @@ Diese mittlere Auslastung reichte jedoch aus, um den Node im ausgeführten 3. Te
 Durch diesen einen nun weiterhin ausgeführten Node ist es dem Cluster daher möglich gewesen, sich im Test 3 zu rekonfigurieren.
 
 \subsection{Testkonfigurationen 15 und 16}
-\label{sec:noReconf1516}
+\label{subsec:noReconf1516}
 
 Die Ausführung der Tests 13 bzw. 14 und 15 bzw. 16 unterscheidet sich nur in der Anzahl der Testfälle der jeweiligen Testkonfiguration.
 Dementsprechend wurden die äquivalenten Tests 13 und 14 im Gegensatz zu den beiden anderen vollständig ausgeführt, da der Abbruch der Tests 15 und 16 im sechsten ausgeführten Testfall stattfand.
@@ -41,7 +41,7 @@ Daher wurden die beiden Tests im jeweils sechsten ausgeführten Testfall abgebro
 Es ist auch davon auszugehen, dass der Test 14 aufgrund der ebenfalls sehr hohen Auslastung im sechsten Testfall wahrscheinlich ebenfalls abgebrochen worden wäre.
 
 \subsection{Testkonfigurationen 19 bis 22}
-\label{sec:noReconf1922}
+\label{subsec:noReconf1922}
 
 Bei den Konfigurationen 19 bis 22 verhält es sich ähnlich wie bei den Konfigurationen 3 bis 6.
 Analog dazu wurde auch Test 19 nicht vorzeitig abgebrochen, die Tests 20 bis 22 im vierten Testfall dagegen schon.
@@ -70,10 +70,10 @@ Eine Besonderheit bildet hier zudem Test 21, bei dem der Komponentenfehler vom T
 Dies liegt darin, dass der Docker"=Container nicht mit dem Docker"=Netzwerk verbunden werden konnte.
 Aus diesem Grund wurde vom Oracle bei der Prüfung der Rekonfigurierbarkeit des Clusters der Test entsprechend beendet, da der Node nicht verbunden war.
 Zwar wurde der Fehler von Docker nicht absichtlich oder durch das Testsystem herbeigeführt, hat jedoch eine positive, als auch eine negative Seite.
-So wurde auch ein externer, nicht direkt durch die Anforderungen in \autoref{sec:testRequirements} abgedeckter Fehler erkannt, jedoch auf Kosten der Anforderung, dass im Modell implementierte Komponentenfehler im realen Cluster repariert werden.
+So wurde auch ein externer, nicht direkt durch die Anforderungen in \autoref{subsec:testRequirements} abgedeckter Fehler erkannt, jedoch auf Kosten der Anforderung, dass im Modell implementierte Komponentenfehler im realen Cluster repariert werden.
 
 \subsection{Testkonfigurationen 27 und 28}
-\label{sec:noReconf2728}
+\label{subsec:noReconf2728}
 
 In den beiden Tests 28.1 und 28.2 wird der Test im 8. Testfall abgebrochen, während Test 27 nach allen 10 Testfällen regulär beendet wird.
 Das liegt daran, dass im 8. Testfall bei den beiden Mutationstests in fünf der sechs Nodes ein Komponentenfehler injiziert wird, von Node 1 wird die Verbindung getrennt, die Nodes 3 bis 6 komplett beendet.
@@ -88,12 +88,12 @@ In den beiden Tests der Konfiguration 28 ist das Cluster jeweils vollständig au
 Dadurch war es möglich, dass alle noch aktiven Nodes vom Cluster getrennt bzw. beendet wurden und der Test aufgrund fehlender Rekonfigurationsmöglichkeiten abgebrochen wurde.
 
 \subsection{Testkonfigurationen 31 und 32}
-\label{sec:noReconf3132}
+\label{subsec:noReconf3132}
 
 Die Tests der Konfigurationen 31 und 32 verliefen ähnlich zueinander.
 Die hohe Anzahl der 19 bzw. 20 aktivierten Komponentenfehler reichten bei jeweils 11 wieder deaktivierten Fehlern aus, um die Tests 31.2 und 32 im achten Testfall abzubrechen.
 Der Test 31.1 verlief zwar ebenfalls ähnlich zu den beiden anderen Tests, wurde jedoch aufgrund fehlender, verfügbaren Submitter des Connectors beendet.
-Die Gründe dafür sind in \autoref{sec:notStartedApps} erläutert, weshalb der Test 31.1 hier nicht genauer betrachtet wird.
+Die Gründe dafür sind in \autoref{subsec:notStartedApps} erläutert, weshalb der Test 31.1 hier nicht genauer betrachtet wird.
 
 Bei den beiden Tests 31.2 und 32 fällt auf, dass es bei jeweils mehreren Testfällen vorgekommen ist, dass mehr als 3 Komponentenfehler aktiviert bzw. deaktiviert wurden.
 So kam es vor, dass \zB in dritten ausgeführten Testfall bereits eine Rekonfiguration nur deshalb möglich war, weil der zuvor vom Cluster getrennte Node 1 wieder mit dem Cluster verbunden wurde, während die Nodes 2 und 4 bis 6 anderen Nodes getrennt oder beendet wurden, während Node 3 bereits im Testfall zuvor beendet wurde.

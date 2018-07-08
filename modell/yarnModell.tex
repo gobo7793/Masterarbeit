@@ -16,9 +16,6 @@ Einen Überblick über den Aufbau des implementierten \ac{YARN}"=Modells gibt fo
 
 Zunächst werden im Folgenden die relevanten \ac{YARN}"=Komponenten mit ihren Komponentenfehlern erläutert, von denen für diese Fallstudie nicht alle vier benötigt wurden, anschließend die anderen Komponenten des \ac{YARN}"=Modells.
 
-\todo{Multihost-Mode irgendwo erklären}
-\todo{irgendwo noch constraints einbauen}
-
 \subsection{Relevante \acs{YARN}"=Komponenten}
 \label{sec:yarnComponents}
 
@@ -26,7 +23,7 @@ Die vier implementierten, relevanten \ac{YARN}"=Komponenten sind die Anwendungen
 Obwohl die die Anwendungs"=Container in dieser Fallstudie nicht benötigt werden, waren sie für die in \cite{Eberhardinger2018} beschriebene Fallstudie notwendig, welche ebenfalls mit dem hier beschriebenen Modell durchgeführt wurden.
 
 \subsubsection{Übersicht der implementierten Komponenten}
-\label{sec:yarnComponentsOverview}
+\label{subsec:yarnComponentsOverview}
 
 Eine Übersicht über die Implementierung der \ac{YARN}"=Komponenten gibt folgendes Klassendiagramm:
 
@@ -34,7 +31,7 @@ Eine Übersicht über die Implementierung der \ac{YARN}"=Komponenten gibt folgen
     \includegraphics[width=\columnwidth]{./images/yarnComponents.pdf}
     \caption[Für die Fallstudie relevante, implementierte \acs{YARN}"=Komponenten mit den wichtigsten Eigenschaften und Methoden]
         {Für die Fallstudie relevante, implementierte \acs{YARN}"=Komponenten mit den wichtigsten Eigenschaften und Methoden.
-        Dies sind alle für die spätere Durchführung und zur Ausgabe des Zustandes (vgl. \autoref{sec:dataOrganisation}) wichtigen Eigenschaften und Methoden.
+        Dies sind alle für die spätere Durchführung und zur Ausgabe des Zustandes (vgl. \autoref{subsec:dataOrganisation}) wichtigen Eigenschaften und Methoden.
         Aus Gründen der Übersichtlichkeit sind die implementierten Komponentenfehler, einige der \texttt{IYarnReadable} bereitgestellten, relevanten Eigenschaften und Methoden, sowie die Klasse \texttt{YarnAppContainer} nicht aufgeführt.}
     \label{fig:yarnComponentsClassDiagram}
 \end{figure}
@@ -58,10 +55,10 @@ public string AppId
 \end{lstlisting}
 
 \subsubsection{Implementierung der Komponentenfehler}
-\label{sec:yarnComponentFaults}
+\label{subsubsec:yarnComponentFaults}
 
 \subsubsection{Interface IYarnReadable}
-\label{sec:yarnComponentInterface}
+\label{subsubsec:yarnComponentInterface}
 
 Das Interface \texttt{IYarnReadable} ist das zentrale Erkennungsmerkmal der im Modell abgebildeten und implementierten \ac{YARN}"=Komponenten.
 Es dient zum einen zur Identifikation aller implementierten \ac{YARN}"=Komponenten, andererseits stellt es auch Eigenschaften und Methoden bereit, welche einerseits dem Testen in \ac{ss} dienen, primär aber dem Ermitteln der Daten aus dem realen Cluster:
@@ -84,7 +81,7 @@ Es dient zum einen zur Identifikation aller implementierten \ac{YARN}"=Komponent
 Die beiden erstgenannten Methoden dienen primär zu Debugging"=Zwecken und zur Rückgabe der ID bzw. der Werte aller Eigenschaften der Komponente als ein String.
 
 Die nachfolgenden vier Eigenschaften und Methoden dienen zum Monitoring der entsprechenden \ac{YARN}"=Komponenten.
-Während die Eigenschaft \texttt{Parser} den zu verwendenden Parser (vgl. \autoref{sec:implementedParsers}) speichert, dient die Eigenschaft \texttt{IsSelfMonito""ring} zur Unterscheidung, ob die Daten einer Komponente von dieser selbst ermittelt werden oder dies die übergeordnete Komponente durchführt.
+Während die Eigenschaft \texttt{Parser} den zu verwendenden Parser (vgl. \autoref{subsec:implementedParsers}) speichert, dient die Eigenschaft \texttt{IsSelfMonito""ring} zur Unterscheidung, ob die Daten einer Komponente von dieser selbst ermittelt werden oder dies die übergeordnete Komponente durchführt.
 Diese Unterscheidung ist nötig, da \ac{YARN} zwei unterschiedliche Möglichkeiten zur Ermittlung der Daten bietet, die Rückgabe der Daten durch die Kommandozeile oder mithilfe der REST"=API.
 Ausführlichere Informationen zu den beiden Varianten sind in \autoref{sec:sshDriver} zu finden, Beispiele für die entsprechenden Rückgaben von Hadoop sind in \autoref{app:hadoopCmds} bzw. \autoref{app:hadoopRestApi} aufgeführt.
 Bei der Nutzung der Kommandozeile zur Ermittlung der Daten eignet sich daher die Selbstermittlung der Daten besser, während bei der Nutzung der Rest"=API die Ermittlung der Daten durch die übergeordnete Komponente geeigneter ist.
@@ -122,19 +119,20 @@ public void MonitorStatus()
 
 Die vier restlichen Eigenschaften und Methoden dienen zur Auswertung der Komponente durch \ac{ss}.
 Die beiden Eigenschaften \texttt{SutConstraints} und \texttt{TestConstraints} dienen zur Implementierung der in \autoref{sec:requirements} definierten Anforderungen in Form von Constraints.
-Genauere Details hierzu finden sich in \autoref{sec:yarnComponentConstraints}.
 
 \subsubsection{Implementierung der Constraints}
-\label{sec:yarnComponentConstraints}
+\label{subsubsec:yarnComponentConstraints}
+
+
 
 \subsection{Implementierung des Clients}
-\label{sec:yarnClient}
+\label{subsec:yarnClient}
 
 \subsection{Implementierung des Controllers}
-\label{sec:yarnController}
+\label{subsec:yarnController}
 
 \subsection{Implementierung des Oracles}
-\label{sec:oracleImpl}
+\label{subsec:oracleImpl}
 
 \todo{ab hier alte struktur!}
 
@@ -180,7 +178,7 @@ Als Basis dazu dient der \texttt{YarnController}, der dafür die Daten aller Anw
 
 Die Felder \texttt{YarnNode.NodeConnectionError} und \texttt{YarnNode.NodeDead} definieren die Komponentenfehler, wenn ein Node seine Netzwerkverbindung verliert bzw. beendet wird.
 Die aus den Komponentenfehlern resultierenden Effekte werden in den dafür implementierten geschachtelten Klassen definiert.
-\autoref{lst:faultInjection} zeigt beispielhaft die Implementierung und Injizierung des \texttt{NodeDead}"=Komponentenfehlers mithilfe des für den Node verwendeten \texttt{CmdConnector} (vgl. \autoref{sec:implementedConnectors}).
+\autoref{lst:faultInjection} zeigt beispielhaft die Implementierung und Injizierung des \texttt{NodeDead}"=Komponentenfehlers mithilfe des für den Node verwendeten \texttt{CmdConnector} (vgl. \autoref{subsec:implementedConnectors}).
 Die Injizierung des \texttt{NodeConnectionError}"=Komponentenfehlers und die Aufhebung beider Komponentenfehler sind analog implementiert.
 
 \lstinputlisting[label=lst:faultInjection,

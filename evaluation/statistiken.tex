@@ -3,17 +3,17 @@
 
 Die Dauer aller Simulationen betrug ca. 4:16:44 Stunden, die gesamte Ausführungsdauer inkl. Starten und Beenden des Clusters bei jeder Konfiguration betrug ca. 5:19:57 Stunden.
 Von den 290 Testfällen, die ausgeführt werden hätten sollen, wurden nur 222 Testfälle (77 \%) ausgeführt.
-Der Grund für den Abbruch von 14 Tests liegt zum Großteil im in \autoref{sec:simulationOracle} beschriebenen Abbruch der Simulation, wenn keine Rekonfiguration des Clusters mehr möglich ist, also bei allen Nodes des Clusters ein Komponentenfehler injiziert und dies beim Monitoring erkannt wurde.
-Ein Test wurde aufgrund der zu geringen Anzahl an Submittern abgebrochen, was in \autoref{sec:notEnoughSubmitter} genauer erläutert wird.
+Der Grund für den Abbruch von 14 Tests liegt zum Großteil im in \autoref{subsubsec:simulationOracle} beschriebenen Abbruch der Simulation, wenn keine Rekonfiguration des Clusters mehr möglich ist, also bei allen Nodes des Clusters ein Komponentenfehler injiziert und dies beim Monitoring erkannt wurde.
+Ein Test wurde aufgrund der zu geringen Anzahl an Submittern abgebrochen, was in \autoref{subsec:notEnoughSubmitter} genauer erläutert wird.
 
 Insgesamt wurde bei allen Tests 439 Komponentenfehler aktiviert (14 \% von 3100 möglichen), von denen jedoch nicht alle injiziert wurden, da bei einigen Testfällen beide Komponentenfehler der Nodes gleichzeitig aktiviert wurden.
 In diesen Fällen überwog gemäß \todo{Abschnitt mit Komponentenfehler im Node} die Aktivierung es Komponentenfehlers, der den Node komplett beendet.
 Von allen aktivierten Komponentenfehlern wurden während der Simulationen 262 Komponentenfehler deaktiviert bzw. repariert, was eine Quote von 60 \% ergibt.
-In 4 der ausgeführten Testfällen wurde jedoch kein einziger Komponentenfehler deaktiviert, weshalb die Tests der Konfigurationen 4, 5.1, 5.2 und 6 entsprechend frühzeitig abgebrochen wurden (vgl. \autoref{sec:actDeactFaults} und \autoref{sec:noReconf36}).
+In 4 der ausgeführten Testfällen wurde jedoch kein einziger Komponentenfehler deaktiviert, weshalb die Tests der Konfigurationen 4, 5.1, 5.2 und 6 entsprechend frühzeitig abgebrochen wurden (vgl. \autoref{subsec:actDeactFaults} und \autoref{subsec:noReconf36}).
 
 Bei den 43 Tests wurden 408 Anwendungen im Cluster gestartet, von denen mit 204 rund die Hälfte erfolgreich und damit vollständig ausgeführt wurden, aufgrund eines Fehlers vorzeitig beendet bzw. gefailt waren mit 110 etwas mehr als ein Viertel der gestarteten Anwendungen.
 Vorzeitig abgebrochen wurden bei den Tests 52 Anwendungen (13 \%), was 42 Anwendungen macht, die zum Ende der Simulationen noch ausgeführt wurden.
-Nicht eingerechnet sind hier 29 nicht gestartete Anwendungen, die Gründe hierfür sind in \autoref{sec:notStartedApps} erläutert.
+Nicht eingerechnet sind hier 29 nicht gestartete Anwendungen, die Gründe hierfür sind in \autoref{subsec:notStartedApps} erläutert.
 Für die gestarteten Anwendungen wurden 555 Attempts gestartet, was im Schnitt 1,36 Attempts pro Anwendung ergibt.
 Auffällig ist hierbei, dass mit 214 Attempts 9 Attempts mehr aufgrund eines \ac{AppMstr}"=Timeouts abgebrochen wurde, als während der Simulation erfolgreich beendet wurden (203 Attempts).
 32 weitere Attempts wurden aufgrund eines Fehlers im Map"=Task abgebrochen, 12 weitere terminierten mit dem Exitcode -100, was ebenfalls auf Fehler hindeutet.
@@ -23,7 +23,7 @@ Da bei den zu startenden Anwendungen einige kleine und einige sehr ressourcenint
 
 Vom Oracle wurden bei allen Tests zusammengezählt 78.825 Constraints validiert, von denen 573 vom Oracle als ungültig validiert wurden (0,73 \%).
 Die meisten ungültigen Constraints hatten hierbei die Tests 31.2 und 32 mit 40 bzw. 42 Constraints (von jeweils 5140 geprüften), die höchste Quote Konfiguration 8 mit 1,97 \% der Constraints (13 von 661).
-Der Hauptgrund für die teilweise sehr hohe Anzahl an ungültigen Constraints vor allem liegt darin, dass die Constraints für fehlerhaften Anwendungen auch in nachfolgenden Testfällen innerhalb einer Ausführung einer Testkonfiguration entsprechend erkannt werden (vgl. \autoref{sec:failedApps}).
+Der Hauptgrund für die teilweise sehr hohe Anzahl an ungültigen Constraints vor allem liegt darin, dass die Constraints für fehlerhaften Anwendungen auch in nachfolgenden Testfällen innerhalb einer Ausführung einer Testkonfiguration entsprechend erkannt werden (vgl. \autoref{subsec:failedApps}).
 Dies resultiert in bis zu 34 ungültigen Constraints für fehlerhafte Anwendungen bei den einzelnen Tests.
 
 \todo{Zusammenfassung, hier erwähnen, dass MUT schneller und weniger failapps hatte?}
