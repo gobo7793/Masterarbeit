@@ -14,7 +14,23 @@ Einen Überblick über den Aufbau des implementierten \ac{YARN}"=Modells gibt fo
     \label{fig:yarnModelClassDiagram}
 \end{figure}
 
-Zunächst werden im Folgenden die relevanten \ac{YARN}"=Komponenten mit ihren Komponentenfehlern erläutert, von denen für diese Fallstudie nicht alle vier benötigt wurden, anschließend die anderen Komponenten des \ac{YARN}"=Modells.
+Im Klassendiagramm wird zudem ersichtlich, dass jedem Client mehrere Anwendungen in Form der Klasse \texttt{YarnApp} zugeordnet sind, jeder Anwendung mehrere Attempts (\texttt{YarnAppAttempt}) und jedem Attempt mehrere Anwendungs"=Container (\texttt{YarnAppContainer}).
+Der Client stellt somit auch die den relevanten \ac{YARN}"=Komponenten übergeordnete Komponente dar.
+
+Zunächst wird im Folgenden zunächst die dem Modell übergeordnete zentrale Klasse \texttt{Model} erläutert, danach die relevanten \ac{YARN}"=Komponenten mit ihren Komponentenfehlern, anschließend die anderen Komponenten des \ac{YARN}"=Modells.
+
+\subsection{Die Klasse Model}
+\label{sec:modelClass}
+
+Die Klasse \texttt{Model} stellt die zentrale Schnittstelle des Testsystems mit \ac{ss} dar.
+Da diese Klasse auch das gesamte Modell repräsentiert, wird sie zur Verwaltung des von \ac{ss} auszuführenden Modells genutzt.
+Hierfür werden alle Komponenten wie Clients oder Anwendungen zusätzlich zur Struktur innerhalb des Modells auch direkt in entsprechenden Eigenschaften dieser Klasse gespeichert, welche zur Interaktion mit \ac{ss} entsprechend markiert sind (vgl. \cref{sec:ssharp}).
+
+Daneben dient die Klasse auch zur Initialisierung des gesamten Modells.
+Hierbei werden zunächst der Controller, der Treiber in Form der benötigten Parser und Connectoren, sowie die Nodes des Clusters initialisiert.
+Anschließend wird für jeden Client eine gewisse Anzahl an \texttt{YarnApp}"=Instanzen zum Speichern der Daten von Anwendungen, für jede Anwendung eine gewisse Anzahl an \texttt{YarnAppAttempt}"=Instanzen für Attempts, sowie für jeden Attempt eine gewisse Anzahl an \texttt{YarnAppContainer} für die Daten der Anwendungs"=Container initialisiert.
+Die genaue Anzahl der erzeugten Instanzen kann hierbei für jede \ac{YARN}"=Komponente und auch für Clients nach Bedarf angepasst werden.
+Verbunden sind die \ac{YARN}"=Komponenten und Clients mithilfe entsprechender \texttt{List<T>}"=Eigenschaften der untergeordneten Komponenten bzw. der ID und Instanz der übergeordneten Komponente.
 
 \subsection{Relevante \acs{YARN}"=Komponenten}
 \label{sec:yarnComponents}
@@ -149,7 +165,7 @@ Zur einfachen Identifikation der aktiven Komponentenfehler dienen die beiden Eig
 In \cref{lst:faultInjection} wird bereits die Auswirkung der beiden Eigenschaft gezeigt, indem verhindert wird, dass ein möglicherweise bereits injizierter bzw. reparierter Komponentenfehler erneut injiziert bzw. repariert wird.
 Sie dienen aber auch zur Validierung der Constraints, bei denen mithilfe der beiden Eigenschaften geprüft wird, ob ein Node korrekt als aktiv bzw. defekt erkannt wurde.
 
-\subsubsection{Interface IYarnReadable}
+\subsubsection{Interface IYarnReadable und Monitoring}
 \label{subsubsec:yarnComponentInterface}
 
 Das Interface \texttt{IYarnReadable} ist das zentrale Erkennungsmerkmal der im Modell abgebildeten und implementierten \ac{YARN}"=Komponenten.
@@ -196,7 +212,7 @@ public void MonitorStatus()
   var parsedAttempts = Parser.ParseAppAttemptList(AppId);
   foreach(var parsed in parsedAttempts)
   {
-    // search free attempt
+    // search attempt with this id or an free attempt
     attempt.IsSelfMonitoring = IsSelfMonitoring;
     if(IsSelfMonitoring)
       attempt.AttemptId = parsed.AttemptId;
@@ -209,7 +225,10 @@ public void MonitorStatus()
 }
 \end{lstlisting}
 
-Die vier restlichen Eigenschaften und Methoden dienen zur Auswertung der Komponente durch \ac{ss}.
+Beim Monitoring der untergeordneten Komponenten wird zunächst immer geprüft, ob bereits eine Instanz mit der ID der Komponente vorhanden ist.
+Wenn dies der Fall ist, werden die vom realen Cluster ermittelten Daten weiterhin in der bereits bestehenden Instanz gespeichert, ansonsten wird eine leere Instanz genutzt um die Daten der Subkomponente zu speichern.
+
+Die vier restlichen Eigenschaften und Methoden des Interfaces dienen zur Auswertung der Komponente durch \ac{ss}.
 Die beiden Eigenschaften \texttt{SutConstraints} und \texttt{TestConstraints} dienen zur Implementierung der in \cref{sec:requirements} definierten Anforderungen in Form von Constraints.
 
 \subsubsection{Constraints der \acs{YARN}"=Komponenten}
@@ -258,6 +277,33 @@ Wenn die ID der Komponenten"=Instanzen leer ist, und die jeweilige Instanz somit
 
 \subsection{Implementierung des Clients}
 \label{subsec:yarnClient}
+
+Der Client im \ac{YARN}"=Modell simuliert einen Client und dient somit zum Starten der Benchmarks in dieser Fallstudie.
+Die Auswahl des zu startenden Benchmarks erfolgt durch den Benchmark Controller, welcher in \cref{sec:appImplementation} erläutert wird.
+Jeder Client besitzt hierzu einen eigenen Benchmark Controller, womit die auszuführenden Benchmarks für jeden Client unabhängig von anderen Clients ausgewählt werden.
+Ein Client kann jedoch nur eine Anwendung gleichzeitig starten und muss eine zuvor gestartete Anwendung beenden, bevor er eine neue starten kann.
+Dies wird jedoch nur durchgeführt, wenn sich der auszuführende Benchmark geändert hat:
+
+\begin{lstlisting}[label=lst:startClientBenchmark,style=cs,
+caption={[Auswahl und Start des nachfolgenden Benchmarks]
+    Auswahl und Start des nachfolgenden Benchmarks (gekürzt).
+    Der Benchmark Controller und seine Methode \texttt{BenchmarkController.ChangeBenchmark()} wird in \cref{sec:appImplementation} erläutert.}]
+public void UpdateBenchmark()
+{
+  var benchChanged = BenchController.ChangeBenchmark();
+  
+  if(benchChanged)
+  {
+    StopCurrentBenchmark();
+    StartBenchmark(BenchController.CurrentBenchmark);
+  }
+}
+\end{lstlisting}
+
+Da die auf dem Cluster ausgeführten Anwendungen \uU nicht gestartet werden, wenn im \ac{HDFS} das Ausgabeverzeichnis bereits vorhanden ist, muss dieses beim Starten eines Benchmarks ebenfalls zunächst gelöscht werden.
+Anschließend kann die Anwendung gestartet werden und ihre ID vom Client gespeichert werden.
+Hierbei wird auch eine noch leere \texttt{YarnApp}"=Instanz gesucht, um diese analog zu den anderen \ac{YARN}"=Komponenten zum Speichern der Daten zu nutzen.
+Der Unterschied hierbei ist jedoch, dass immer eine neue Instanz genutzt wird, da eine neue Anwendung automatisch immer eine ID erhält, welche im Cluster noch nicht existiert.
 
 \subsection{Implementierung des Controllers}
 \label{subsec:yarnController}

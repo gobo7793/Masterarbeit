@@ -1,13 +1,18 @@
 \section{\acl{ss}}
 \label{sec:ssharp}
 
-\todo{Testen unter SS allgemein genauer erklären}
+\todo{Testen unter SS allgemein genauer erklären und an neue Abschnitte anpassen}
 \textbf{\acf{ss}} ist ein am \isse der Universität Augsburg entwickeltes Framework zum Testen und Verifizieren von Systemen und Modellen.
 Da es in \cS entwickelt wurde und \cS auch zum Entwickeln von Modellen und dazugehörigen Testszenarien genutzt wird, können zahlreiche Features des .NET"=Frameworks bzw. der Sprache \cS im Speziellen genutzt werden.
 \ac{ss} vereint dabei die Simulation, die Visualisierung, modellbasierte Tests sowie die Verifizierung der Modelle durch einen \ac{MCr} \cite{Habermaier2015,Habermaier2016}.
 Dadurch können alle Schritte einer vollständigen Analyse inkl. Modellierung direkt im Visual Studio ausgeführt werden und somit auch alle Features der IDE und .NET, wie \zB die Debugging"=Werkzeuge, genutzt werden.
 Um entsprechende Analysen zu gewährleisten, hat das Framework jedoch auch einige Einschränkungen, wodurch \zB Schleifen und Rekursionen nur eingeschränkt bzw. nicht möglich sind.
 Eine der größten Einschränkungen ist allerdings, dass während der Laufzeit keine neuen Objektinstanzen innerhalb des zu testenden Modells erzeugt werden können, sodass alle benötigten Instanzen bereits während der Initialisierung des Modells erzeugt werden müssen \cite{Habermaier2015}.
+
+\subsection{Aufbau eines Modells}
+\label{subsec:ssharpModel}
+
+\todo{Hier Oracle, Modell selbst und so rein}
 
 Um nun ein System testen zu können, muss dieses zunächst mithilfe von \cS-Klassen und -Instanzen modelliert werden.
 Die dafür verwendeten Modelle sind meist stark vereinfacht und bilden nur die wesentlichen Aspekte der realen Systeme ab.
@@ -33,10 +38,12 @@ public class MyCOmponent : Component
 }
 \end{lstlisting}
 
-
 Jede Komponente des Modells muss von \texttt{Component} erben, um als \ac{ss}-Komponente definiert zu sein.
 Jede Komponente kann nun temporäre (\texttt{TransientFault}) oder dauerhafte (\texttt{PermanentFault}) Komponentenfehler enthalten, welche zunächst innerhalb der Komponente als Felder definiert werden. 
 Der Effekt eines Komponentenfehlers wird anschließend in der entsprechenden Effekt"=Klasse definiert, welche von der Hauptklasse (hier \texttt{YarnNode}) erbt und mithilfe des Attributs \texttt{FaultEffectAttribute} dem dazugehörigen Komponentenfehler zugeordnet wird \cite{Habermaier2016}.
+
+\subsection{Ausführung eines Modells mit \acs{ss}}
+\label{subsec:ssharpExecution}
 
 Um die Modelle zu testen, kommen in \ac{ss} verschiedene Werkzeuge zum Einsatz.
 Eines davon ist eine reine Simulation, bei der das Framework nur einen Ausführungspfad ausführt und dabei keine Komponentenfehler aktiviert bzw. die Aktivierung \textit{manuell} gesteuert werden kann.
