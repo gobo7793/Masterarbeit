@@ -51,14 +51,14 @@ Bei den beiden Tests ohne Mutationsszenario wurde hierbei jeweils die Verbindung
 Dies liegt in der Historie des Nodes innerhalb des Tests begründet:
 
 \begin{table}[h]
-    \begin{tabular}{c|cccc}
-    	   Test    &                19                 &             20             &                21                 &             22             \\ \hline
-    	Testfall 1 &               93 \%               &            0 \%            &              100 \%               &            0 \%            \\
-    	Testfall 2 & \makecell{Verbindung \\ getrennt} &          100  \%           & \makecell{Verbindung \\ getrennt} &           93  \%           \\
-    	Testfall 3 &                 -                 & \makecell{Node \\ beendet} &                 -                 & \makecell{Node \\ beendet} \\
-    	Testfall 4 &   \makecell{Verbunden \\ 93 \%}   &             -              &         \emph{Verbunden}          &             -
-    \end{tabular} 
-    \caption{Auslastungen und injizierte Komponentenfehler in Node 1 in den Tests 19 bis 22}
+    \begin{tabu}{c|[1.5pt]cccc}
+    	   Test    &                       19                       &                  20                  &                     21                      &                  22                  \\ \tabucline[1.5pt]{-}
+    	Testfall 1 &                  Ausl.: 93 \%                  &             Ausl.: 0 \%              &                Ausl.: 100 \%                &             Ausl.: 0 \%              \\ \hline
+    	Testfall 2 &  \makecell{Injiziert:\\Verbindung\\getrennt}   &            Ausl.: 100  \%            & \makecell{Injiziert:\\Verbindung\\getrennt} &            Ausl.: 93  \%             \\ \hline
+    	Testfall 3 &                       -                        & \makecell{Injiziert:\\Node\\beendet} &                      -                      & \makecell{Injiziert:\\Node\\beendet} \\ \hline
+    	Testfall 4 & \makecell{Repariert:\\Verbunden\\Ausl.: 93 \%} &                  -                   &   \emph{\makecell{Repariert:\\Verbunden}}   &                  -
+    \end{tabu} 
+    \caption{Auslastungen und Komponentenfehler in Node 1 der Tests 19 bis 22}
     \label{tab:loadNode1Tests1922}
 \end{table}
 
