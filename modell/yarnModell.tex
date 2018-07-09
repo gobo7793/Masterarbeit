@@ -24,13 +24,12 @@ Zunächst wird im Folgenden zunächst die dem Modell übergeordnete zentrale Kla
 
 Die Klasse \texttt{Model} stellt die zentrale Schnittstelle des Testsystems mit \ac{ss} dar.
 Da diese Klasse auch das gesamte Modell repräsentiert, wird sie zur Verwaltung des von \ac{ss} auszuführenden Modells genutzt.
-Hierfür werden alle Komponenten wie Clients oder Anwendungen zusätzlich zur Struktur innerhalb des Modells auch direkt in entsprechenden Eigenschaften dieser Klasse gespeichert, welche zur Interaktion mit \ac{ss} entsprechend markiert sind (vgl. \cref{sec:ssharp}).
+Hierfür werden alle Komponenten wie Clients oder Anwendungen zusätzlich zur Struktur innerhalb des Modells auch direkt in entsprechenden Eigenschaften dieser Klasse gespeichert, welche zur Interaktion mit \ac{ss} entsprechend markiert sind (vgl. \cref{subsec:ssharpModel}).
 
 Daneben dient die Klasse auch zur Initialisierung des gesamten Modells.
 Hierbei werden zunächst der Controller, der Treiber in Form der benötigten Parser und Connectoren, sowie die Nodes des Clusters initialisiert.
 Anschließend wird für jeden Client eine gewisse Anzahl an \texttt{YarnApp}"=Instanzen zum Speichern der Daten von Anwendungen, für jede Anwendung eine gewisse Anzahl an \texttt{YarnAppAttempt}"=Instanzen für Attempts, sowie für jeden Attempt eine gewisse Anzahl an \texttt{YarnAppContainer} für die Daten der Anwendungs"=Container initialisiert.
-Die genaue Anzahl der erzeugten Instanzen kann hierbei für jede \ac{YARN}"=Komponente und auch für Clients nach Bedarf angepasst werden.
-Verbunden sind die \ac{YARN}"=Komponenten und Clients mithilfe entsprechender \texttt{List<T>}"=Eigenschaften der untergeordneten Komponenten bzw. der ID und Instanz der übergeordneten Komponente.
+Die genaue Anzahl der erzeugten Instanzen kann hierbei für jede \ac{YARN}"=Komponente und auch für Clients nach Bedarf angepasst werden, wodurch auch einzelne Komponenten wie \zB in der Fallstudie die Anwendungs"=Container, deaktiviert werden können.
 
 \subsection{Relevante \acs{YARN}"=Komponenten}
 \label{sec:yarnComponents}
@@ -60,6 +59,7 @@ Hierfür wurden entsprechende Auflistungen basierend auf den in \cite{HadoopRmAp
 Da für diese Fallstudie die Daten der Container selbst nicht relevant sind, wird im hier verwendeten Modell nur gespeichert, wie viele Anwendungs"=Container beim Monitoring im aktuellen Testfall (\texttt{RunningContainerCount}) bzw. für alle bisher ausgeführten Testfälle kumuliert (\texttt{DetectedContainerCount}) erkannt wurden.
 Für die Tests in \cite{Eberhardinger2018} werden die Daten der Container genauso wie die der anderen \ac{YARN}"=Komponenten gespeichert.
 Hierfür enthalten die Klassen \texttt{YarnAppAttempt} und \texttt{YarnAppContainer} entsprechende Eigenschaften zur jeweiligen Zuordnung analog zu denen zwischen \texttt{YarnApp} und \texttt{YarnAppAttempt}.
+Analoge Zuordnungen bestehen auch zu den Clients bzw. den Anwendungs"=Containern, sofern benötigtt.
 Die Eigenschaft \texttt{AmContainerId} speichert zudem die Container"=ID des \ac{AppMstr}"=Containers.
 
 Die Eigenschaften mit dem Präfix \texttt{CPU} bzw. \texttt{Memory} in \texttt{YarnNode} dienen zur Speicherung der derzeitigen Auslastung der CPU"=Kerne bzw. des Speichers eines Nodes.
@@ -186,7 +186,7 @@ Es dient zum einen zur Identifikation aller implementierten \ac{YARN}"=Komponent
     \item \texttt{TestConstraints}
 \end{itemize}
 
-Die beiden erstgenannten Methoden dienen primär zu Debugging"=Zwecken und zur Rückgabe der ID bzw. der Werte aller Eigenschaften der Komponente als ein String.
+Die beiden erstgenannten Methoden dienen primär zu Debugging"=Zwecken und zur Rückgabe der ID beim Zugriff auf die jeweiligen Komponenten mithilfe das Interfaces bzw. der Werte aller Eigenschaften der Komponente als ein String.
 
 Die nachfolgenden vier Eigenschaften und Methoden dienen zum Monitoring der entsprechenden \ac{YARN}"=Komponenten.
 Während die Eigenschaft \texttt{Parser} den zu verwendenden Parser (vgl. \cref{subsec:implementedParsers}) speichert, dient die Eigenschaft \texttt{IsSelfMonito""ring} zur Unterscheidung, ob die Daten einer Komponente von dieser selbst ermittelt werden oder dies die übergeordnete Komponente durchführt.
@@ -227,6 +227,7 @@ public void MonitorStatus()
 
 Beim Monitoring der untergeordneten Komponenten wird zunächst immer geprüft, ob bereits eine Instanz mit der ID der Komponente vorhanden ist.
 Wenn dies der Fall ist, werden die vom realen Cluster ermittelten Daten weiterhin in der bereits bestehenden Instanz gespeichert, ansonsten wird eine leere Instanz genutzt um die Daten der Subkomponente zu speichern.
+Wenn keine freie Instanz mehr nötig ist, wird eine entsprechende \texttt{OutOfMemoryException} ausgelöst, damit die Ausführung des Modells abgebrochen werden kann.
 
 Die vier restlichen Eigenschaften und Methoden des Interfaces dienen zur Auswertung der Komponente durch \ac{ss}.
 Die beiden Eigenschaften \texttt{SutConstraints} und \texttt{TestConstraints} dienen zur Implementierung der in \cref{sec:requirements} definierten Anforderungen in Form von Constraints.
@@ -301,85 +302,113 @@ public void UpdateBenchmark()
 \end{lstlisting}
 
 Da die auf dem Cluster ausgeführten Anwendungen \uU nicht gestartet werden, wenn im \ac{HDFS} das Ausgabeverzeichnis bereits vorhanden ist, muss dieses beim Starten eines Benchmarks ebenfalls zunächst gelöscht werden.
-Anschließend kann die Anwendung gestartet werden und ihre ID vom Client gespeichert werden.
-Hierbei wird auch eine noch leere \texttt{YarnApp}"=Instanz gesucht, um diese analog zu den anderen \ac{YARN}"=Komponenten zum Speichern der Daten zu nutzen.
+Anschließend kann die Anwendung gestartet werden.
+Die weitere Ausführung des Clients wird dabei solange unterbrochen, bis der gestarteten Anwendung eine \emph{Application ID} zugewiesen wurde, die wiederum vom Client abgespeichert wird.
+Hierbei wird auch eine noch leere \texttt{YarnApp}"=Instanz ermittelt, um diese analog zu den anderen \ac{YARN}"=Komponenten zum Speichern der Daten zu nutzen.
 Der Unterschied hierbei ist jedoch, dass immer eine neue Instanz genutzt wird, da eine neue Anwendung automatisch immer eine ID erhält, welche im Cluster noch nicht existiert.
+Wenn keine leere \texttt{YarnApp}"=Instanz mehr verfügbar ist, wird analog zum Monitoring ebenfalls eine \texttt{OutOfMemoryException} ausgelöst.
 
 \subsection{Implementierung des Controllers}
 \label{subsec:yarnController}
 
+Der Controller repräsentiert zum einen den \ac{RM} des Hadoop"=Clusters, weshalb er auch von \texttt{YarnHost} erbt, genauso wie die Klasse der Nodes des \ac{YARN}"=Modells.
+Seine Hauptaufgabe besteht jedoch darin, als Controller zum Testen mit \ac{ss} zu dienen (vgl. \cref{subsec:ssharpModel}).
+
+Der Controller steuert einen Großteil der Ausführung eines einzelnen Testfalls und ist die einzige Komponente des \ac{YARN}"=Modells, welche direkt mit dem Oracle interagiert:
+
+\begin{lstlisting}[label=lst:controllerUpdate,style=cs,
+caption={[Update()"=Methode des Controllers]
+    \texttt{Update()}"=Methode des Controllers (gekürzt).
+    Eine ausführliche Beschreibung des Ablaufs der Ausführung eines Testfalls findet sich in \cref{subsec:simulationStep}.}]
+public override void Update()
+{
+  MonitorMarp();
+  
+  foreach(var client in ConnectedClients)
+    client.UpdateBenchmark();
+  
+  // optional, to allocate at least the AM container
+  ModelUtilities.Sleep(5);
+  
+  MonitorAll();
+  
+  Oracle.ValidateConstraints(EConstraintType.Sut);
+  Oracle.IsReconfPossible();
+  Oracle.ValidateConstraints(EConstraintType.Test);
+}
+\end{lstlisting}
+
+Nach einem ersten Monitoring des \ac{MARP}"=Wertes (vgl. \todo{MARP-Monitoring!}) wird durch den Controller sichergestellt, dass jeder simulierte Client eine Anwendung startet, sofern vom Benchmark Controller hierbei eine neue Anwendung ausgewählt wird (vgl. \cref{subsec:yarnClient,sec:appImplementation}).
+
+Vor dem Monitoring wird zunächst fünf Sekunden gewartet, damit die gestarteten Anwendungen auf dem Cluster die benötigten Ressourcen erhalten können, wodurch die Auslastung des Clusters besser ermittelt werden kann.
+Zum Monitoring nutzt der Controller die von \texttt{IYarnReadable} bereitgestellte Eigenschaft um das Selbstmonitoring der einzelnen \ac{YARN}"=Komponenten zu deaktivieren und führt dabei das Monitoring der Nodes und Anwendungen aus.
+Er startet zudem bei jeder Anwendung auch das Monitoring der jeweiligen Attempts bzw. dadurch auch das der Anwendungs"=Container, sofern benötigt.
+Abschließend startet der Controller die Validierung der Constraints durch das Oracle sowie die Prüfung, ob eine weitere Rekonfiguration des Clusters möglich ist.
+
+Für den Controller selbst sind ebenfalls einige der in \cref{sec:requirements} definierten Anforderungen relevant.
+Die hierbei relevanten Anforderungen sind ebenfalls direkt im Controller implementiert und werden durch das Oracle validiert.
+
 \subsection{Implementierung des Oracles}
 \label{subsec:oracleImpl}
 
-%Enthalten sind alle hier relevanten Komponenten sowie deren Eigenschaften.
-%Als Eigenschaften wurden die Daten aufgenommen, welche mithilfe von Shell"=Kommandos bzw. mithilfe der REST"=API von YARN ermittelt werden können.
-%
-%\subsection{Modellierte YARN"=Komponenten}%\label{sec:yarnComponents}
-%
-%Die abstrakte Basisklasse \texttt{YarnHost} stellt die Basis für alle Hosts des Clusters dar, also dem \texttt{YarnController} mit dem \ac{RM}, und dem \texttt{YarnNode}, was einen Node darstellt, auf dem die Anwendungen bzw. deren Container ausgeführt werden.
-%Die abstrakte Eigenschaft \texttt{YarnHost.HttpPort} dient als Hilfs"=Eigenschaft, da Controller und Nodes unterschiedliche Ports für die Weboberfläche nutzen, deren URL mit Port in der Eigenschaft \texttt{YarnHost.HttpUrl} abrufbar ist.
-%Sie wird daher vom Controller bzw. Node mit dem entsprechenden Port versehen.
-%
-%Die mithilfe von \texttt{YarnApp} dargestellten Anwendungen werden mithilfe des \texttt{Bench"-Controller}s (vgl. \cref{sec:appImplementation}) eines Clients (entsprechend repräsentiert durch die gleichnamige Klasse) gestartet.
-%Jeder Client kann nur eine Anwendung ausführen, daher gibt es die Möglichkeit, mehrere Clients zum Starten von mehreren gleichzeitig ausgeführten Anwendungen zu nutzen.
-%Die Anwendungen selbst enthalten neben grundlegenden Daten wie \zB den Namen auch einige Daten zum Ressourcenbedarf (Speicher und CPU).
-%Zwar gibt Hadoop nicht direkt die zu der Anwendung gehörigen Job"=Ausführungen an, allerdings können diese mithilfe der \texttt{YarnApp.AppId} sehr einfach ermittelt werden und dann in der Liste \texttt{YarnApp.Attempts} gespeichert werden.
-%Das Feld \texttt{YarnApp.IsKillable} gibt an, ob die Ausführung der Anwendung mit den aktuellen Daten im Modell durch den Komponentenfehler \texttt{YarnApp.KillApp} abgebrochen werden kann.
-%Abhängig ist das durch \texttt{YarnApp.FinalStatus}, was angibt, ob eine Anwendung erfolgreich oder nicht erfolgreich ausgeführt wurde oder die Ausführung noch nicht abgeschlossen ist (durch \texttt{EFinalStatus.UNDEFINED}).
-%Um die Komponentenfehler zu aktivieren bzw. bei Bedarf auch wieder zu deaktivieren, besitzen \texttt{YarnNode} und \texttt{YarnApp} jeweils die Eigenschaft \texttt{FaultConnector}, mit der auf den benötigten Connector zugegriffen werden kann.
-%
-%Jede Ausführung \texttt{YarnAppAttempt} hat eine eigene ID und kann einer Anwendung zugeordnet werden.
-%Genau wie bei den Anwendungen selber wird hier direkt der Node gespeichert, auf welchem der \ac{AppMstr} ausgeführt wird und einen eigenen Container bildet, dessen ID direkt gespeichert wird.
-%Container (dargestellt durch \texttt{YarnAppContai"-ner}) existieren in Hadoop nur während der Laufzeit eines Programmes und enthalten nur wenige Daten, darunter ihr ausführender Node.
-%Jede Anwendung, deren Ausführungen und deren Container enthalten zudem den derzeitigen Status, ob die Komponente noch initialisiert wird, bereits ausgeführt wird oder beendet ist.
-%\texttt{EAppState.NotStartedYet} dient als Status, den es nur im Modell gibt und angibt, dass die Anwendung im späteren Verlauf der Testausführung gestartet wird.
-%
-%Alle vier YARN"=Kernkomponenten implementieren das Interface \texttt{IYarnReadable}, was angibt, dass die Komponente ihren Status aus Hadoop ermitteln kann.
-%Entsprechend wird in allen Komponenten die Methode \texttt{ReadStatus()} implementiert, in welchem mithilfe des angegebenen Parsers auf den SSH"=Treiber zugegriffen werden kann und die Komponenten im Modell so ihre eigenen Daten aus dem realen Cluster ermitteln können.
-%Da die REST"=API ermöglicht, alle Daten auch über die reinen Listen zu erhalten anstatt ausschließlich über die Detailausgabe, besteht auch im Modell mithilfe der Eigenschaft \texttt{IsRequireDetailsParsing} das Ermitteln der Daten so einzustellen, dass die übergeordnete YARN"=Komponente bereits alle Daten ermittelt und der Untergeordneten zum Speichern (mittels \texttt{SetStatus()}) übergibt.
-%Als Basis dazu dient der \texttt{YarnController}, der dafür die Daten aller Anwendungen ausliest, die wiederum die Daten ihrer Ausführungen auslesen, welche dann die Daten ihrer Container auslesen und den Komponenten zum Speichern übergeben.
-%
-%\subsection{Implementierung der Komponentenfehler}%\label{sec:implementedFaults}
-%
-%Die Felder \texttt{YarnNode.NodeConnectionError} und \texttt{YarnNode.NodeDead} definieren die Komponentenfehler, wenn ein Node seine Netzwerkverbindung verliert bzw. beendet wird.
-%Die aus den Komponentenfehlern resultierenden Effekte werden in den dafür implementierten geschachtelten Klassen definiert.
-%\cref{lst:faultInjection} zeigt beispielhaft die Implementierung und Injizierung des \texttt{NodeDead}"=Komponentenfehlers mithilfe des für den Node verwendeten \texttt{CmdConnector} (vgl. \cref{subsec:implementedConnectors}).
-%Die Injizierung des \texttt{NodeConnectionError}"=Komponentenfehlers und die Aufhebung beider Komponentenfehler sind analog implementiert.
-%
-%\lstinputlisting[label=lst:faultInjection,
-%caption={[Injizierung eines Komponentenfehlers]
-%    Injizierung eines Komponentenfehlers (gekürzt).
-%    Sollte der Node nicht beendet werden, wird die Injizierung einmalig erneut versucht. \texttt{CmdConnector.Faulting} ist der für Komponentenfehler verwendete Connector.},
-%float,style=cs]
-%{./listings/faultInjectionExample.cs}
-%
-%\subsection{Fehlerüberprüfung}%\label{sec:FaultTesting}
-%
-%Um zu prüfen, ob sich das reale Cluster nach der Aktivierung bzw. Deaktivierung eines Komponentenfehlers korrekt rekonfiguriert, werden \emph{Constraints} genutzt.
-%\todo{Verweis zu Anforderungen}
-%Diese richten sich nach den funktionalen Anforderungen des Systems und prüfen, ob diese weiterhin eingehalten werden.
-%Da die funktionalen Anforderungen bei jeder YARN"=Komponente unterschiedlich sind, wurden diese mithilfe der Eigenschaft \texttt{IYarnReadable.Constraints} für jede Komponente einzeln definiert.
-%\cref{lst:constraintDefinition} zeigt die Definition der Constraints für \texttt{YarnApp}, bei der die Anforderungen 1 und 3 eine Rolle spielen.
-%In jeder Komponente sind nur die funktionalen Anforderungen als Constraints implementiert, die für diese Komponente auch relevant sind.
-%Daher finden sich die beiden Anforderungen 2 und 4 nicht in der Klasse \texttt{YarnApp} wieder, letztere dafür aber \zB in \texttt{YarnNode}.
-%
-%\lstinputlisting[label=lst:constraintDefinition,
-%caption={[Definition der Constraints in YarnApp]
-%    Definition der Constraints in \texttt{YarnApp}},
-%float,style=cs]
-%{./listings/constraints.cs}
-%
-%Geprüft werden die Constraints im Anschluss an das Monitoring der einzelnen YARN"=Komponenten.
-%Wenn dabei die Bedingungen einer funktionalen Anforderungen nicht erfüllt werden, wird von den Constraints \texttt{false} zurückgegeben und so erkannt, dass bei dieser Komponente ein Fehler von Hadoop nicht selbst korrigiert wurde.
-%Die ID der Komponente wird daher entsprechend ausgegeben bzw. in der Logdatei gespeichert.
-%Zwar wäre es hier auch möglich gewesen, ähnlich wie in den Modellen der anderen Fallstudien, die mit dem \sS-Framework entwickelt wurden, eine Exception zu werfen, jedoch wurde hier darauf verzichtet, damit immer die Daten aller Komponenten geprüft werden können.
-%Dadurch kann erkannt werden, wenn mehrere Komponenten nicht den funktionalen Anforderungen entsprechen.
-%
-%Nach der Überprüfung der Constraints wird abschließend geprüft, ob es dem Cluster möglich ist, sich überhaupt rekonfigurieren zu können.
-%Dies wird dadurch realisiert, dass geprüft wird, ob mindestens ein Node noch aktiv ist.
-%Dabei wird jedoch nicht der interne Fehlerstatus in \texttt{YarnNode.IsActive} oder \texttt{YarnNode.IsConnected} geprüft, sondern der beim Monitoring vom Cluster zurückgegebene \texttt{YarnNode.State}.
-%Nur wenn dieser den Wert \texttt{ENodeState.Running} hat, ist der Node aktiv und kann Anwendungen ausführen.
-%Das reale Hadoop"=Cluster kann sich somit nicht mehr rekonfigurieren und neue Container allokieren bzw. in der Ausführung befindliche Anwendungen und ihre Komponenten umverteilen, wenn kein Node den Wert \texttt{ENodeState.Running} hat.
-%\todo{Verweis auf Abschnitt, wo implementierung der Simulation genauer erklärt wird}
-%Kommt es zu diesem Fall, wird dies analog zu den Constraints ebenfalls ausgegeben und in der Logdatei vermerkt und die Ausführung des Simulationsschrittes fortgeführt, da die Daten aller Yarn"=Komponenten erst nach Abschluss der Simulation eines Schrittes ausgegeben werden.
-%Somit kann im Fehlerfall einfacher ermittelt werden, wie der Systemzustand zum Zeitpunkt des Fehlers war.
+Das Oracle dient zur Validierung der  in \cref{sec:requirements} definierten Anforderungen automatisiert durch das Testsystem.
+Hierzu validiert es die Constraints aller \ac{YARN}"=Komponenten und des Controllers, jeweils getrennt nach Constraints für das \ac{SuT} und das gesamte Testsystem, und prüft, ob eine Rekonfiguration des Clusters möglich ist.
+Da die beiden von \texttt{IYarnReadable} bereitgestellten Eigenschaften zum Speichern der Constraints vom Typ \texttt{Func<bool>[]} sind, können so jeweils alle implementierten Constraints nacheinander validiert werden:
+
+\begin{lstlisting}[label=lst:oracleValidateConstraints,style=cs,
+caption={[Validieren der Constraints durch das Oracle]
+    Validieren der Constraints durch das Oracle.
+    Die zu validierenden Constraints werden im Parameter \texttt{constraints} übergeben, der Parameter \texttt{constraintType} dient zu statistischen Zwecken in \texttt{CountCheck()}.}]
+public static bool ValidateConstraints(string componentId,
+   Func<bool>[] constraints, EConstraintType constraintType)
+{
+  var isCompontenValid = true;
+  for(var i = 0; i < constraints.Length; i++)
+  {
+    var constraint = constraints[i];
+    bool isValid;
+    try
+    {
+      isValid = constraint();
+    }
+    catch
+    {
+      isValid = false;
+    }
+    
+    CountCheck(constraintType, isValid);
+    if(!isValid)
+    {
+      Logger.Error($"YARN component not valid: " +
+         "Constraint {i} in {componentId}");
+      if(isCompontenValid)
+        isCompontenValid = false;
+    }
+  }
+  
+  return isCompontenValid;
+}
+\end{lstlisting}
+
+Das Oracle prüft auch ob eine weitere Rekonfiguration möglich ist.
+Sind dagegen alle Nodes im Cluster defekt bzw. wurde dies beim Monitoring des realen Clusters erkannt, wird die Ausführung gemäß \cref{subsec:testRequirements} abgebrochen.
+Dazu wird eine \texttt{Exception} ausgelöst, welche zum Abbruch der Ausführung dient:
+
+\begin{lstlisting}[label=lst:oracleIsReconfPossible,style=cs,
+caption={Prüfung nach der Möglichkeit weiterer Rekonfigurationen}]
+public bool IsReconfPossible()
+{
+  var isReconfPossible = ConnectedNodes
+     .Any(n => n.State == ENodeState.RUNNING);
+  if(!isReconfPossible)
+  {
+    Logger.Error("No reconfiguration possible!");
+    throw new Exception("No reconfiguration possible!");
+  }
+  return true;
+}
+\end{lstlisting}
+
+Die bereits in \cref{lst:oracleValidateConstraints} genutzte Methode \texttt{CountCheck()} dient zu statistischen Zwecken.
+Hierbei wird getrennt nach Constraint"=Typ (für das \ac{SuT} oder für das Testsystem) gezählt, wie viele Constraints insgesamt validiert wurden und wie viele verletzt wurden.
+Die jeweiligen Werte können beim Abschluss einer Ausführung des Modells entsprechend ausgegeben werden.
