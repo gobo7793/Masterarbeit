@@ -59,6 +59,10 @@ Sollte der \ac{NM} bei solchen Status"=Abfragen zunächst nicht reagieren, wird 
 Ein weiterer Bestandteil von Hadoop bzw. \ac{YARN} ist der \ac{TLS}.
 Er ist speziell dafür entwickelt, die Metadaten und Logs der \ac{YARN}"=Anwendungen zu speichern und jederzeit, also als Anwendungshistorie, auszugeben \cite{HadoopYarnTlServer271}.
 
+Zum Steuern des Clusters bzw. dem Monitoring der mithilfe von \ac{YARN} ausgeführten Anwendungen stellt Hadoop drei Schnittstellen zur Verfügung.
+Dies sind eine graphische Weboberfläche, was zugleich auch die wichtigste Schnittstelle darstellt, entsprechende Befehle für die \acl{CLI} (engl. \emph{Command-line interface}, kurz \acs{CLI})\acused{CLI}, sowie eine REST"=API.
+Während sich die Weboberfläche zur menschlichen Interaktion oder zum Finden von Fehlern eignet, dienen die \ac{CLI}"=Befehle vor allem zum Steuern des Clusters und die REST"=API zur automatisierten Rückgabe der Daten des Clusters zur Nutzung in anderen Programmen \cite{HadoopClusterSetup271,HadoopYarnCmds271,HadoopRmApi271,HadoopNmApi271}.
+
 Das \textbf{\ac{HDFS}} basiert auf einer ähnlichen Architektur wie \ac{YARN} und besitzt ebenfalls einen Controller und mehrere Nodes:
 
 \begin{figure}[h]

@@ -8,9 +8,9 @@ Im Folgenden sind daher beispielhaft die Ausgaben im JSON"=Format für die Anwen
 Im Rahmen dieser Masterarbeit sind die Rückgaben für Listen von Anwendungen, Attempts, Container und der Nodes vom \ac{RM} und bzw. \ac{NM} (Container) sowie des \ac{TLS} (Attempts und Container)relevant.
 Weitere Informationen zur REST"=API sind in der Dokumentation in \cite{HadoopYarnTlServer271,HadoopRmApi271,HadoopNmApi271} zu finden.
 
-\begin{lstlisting}[label=lst:hadoopAppListRestRm,style=cs,
+\begin{lstlisting}[label=lst:hadoopAppListRestRm,style=json,
 caption={[REST"=-Ausgabe aller Anwendungen vom \acs{RM}]
-    REST"=Ausgabe aller Anwendungen vom \ac{RM}.
+    REST"=Ausgabe aller Anwendungen vom \acs{RM}.
     Die Liste kann mithilfe verschiedener Query"=Parameter gefiltert werden.\\
     URL: \url{http://addr:port/ws/v1/cluster/apps}}]
 {
@@ -50,9 +50,9 @@ caption={[REST"=-Ausgabe aller Anwendungen vom \acs{RM}]
 }
 \end{lstlisting}
 
-\begin{lstlisting}[label=lst:hadoopAttemptListRestTls,style=cs,
+\begin{lstlisting}[label=lst:hadoopAttemptListRestTls,style=json,
 caption={[REST"=Ausgabe aller Ausführungen einer Anwendung vom \acs{TLS}]
-    REST"=Ausgabe aller Ausführungen einer Anwendung vom \ac{TLS}.\\
+    REST"=Ausgabe aller Ausführungen einer Anwendung vom \acs{TLS}.\\
     URL: \url{http://addr:port/ws/v1/applicationhistory/apps/{appid}/appattempts}}]
 {
   "appAttempt": [

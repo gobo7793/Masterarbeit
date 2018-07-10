@@ -197,9 +197,9 @@ Die beiden erstgenannten Methoden dienen primär zu Debugging"=Zwecken und zur R
 
 Die nachfolgenden vier Eigenschaften und Methoden dienen zum Monitoring der entsprechenden \ac{YARN}"=Komponenten.
 Während die Eigenschaft \texttt{Parser} den zu verwendenden Parser (vgl. \cref{subsec:implementedParsers}) speichert, dient die Eigenschaft \texttt{IsSelfMonito""ring} zur Unterscheidung, ob die Daten einer Komponente von dieser selbst ermittelt werden oder dies die übergeordnete Komponente durchführt.
-Diese Unterscheidung ist nötig, da \ac{YARN} zwei unterschiedliche Möglichkeiten zur Ermittlung der Daten bietet, die Rückgabe der Daten durch die Kommandozeile oder mithilfe der REST"=API.
+Diese Unterscheidung ist nötig, da \ac{YARN} zwei unterschiedliche Möglichkeiten zur Ermittlung der Daten bietet, die Rückgabe der Daten durch die \ac{CLI} oder mithilfe der REST"=API.
 Ausführlichere Informationen zu den beiden Varianten sind in \cref{sec:sshDriver} zu finden.
-Bei der Nutzung der Kommandozeile zur Ermittlung der Daten eignet sich daher die Selbstermittlung der Daten besser, während bei der Nutzung der Rest"=API die Ermittlung der Daten durch die übergeordnete Komponente geeigneter ist.
+Bei der Nutzung der \ac{CLI} zur Ermittlung der Daten eignet sich daher die Selbstermittlung der Daten besser, während bei der Nutzung der Rest"=API die Ermittlung der Daten durch die übergeordnete Komponente geeigneter ist.
 Aus diesem Grund ist auch die Methode \texttt{SetStatus()} definiert, da hier unabhängig von der Datenermittlung der aktuelle Status der Komponente abgespeichert werden kann.
 Die Durchführung des Monitoring findet in beiden Fällen jedoch mithilfe der Methode \texttt{MonitorStatus()} statt:
 

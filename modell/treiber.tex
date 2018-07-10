@@ -4,8 +4,8 @@
 
 In \cref{sec:modelArchitecture} wurde bereits aufgezeigt, dass der Treiber zur Verbindung des \ac{YARN}"=Modells mit dem realen Cluster aus den drei Komponenten Parser, Connector und der SSH"=Verbindung selbst besteht.
 Der Treiber ist im \ac{YARN}"=Modell mithilfe verschiedener Interfaces zur Nutzung des Parsers und Connectors eingebunden.
-Da \ac{YARN} mithilfe von Befehlen für die Kommandozeile und einer REST"=API zwei unterschiedliche Schnittstellen zum Auslesen der Daten der \ac{YARN}"=Komponenten für das Monitoring bereitstellt, wurden jeweils zwei entsprechende Parser und Connectoren hierfür entwickelt.
-Andere Befehle wie \zB \ac{HDFS}"=Befehle können ebenfalls mithilfe des entwickelten Kommadozeilen"=Connectors ausgeführt werden, da Connectoren mithilfe von SSH"=Verbindungen mit den Cluster"=Hosts verbunden sind.
+Da \ac{YARN} mithilfe von Befehlen für die CLI und einer REST"=API zwei unterschiedliche Schnittstellen zum Auslesen der Daten der \ac{YARN}"=Komponenten für das Monitoring bereitstellt, wurden jeweils zwei entsprechende Parser und Connectoren hierfür entwickelt.
+Andere Befehle wie \zB \ac{HDFS}"=Befehle können ebenfalls mithilfe des entwickelten CLI"=Connectors ausgeführt werden, da Connectoren mithilfe von SSH"=Verbindungen mit den Cluster"=Hosts verbunden sind.
 
 \subsection{Grundlegender Aufbau und Integration im \acs{YARN}"=Modell}
 \label{subsec:driverModelIntegration}
@@ -31,11 +31,11 @@ Das Monitoring der Daten des realen Clusters wird mithilfe des Parsers durchgef�
 Das Interface \texttt{IHadoopParser} stellt hierfür entsprechende Parsing"=Methoden für die vier implementierten YARN"=Komponenten sowie der Übersichtslisten aller einer YARN"=Komponente untergeordneten Subkomponenten.
 Zudem stellt das Parser"=Interface eine Methode zum Auslesen des aktuellen \ac{MARP}"=Wertes des Schedulers bereit.
 Beim Monitoring werden immer die entsprechenden von \texttt{IParsedComponent} abgeleiteten Interfaces zur Rückgabe der ermittelten Daten genutzt.
-Hierfür stellen diese Interfaces entsprechende Eigenschaften bereit, um alle mithilfe der Kommandozeile oder der REST"=API auslesbaren Daten an das YARN"=Modell übergeben zu können.
+Hierfür stellen diese Interfaces entsprechende Eigenschaften bereit, um alle mithilfe der CLI oder der REST"=API auslesbaren Daten an das YARN"=Modell übergeben zu können.
 
 Das Connector"=Interface \texttt{IHadoopConnector} stellt alle zum Abrufen der Daten oder weiteren Interaktion wie das Injizieren von Komponentenfehlern oder Starten von Anwendungen benötigten Methoden und Befehle bereit.
 Hierbei wird für das Monitoring unterschieden, ob die Daten vom \ac{TLS} oder vom \ac{RM} von Hadoop abgerufen werden.
-Dies ist vor allem bei der Nutzung der REST"=API wichtig, da sich hier die Adressen und Pfade unterscheiden, während bei der Benutzung der Kommandozeile die Befehle gleich sind .
+Dies ist vor allem bei der Nutzung der REST"=API wichtig, da sich hier die Adressen und Pfade unterscheiden, während bei der Benutzung der CLI die Befehle gleich sind .
 Der \ac{TLS} wird zum Abrufen der Daten vor allem aus dem Grund genutzt, da hierbei zusätzliche Daten ermittelt werden können, die bei der reinen Nutzung der Schnittstellen des \ac{RM} nicht zurückgegeben werden würden.
 Ausgenommen sind hiervon Anwendungen, bei denen die Nutzung des \ac{TLS} keine weiteren Daten von Hadoop zurückgegeben werden\cite{HadoopYarnTlServer271,HadoopYarnCmds271,HadoopRmApi271,HadoopNmApi271}.
 Aus diesem Grund ist die Nutzung des \ac{TLS} zum Monitoring von Anwendungen mithilfe des Connector"=Interfaces nicht möglich.
@@ -56,8 +56,69 @@ Dennoch werden Befehle auf den Cluster"=Hosts ausschließlich mithilfe des Conne
 \subsection{Entwicklung der Parser}
 \label{subsec:implementedParsers}
 
+Der Parser dient dazu, die von Hadoop zurückgegebenen Daten der YARN"=Komponenten einzulesen und dem Modell zu übergeben.
+Zur Datenhaltung innerhalb der Parser"=Komponente des Treibers wurden hierfür entsprechende Klassen entwickelt, welche die von \texttt{IParsedComponent} abgeleiteten Interfaces implementieren.
+Dadurch sind die Datenhaltungs"=Klassen auch direkt dafür geeignet, die Daten an das Modell zu übergeben.
+
+Da Hadoop zwei Schnittstellen in Form der CLI und der REST"=API bereit stellt, wurden hierfür entsprechend zwei Parser entwickelt, um die jeweiligen Daten einzulesen.
+
 \subsubsection{Implementierung des CmdParsers}
 \label{subsubsec:implCmdParser}
+
+Der erste der beiden entwickelten Parser ist der \texttt{CmdParser} zum Monitoring mithilfe von Befehlen auf der CLI.
+Zum Auslesen der Daten selbst nutzt der \texttt{CmdParser} den dazugehörigen \texttt{CmdConnector} (vgl. \cref{subsubsec:implCmdConnector}), mit dem zum Auslesen der Daten die entsprechenden CLI"=Befehle ausgeführt werden.
+Die hierbei zurückgegebenen Daten sind im Vergleich zu den von der REST"=API zurückgegebenen im Umfang deutlich reduziert, in den jeweiligen Übersichten der Subkomponenten zudem auf das notwendigste beschränkt.
+Eine kurze Übersicht über die Befehle und deren Ausgaben ist im \cref{app:hadoopCmds} zu finden.
+
+Ausgewertet werden die von Hadoop zurückgegebenen Daten mithilfe von \acp{Regex}.
+Da das Ausgabeformat jeweils in Listenform oder als ausführlicher Report immer das gleiche Format aufweist, wurden hierfür zwei generische Regex"=Pattern entwickelt, welche zur Auswertung fast aller Daten ausreichend sind:
+
+\begin{lstlisting}[label=lst:cmdRegexPattern,style=cs,
+caption={[Implementierte \acs{Regex}"=Pattern im CmdParser]
+    Implementierte \acs{Regex}"=Pattern im \texttt{CmdParser}}]
+Regex _GenericListRegex = new Regex(@"\s*([^\t]+)");
+Regex _GenericDetailsRegex = new Regex(@"\t(.+)\s:\s([^\t]*)[\n\r]", RegexOptions.Multiline);
+\end{lstlisting}
+
+Bei zurückgegebenen Listen müssen diese zur Auswertung zunächst zeilenweise getrennt werden, bevor das Regex"=Pattern genutzt werden kann.
+Anschließend können durch die Reihenfolge der jeweiligen Regex"=Matchgruppen die jeweiligen Daten der Komponente den entsprechenden Eigenschaften der Datenhaltungsklassen zugeordnet werden.
+
+Eine Besonderheit bilden Zeitstempel.
+Diese werden von Hadoop bei der Nutzung der CLI meist in Form des Java"=Timestamps in Millisekunden seit dem 1. Januar 1970 00:00:00 Uhr, in der Liste der ausgeführten Container eines Attempts stattdessen im Format \texttt{ddd MMM dd HH:mm:ss zz00 yyyy}.
+Dies entspricht \zB dem Zeitstempel \texttt{Fri Jan 05 11:08:16 +0000 2018}.
+Weiterführende Informationen zur Formatierung von Zeitstempeln in .NET finden sich in \cite{CsTimeFormatStrings}.
+Der von Hadoop zurückgegebene Zeitstempel muss in beiden Fällen zunächst in ein .NET"=kompatibles Format umgewandelt werden.
+Dies geschieht mithilfe der Methode \texttt{ParseJavaTimestamp()}, für die mehrere Überladungen implementiert wurden:
+
+\begin{lstlisting}[label=lst:parseJavaTimestamp,style=cs,
+caption={[Überladungen der Methode ParseJavaTimestamp()]
+    Überladungen der Methode \texttt{ParseJavaTimestamp()}.
+    Es steht zudem eine weitere Überladung zur Verfügung, um den Timestamp in Form der Millisekunden seit 1970 als \texttt{string} zu übergeben.
+    Dabei wird der \texttt{string} in einen \texttt{long} konvertiert und anschließend die erste hier gezeigte Überladung aufgerufen.}]
+public static DateTime ParseJavaTimestamp(long javaMillis)
+{
+  if(javaMillis < 1)
+  return DateTime.MinValue;
+  var javaTimeUtc = new DateTime(1970, 1, 1, 0, 0, 0,
+     DateTimeKind.Utc).AddMilliseconds(javaMillis);
+  return javaTimeUtc.ToLocalTime();
+}
+
+public static DateTime ParseJavaTimestamp(string value,
+   string format, CultureInfo culture = null)
+{
+  culture = culture ?? new CultureInfo("en-US");
+  DateTime time;
+  DateTime.TryParseExact(value, format, culture,
+     DateTimeStyles.AssumeUniversal, out time);
+  return time;
+}
+\end{lstlisting}
+
+Die hierbei zurückgegebenen \texttt{DateTime}"=Instanzen werden anschließend zum Speichern der Zeitstempel genutzt.
+
+Die Speicherung und Übergabe der ausführenden Nodes des \ac{AppMstr} oder der Container an das Modell geschieht direkt als entsprechende Node"=Instanz innerhalb des Modells.
+Hierfür wird die ID bzw. die URL des Nodes genutzt, um die korrespondierende Instanz im \ac{YARN}"=Modell zu ermitteln und zu speichern.
 
 \subsubsection{Implementierung des RestParsers}
 \label{subsubsec:implRestParser}
