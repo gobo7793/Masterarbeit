@@ -49,12 +49,13 @@ SSH-Verbindung</panel_attributes>
     <id>UMLClass</id>
     <coordinates>
       <x>370</x>
-      <y>670</y>
+      <y>610</y>
       <w>440</w>
-      <h>40</h>
+      <h>80</h>
     </coordinates>
-    <panel_attributes>valign=center
+    <panel_attributes>valign=top
 halign=center
+layer=0
 bg=orange
 Reales Cluster</panel_attributes>
     <additional_attributes/>
@@ -80,7 +81,7 @@ Windows-PC bzw. VM</panel_attributes>
       <x>350</x>
       <y>580</y>
       <w>480</w>
-      <h>150</h>
+      <h>130</h>
     </coordinates>
     <panel_attributes>valign=top
 halign=center
@@ -88,17 +89,6 @@ layer=-1
 bg=light_gray
 Linux-PC</panel_attributes>
     <additional_attributes/>
-  </element>
-  <element>
-    <id>Relation</id>
-    <coordinates>
-      <x>670</x>
-      <y>520</y>
-      <w>30</w>
-      <h>110</h>
-    </coordinates>
-    <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>10.0;90.0;10.0;10.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
@@ -331,26 +321,52 @@ Connector</panel_attributes>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>370</x>
-      <y>610</y>
-      <w>440</w>
+      <x>660</x>
+      <y>640</y>
+      <w>140</w>
       <h>40</h>
     </coordinates>
     <panel_attributes>valign=center
 halign=center
-bg=orange
-Setup- und Startscripte</panel_attributes>
+layer=1
+Start- und
+Setupscripte</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>380</x>
+      <y>640</y>
+      <w>260</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>valign=center
+halign=center
+layer=1
+Hadoop-Cluster</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>580</x>
-      <y>640</y>
+      <x>670</x>
+      <y>520</y>
       <w>30</w>
-      <h>50</h>
+      <h>140</h>
     </coordinates>
     <panel_attributes>lt=&lt;-</panel_attributes>
-    <additional_attributes>10.0;30.0;10.0;10.0</additional_attributes>
+    <additional_attributes>10.0;120.0;10.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>630</x>
+      <y>650</y>
+      <w>50</w>
+      <h>30</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-</panel_attributes>
+    <additional_attributes>10.0;10.0;30.0;10.0</additional_attributes>
   </element>
 </diagram>
