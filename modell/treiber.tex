@@ -40,6 +40,19 @@ Der \ac{TLS} wird zum Abrufen der Daten vor allem aus dem Grund genutzt, da hier
 Ausgenommen sind hiervon Anwendungen, bei denen die Nutzung des \ac{TLS} keine weiteren Daten von Hadoop zurückgegeben werden\cite{HadoopYarnTlServer271,HadoopYarnCmds271,HadoopRmApi271,HadoopNmApi271}.
 Aus diesem Grund ist die Nutzung des \ac{TLS} zum Monitoring von Anwendungen mithilfe des Connector"=Interfaces nicht möglich.
 
+Die Implementierten Parser und Connectoren sind jeweils als Singleton realisiert und sind von der Serialisierung des YARN"=Modells durch \ac{ss} ausgenommen.
+Dies liegt vor allem darin Begründet, dass dadurch Speicher eingespart wird, der dadurch für andere YARN"=Komponenten zur Verfügung steht.
+Aber auch weitere Einschränkungen durch \ac{ss} spielten eine Rolle (vgl. \cref{sec:ssharp}).
+Ein weiterer Vorteil liegt zudem darin, dass für Unterschiedliche Einsatzzwecke der gleiche Connector genutzt werden kann, und somit auch die einzelnen vom Connector benötigten SSH"=Verbindungen für unterschiedliche Einsatzzwecke wiederverwendet werden können.
+Die Initialisierung der Parser und Connectoren erfolgt jeweils beim ersten Aufruf der Singletons.
+Dies geschieht innerhalb des Testsystems üblicherweise entweder beim Initialisieren des Tests (beschrieben in \cref{sec:implTestcases}) oder beim Initialisieren des YARN"=Modells selbst durch die Klasse \texttt{Model}.
+Die Initialisierung des Modells stellt zudem den einzigen Zeitpunkt dar, bei dem im YARN"=Modell direkt mit den implementierten Parsern und Connectoren interagiert wird, jede andere Interaktion findet stattdessen gekapselt mithilfe der Interfaces statt.
+
+Die drei Komponenten des Treibers sind zudem untereinander  voneinander gekapselt.
+Bei der Ausführung des Parsers wird daher analog nur zur Initialisierung mit dem konkreten Connector interagiert, während das Connector"=Interface zum Monitoring als einzige Schnittstelle dient.
+Da für die SSH"=Verbindung kein eigenes Interface zur Kapselung existiert, ist die Kapselung der Connectoren und der bereitstellenden Klasse der SSH"=Verbindung nicht so streng wie zwischen anderen Komponenten.
+Dennoch werden Befehle auf den Cluster"=Hosts ausschließlich mithilfe des Connectors durchgeführt.
+
 \subsection{Entwicklung der Parser}
 \label{subsec:implementedParsers}
 

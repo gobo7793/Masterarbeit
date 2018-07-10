@@ -19,17 +19,24 @@ Der Client stellt somit auch die den relevanten \ac{YARN}"=Komponenten übergeor
 
 Zunächst wird im Folgenden zunächst die dem Modell übergeordnete zentrale Klasse \texttt{Model} erläutert, danach die relevanten \ac{YARN}"=Komponenten mit ihren Komponentenfehlern, anschließend die anderen Komponenten des \ac{YARN}"=Modells.
 
-\subsection{Die Klasse Model}
+\subsection{Die Klassen Model und ModelSettings}
 \label{subsec:modelClass}
 
-Die Klasse \texttt{Model} stellt die zentrale Schnittstelle des Testsystems mit \ac{ss} dar.
-Da diese Klasse auch das gesamte Modell repräsentiert, wird sie zur Verwaltung des von \ac{ss} auszuführenden Modells genutzt.
+Die Klasse \texttt{Model} stellt die zentrale Schnittstelle des Testsystems mit \ac{ss} dar, während die Klasse \texttt{ModelSettings} alle generellen, variablen Einstellungen und Konstanten des \ac{YARN}"=Modells bereitstellt.
+Da die \texttt{Model}"=Klasse auch das gesamte Modell repräsentiert, wird sie zur Verwaltung des von \ac{ss} auszuführenden Modells genutzt.
 Hierfür werden alle Komponenten wie Clients oder Anwendungen zusätzlich zur Struktur innerhalb des Modells auch direkt in entsprechenden Eigenschaften dieser Klasse gespeichert, welche zur Interaktion mit \ac{ss} entsprechend markiert sind (vgl. \cref{subsec:ssharpModel}).
 
 Daneben dient die Klasse auch zur Initialisierung des gesamten Modells.
 Hierbei werden zunächst der Controller, der Treiber in Form der benötigten Parser und Connectoren, sowie die Nodes des Clusters initialisiert.
 Anschließend wird für jeden Client eine gewisse Anzahl an \texttt{YarnApp}"=Instanzen zum Speichern der Daten von Anwendungen, für jede Anwendung eine gewisse Anzahl an \texttt{YarnAppAttempt}"=Instanzen für Attempts, sowie für jeden Attempt eine gewisse Anzahl an \texttt{YarnAppContainer} für die Daten der Anwendungs"=Container initialisiert.
 Die genaue Anzahl der erzeugten Instanzen kann hierbei für jede \ac{YARN}"=Komponente und auch für Clients nach Bedarf angepasst werden, wodurch auch einzelne Komponenten wie \zB in der Fallstudie die Anwendungs"=Container, deaktiviert werden können.
+
+Alle initialisierten \ac{YARN}"=Komponenten werden durch die \texttt{Model}"=Klasse auch innerhalb des Modells zur Verfügung gestellt, sofern Komponenten diese benötigen.
+Darunter zählen auch die bei der Ausführung des Modells benötigten Parser und Connectoren.
+Aufgrund der Einschränkungen von \ac{ss} im Umgang mit dem Treiber (vgl. \cref{subsec:driverModelIntegration}), sowie zur einfacheren Bereitstellung von benötigten Komponenten und Funktionen im Modell, ist die \texttt{Model}"=Klasse als Singleton realisiert.
+
+Die \texttt{ModelSettings}"=Klasse dient zum Speichern der variablen Einstellungen sowie zum Bereitstellen von generellen, Modell- oder Testsystemweiten Konstanten.
+Gespeichert und bereitgestellt werden hier Daten wie \zB die Zugangsdaten der SSH"=Verbindungen oder den genutzten \texttt{HostMode} (vgl.  \cref{subsec:implementedConnectors,sec:realCluster}) im \ac{YARN}"=Modell und dem Treiber transparent zu machen.
 
 \subsection{Relevante \acs{YARN}"=Komponenten}
 \label{subsec:yarnComponents}
