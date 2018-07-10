@@ -1,93 +1,152 @@
-\section{Implementierung des Treibers}
+\section{Entwicklung des Treibers}
 \label{sec:sshDriver}
-
 \todo{Multihost-Mode irgendwo erklären}
-Im Einführungstext zu diesem Kapitel wurde bereits auf den grundlegenden Aufbau des Treibers eingegangen, der aus den drei einzelnen Komponenten Parser, Connector und der eigentlichen SSH"=Verbindung besteht.
-Der Parser selbst besteht neben dem eigentlichen Parser zudem aus Datenhaltungs"=Klassen für die relevanten YARN"=Komponenten.
-Sie sind außerdem so aufgebaut, dass sie für beide hier implementierten Parser bzw. Connectoren für die Kommandozeilen"=Befehle und die REST"=API genutzt werden können.
 
-\subsection{Integration im Modell}
-\label{subsec:modelIntegration}
+In \cref{sec:modelArchitecture} wurde bereits aufgezeigt, dass der Treiber zur Verbindung des \ac{YARN}"=Modells mit dem realen Cluster aus den drei Komponenten Parser, Connector und der SSH"=Verbindung selbst besteht.
+Der Treiber ist im \ac{YARN}"=Modell mithilfe verschiedener Interfaces zur Nutzung des Parsers und Connectors eingebunden.
+Da \ac{YARN} mithilfe von Befehlen für die Kommandozeile und einer REST"=API zwei unterschiedliche Schnittstellen zum Auslesen der Daten der \ac{YARN}"=Komponenten für das Monitoring bereitstellt, wurden jeweils zwei entsprechende Parser und Connectoren hierfür entwickelt.
+Andere Befehle wie \zB \ac{HDFS}"=Befehle können ebenfalls mithilfe des entwickelten Kommadozeilen"=Connectors ausgeführt werden, da Connectoren mithilfe von SSH"=Verbindungen mit den Cluster"=Hosts verbunden sind.
 
-Hadoop besitzt zwei primäre Wege, um die Daten vom \ac{RM} bzw. dem \ac{TLS} ausgeben zu können.
-Dies ist zum einen die Kommandozeile, mithilfe der die Daten vom \ac{RM} und vom \ac{TLS} kombiniert ausgegeben werden, und die REST"=API.
-Die benötigten Befehle für die Kommandozeile und deren Ausgaben sind in \cref{app:hadoopCmds}, die für die REST"=API benötigten URLs und deren Rückgaben in \cref{app:hadoopRestApi} gelistet.
-Auf beiden Wegen können \uA die Daten zu folgenden Komponenten ausgegeben werden \cite{HadoopYarnTlServer271,HadoopYarnCmds271,HadoopRmApi271,HadoopNmApi271}:
+\subsection{Grundlegender Aufbau und Integration im \acs{YARN}"=Modell}
+\label{subsec:driverModelIntegration}
 
-\begin{description}
-    \item[Anwendungen] als nach dem Status gefilterte Liste oder der Report einer Anwendung
-    \item[Ausführungen] als Liste aller Ausführungen einer Anwendung oder der Report einer Ausführung
-    \item[Container] als Liste aller Container einer Ausführung oder der Report eines Containers
-    \item[Nodes] als Liste aller Nodes oder der Report eines Nodes
-\end{description}
+Zur Integration des Treibers im \ac{YARN}"=Modell stellt dieser mehrere Interfaces bereit.
+Dadurch sind einerseits der Treiber und das YARN"=Modell strikt getrennt, andererseits wird es dadurch auch ermöglicht, in Zukunft andere Möglichkeiten als die hier Entwickelten zur Interaktion mit dem realen Cluster zu entwickeln und zu nutzen.
 
-Zur Integration des Treibers wurden daher entsprechende Interfaces entwickelt, über die das Modell auf den eigentlichen Treiber zugreifen kann.
+Zur Interaktion des YARN"=Modells mit dem Treiber werden dem Modell folgende Interfaces zur Verfügung gestellt:
 
-Die vier Interfaces \texttt{IApplicationResult}, \texttt{IAppAttemptResult}, \texttt{IContainerResult} und \texttt{INodeResult} dienen der Übergabe der geparsten Daten der einzelnen Komponenten an die korrespondierenden Komponenten im \sS"=Modell.
-Sie enthalten jeweils alle relevanten Daten, die von Hadoop über die Kommandozeile oder die REST"=API ausgegeben werden.
-Alle vier Interfaces implementieren zudem \texttt{IParsedComponent}, welches wiederum als Basis für die Übergabe der ausgelesenen Daten an \texttt{IYarnReadable.SetStatus()} im Modell dient.
+\begin{itemize}
+    \item \texttt{IHadoopParser} für Parser
+    \item \texttt{IHadoopConnector} für Connectoren
+    \item Von \texttt{IParsedComponent} abgeleitete Interfaces für geparste YARN"=Komponenten:
+    \begin{itemize}
+        \item \texttt{IApplicationResult} für Anwendungen
+        \item \texttt{IAppAttemptResult} für Attempts
+        \item \texttt{IContainerResult} für Anwendungs"=Container
+        \item \texttt{INodeResult} für Nodes
+    \end{itemize}
+\end{itemize}
 
-Das Interface \texttt{IHadoopParser} dient als Einbindung des Parsers im Modell mithilfe von \texttt{IYarnReadable.Parser} und enthält für jede der acht relevanten Ausgaben von Hadoop entsprechende Methodendefinitionen.
+Das Monitoring der Daten des realen Clusters wird mithilfe des Parsers durchgeführt.
+Das Interface \texttt{IHadoopParser} stellt hierfür entsprechende Parsing"=Methoden für die vier implementierten YARN"=Komponenten sowie der Übersichtslisten aller einer YARN"=Komponente untergeordneten Subkomponenten.
+Zudem stellt das Parser"=Interface eine Methode zum Auslesen des aktuellen \ac{MARP}"=Wertes des Schedulers bereit.
+Beim Monitoring werden immer die entsprechenden von \texttt{IParsedComponent} abgeleiteten Interfaces zur Rückgabe der ermittelten Daten genutzt.
+Hierfür stellen diese Interfaces entsprechende Eigenschaften bereit, um alle mithilfe der Kommandozeile oder der REST"=API auslesbaren Daten an das YARN"=Modell übergeben zu können.
 
-Beim Interface \texttt{IHadoopConnector}, das im Modell den Connector über die \texttt{Fault"-Connector}"=Eigenschaften von \texttt{YarnApp} und \texttt{YarnNode} einbindet, besitzt ebenfalls für jede der acht Datenrückgaben entsprechende Deklarationen, für Ausführungen und Container dabei jeweils vom \ac{RM} (\ac{NM} für Container) und vom \ac{TLS}.
-Auf die Nutzung des \ac{TLS} zum Ermitteln der Daten zu Anwendungen wird verzichtet.
-Dies liegt darin begründet, dass bei Nutzung der REST"=API des \ac{RM} neben den vom \ac{TLS} bereitgestellten Daten einige weitere Informationen zu den Anwendungen ausgegeben werden \cite{HadoopRmApi271,HadoopYarnTlServer271}.
-Das Connector"=Interface enthält darüber hinaus Deklarationen, um die im Modell implementierten Komponentenfehler im realen Cluster zu steuern und Anwendungen starten zu können.
-Architektonisch ist der Treiber zudem so aufgebaut, dass das Modell keine Kontrolle über den vom Parser benötigten Connector besitzt und die SSH"=Verbindung ausschließlich vom Connector gesteuert werden kann.
+Das Connector"=Interface \texttt{IHadoopConnector} stellt alle zum Abrufen der Daten oder weiteren Interaktion wie das Injizieren von Komponentenfehlern oder Starten von Anwendungen benötigten Methoden und Befehle bereit.
+Hierbei wird für das Monitoring unterschieden, ob die Daten vom \ac{TLS} oder vom \ac{RM} von Hadoop abgerufen werden.
+Dies ist vor allem bei der Nutzung der REST"=API wichtig, da sich hier die Adressen und Pfade unterscheiden, während bei der Benutzung der Kommandozeile die Befehle gleich sind .
+Der \ac{TLS} wird zum Abrufen der Daten vor allem aus dem Grund genutzt, da hierbei zusätzliche Daten ermittelt werden können, die bei der reinen Nutzung der Schnittstellen des \ac{RM} nicht zurückgegeben werden würden.
+Ausgenommen sind hiervon Anwendungen, bei denen die Nutzung des \ac{TLS} keine weiteren Daten von Hadoop zurückgegeben werden\cite{HadoopYarnTlServer271,HadoopYarnCmds271,HadoopRmApi271,HadoopNmApi271}.
+Aus diesem Grund ist die Nutzung des \ac{TLS} zum Monitoring von Anwendungen mithilfe des Connector"=Interfaces nicht möglich.
 
-\subsection{Implementierte Parser}
+\subsection{Entwicklung der Parser}
 \label{subsec:implementedParsers}
 
-Da die Daten für die relevanten Komponenten auf zwei Arten ermittelt werden können und unterschiedliche Ausgaben erzeugen, wurden auch für beide Arten ein Parser (\texttt{CmdParser} und \texttt{RestParser}) entwickelt.
-Da der Parser von außerhalb keinerlei weitere Informationen erhält außer der ID der zu parsenden YARN"=Komponente, ist der Parser selbst dafür verantwortlich, die Daten von einem korrespondierenden Connector zu erhalten.
-Daher muss zur Initialisierung eines Parsers zunächst der korrespondierende Connector initialisiert werden.
-Da für die Nutzung der REST"=API zum Teil die IDs der übergeordneten YARN"=Komponenten ebenfalls nötig sind, ist der \texttt{RestParser} zudem auch dafür verantwortlich, die entsprechenden IDs zu ermitteln, bei der Nutzung der Kommandozeile reichen aufgrund der Befehlsstruktur die IDs der Komponenten selbst.
+\subsubsection{Implementierung des CmdParsers}
+\label{subsubsec:implCmdParser}
 
-Die konkreten Implementierungen der auf \texttt{IParsedComponent} basierenden Übergabe"=Interfaces können ebenfalls als Bestandteil des Parsers angesehen werden.
-Sie wurden zudem so implementiert, dass sie für beide entwickelten Parser genutzt werden können.
+\subsubsection{Implementierung des RestParsers}
+\label{subsubsec:implRestParser}
 
-Der grundlegende Ablauf ist bei jedem Parsing"=Vorgang gleich.
-Zunächst werden, sofern benötigt, die benötigten YARN"=Komponenten"=IDs ermittelt und die Rohdaten mithilfe des Connectors von Hadoop abgefragt.
-Auch vom Parser wird dabei analog zum Modell das Abrufen der Daten ausschließlich mithilfe des Interfaces \texttt{IHadoopConnector} durchgeführt.
-Anschließend findet das eigentliche Parsing der Ausgabe von Hadoop statt, deren Daten direkt in der für die YARN"=Komponente vorgesehene \texttt{IParsed"-Compo"-nent}"=Implementierung gespeichert werden.
-Da Hadoop über die Kommandozeile die Daten in keinem standardisierten Format zurückgibt, wurde das Parsing der Rohdaten von Hadoop beim \texttt{CmdParser} in eigenem Code mithilfe von \emph{Regular Expressions} realisiert.
-Bei der Nutzung der REST"=API werden die Daten dagegen im JSON"=Format zurückgegeben \cite{HadoopYarnTlServer271,HadoopRmApi271,HadoopNmApi271}, wodurch diese mithilfe des \emph{Json.NET}"=Frameworks\footnote{\url{https://www.newtonsoft.com/json}} deserialisiert und direkt als die entsprechende \texttt{IParsedComponent}"=Implementierung gespeichert werden.
-Da \ac{RM} und \ac{TLS} verschiedene Daten einer YARN"=Komponente ausgeben, werden, sofern nötig, \ac{RM} und \ac{TLS} abgefragt und die dabei ermittelten Daten zusammengeführt.
-
-Eine erste Besonderheit bildet zudem das Abrufen und Parsen der Report"=Daten mittels REST"=API.
-Da die Listen hierbei als Array der einzelnen Reports zurückgegeben werden \cite{HadoopYarnTlServer271,HadoopRmApi271,HadoopNmApi271}, wird beim Parsen eines Ausführungs- oder Container"=Reports die komplette Liste abgerufen und geparst.
-Anschließend wird in dieser Liste basierend auf der ID die benötigte Komponente herausgefiltert.
-
-Die zweite Besonderheit bei der Nutzung der REST"=API liegt darin, dass die Daten zu derzeit ausgeführten Container ausschließlich vom \ac{NM}, auf dem der Container ausgeführt wird, zurückgegeben werden können \cite{HadoopRmApi271,HadoopNmApi271}.
-Daher werden zur Ermittlung der Container"=Listen alle Nodes abgefragt und anschließend die benötigten Container gefiltert.
-
-Die geparsten Daten werden abschließend als das für die YARN"=Komponente vorgesehene Interface zurückgegeben, was anschließend im Modell zum Speichern der Daten genutzt werden kann.
-
-\subsection{Implementierte Connectoren}
+\subsection{Entwicklung der Connectoren}
 \label{subsec:implementedConnectors}
 
-Für die beiden Parser wurden die beiden korrespondieren Connectoren \texttt{CmdConnector} und \texttt{RestConnector} entwickelt.
-Während der Connector für die REST"=API nur über eine SSH"=Verbindung verfügt, besteht beim Connector für die Kommandozeile die Möglichkeit, mehrere einzelne SSH"=Verbindungen zu nutzen.
-Dies ist damit begründet, dass zum Steuern der Komponentenfehler, was nur über die Kommandozeile möglich ist, eine eigene SSH"=Verbindung genutzt wird.
-Zum Starten von Anwendungen besteht zudem die Möglichkeit, eine beliebige Anzahl an einzelnen SSH"=Verbindungen aufzubauen, damit mehrere Anwendungen parallel gestartet werden können.
-Da die Daten der einzelnen YARN"=Komponenten in der Fallstudie bevorzugt mithilfe der REST"=API ermittelt werden, kann die dafür vorgesehene SSH"=Verbindung des \texttt{CmdConnector} deaktiviert werden.
+\subsubsection{Implementierung des CmdConnectors}
+\label{subsubsec:implCmdConnector}
 
-Da über die Kommandozeile die Befehle für die Daten vom \ac{TLS} die gleichen wie für die Daten vom \ac{RM} sind \cite{HadoopYarnTlServer271,HadoopYarnCmds271}, sind beim \texttt{CmdConnector} die \ac{TLS}"=Methoden von geringer Bedeutung und nutzen daher ebenfalls die \ac{RM}"=Methoden.
+\subsubsection{Implementierung des RestConnectors}
+\label{subsubsec:implRestConnector}
 
-Der Connector ist beim Abrufen der Daten dafür zuständig, die dafür notwendigen Befehle auszuführen.
-Während dies für die Kommandozeilen"=Befehle die entsprechenden Hadoop"=Befehle sind, wird dies zum Abrufen der Daten über die REST"=API mithilfe des Tools \emph{curl} durchgeführt.
-Die dabei zurückgegebenen Daten werden vom Connector ohne Verarbeitung zurückgegeben und können dann vom Parser verarbeitet werden.
-
-Beim Steuern der Komponentenfehler wird vom Connector das für die Fallstudie entwickelte Start"=Script verwendet.
-Nach dem eigentlichen Start bzw. Aufheben eines Komponentenfehlers wird vom Connector zudem überprüft, ob die Injizierung bzw. Aufhebung erfolgreich war.
-Während der Datenabruf sowie die Steuerung der Komponentenfehler synchron stattfindet, findet das Starten der Anwendungen asynchron und mithilfe des Benchmark"=Scriptes statt.
-Da eine Ausführung einer YARN"=Anwendung längere Zeit in Anspruch nehmen kann, wird dadurch die Ausführung von \sS nicht behindert und es können mehrere Anwendungen parallel ausgeführt werden.
-
-\subsection{SSH"=Verbindung}
+\subsection{Implementierung der SSH"=Verbindung}
 \label{subsec:sshConnection}
 
-Die SSH"=Verbindung selbst ist der einzige Bestandteil des Treibers, welches kein entsprechendes Interface benötigt, die SSH"=Verbindung wird ausschließlich vom Connector genutzt.
-Realisiert wird die Verbindung mithilfe des Frameworks SSH.NET,\footnote{\url{https://github.com/sshnet/SSH.NET}} weshalb die SSH"=Verbindung im Treiber nur entsprechende Funktionen zum Aufbauen, Nutzen und Beenden der Verbindung enthält.
-
-Um die Verbindung mit dem Cluster"=PC aufzubauen, ist zudem ein dort installierter SSH"=Key nötig.
-Ein Kommando auf dem Cluster"=PC kann mithilfe der Treiberkomponente synchron und asynchron ausgeführt werden.
+%Im Einführungstext zu diesem Kapitel wurde bereits auf den grundlegenden Aufbau des Treibers eingegangen, der aus den drei einzelnen Komponenten Parser, Connector und der eigentlichen SSH"=Verbindung besteht.
+%Der Parser selbst besteht neben dem eigentlichen Parser zudem aus Datenhaltungs"=Klassen für die relevanten YARN"=Komponenten.
+%Sie sind außerdem so aufgebaut, dass sie für beide hier implementierten Parser bzw. Connectoren für die Kommandozeilen"=Befehle und die REST"=API genutzt werden können.
+%
+%\subsection{Integration im Modell}
+%\label{subsec:modelIntegration}
+%
+%Hadoop besitzt zwei primäre Wege, um die Daten vom \ac{RM} bzw. dem \ac{TLS} ausgeben zu können.
+%Dies ist zum einen die Kommandozeile, mithilfe der die Daten vom \ac{RM} und vom \ac{TLS} kombiniert ausgegeben werden, und die REST"=API.
+%Die benötigten Befehle für die Kommandozeile und deren Ausgaben sind in \cref{app:hadoopCmds}, die für die REST"=API benötigten URLs und deren Rückgaben in \cref{app:hadoopRestApi} gelistet.
+%Auf beiden Wegen können \uA die Daten zu folgenden Komponenten ausgegeben werden \cite{HadoopYarnTlServer271,HadoopYarnCmds271,HadoopRmApi271,HadoopNmApi271}:
+%
+%\begin{description}
+%    \item[Anwendungen] als nach dem Status gefilterte Liste oder der Report einer Anwendung
+%    \item[Ausführungen] als Liste aller Ausführungen einer Anwendung oder der Report einer Ausführung
+%    \item[Container] als Liste aller Container einer Ausführung oder der Report eines Containers
+%    \item[Nodes] als Liste aller Nodes oder der Report eines Nodes
+%\end{description}
+%
+%Zur Integration des Treibers wurden daher entsprechende Interfaces entwickelt, über die das Modell auf den eigentlichen Treiber zugreifen kann.
+%
+%Die vier Interfaces \texttt{IApplicationResult}, \texttt{IAppAttemptResult}, \texttt{IContainerResult} und \texttt{INodeResult} dienen der Übergabe der geparsten Daten der einzelnen Komponenten an die korrespondierenden Komponenten im \sS"=Modell.
+%Sie enthalten jeweils alle relevanten Daten, die von Hadoop über die Kommandozeile oder die REST"=API ausgegeben werden.
+%Alle vier Interfaces implementieren zudem \texttt{IParsedComponent}, welches wiederum als Basis für die Übergabe der ausgelesenen Daten an \texttt{IYarnReadable.SetStatus()} im Modell dient.
+%
+%Das Interface \texttt{IHadoopParser} dient als Einbindung des Parsers im Modell mithilfe von \texttt{IYarnReadable.Parser} und enthält für jede der acht relevanten Ausgaben von Hadoop entsprechende Methodendefinitionen.
+%
+%Beim Interface \texttt{IHadoopConnector}, das im Modell den Connector über die \texttt{Fault"-Connector}"=Eigenschaften von \texttt{YarnApp} und \texttt{YarnNode} einbindet, besitzt ebenfalls für jede der acht Datenrückgaben entsprechende Deklarationen, für Ausführungen und Container dabei jeweils vom \ac{RM} (\ac{NM} für Container) und vom \ac{TLS}.
+%Auf die Nutzung des \ac{TLS} zum Ermitteln der Daten zu Anwendungen wird verzichtet.
+%Dies liegt darin begründet, dass bei Nutzung der REST"=API des \ac{RM} neben den vom \ac{TLS} bereitgestellten Daten einige weitere Informationen zu den Anwendungen ausgegeben werden \cite{HadoopRmApi271,HadoopYarnTlServer271}.
+%Das Connector"=Interface enthält darüber hinaus Deklarationen, um die im Modell implementierten Komponentenfehler im realen Cluster zu steuern und Anwendungen starten zu können.
+%Architektonisch ist der Treiber zudem so aufgebaut, dass das Modell keine Kontrolle über den vom Parser benötigten Connector besitzt und die SSH"=Verbindung ausschließlich vom Connector gesteuert werden kann.
+%
+%\subsection{Implementierte Parser}
+%\label{subsec:implementedParsers}
+%
+%Da die Daten für die relevanten Komponenten auf zwei Arten ermittelt werden können und unterschiedliche Ausgaben erzeugen, wurden auch für beide Arten ein Parser (\texttt{CmdParser} und \texttt{RestParser}) entwickelt.
+%Da der Parser von außerhalb keinerlei weitere Informationen erhält außer der ID der zu parsenden YARN"=Komponente, ist der Parser selbst dafür verantwortlich, die Daten von einem korrespondierenden Connector zu erhalten.
+%Daher muss zur Initialisierung eines Parsers zunächst der korrespondierende Connector initialisiert werden.
+%Da für die Nutzung der REST"=API zum Teil die IDs der übergeordneten YARN"=Komponenten ebenfalls nötig sind, ist der \texttt{RestParser} zudem auch dafür verantwortlich, die entsprechenden IDs zu ermitteln, bei der Nutzung der Kommandozeile reichen aufgrund der Befehlsstruktur die IDs der Komponenten selbst.
+%
+%Die konkreten Implementierungen der auf \texttt{IParsedComponent} basierenden Übergabe"=Interfaces können ebenfalls als Bestandteil des Parsers angesehen werden.
+%Sie wurden zudem so implementiert, dass sie für beide entwickelten Parser genutzt werden können.
+%
+%Der grundlegende Ablauf ist bei jedem Parsing"=Vorgang gleich.
+%Zunächst werden, sofern benötigt, die benötigten YARN"=Komponenten"=IDs ermittelt und die Rohdaten mithilfe des Connectors von Hadoop abgefragt.
+%Auch vom Parser wird dabei analog zum Modell das Abrufen der Daten ausschließlich mithilfe des Interfaces \texttt{IHadoopConnector} durchgeführt.
+%Anschließend findet das eigentliche Parsing der Ausgabe von Hadoop statt, deren Daten direkt in der für die YARN"=Komponente vorgesehene \texttt{IParsed"-Compo"-nent}"=Implementierung gespeichert werden.
+%Da Hadoop über die Kommandozeile die Daten in keinem standardisierten Format zurückgibt, wurde das Parsing der Rohdaten von Hadoop beim \texttt{CmdParser} in eigenem Code mithilfe von \emph{Regular Expressions} realisiert.
+%Bei der Nutzung der REST"=API werden die Daten dagegen im JSON"=Format zurückgegeben \cite{HadoopYarnTlServer271,HadoopRmApi271,HadoopNmApi271}, wodurch diese mithilfe des \emph{Json.NET}"=Frameworks\footnote{\url{https://www.newtonsoft.com/json}} deserialisiert und direkt als die entsprechende \texttt{IParsedComponent}"=Implementierung gespeichert werden.
+%Da \ac{RM} und \ac{TLS} verschiedene Daten einer YARN"=Komponente ausgeben, werden, sofern nötig, \ac{RM} und \ac{TLS} abgefragt und die dabei ermittelten Daten zusammengeführt.
+%
+%Eine erste Besonderheit bildet zudem das Abrufen und Parsen der Report"=Daten mittels REST"=API.
+%Da die Listen hierbei als Array der einzelnen Reports zurückgegeben werden \cite{HadoopYarnTlServer271,HadoopRmApi271,HadoopNmApi271}, wird beim Parsen eines Ausführungs- oder Container"=Reports die komplette Liste abgerufen und geparst.
+%Anschließend wird in dieser Liste basierend auf der ID die benötigte Komponente herausgefiltert.
+%
+%Die zweite Besonderheit bei der Nutzung der REST"=API liegt darin, dass die Daten zu derzeit ausgeführten Container ausschließlich vom \ac{NM}, auf dem der Container ausgeführt wird, zurückgegeben werden können \cite{HadoopRmApi271,HadoopNmApi271}.
+%Daher werden zur Ermittlung der Container"=Listen alle Nodes abgefragt und anschließend die benötigten Container gefiltert.
+%
+%Die geparsten Daten werden abschließend als das für die YARN"=Komponente vorgesehene Interface zurückgegeben, was anschließend im Modell zum Speichern der Daten genutzt werden kann.
+%
+%\subsection{Implementierte Connectoren}
+%\label{subsec:implementedConnectors}
+%
+%Für die beiden Parser wurden die beiden korrespondieren Connectoren \texttt{CmdConnector} und \texttt{RestConnector} entwickelt.
+%Während der Connector für die REST"=API nur über eine SSH"=Verbindung verfügt, besteht beim Connector für die Kommandozeile die Möglichkeit, mehrere einzelne SSH"=Verbindungen zu nutzen.
+%Dies ist damit begründet, dass zum Steuern der Komponentenfehler, was nur über die Kommandozeile möglich ist, eine eigene SSH"=Verbindung genutzt wird.
+%Zum Starten von Anwendungen besteht zudem die Möglichkeit, eine beliebige Anzahl an einzelnen SSH"=Verbindungen aufzubauen, damit mehrere Anwendungen parallel gestartet werden können.
+%Da die Daten der einzelnen YARN"=Komponenten in der Fallstudie bevorzugt mithilfe der REST"=API ermittelt werden, kann die dafür vorgesehene SSH"=Verbindung des \texttt{CmdConnector} deaktiviert werden.
+%
+%Da über die Kommandozeile die Befehle für die Daten vom \ac{TLS} die gleichen wie für die Daten vom \ac{RM} sind \cite{HadoopYarnTlServer271,HadoopYarnCmds271}, sind beim \texttt{CmdConnector} die \ac{TLS}"=Methoden von geringer Bedeutung und nutzen daher ebenfalls die \ac{RM}"=Methoden.
+%
+%Der Connector ist beim Abrufen der Daten dafür zuständig, die dafür notwendigen Befehle auszuführen.
+%Während dies für die Kommandozeilen"=Befehle die entsprechenden Hadoop"=Befehle sind, wird dies zum Abrufen der Daten über die REST"=API mithilfe des Tools \emph{curl} durchgeführt.
+%Die dabei zurückgegebenen Daten werden vom Connector ohne Verarbeitung zurückgegeben und können dann vom Parser verarbeitet werden.
+%
+%Beim Steuern der Komponentenfehler wird vom Connector das für die Fallstudie entwickelte Start"=Script verwendet.
+%Nach dem eigentlichen Start bzw. Aufheben eines Komponentenfehlers wird vom Connector zudem überprüft, ob die Injizierung bzw. Aufhebung erfolgreich war.
+%Während der Datenabruf sowie die Steuerung der Komponentenfehler synchron stattfindet, findet das Starten der Anwendungen asynchron und mithilfe des Benchmark"=Scriptes statt.
+%Da eine Ausführung einer YARN"=Anwendung längere Zeit in Anspruch nehmen kann, wird dadurch die Ausführung von \sS nicht behindert und es können mehrere Anwendungen parallel ausgeführt werden.
+%
+%\subsection{SSH"=Verbindung}
+%\label{subsec:sshConnection}
+%
+%Die SSH"=Verbindung selbst ist der einzige Bestandteil des Treibers, welches kein entsprechendes Interface benötigt, die SSH"=Verbindung wird ausschließlich vom Connector genutzt.
+%Realisiert wird die Verbindung mithilfe des Frameworks SSH.NET,\footnote{\url{https://github.com/sshnet/SSH.NET}} weshalb die SSH"=Verbindung im Treiber nur entsprechende Funktionen zum Aufbauen, Nutzen und Beenden der Verbindung enthält.
+%
+%Um die Verbindung mit dem Cluster"=PC aufzubauen, ist zudem ein dort installierter SSH"=Key nötig.
+%Ein Kommando auf dem Cluster"=PC kann mithilfe der Treiberkomponente synchron und asynchron ausgeführt werden.

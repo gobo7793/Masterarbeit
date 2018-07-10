@@ -20,7 +20,7 @@ Der Client stellt somit auch die den relevanten \ac{YARN}"=Komponenten übergeor
 Zunächst wird im Folgenden zunächst die dem Modell übergeordnete zentrale Klasse \texttt{Model} erläutert, danach die relevanten \ac{YARN}"=Komponenten mit ihren Komponentenfehlern, anschließend die anderen Komponenten des \ac{YARN}"=Modells.
 
 \subsection{Die Klasse Model}
-\label{sec:modelClass}
+\label{subsec:modelClass}
 
 Die Klasse \texttt{Model} stellt die zentrale Schnittstelle des Testsystems mit \ac{ss} dar.
 Da diese Klasse auch das gesamte Modell repräsentiert, wird sie zur Verwaltung des von \ac{ss} auszuführenden Modells genutzt.
@@ -32,13 +32,13 @@ Anschließend wird für jeden Client eine gewisse Anzahl an \texttt{YarnApp}"=In
 Die genaue Anzahl der erzeugten Instanzen kann hierbei für jede \ac{YARN}"=Komponente und auch für Clients nach Bedarf angepasst werden, wodurch auch einzelne Komponenten wie \zB in der Fallstudie die Anwendungs"=Container, deaktiviert werden können.
 
 \subsection{Relevante \acs{YARN}"=Komponenten}
-\label{sec:yarnComponents}
+\label{subsec:yarnComponents}
 
 Die vier implementierten, relevanten \ac{YARN}"=Komponenten sind die Anwendungen, ihre Attempts und Container sowie die Nodes des Clusters.
 Obwohl die die Anwendungs"=Container in dieser Fallstudie nicht benötigt werden, waren sie für die in \cite{Eberhardinger2018} beschriebene Fallstudie notwendig, welche ebenfalls mit dem hier beschriebenen Modell durchgeführt wurden.
 
 \subsubsection{Übersicht der implementierten Komponenten}
-\label{subsec:yarnComponentsOverview}
+\label{subsubsec:yarnComponentsOverview}
 
 Eine Übersicht über die Implementierung der \ac{YARN}"=Komponenten gibt folgendes Klassendiagramm:
 
