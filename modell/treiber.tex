@@ -60,6 +60,10 @@ Der Parser dient dazu, die von Hadoop zurückgegebenen Daten der YARN"=Komponent
 Zur Datenhaltung innerhalb der Parser"=Komponente des Treibers wurden hierfür entsprechende Klassen entwickelt, welche die von \texttt{IParsedComponent} abgeleiteten Interfaces implementieren.
 Dadurch sind die Datenhaltungs"=Klassen auch direkt dafür geeignet, die Daten an das Modell zu übergeben.
 
+Wenn Daten durch den Parser abgefragt und konvertiert werden sollen, ist der grundlegende Ablauf immer der gleiche.
+Zunächst werden, sofern benötigt, die IDs von weiteren benötigten YARN"=Komponenten ermittelt, bevor die Rohdaten durch einen passenden Connector ermittelt werden.
+Die Rohdaten werden anschließend konvertiert und in der entsprechenden Datenhaltungs"=Klasse gespeichert, welche mithilfe der entsprechenden von \texttt{IParsedComponent} abgeleiteten Interfaces zurückgegeben.
+
 Da Hadoop zwei Schnittstellen in Form der CLI und der REST"=API bereit stellt, wurden hierfür entsprechend zwei Parser entwickelt, um die jeweiligen Daten einzulesen.
 
 \subsubsection{Implementierung des CmdParsers}
@@ -68,6 +72,7 @@ Da Hadoop zwei Schnittstellen in Form der CLI und der REST"=API bereit stellt, w
 Der erste der beiden entwickelten Parser ist der \texttt{CmdParser} zum Monitoring mithilfe von Befehlen auf der CLI.
 Zum Auslesen der Daten selbst nutzt der \texttt{CmdParser} den dazugehörigen \texttt{CmdConnector} (vgl. \cref{subsubsec:implCmdConnector}), mit dem zum Auslesen der Daten die entsprechenden CLI"=Befehle ausgeführt werden.
 Die hierbei zurückgegebenen Daten sind im Vergleich zu den von der REST"=API zurückgegebenen im Umfang deutlich reduziert, in den jeweiligen Übersichten der Subkomponenten zudem auf das notwendigste beschränkt.
+Im Gegenzug zur REST"=API werden hier die Daten des \ac{RM} und \ac{TLS} kombiniert ausgegeben.
 Eine kurze Übersicht über die Befehle und deren Ausgaben ist im \cref{app:hadoopCmds} zu finden.
 
 Ausgewertet werden die von Hadoop zurückgegebenen Daten mithilfe von \acp{Regex}.
@@ -123,8 +128,77 @@ Hierfür wird die ID bzw. die URL des Nodes genutzt, um die korrespondierende In
 \subsubsection{Implementierung des RestParsers}
 \label{subsubsec:implRestParser}
 
+Der zweite entwickelte Parser ist der \texttt{RestParser}.
+Er dient dazu, die mithilfe der REST"=API ermittelten Daten auszuwerten und an das YARN"=Modell zu übergeben.
+Zum Auslesen der Daten aus dem Cluster wurde hierfür der \texttt{RestConnector} entwickelt (vgl. \cref{subsubsec:implRestConnector}).
+Die REST"=API besitzt, auch im Vergleich zur CLI"=Schnittstelle, einige Besonderheiten, auf die bei der Implementierung geachtet werden musste \cite{HadoopYarnCmds271,HadoopRmApi271,HadoopNmApi271,HadoopYarnTlServer271}:
+
+\begin{itemize}
+    \item Die zurückgegebenen Daten sind deutlich Umfangreicher als bei der CLI"=Schnittstelle
+    \item Die Daten können im XML- oder JSON"=Format zurückgegebenen werden
+    \item Attempts können nur als Liste aller Attempts einer Anwendung zurückgegeben werden
+    \item Daten zu Containern können nur durch die \ac{NM} der ausführenden Nodes ermittelt werden
+    \item Die Adressen und Pfade von \ac{RM}, \ac{NM} und \ac{TLS} unterscheiden sich
+    \item Die Daten von \ac{RM} und \ac{NM} sind immer umfangreicher als die des \ac{TLS}
+    \item Der \ac{TLS} enthält für Attempts und Anwendungs"=Container jedoch zusätzliche Daten
+    \item Es werden bei Listen und Reports immer die gleichen Objekte der YARN"=Komponenten zurückgegebenen
+\end{itemize}
+
+Da die REST"=API die Rückgabe der Daten in zwei Formaten ermöglicht, wurde der \texttt{RestParser} aufgrund der kleineren Datenmengen und übersichtlicheren Datenformats zur Nutzung des JSON"=Formats entwickelt
+Einige Beispiele für die entsprechenden Pfade der REST"=API sowie deren Ausgaben im JSON"=Format sind in \cref{app:hadoopRestApi} zu finden.
+
+Die Auswertung der Daten geschieht beim \texttt{RestParser} zudem nicht mit Regex, sondern mithilfe des \emph{Json.NET}"=Frameworks\footnote{\url{https://www.newtonsoft.com/json}}.
+Hierfür wurden neben den bestehenden Datenhaltungsklassen noch weitere Hilfsklassen entwickelt, welche das Ausgabeformat der REST"=API nachbilden.
+Mit deren Hilfe ist es möglich, alle Daten automatisch mithilfe von Json.NET aus den JSON"=Daten deserialisieren zu können.
+
+Analog zum \texttt{CmdParser} müssen auch bei der Nutzung der REST"=API die Zeitstempel gesondert betrachtet werden.
+Damit die Konvertierung der Java"=Zeitstempel in Millisekunden seit dem 1. Januar 1970 00:00:00 Uhr gemeinsam mit den anderen Daten durch das Json.NET"=Framework durchgeführt werden kann, musste hierfür ein gesonderter Konverter entwickelt werden.
+Der Konverter nutzt ebenfalls die in \cref{lst:parseJavaTimestamp} gezeigte \texttt{ParseJavaTimestamp()} zum Konvertieren der Daten:
+
+\begin{lstlisting}[label=lst:javaEpochConverter,style=cs,
+caption={[Entwickelter Konverter für Java"=Zeitstempel zur Nutzung mit Json.NET]
+    Entwickelter Konverter für Java"=Zeitstempel zur Nutzung mit Json.NET.
+    Dieser erbt dafür von \texttt{DateTimeConverterBase} des Json.NET"=Frameworks, damit der \texttt{JsonJavaEpochConverter} auch zur Deserialisierung genutzt werden kann.}]
+public class JsonJavaEpochConverter : DateTimeConverterBase
+{
+  private static readonly DateTime _Epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+
+  public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+  {
+    writer.WriteRawValue(((DateTime)value - _Epoch).TotalMilliseconds.ToString());
+  }
+  
+  public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+  {
+    return DriverUtilities.ParseJavaTimestamp((long)reader.Value);
+  }
+}
+\end{lstlisting}
+
+Da der \ac{TLS} bei der Ausgabe der Daten zu Attempts und Containern zusätzliche Informationen enthält, werden hier nicht nur die Daten mithilfe des \ac{RM} bzw. der \ac{NM} der ausführenden Nodes, sondern auch mithilfe des \ac{TLS}.
+Hierzu werden zunächst die Daten des \ac{RM} bzw. der \ac{NM} ermittelt und mit die zusätzlichen Informationen des \ac{TLS} ergänzt, sofern hier Daten verfügbar sind.
+Aufgrund der Besonderheiten der REST"=API im Bezug auf Attempts und Container, werden bei diesen beiden YARN"=Komponenten zunächst immer die Daten aller Attempts einer Anwendung bzw. aller Container eines Attempts ermittelt und konvertiert.
+Sollten jedoch nur die Daten jeweils eines Attempts bzw. Containers benötigt werden, werden diese Listen entsprechend gefiltert:
+
+\begin{lstlisting}[label=lst:restParseDetails,style=cs,
+caption={[Konvertierung und Rückgabe der Daten eines einzelnen Containers durch den RestParser]
+    Konvertierung und Rückgabe der Daten eines einzelnen Containers durch den \texttt{RestParser}.
+    Hierbei muss zunächst die ID des übergeordneten Attempts ermittelt werden, bevor aus der Liste aller Container die Daten des gesuchten Containers zurückgegeben werden können.
+    Bei Attempts ist dieses Vorgehen analog.}]
+public IContainerResult ParseContainerDetails(string containerId)
+{
+  var attemptId = DriverUtilities.ConvertId(containerId, EConvertType.Attempt);
+  var allContainers = ParseContainerList(attemptId);
+  return allContainers.FirstOrDefault(c => c.ContainerId == containerId);
+}
+\end{lstlisting}
+
+Aufgrund dieser Besonderheiten eignet sich auch das in \cref{subsubsec:yarnComponentInterface} beschriebene Monitoring durch die übergeordnete Komponente bei der Nutzung der REST"=API besser als das Selbstmonitoring.
+
 \subsection{Entwicklung der Connectoren}
 \label{subsec:implementedConnectors}
+
+
 
 \subsubsection{Implementierung des CmdConnectors}
 \label{subsubsec:implCmdConnector}
@@ -135,67 +209,8 @@ Hierfür wird die ID bzw. die URL des Nodes genutzt, um die korrespondierende In
 \subsection{Implementierung der SSH"=Verbindung}
 \label{subsec:sshConnection}
 
-%Im Einführungstext zu diesem Kapitel wurde bereits auf den grundlegenden Aufbau des Treibers eingegangen, der aus den drei einzelnen Komponenten Parser, Connector und der eigentlichen SSH"=Verbindung besteht.
-%Der Parser selbst besteht neben dem eigentlichen Parser zudem aus Datenhaltungs"=Klassen für die relevanten YARN"=Komponenten.
-%Sie sind außerdem so aufgebaut, dass sie für beide hier implementierten Parser bzw. Connectoren für die Kommandozeilen"=Befehle und die REST"=API genutzt werden können.
-%
-%\subsection{Integration im Modell}
-%\label{subsec:modelIntegration}
-%
-%Hadoop besitzt zwei primäre Wege, um die Daten vom \ac{RM} bzw. dem \ac{TLS} ausgeben zu können.
-%Dies ist zum einen die Kommandozeile, mithilfe der die Daten vom \ac{RM} und vom \ac{TLS} kombiniert ausgegeben werden, und die REST"=API.
-%Die benötigten Befehle für die Kommandozeile und deren Ausgaben sind in \cref{app:hadoopCmds}, die für die REST"=API benötigten URLs und deren Rückgaben in \cref{app:hadoopRestApi} gelistet.
-%Auf beiden Wegen können \uA die Daten zu folgenden Komponenten ausgegeben werden \cite{HadoopYarnTlServer271,HadoopYarnCmds271,HadoopRmApi271,HadoopNmApi271}:
-%
-%\begin{description}
-%    \item[Anwendungen] als nach dem Status gefilterte Liste oder der Report einer Anwendung
-%    \item[Ausführungen] als Liste aller Ausführungen einer Anwendung oder der Report einer Ausführung
-%    \item[Container] als Liste aller Container einer Ausführung oder der Report eines Containers
-%    \item[Nodes] als Liste aller Nodes oder der Report eines Nodes
-%\end{description}
-%
-%Zur Integration des Treibers wurden daher entsprechende Interfaces entwickelt, über die das Modell auf den eigentlichen Treiber zugreifen kann.
-%
-%Die vier Interfaces \texttt{IApplicationResult}, \texttt{IAppAttemptResult}, \texttt{IContainerResult} und \texttt{INodeResult} dienen der Übergabe der geparsten Daten der einzelnen Komponenten an die korrespondierenden Komponenten im \sS"=Modell.
-%Sie enthalten jeweils alle relevanten Daten, die von Hadoop über die Kommandozeile oder die REST"=API ausgegeben werden.
-%Alle vier Interfaces implementieren zudem \texttt{IParsedComponent}, welches wiederum als Basis für die Übergabe der ausgelesenen Daten an \texttt{IYarnReadable.SetStatus()} im Modell dient.
-%
-%Das Interface \texttt{IHadoopParser} dient als Einbindung des Parsers im Modell mithilfe von \texttt{IYarnReadable.Parser} und enthält für jede der acht relevanten Ausgaben von Hadoop entsprechende Methodendefinitionen.
-%
-%Beim Interface \texttt{IHadoopConnector}, das im Modell den Connector über die \texttt{Fault"-Connector}"=Eigenschaften von \texttt{YarnApp} und \texttt{YarnNode} einbindet, besitzt ebenfalls für jede der acht Datenrückgaben entsprechende Deklarationen, für Ausführungen und Container dabei jeweils vom \ac{RM} (\ac{NM} für Container) und vom \ac{TLS}.
-%Auf die Nutzung des \ac{TLS} zum Ermitteln der Daten zu Anwendungen wird verzichtet.
-%Dies liegt darin begründet, dass bei Nutzung der REST"=API des \ac{RM} neben den vom \ac{TLS} bereitgestellten Daten einige weitere Informationen zu den Anwendungen ausgegeben werden \cite{HadoopRmApi271,HadoopYarnTlServer271}.
-%Das Connector"=Interface enthält darüber hinaus Deklarationen, um die im Modell implementierten Komponentenfehler im realen Cluster zu steuern und Anwendungen starten zu können.
-%Architektonisch ist der Treiber zudem so aufgebaut, dass das Modell keine Kontrolle über den vom Parser benötigten Connector besitzt und die SSH"=Verbindung ausschließlich vom Connector gesteuert werden kann.
-%
-%\subsection{Implementierte Parser}
-%\label{subsec:implementedParsers}
-%
-%Da die Daten für die relevanten Komponenten auf zwei Arten ermittelt werden können und unterschiedliche Ausgaben erzeugen, wurden auch für beide Arten ein Parser (\texttt{CmdParser} und \texttt{RestParser}) entwickelt.
-%Da der Parser von außerhalb keinerlei weitere Informationen erhält außer der ID der zu parsenden YARN"=Komponente, ist der Parser selbst dafür verantwortlich, die Daten von einem korrespondierenden Connector zu erhalten.
-%Daher muss zur Initialisierung eines Parsers zunächst der korrespondierende Connector initialisiert werden.
-%Da für die Nutzung der REST"=API zum Teil die IDs der übergeordneten YARN"=Komponenten ebenfalls nötig sind, ist der \texttt{RestParser} zudem auch dafür verantwortlich, die entsprechenden IDs zu ermitteln, bei der Nutzung der Kommandozeile reichen aufgrund der Befehlsstruktur die IDs der Komponenten selbst.
-%
-%Die konkreten Implementierungen der auf \texttt{IParsedComponent} basierenden Übergabe"=Interfaces können ebenfalls als Bestandteil des Parsers angesehen werden.
-%Sie wurden zudem so implementiert, dass sie für beide entwickelten Parser genutzt werden können.
-%
-%Der grundlegende Ablauf ist bei jedem Parsing"=Vorgang gleich.
-%Zunächst werden, sofern benötigt, die benötigten YARN"=Komponenten"=IDs ermittelt und die Rohdaten mithilfe des Connectors von Hadoop abgefragt.
-%Auch vom Parser wird dabei analog zum Modell das Abrufen der Daten ausschließlich mithilfe des Interfaces \texttt{IHadoopConnector} durchgeführt.
-%Anschließend findet das eigentliche Parsing der Ausgabe von Hadoop statt, deren Daten direkt in der für die YARN"=Komponente vorgesehene \texttt{IParsed"-Compo"-nent}"=Implementierung gespeichert werden.
-%Da Hadoop über die Kommandozeile die Daten in keinem standardisierten Format zurückgibt, wurde das Parsing der Rohdaten von Hadoop beim \texttt{CmdParser} in eigenem Code mithilfe von \emph{Regular Expressions} realisiert.
-%Bei der Nutzung der REST"=API werden die Daten dagegen im JSON"=Format zurückgegeben \cite{HadoopYarnTlServer271,HadoopRmApi271,HadoopNmApi271}, wodurch diese mithilfe des \emph{Json.NET}"=Frameworks\footnote{\url{https://www.newtonsoft.com/json}} deserialisiert und direkt als die entsprechende \texttt{IParsedComponent}"=Implementierung gespeichert werden.
-%Da \ac{RM} und \ac{TLS} verschiedene Daten einer YARN"=Komponente ausgeben, werden, sofern nötig, \ac{RM} und \ac{TLS} abgefragt und die dabei ermittelten Daten zusammengeführt.
-%
-%Eine erste Besonderheit bildet zudem das Abrufen und Parsen der Report"=Daten mittels REST"=API.
-%Da die Listen hierbei als Array der einzelnen Reports zurückgegeben werden \cite{HadoopYarnTlServer271,HadoopRmApi271,HadoopNmApi271}, wird beim Parsen eines Ausführungs- oder Container"=Reports die komplette Liste abgerufen und geparst.
-%Anschließend wird in dieser Liste basierend auf der ID die benötigte Komponente herausgefiltert.
-%
-%Die zweite Besonderheit bei der Nutzung der REST"=API liegt darin, dass die Daten zu derzeit ausgeführten Container ausschließlich vom \ac{NM}, auf dem der Container ausgeführt wird, zurückgegeben werden können \cite{HadoopRmApi271,HadoopNmApi271}.
-%Daher werden zur Ermittlung der Container"=Listen alle Nodes abgefragt und anschließend die benötigten Container gefiltert.
-%
-%Die geparsten Daten werden abschließend als das für die YARN"=Komponente vorgesehene Interface zurückgegeben, was anschließend im Modell zum Speichern der Daten genutzt werden kann.
-%
+
+
 %\subsection{Implementierte Connectoren}
 %\label{subsec:implementedConnectors}
 %

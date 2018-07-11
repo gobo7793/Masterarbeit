@@ -197,7 +197,7 @@ Die beiden erstgenannten Methoden dienen primär zu Debugging"=Zwecken und zur R
 
 Die nachfolgenden vier Eigenschaften und Methoden dienen zum Monitoring der entsprechenden \ac{YARN}"=Komponenten.
 Während die Eigenschaft \texttt{Parser} den zu verwendenden Parser (vgl. \cref{subsec:implementedParsers}) speichert, dient die Eigenschaft \texttt{IsSelfMonito""ring} zur Unterscheidung, ob die Daten einer Komponente von dieser selbst ermittelt werden oder dies die übergeordnete Komponente durchführt.
-Diese Unterscheidung ist nötig, da \ac{YARN} zwei unterschiedliche Möglichkeiten zur Ermittlung der Daten bietet, die Rückgabe der Daten durch die \ac{CLI} oder mithilfe der REST"=API.
+Diese Unterscheidung ist nötig, da \ac{YARN} zwei unterschiedliche Schnittstellen bietet, die Rückgabe der Daten durch die \ac{CLI} oder mithilfe der REST"=API.
 Ausführlichere Informationen zu den beiden Varianten sind in \cref{sec:sshDriver} zu finden.
 Bei der Nutzung der \ac{CLI} zur Ermittlung der Daten eignet sich daher die Selbstermittlung der Daten besser, während bei der Nutzung der Rest"=API die Ermittlung der Daten durch die übergeordnete Komponente geeigneter ist.
 Aus diesem Grund ist auch die Methode \texttt{SetStatus()} definiert, da hier unabhängig von der Datenermittlung der aktuelle Status der Komponente abgespeichert werden kann.
@@ -235,6 +235,10 @@ public void MonitorStatus()
 Beim Monitoring der untergeordneten Komponenten wird zunächst immer geprüft, ob bereits eine Instanz mit der ID der Komponente vorhanden ist.
 Wenn dies der Fall ist, werden die vom realen Cluster ermittelten Daten weiterhin in der bereits bestehenden Instanz gespeichert, ansonsten wird eine leere Instanz genutzt um die Daten der Subkomponente zu speichern.
 Wenn keine freie Instanz mehr nötig ist, wird eine entsprechende \texttt{OutOfMemoryException} ausgelöst, damit die Ausführung des Modells abgebrochen werden kann.
+
+Eine Besonderheit bildet das Monitoring der Anwendungs=Container.
+Da eine Anwendung sehr schnell eine sehr hohe Anzahl an Container allokiert und jede Container"=Instanz im Modell Speicherplatz benötigt, werden nur die Daten der während des Monitoring ausgeführten Container ermittelt.
+Bei Anwendungen und Attempts werden dagegen auch die Daten von bereits beendeten Anwendungen bzw. Attempts gespeichert.
 
 Die vier restlichen Eigenschaften und Methoden des Interfaces dienen zur Auswertung der Komponente durch \ac{ss}.
 Die beiden Eigenschaften \texttt{SutConstraints} und \texttt{TestConstraints} dienen zur Implementierung der in \cref{sec:requirements} definierten Anforderungen in Form von Constraints.
