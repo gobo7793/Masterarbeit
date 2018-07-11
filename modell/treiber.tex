@@ -1,6 +1,5 @@
 \section{Entwicklung des Treibers}
 \label{sec:sshDriver}
-\todo{Multihost-Mode irgendwo erklären}
 
 In \cref{sec:modelArchitecture} wurde bereits aufgezeigt, dass der Treiber zur Verbindung des \ac{YARN}"=Modells mit dem realen Cluster aus den drei Komponenten Parser, Connector und der SSH"=Verbindung selbst besteht.
 Der Treiber ist im \ac{YARN}"=Modell mithilfe verschiedener Interfaces zur Nutzung des Parsers und Connectors eingebunden.
@@ -148,7 +147,7 @@ Die REST"=API besitzt, auch im Vergleich zur \ac{CLI}"=Schnittstelle, einige Bes
 Da die REST"=API die Rückgabe der Daten in zwei Formaten ermöglicht, wurde der \texttt{RestParser} aufgrund der kleineren Datenmengen und übersichtlicheren Datenformats zur Nutzung des JSON"=Formats entwickelt
 Einige Beispiele für die entsprechenden Pfade der REST"=API sowie deren Ausgaben im JSON"=Format sind in \cref{app:hadoopRestApi} zu finden.
 
-Die Auswertung der Daten geschieht beim \texttt{RestParser} zudem nicht mit Regex, sondern mithilfe des \emph{Json.NET}"=Frameworks\footnote{\url{https://www.newtonsoft.com/json}}.
+Die Auswertung der Daten geschieht beim \texttt{RestParser} zudem nicht mit Regex, sondern mithilfe des \emph{Json.NET}"=Frameworks\footnote{\url{https://www.newtonsoft.com/json}} (Version 11.0.2).
 Hierfür wurden neben den bestehenden Datenhaltungsklassen noch weitere Hilfsklassen entwickelt, welche das Ausgabeformat der REST"=API nachbilden.
 Mit deren Hilfe ist es möglich, alle Daten automatisch mithilfe von Json.NET aus den JSON"=Daten deserialisieren zu können.
 
@@ -219,6 +218,7 @@ Um die SSH"=Verbindungen aufbauen zu können, nutzt der Connector die in \texttt
 
 Das Initialisieren und Ausführen von Befehlen auf dem Cluster"=Host erfolgt ähnlich wie bei den Parsern immer nach dem gleichen Schema.
 Zunächst werden beim Initialisieren des Connectors alle für seine Aufgaben benötigten SSH"=Verbindungen initialisiert und aufgebaut.
+Die hierfür notwendigen Zugangsdaten werden durch den Connector aus den \texttt{ModelSettings} den Verbindungen zur Verfügung gestellt (vgl. \cref{subsec:modelClass,subsec:sshConnection}).
 Wenn anschließend ein Befehl auf dem Cluster"=Host ausgeführt werden soll, wird zunächst geprüft, ob der Connector diesen Befehl unterstützt bzw. die dafür benötigte Verbindungen initialisiert wurden.
 Ist das nicht der Fall, wird eine \texttt{PlatformNotSupportedException} ausgelöst, wenn der Connector den Befehl nicht unterstützt, bzw. eine  \texttt{InvalidOperationException} ausgelöst, wenn die benötigten Verbindungen nicht initialisiert wurden.
 Anschließend werden die benötigten Parameter des auszuführenden Befehls ermittelt, zu denen auch die Auswahl des Hosts dazu gehört, auf dem der Befehl ausgeführt werden soll.
@@ -236,10 +236,10 @@ Die Connectoren führen dabei nicht nur Befehle zum Monitoring aus, sondern alle
 
 Der erste der beiden implementierten Connectoren ist der \texttt{CmdConnector}.
 Er dient zum Ausführen von allen CLI"=Befehlen, die im Rahmen der Fallstudie benötigt werden.
-Dabei wird nicht immer direkt mit Hadoop oder den Anwendungen interagiert, sondern immer mithilfe eines entsprechenden Setup"= oder Startscriptes (vgl. \todo{Setupscript}), welches vom Connector hierzu aufgerufen wird.
+Dabei wird nicht immer direkt mit Hadoop oder den Anwendungen interagiert, sondern immer mithilfe eines entsprechenden Setup"= oder Startscriptes (vgl. \cref{subsec:scripts}), welches vom Connector hierzu aufgerufen wird.
 Das konkret genutzte Setupscript ist hierbei abhängig vom \texttt{HostMode}.
-Da die Verwaltung des genutzten \texttt{HostMode}s vollständig durch die \texttt{ModelSettings} durchgeführt wird, kann der Connector unabhängig hiervon genutzt werden.
-Notwendig ist hierfür jedoch, dass die Scripte die gleiche Befehlssyntax anbieten.
+Da die Verwaltung des genutzten \texttt{HostMode}s vollständig durch die \texttt{ModelSettings} durchgeführt wird, kann der Connector unabhängig hiervon genutzt werden (vgl. \cref{subsec:modelClass}).
+Notwendig ist hierfür jedoch, dass die Scripte immer die in \cref{app:setupScriptCmds} gezeigten Befehle enthalten.
 
 Da das Starten der Anwendungen die einzige asynchrone Operation darstellt, die der Connector durchführen muss, werden hierfür die meisten SSH"=Verbindung aufgebaut.
 Wenn eine Anwendung gestartet werden soll, wird immer eine freie SSH"=Verbindung ausgewählt und die Anwendung mithilfe dieser gestartet.
@@ -252,21 +252,21 @@ Der zweite implementierte Connector, der \texttt{RestConnector} dient vor allem 
 Aus diesem Grund lösen alle Methoden, die nicht dem Monitoring durch die REST"=API dienen, eine entsprechende \texttt{PlatformNotSupportedException} aus.
 
 Zum Abrufen der Daten dienen ebenfalls SSH"=Verbindungen, jedoch ist hier eine pro Host, auf dem das Cluster ausgeführt wird, ausreichend.
-Auf dem Host wird zum Abrufen der Daten das Tool curl\footnote{\url{https://curl.haxx.se/}} genutzt, wobei die Daten immer explizit im JSON"=Format angefragt werden.
+Auf dem Host wird zum Abrufen der Daten das Tool curl\footnote{\url{https://curl.haxx.se/}} (Version 7.47) genutzt, wobei die Daten immer explizit im JSON"=Format angefragt werden.
 
 Da die Daten von Anwendungs"=Containern immer durch die \ac{NM} der ausführenden Nodes zurückgegeben werden, kann es hier passieren, dass der entsprechende Node aufgrund eines Komponentenfehlers beendet oder nicht erreichbar ist.
 Wenn daher statt den Container"=Daten eine Fehlermeldung zurückgegeben wird, werden in so einem Fall keine Rohdaten vom Connector zurückgegeben, sondern \texttt{String.Empty}.
 
-Auch die Funktionen des \texttt{RestConnector}s können unabhängig vom genutzten \texttt{HostMode} genutzt werden.
+Auch die Funktionen des \texttt{RestConnector}s können unabhängig vom genutzten \texttt{HostMode} genutzt werden (vgl. \cref{subsec:hostMode}).
 Die Verwaltung der korrekten Adressen von \ac{RM} und \ac{TLS} erfolgt analog zum benötigten Setupscript zum \texttt{CmdConnector} durch die \texttt{ModelSettings}"=Klasse.
 Ein Unterschied besteht jedoch bei den Adressen der \ac{NM} zum Monitoring der Container.
 Da die Adressen der jeweiligen Nodes in der von \texttt{YarnHost} vererbten Eigenschaft \texttt{HttpUrl} gespeichert sind, werden die Adressen auch vom Connector genutzt, um mithilfe der REST"=API die Daten der auf einem Node ausgeführten Container zu abzurufen.
-Daher wird die vom \texttt{HostMode} abhängige Adresse der Nodes beim Initialisieren des Modells entsprechend im Modell gespeichert.
+Daher wird die vom \texttt{HostMode} abhängige Adresse der Nodes beim Initialisieren des Modells entsprechend im Modell gespeichert (vgl. \cref{subsec:modelClass}).
 
 \subsection{Implementierung der SSH"=Verbindung}
 \label{subsec:sshConnection}
 
-Die SSH"=Verbindung zum Host des realen Clusters wird mithilfe des Frameworks SSH.NET\footnote{\url{https://github.com/sshnet/SSH.NET}} aufgebaut.
+Die SSH"=Verbindung zum Host des realen Clusters wird mithilfe des Frameworks SSH.NET\footnote{\url{https://github.com/sshnet/SSH.NET}} (Version 2016.1.0) aufgebaut.
 Verwaltet wird die Verbindung mithilfe der Verbindungsklasse \texttt{SshConnection}.
 Die Verbindung ist zudem der einzige Bestandteil des Treibers, welcher kein entsprechendes Interface bereitstellt, da die SSH"=Verbindungen ausschließlich durch die implementierten Connectoren genutzt werden.
 
@@ -275,7 +275,7 @@ Hierbei stellt die Verbindungsklasse selbst zwar die Möglichkeit bereit, ein Pa
 Zudem besteht bei der Nutzung eines SSH"=Schlüssels die Möglichkeit, die Verbindung jederzeit zu trennen und erneut aufzubauen, was im implementierten Modell jedoch nicht durchgeführt wird.
 
 Die Verbindungsklasse ist auch dafür zuständig, die vom Connector erhaltenen auszuführenden Befehle an den Host zur Ausführung zu senden und auf die Rückgabe der Befehlsausgabe zu warten.
-Hierbei wird zudem jede Kommunikation zwischen dem Treiber und dem Cluster"=Host in einer eigenen, von den Tests unabhängigen, Logdatei gespeichert (SSH"=Log).
+Hierbei wird zudem jede Kommunikation zwischen dem Treiber und dem Cluster"=Host in einer eigenen, von den Tests unabhängigen, Logdatei gespeichert, dem SSH"=Log.
 Dabei ist die Verbindungsklasse auch dafür zuständig, dass beim teilsynchronen Starten einer Anwendung die Anwendungs"=ID ermittelt und die Anwendung anschließend asynchron ausgeführt wird.
 
 Pro SSH"=Verbindung kann nur jeweils ein Befehl gleichzeitig auf dem Host ausgeführt werden.

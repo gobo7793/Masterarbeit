@@ -36,7 +36,9 @@ Darunter zählen auch die bei der Ausführung des Modells benötigten Parser und
 Aufgrund der Einschränkungen von \ac{ss} im Umgang mit dem Treiber (vgl. \cref{subsec:driverModelIntegration}), sowie zur einfacheren Bereitstellung von benötigten Komponenten und Funktionen im Modell, ist die \texttt{Model}"=Klasse als Singleton realisiert.
 
 Die \texttt{ModelSettings}"=Klasse dient zum Speichern der variablen Einstellungen sowie zum Bereitstellen von generellen, Modell- oder Testsystemweiten Konstanten.
-Gespeichert und bereitgestellt werden hier Daten wie \zB die Zugangsdaten der SSH"=Verbindungen oder den genutzten \texttt{HostMode} (vgl.  \cref{subsec:implementedConnectors,sec:realCluster}) im \ac{YARN}"=Modell und dem Treiber transparent zu machen.
+Gespeichert und bereitgestellt werden hier Daten wie \zB die Zugangsdaten der SSH"=Verbindungen oder den genutzten \texttt{HostMode} (vgl.  \cref{subsec:implementedConnectors,subsec:hostMode}) im \ac{YARN}"=Modell und dem Treiber transparent zu machen.
+Die \texttt{ModelSettings} damit zur Verwaltung des \texttt{HostMode}s zuständig und dafür verantwortlich, \zB den Pfad zum jeweils benötigten Setupscript (vgl. \cref{subsec:scripts}) dem Treiber bereit zu stellen.
+Eine Besonderheit bildet hierbei die Eigenschaft \texttt{HttpUrl} der \texttt{YarnNode}s, welche beim Initialisieren des Modells durch die \texttt{ModelSettings} die zum \texttt{HostMode} passende Adresse erhält (vgl. \cref{subsubsec:yarnComponentsOverview}).
 
 \subsection{Relevante \acs{YARN}"=Komponenten}
 \label{subsec:yarnComponents}
@@ -71,6 +73,8 @@ Die Eigenschaft \texttt{AmContainerId} speichert zudem die Container"=ID des \ac
 
 Die Eigenschaften mit dem Präfix \texttt{CPU} bzw. \texttt{Memory} in \texttt{YarnNode} dienen zur Speicherung der derzeitigen Auslastung der CPU"=Kerne bzw. des Speichers eines Nodes.
 Benötigt werden diese Werte zur in \cref{subsubsec:simulationFaultActivation} beschriebenen Berechnung, ob ein Komponentenfehler aktiviert oder deaktiviert wird.
+Die Eigenschaft durch die Basisklasse \texttt{YarnHost} bereitgestellte Eigenschaft \texttt{HttpUrl} beschreibt die für die Nutzung der REST"=API benötigte Adresse des Nodes (vgl. \cref{subsubsec:implRestConnector}).
+Da die Adresse vom \texttt{HostMode} abhängig ist, wird sie mithilfe der \texttt{ModelSettings} beim initialisieren des Modells entsprechend festgelegt (vgl. \cref{subsec:hostMode,subsec:modelClass}).
 
 Die Eigenschaften \texttt{SutConstraints} und \texttt{TestConstraints} sowie die Methoden \texttt{MonitorStatus()} und \texttt{SetStatus()} werden von \texttt{IYarnReadable} bereitgestellt und speichern die Constraints bzw. dienen zur Durchführung des Monitorings der implementierten Komponenten.
 Die Start"= und Stop"=Methoden sowie die Eigenschaften \texttt{IsActive} und \texttt{IsConnected} in \texttt{YarnNode} dienen zur Identifikation und Injizierung bzw. Reparieren der Komponentenfehlern.
@@ -164,6 +168,7 @@ Eine Besonderheit bildet hierbei die Reparatur des Komponentenfehlers \texttt{No
 Ob ein Komponentenfehler in einem Testfall aktiviert wird, entscheidet sich anhand der Auslastung des Nodes.
 Hierfür sind beide Komponentenfehler mit dem Attribut \texttt{NodeFault} versehen, mit dessen Hilfe entschieden wird, ob ein Komponentenfehler aktiviert oder deaktiviert und somit injiziert bzw. repariert wird.
 Der Entscheidungsprozess hierfür ist in \cref{subsubsec:simulationFaultActivation} beschrieben.
+\todo{Nein, hier beschreiben}
 
 Da beide Fehler zudem auch gleichzeitig aktiviert werden können, wurde \texttt{NodeDead""Fault} mithilfe entsprechender \ac{ss}"=Funktionen eine höhere Priorität vergeben, wodurch dieser Vorrang vor dem anderen Komponentenfehler erhält.
 Dadurch wird in solchen Fällen der Node beendet und nicht zunächst noch vom Netzwerk getrennt.
