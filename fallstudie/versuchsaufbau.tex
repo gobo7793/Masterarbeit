@@ -13,6 +13,7 @@ Bei der Entwicklung des Modells liegt der Fokus auf dem grundlegenden Aufbau von
 Dazu gehören die Anwendungen und ihre Attempts, sowie zum Teil auch ihre Container.
 Daneben muss das Modell auch die Nodes des Clusters und zum Ausführen der Benchmarks auch simulierte Clients enthalten.
 Da bei den Tests auch Ausfälle von Nodes eine Rolle spielen, müssen hierfür entsprechende Komponentenfehler implementiert werden, die mithilfe von \ac{ss} aktiviert und deaktiviert werden können.
+Das Modell soll dabei immer den aktuellen Status des realen Clusters repräsentieren, weshalb regelmäßig alle benötigten Daten des realen Clusters ausgelesen und im Modell gespeichert werden müssen.
 
 Da die Auswahl der ausgeführten Benchmarks eines jeden Clients nicht bei jedem Test manuell bestimmt werden soll, wird hierfür ein Transitionssystem verwendet.
 Mithilfe dieses Transitionssystems, in dem die Wahrscheinlichkeiten von Wechseln zwischen zwei Anwendungen definiert sind, soll während der Ausführung eines Testfalls zufällig eine nachfolgende Anwendung ausgewählt werden.

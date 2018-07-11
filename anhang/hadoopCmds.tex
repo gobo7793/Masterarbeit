@@ -10,7 +10,7 @@ Weiterführende Informationen zu den hier aufgeführten Befehlen sowie die volls
 \begin{lstlisting}[label=lst:hadoopAppListCmd,style=plain,
 caption={[\acs{CLI}"=Ausgabe der Anwendungsliste]
     \acs{CLI}"=Ausgabe der Anwendungsliste.
-    Anwendungen können mithilfe der Optionen \texttt{-{}-appTypes} und \texttt{-{}-appStates} gefiltert werden.}]
+    Anwendungen können mithilfe der Optionen \mbox{\texttt{-{}-appTypes}} und \mbox{\texttt{-{}-appStates}} gefiltert werden.}]
 $ yarn application --list --appStates ALL
 18/02/08 15:37:51 INFO impl.TimelineClientImpl: Timeline service address: http://0.0.0.0:8188/ws/v1/timeline/
 18/02/08 15:37:51 INFO client.RMProxy: Connecting to ResourceManager at controller/10.0.0.3:8032
@@ -46,7 +46,7 @@ Application Report :
 caption={[Starten einer Anwendung in Hadoop"=Benchmark]
     Starten einer Anwendung in Hadoop"=Benchmark.
     Hier mit dem Mapreduce Example \acl{pi} und dem Abbruch der Anwendung durch den in \cref{lst:hadoopAppKill} gezeigten Befehl.
-    Die \texttt{applicationId} ist hier in Zeile 13 enthalten.}]
+    Die \mbox{\texttt{applicationId}} ist hier in Zeile 13 enthalten.}]
 $ hadoop-benchmark/benchmarks/hadoop-mapreduce-examples/run.sh pi 20 1000
 Number of Maps  = 20
 Samples per Map = 1000
