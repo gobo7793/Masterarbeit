@@ -241,6 +241,10 @@ Das konkret genutzte Setupscript ist hierbei abhängig vom \texttt{HostMode}.
 Da die Verwaltung des genutzten \texttt{HostMode}s vollständig durch die \texttt{ModelSettings} durchgeführt wird, kann der Connector unabhängig hiervon genutzt werden.
 Notwendig ist hierfür jedoch, dass die Scripte die gleiche Befehlssyntax anbieten.
 
+Da das Starten der Anwendungen die einzige asynchrone Operation darstellt, die der Connector durchführen muss, werden hierfür die meisten SSH"=Verbindung aufgebaut.
+Wenn eine Anwendung gestartet werden soll, wird immer eine freie SSH"=Verbindung ausgewählt und die Anwendung mithilfe dieser gestartet.
+Die Verbindung wird dabei solange zum Starten von anderen Anwendungen gesperrt, solange der ausführende Befehl, also die gestartete Anwendung, nicht beendet wurde (vgl. \cref{sec:sshDriver}).
+
 \subsubsection{Implementierung des RestConnectors}
 \label{subsubsec:implRestConnector}
 
@@ -262,33 +266,18 @@ Daher wird die vom \texttt{HostMode} abhängige Adresse der Nodes beim Initialis
 \subsection{Implementierung der SSH"=Verbindung}
 \label{subsec:sshConnection}
 
+Die SSH"=Verbindung zum Host des realen Clusters wird mithilfe des Frameworks SSH.NET\footnote{\url{https://github.com/sshnet/SSH.NET}} aufgebaut.
+Verwaltet wird die Verbindung mithilfe der Verbindungsklasse \texttt{SshConnection}.
+Die Verbindung ist zudem der einzige Bestandteil des Treibers, welcher kein entsprechendes Interface bereitstellt, da die SSH"=Verbindungen ausschließlich durch die implementierten Connectoren genutzt werden.
 
+Die zum Aufbau der Verbindung benötigten Zugangsdaten, die in \texttt{ModelSettings} gespeichert sind, müssen mithilfe des Connectors beim Initialisieren übergeben werden.
+Hierbei stellt die Verbindungsklasse selbst zwar die Möglichkeit bereit, ein Passwort zu nutzen, jedoch besteht in \texttt{ModelSettings} nur die Angabe eines SSH"=Schlüssels zur Verfügung, was zudem die Sicherheit erhöht.
+Zudem besteht bei der Nutzung eines SSH"=Schlüssels die Möglichkeit, die Verbindung jederzeit zu trennen und erneut aufzubauen, was im implementierten Modell jedoch nicht durchgeführt wird.
 
-%\subsection{Implementierte Connectoren}
-%\label{subsec:implementedConnectors}
-%
-%Für die beiden Parser wurden die beiden korrespondieren Connectoren \texttt{CmdConnector} und \texttt{RestConnector} entwickelt.
-%Während der Connector für die REST"=API nur über eine SSH"=Verbindung verfügt, besteht beim Connector für die Kommandozeile die Möglichkeit, mehrere einzelne SSH"=Verbindungen zu nutzen.
-%Dies ist damit begründet, dass zum Steuern der Komponentenfehler, was nur über die Kommandozeile möglich ist, eine eigene SSH"=Verbindung genutzt wird.
-%Zum Starten von Anwendungen besteht zudem die Möglichkeit, eine beliebige Anzahl an einzelnen SSH"=Verbindungen aufzubauen, damit mehrere Anwendungen parallel gestartet werden können.
-%Da die Daten der einzelnen \ac{YARN}"=Komponenten in der Fallstudie bevorzugt mithilfe der REST"=API ermittelt werden, kann die dafür vorgesehene SSH"=Verbindung des \texttt{CmdConnector} deaktiviert werden.
-%
-%Da über die Kommandozeile die Befehle für die Daten vom \ac{TLS} die gleichen wie für die Daten vom \ac{RM} sind \cite{HadoopYarnTlServer271,HadoopYarnCmds271}, sind beim \texttt{CmdConnector} die \ac{TLS}"=Methoden von geringer Bedeutung und nutzen daher ebenfalls die \ac{RM}"=Methoden.
-%
-%Der Connector ist beim Abrufen der Daten dafür zuständig, die dafür notwendigen Befehle auszuführen.
-%Während dies für die Kommandozeilen"=Befehle die entsprechenden Hadoop"=Befehle sind, wird dies zum Abrufen der Daten über die REST"=API mithilfe des Tools \emph{curl} durchgeführt.
-%Die dabei zurückgegebenen Daten werden vom Connector ohne Verarbeitung zurückgegeben und können dann vom Parser verarbeitet werden.
-%
-%Beim Steuern der Komponentenfehler wird vom Connector das für die Fallstudie entwickelte Start"=Script verwendet.
-%Nach dem eigentlichen Start bzw. Aufheben eines Komponentenfehlers wird vom Connector zudem überprüft, ob die Injizierung bzw. Aufhebung erfolgreich war.
-%Während der Datenabruf sowie die Steuerung der Komponentenfehler synchron stattfindet, findet das Starten der Anwendungen asynchron und mithilfe des Benchmark"=Scriptes statt.
-%Da eine Ausführung einer \ac{YARN}"=Anwendung längere Zeit in Anspruch nehmen kann, wird dadurch die Ausführung von \sS nicht behindert und es können mehrere Anwendungen parallel ausgeführt werden.
-%
-%\subsection{SSH"=Verbindung}
-%\label{subsec:sshConnection}
-%
-%Die SSH"=Verbindung selbst ist der einzige Bestandteil des Treibers, welches kein entsprechendes Interface benötigt, die SSH"=Verbindung wird ausschließlich vom Connector genutzt.
-%Realisiert wird die Verbindung mithilfe des Frameworks SSH.NET,\footnote{\url{https://github.com/sshnet/SSH.NET}} weshalb die SSH"=Verbindung im Treiber nur entsprechende Funktionen zum Aufbauen, Nutzen und Beenden der Verbindung enthält.
-%
-%Um die Verbindung mit dem Cluster"=PC aufzubauen, ist zudem ein dort installierter SSH"=Key nötig.
-%Ein Kommando auf dem Cluster"=PC kann mithilfe der Treiberkomponente synchron und asynchron ausgeführt werden.
+Die Verbindungsklasse ist auch dafür zuständig, die vom Connector erhaltenen auszuführenden Befehle an den Host zur Ausführung zu senden und auf die Rückgabe der Befehlsausgabe zu warten.
+Hierbei wird zudem jede Kommunikation zwischen dem Treiber und dem Cluster"=Host in einer eigenen, von den Tests unabhängigen, Logdatei gespeichert (SSH"=Log).
+Dabei ist die Verbindungsklasse auch dafür zuständig, dass beim teilsynchronen Starten einer Anwendung die Anwendungs"=ID ermittelt und die Anwendung anschließend asynchron ausgeführt wird.
+
+Pro SSH"=Verbindung kann nur jeweils ein Befehl gleichzeitig auf dem Host ausgeführt werden.
+Daher muss die Verbindungsklasse sicherstellen, dass die Verbindung auch bei asynchron ausgeführten Befehlen solange als belegt markiert ist, solange der Befehl nicht beendet ist.
+Dies geschieht mithilfe einer entsprechenden Eigenschaft \texttt{InUse}, mit der freie und belegte Verbindungen voneinander getrennt werden können.
