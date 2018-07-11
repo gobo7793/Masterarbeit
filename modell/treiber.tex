@@ -4,21 +4,21 @@
 
 In \cref{sec:modelArchitecture} wurde bereits aufgezeigt, dass der Treiber zur Verbindung des \ac{YARN}"=Modells mit dem realen Cluster aus den drei Komponenten Parser, Connector und der SSH"=Verbindung selbst besteht.
 Der Treiber ist im \ac{YARN}"=Modell mithilfe verschiedener Interfaces zur Nutzung des Parsers und Connectors eingebunden.
-Da \ac{YARN} mithilfe von Befehlen für die CLI und einer REST"=API zwei unterschiedliche Schnittstellen zum Auslesen der Daten der \ac{YARN}"=Komponenten für das Monitoring bereitstellt, wurden jeweils zwei entsprechende Parser und Connectoren hierfür entwickelt.
-Andere Befehle wie \zB \ac{HDFS}"=Befehle können ebenfalls mithilfe des entwickelten CLI"=Connectors ausgeführt werden, da Connectoren mithilfe von SSH"=Verbindungen mit den Cluster"=Hosts verbunden sind.
+Da \ac{YARN} mithilfe von Befehlen für die \ac{CLI} und einer REST"=API zwei unterschiedliche Schnittstellen zum Auslesen der Daten der \ac{YARN}"=Komponenten für das Monitoring bereitstellt, wurden jeweils zwei entsprechende Parser und Connectoren hierfür entwickelt.
+Andere Befehle wie \zB \ac{HDFS}"=Befehle können ebenfalls mithilfe des entwickelten \ac{CLI}"=Connectors ausgeführt werden, da Connectoren mithilfe von SSH"=Verbindungen mit den Cluster"=Hosts verbunden sind.
 
 \subsection{Grundlegender Aufbau und Integration im \acs{YARN}"=Modell}
 \label{subsec:driverModelIntegration}
 
 Zur Integration des Treibers im \ac{YARN}"=Modell stellt dieser mehrere Interfaces bereit.
-Dadurch sind einerseits der Treiber und das YARN"=Modell strikt getrennt, andererseits wird es dadurch auch ermöglicht, in Zukunft andere Möglichkeiten als die hier Entwickelten zur Interaktion mit dem realen Cluster zu entwickeln und zu nutzen.
+Dadurch sind einerseits der Treiber und das \ac{YARN}"=Modell strikt getrennt, andererseits wird es dadurch auch ermöglicht, in Zukunft andere Möglichkeiten als die hier Entwickelten zur Interaktion mit dem realen Cluster zu entwickeln und zu nutzen.
 
-Zur Interaktion des YARN"=Modells mit dem Treiber werden dem Modell folgende Interfaces zur Verfügung gestellt:
+Zur Interaktion des \ac{YARN}"=Modells mit dem Treiber werden dem Modell folgende Interfaces zur Verfügung gestellt:
 
 \begin{itemize}
     \item \texttt{IHadoopParser} für Parser
     \item \texttt{IHadoopConnector} für Connectoren
-    \item Von \texttt{IParsedComponent} abgeleitete Interfaces für geparste YARN"=Komponenten:
+    \item Von \texttt{IParsedComponent} abgeleitete Interfaces für geparste \ac{YARN}"=Komponenten:
     \begin{itemize}
         \item \texttt{IApplicationResult} für Anwendungen
         \item \texttt{IAppAttemptResult} für Attempts
@@ -28,25 +28,25 @@ Zur Interaktion des YARN"=Modells mit dem Treiber werden dem Modell folgende Int
 \end{itemize}
 
 Das Monitoring der Daten des realen Clusters wird mithilfe des Parsers durchgeführt.
-Das Interface \texttt{IHadoopParser} stellt hierfür entsprechende Parsing"=Methoden für die vier implementierten YARN"=Komponenten sowie der Übersichtslisten aller einer YARN"=Komponente untergeordneten Subkomponenten.
+Das Interface \texttt{IHadoopParser} stellt hierfür entsprechende Parsing"=Methoden für die vier implementierten \ac{YARN}"=Komponenten sowie der Übersichtslisten aller einer \ac{YARN}"=Komponente untergeordneten Subkomponenten.
 Zudem stellt das Parser"=Interface eine Methode zum Auslesen des aktuellen \ac{MARP}"=Wertes des Schedulers bereit.
 Beim Monitoring werden immer die entsprechenden von \texttt{IParsedComponent} abgeleiteten Interfaces zur Rückgabe der ermittelten Daten genutzt.
-Hierfür stellen diese Interfaces entsprechende Eigenschaften bereit, um alle mithilfe der CLI oder der REST"=API auslesbaren Daten an das YARN"=Modell übergeben zu können.
+Hierfür stellen diese Interfaces entsprechende Eigenschaften bereit, um alle mithilfe der \ac{CLI} oder der REST"=API auslesbaren Daten an das \ac{YARN}"=Modell übergeben zu können.
 
 Das Connector"=Interface \texttt{IHadoopConnector} stellt alle zum Abrufen der Daten oder weiteren Interaktion wie das Injizieren von Komponentenfehlern oder Starten von Anwendungen benötigten Methoden und Befehle bereit.
 Hierbei wird für das Monitoring unterschieden, ob die Daten vom \ac{TLS} oder vom \ac{RM} von Hadoop abgerufen werden.
-Dies ist vor allem bei der Nutzung der REST"=API wichtig, da sich hier die Adressen und Pfade unterscheiden, während bei der Benutzung der CLI die Befehle gleich sind .
+Dies ist vor allem bei der Nutzung der REST"=API wichtig, da sich hier die Adressen und Pfade unterscheiden, während bei der Benutzung der \ac{CLI} die Befehle gleich sind .
 Der \ac{TLS} wird zum Abrufen der Daten vor allem aus dem Grund genutzt, da hierbei zusätzliche Daten ermittelt werden können, die bei der reinen Nutzung der Schnittstellen des \ac{RM} nicht zurückgegeben werden würden.
 Ausgenommen sind hiervon Anwendungen, bei denen die Nutzung des \ac{TLS} keine weiteren Daten von Hadoop zurückgegeben werden\cite{HadoopYarnTlServer271,HadoopYarnCmds271,HadoopRmApi271,HadoopNmApi271}.
 Aus diesem Grund ist die Nutzung des \ac{TLS} zum Monitoring von Anwendungen mithilfe des Connector"=Interfaces nicht möglich.
 
-Die Implementierten Parser und Connectoren sind jeweils als Singleton realisiert und sind von der Serialisierung des YARN"=Modells durch \ac{ss} ausgenommen.
-Dies liegt vor allem darin Begründet, dass dadurch Speicher eingespart wird, der dadurch für andere YARN"=Komponenten zur Verfügung steht.
+Die Implementierten Parser und Connectoren sind jeweils als Singleton realisiert und sind von der Serialisierung des \ac{YARN}"=Modells durch \ac{ss} ausgenommen.
+Dies liegt vor allem darin begründet, dass dadurch Speicher eingespart wird, der dadurch für andere \ac{YARN}"=Komponenten zur Verfügung steht.
 Aber auch weitere Einschränkungen durch \ac{ss} spielten eine Rolle (vgl. \cref{sec:ssharp}).
-Ein weiterer Vorteil liegt zudem darin, dass für Unterschiedliche Einsatzzwecke der gleiche Connector genutzt werden kann, und somit auch die einzelnen vom Connector benötigten SSH"=Verbindungen für unterschiedliche Einsatzzwecke wiederverwendet werden können.
+Ein weiterer Vorteil liegt zudem darin, dass für unterschiedliche Einsatzzwecke der gleiche Connector genutzt werden kann, und somit auch die einzelnen vom Connector benötigten SSH"=Verbindungen für unterschiedliche Einsatzzwecke wiederverwendet werden können.
 Die Initialisierung der Parser und Connectoren erfolgt jeweils beim ersten Aufruf der Singletons.
-Dies geschieht innerhalb des Testsystems üblicherweise entweder beim Initialisieren des Tests (beschrieben in \cref{sec:implTestcases}) oder beim Initialisieren des YARN"=Modells selbst durch die Klasse \texttt{Model}.
-Die Initialisierung des Modells stellt zudem den einzigen Zeitpunkt dar, bei dem im YARN"=Modell direkt mit den implementierten Parsern und Connectoren interagiert wird, jede andere Interaktion findet stattdessen gekapselt mithilfe der Interfaces statt.
+Dies geschieht innerhalb des Testsystems üblicherweise entweder beim Initialisieren des Tests (beschrieben in \cref{sec:implTestcases}) oder beim Initialisieren des \ac{YARN}"=Modells selbst durch die Klasse \texttt{Model}.
+Die Initialisierung des Modells stellt zudem den einzigen Zeitpunkt dar, bei dem im \ac{YARN}"=Modell direkt mit den implementierten Parsern und Connectoren interagiert wird, jede andere Interaktion findet stattdessen gekapselt mithilfe der Interfaces statt.
 
 Die drei Komponenten des Treibers sind zudem untereinander  voneinander gekapselt.
 Bei der Ausführung des Parsers wird daher analog nur zur Initialisierung mit dem konkreten Connector interagiert, während das Connector"=Interface zum Monitoring als einzige Schnittstelle dient.
@@ -56,21 +56,22 @@ Dennoch werden Befehle auf den Cluster"=Hosts ausschließlich mithilfe des Conne
 \subsection{Entwicklung der Parser}
 \label{subsec:implementedParsers}
 
-Der Parser dient dazu, die von Hadoop zurückgegebenen Daten der YARN"=Komponenten einzulesen und dem Modell zu übergeben.
+Der Parser dient dazu, die von Hadoop zurückgegebenen Daten der \ac{YARN}"=Komponenten einzulesen und dem Modell zu übergeben.
 Zur Datenhaltung innerhalb der Parser"=Komponente des Treibers wurden hierfür entsprechende Klassen entwickelt, welche die von \texttt{IParsedComponent} abgeleiteten Interfaces implementieren.
 Dadurch sind die Datenhaltungs"=Klassen auch direkt dafür geeignet, die Daten an das Modell zu übergeben.
 
-Wenn Daten durch den Parser abgefragt und konvertiert werden sollen, ist der grundlegende Ablauf immer der gleiche.
-Zunächst werden, sofern benötigt, die IDs von weiteren benötigten YARN"=Komponenten ermittelt, bevor die Rohdaten durch einen passenden Connector ermittelt werden.
+Der grundlegende Ablauf der Initialisierung und dem Abrufen und Konvertieren der Daten ist bei beiden implementierten Parser gleich.
+Beim Initialisieren des Parsers wird zunächst der benötigte, passende Connector initialisiert.
+Beim Abrufen und Konvertieren der Daten werden zunächst, sofern benötigt, die IDs von weiteren benötigten \ac{YARN}"=Komponenten ermittelt, bevor die Rohdaten durch den Connector ermittelt werden.
 Die Rohdaten werden anschließend konvertiert und in der entsprechenden Datenhaltungs"=Klasse gespeichert, welche mithilfe der entsprechenden von \texttt{IParsedComponent} abgeleiteten Interfaces zurückgegeben.
 
-Da Hadoop zwei Schnittstellen in Form der CLI und der REST"=API bereit stellt, wurden hierfür entsprechend zwei Parser entwickelt, um die jeweiligen Daten einzulesen.
+Da Hadoop zwei Schnittstellen in Form der \ac{CLI} und der REST"=API bereit stellt, wurden hierfür entsprechend zwei Parser entwickelt, um die jeweiligen Daten einzulesen.
 
 \subsubsection{Implementierung des CmdParsers}
 \label{subsubsec:implCmdParser}
 
-Der erste der beiden entwickelten Parser ist der \texttt{CmdParser} zum Monitoring mithilfe von Befehlen auf der CLI.
-Zum Auslesen der Daten selbst nutzt der \texttt{CmdParser} den dazugehörigen \texttt{CmdConnector} (vgl. \cref{subsubsec:implCmdConnector}), mit dem zum Auslesen der Daten die entsprechenden CLI"=Befehle ausgeführt werden.
+Der erste der beiden entwickelten Parser ist der \texttt{CmdParser} zum Monitoring mithilfe von Befehlen auf der \ac{CLI}.
+Zum Auslesen der Daten selbst nutzt der \texttt{CmdParser} den dazugehörigen \texttt{CmdConnector} (vgl. \cref{subsubsec:implCmdConnector}), mit dem zum Auslesen der Daten die entsprechenden \ac{CLI}"=Befehle ausgeführt werden.
 Die hierbei zurückgegebenen Daten sind im Vergleich zu den von der REST"=API zurückgegebenen im Umfang deutlich reduziert, in den jeweiligen Übersichten der Subkomponenten zudem auf das notwendigste beschränkt.
 Im Gegenzug zur REST"=API werden hier die Daten des \ac{RM} und \ac{TLS} kombiniert ausgegeben.
 Eine kurze Übersicht über die Befehle und deren Ausgaben ist im \cref{app:hadoopCmds} zu finden.
@@ -89,7 +90,7 @@ Bei zurückgegebenen Listen müssen diese zur Auswertung zunächst zeilenweise g
 Anschließend können durch die Reihenfolge der jeweiligen Regex"=Matchgruppen die jeweiligen Daten der Komponente den entsprechenden Eigenschaften der Datenhaltungsklassen zugeordnet werden.
 
 Eine Besonderheit bilden Zeitstempel.
-Diese werden von Hadoop bei der Nutzung der CLI meist in Form des Java"=Timestamps in Millisekunden seit dem 1. Januar 1970 00:00:00 Uhr, in der Liste der ausgeführten Container eines Attempts stattdessen im Format \texttt{ddd MMM dd HH:mm:ss zz00 yyyy}.
+Diese werden von Hadoop bei der Nutzung der \ac{CLI} meist in Form des Java"=Timestamps in Millisekunden seit dem 1. Januar 1970 00:00:00 Uhr, in der Liste der ausgeführten Container eines Attempts stattdessen im Format \texttt{ddd MMM dd HH:mm:ss zz00 yyyy}.
 Dies entspricht \zB dem Zeitstempel \texttt{Fri Jan 05 11:08:16 +0000 2018}.
 Weiterführende Informationen zur Formatierung von Zeitstempeln in .NET finden sich in \cite{CsTimeFormatStrings}.
 Der von Hadoop zurückgegebene Zeitstempel muss in beiden Fällen zunächst in ein .NET"=kompatibles Format umgewandelt werden.
@@ -129,19 +130,19 @@ Hierfür wird die ID bzw. die URL des Nodes genutzt, um die korrespondierende In
 \label{subsubsec:implRestParser}
 
 Der zweite entwickelte Parser ist der \texttt{RestParser}.
-Er dient dazu, die mithilfe der REST"=API ermittelten Daten auszuwerten und an das YARN"=Modell zu übergeben.
+Er dient dazu, die mithilfe der REST"=API ermittelten Daten auszuwerten und an das \ac{YARN}"=Modell zu übergeben.
 Zum Auslesen der Daten aus dem Cluster wurde hierfür der \texttt{RestConnector} entwickelt (vgl. \cref{subsubsec:implRestConnector}).
-Die REST"=API besitzt, auch im Vergleich zur CLI"=Schnittstelle, einige Besonderheiten, auf die bei der Implementierung geachtet werden musste \cite{HadoopYarnCmds271,HadoopRmApi271,HadoopNmApi271,HadoopYarnTlServer271}:
+Die REST"=API besitzt, auch im Vergleich zur \ac{CLI}"=Schnittstelle, einige Besonderheiten, auf die bei der Implementierung geachtet werden musste \cite{HadoopYarnCmds271,HadoopRmApi271,HadoopNmApi271,HadoopYarnTlServer271}:
 
 \begin{itemize}
-    \item Die zurückgegebenen Daten sind deutlich Umfangreicher als bei der CLI"=Schnittstelle
+    \item Die zurückgegebenen Daten sind deutlich Umfangreicher als bei der \ac{CLI}"=Schnittstelle
     \item Die Daten können im XML- oder JSON"=Format zurückgegebenen werden
     \item Attempts können nur als Liste aller Attempts einer Anwendung zurückgegeben werden
     \item Daten zu Containern können nur durch die \ac{NM} der ausführenden Nodes ermittelt werden
     \item Die Adressen und Pfade von \ac{RM}, \ac{NM} und \ac{TLS} unterscheiden sich
     \item Die Daten von \ac{RM} und \ac{NM} sind immer umfangreicher als die des \ac{TLS}
     \item Der \ac{TLS} enthält für Attempts und Anwendungs"=Container jedoch zusätzliche Daten
-    \item Es werden bei Listen und Reports immer die gleichen Objekte der YARN"=Komponenten zurückgegebenen
+    \item Es werden bei Listen und Reports immer die gleichen Objekte der \ac{YARN}"=Komponenten zurückgegebenen
 \end{itemize}
 
 Da die REST"=API die Rückgabe der Daten in zwei Formaten ermöglicht, wurde der \texttt{RestParser} aufgrund der kleineren Datenmengen und übersichtlicheren Datenformats zur Nutzung des JSON"=Formats entwickelt
@@ -177,7 +178,7 @@ public class JsonJavaEpochConverter : DateTimeConverterBase
 
 Da der \ac{TLS} bei der Ausgabe der Daten zu Attempts und Containern zusätzliche Informationen enthält, werden hier nicht nur die Daten mithilfe des \ac{RM} bzw. der \ac{NM} der ausführenden Nodes, sondern auch mithilfe des \ac{TLS}.
 Hierzu werden zunächst die Daten des \ac{RM} bzw. der \ac{NM} ermittelt und mit die zusätzlichen Informationen des \ac{TLS} ergänzt, sofern hier Daten verfügbar sind.
-Aufgrund der Besonderheiten der REST"=API im Bezug auf Attempts und Container, werden bei diesen beiden YARN"=Komponenten zunächst immer die Daten aller Attempts einer Anwendung bzw. aller Container eines Attempts ermittelt und konvertiert.
+Aufgrund der Besonderheiten der REST"=API im Bezug auf Attempts und Container, werden bei diesen beiden \ac{YARN}"=Komponenten zunächst immer die Daten aller Attempts einer Anwendung bzw. aller Container eines Attempts ermittelt und konvertiert.
 Sollten jedoch nur die Daten jeweils eines Attempts bzw. Containers benötigt werden, werden diese Listen entsprechend gefiltert:
 
 \begin{lstlisting}[label=lst:restParseDetails,style=cs,
@@ -198,7 +199,23 @@ Aufgrund dieser Besonderheiten eignet sich auch das in \cref{subsubsec:yarnCompo
 \subsection{Entwicklung der Connectoren}
 \label{subsec:implementedConnectors}
 
+Der Connector dient zur Abstrahierung der SSH"=Verbindung (vgl. \cref{subsec:sshConnection}), damit diese in höheren Schichten einfach genutzt werden kann.
+Dazu beinhaltet der Connector die jeweiligen Befehle, die auf dem Cluster"=Host ausgeführt werden.
+Während die Ausgabe des Hosts bei Befehlen zum Monitoring im Rohformat an den Parser weitergegeben wird, werden die Rückgaben bei anderen Befehlen wie \zB dem Starten von Anwendungen oder Injizieren von Komponentenfehlern direkt so verarbeitet, dass diese im \ac{YARN}"=Modell genutzt werden können.
 
+Die implementierten Connectoren selbst bauen hierzu eine oder mehrere SSH"=Verbindungen auf, von denen jede Verbindung nur für einen bestimmten Typ an Befehlen genutzt wird.
+Je nach Fähigkeiten des Connectors und Bedarf werden dadurch einzelne Verbindungen zum Monitoring, zum Injizieren und Reparieren von Komponentenfehlern oder zum Starten von Anwendungen aufgebaut.
+Wenn das Cluster auf mehreren Hosts ausgeführt wird, werden zu jedem Host die entsprechend benötigten Verbindungen aufgebaut.
+
+Das Initialisieren und Ausführen von Befehlen auf dem Cluster"=Host erfolgt ähnlich wie bei den Parsern immer nach dem gleichen Schema.
+Zunächst werden beim Initialisieren des Connectors alle für seine Aufgaben benötigten SSH"=Verbindungen initialisiert und aufgebaut.
+Wenn anschließend ein Befehl auf dem Cluster"=Host ausgeführt werden soll, wird zunächst geprüft, ob der Connector diesen Befehl unterstützt bzw. die dafür benötigte Verbindungen initialisiert wurden.
+Ist das nicht der Fall, wird eine \texttt{PlatformNotSupportedException} ausgelöst, wenn der Connector den Befehl nicht unterstützt, bzw. eine  \texttt{InvalidOperationException} ausgelöst, wenn die benötigten Verbindungen nicht initialisiert wurden.
+Anschließend werden die benötigten Parameter des auszuführenden Befehls ermittelt, zu denen auch die Auswahl des Hosts dazu gehört, auf dem der Befehl ausgeführt werden soll.
+Nach der im Anschluss folgenden Ausführung des Befehls auf dem Host des Clusters werden die zurückgegebenen Daten im Rohformat an die anfragende Komponente weitergegeben oder zunächst einer kurzen Auswertung unterzogen, damit das Ergebnis des Befehls durch die anfragende Komponente verarbeitet werden kann.
+
+Da die beiden implementierten Parser unterschiedliche Befehle zum Abrufen der Daten benötigen, wurden hierfür zwei entsprechende Connectoren entwickelt.
+Die Connectoren führen dabei nicht nur Befehle zum Monitoring aus, sondern alle die für ihre Schnittstellen verfügbaren und benötigten Befehle.
 
 \subsubsection{Implementierung des CmdConnectors}
 \label{subsubsec:implCmdConnector}
@@ -218,7 +235,7 @@ Aufgrund dieser Besonderheiten eignet sich auch das in \cref{subsubsec:yarnCompo
 %Während der Connector für die REST"=API nur über eine SSH"=Verbindung verfügt, besteht beim Connector für die Kommandozeile die Möglichkeit, mehrere einzelne SSH"=Verbindungen zu nutzen.
 %Dies ist damit begründet, dass zum Steuern der Komponentenfehler, was nur über die Kommandozeile möglich ist, eine eigene SSH"=Verbindung genutzt wird.
 %Zum Starten von Anwendungen besteht zudem die Möglichkeit, eine beliebige Anzahl an einzelnen SSH"=Verbindungen aufzubauen, damit mehrere Anwendungen parallel gestartet werden können.
-%Da die Daten der einzelnen YARN"=Komponenten in der Fallstudie bevorzugt mithilfe der REST"=API ermittelt werden, kann die dafür vorgesehene SSH"=Verbindung des \texttt{CmdConnector} deaktiviert werden.
+%Da die Daten der einzelnen \ac{YARN}"=Komponenten in der Fallstudie bevorzugt mithilfe der REST"=API ermittelt werden, kann die dafür vorgesehene SSH"=Verbindung des \texttt{CmdConnector} deaktiviert werden.
 %
 %Da über die Kommandozeile die Befehle für die Daten vom \ac{TLS} die gleichen wie für die Daten vom \ac{RM} sind \cite{HadoopYarnTlServer271,HadoopYarnCmds271}, sind beim \texttt{CmdConnector} die \ac{TLS}"=Methoden von geringer Bedeutung und nutzen daher ebenfalls die \ac{RM}"=Methoden.
 %
@@ -229,7 +246,7 @@ Aufgrund dieser Besonderheiten eignet sich auch das in \cref{subsubsec:yarnCompo
 %Beim Steuern der Komponentenfehler wird vom Connector das für die Fallstudie entwickelte Start"=Script verwendet.
 %Nach dem eigentlichen Start bzw. Aufheben eines Komponentenfehlers wird vom Connector zudem überprüft, ob die Injizierung bzw. Aufhebung erfolgreich war.
 %Während der Datenabruf sowie die Steuerung der Komponentenfehler synchron stattfindet, findet das Starten der Anwendungen asynchron und mithilfe des Benchmark"=Scriptes statt.
-%Da eine Ausführung einer YARN"=Anwendung längere Zeit in Anspruch nehmen kann, wird dadurch die Ausführung von \sS nicht behindert und es können mehrere Anwendungen parallel ausgeführt werden.
+%Da eine Ausführung einer \ac{YARN}"=Anwendung längere Zeit in Anspruch nehmen kann, wird dadurch die Ausführung von \sS nicht behindert und es können mehrere Anwendungen parallel ausgeführt werden.
 %
 %\subsection{SSH"=Verbindung}
 %\label{subsec:sshConnection}
