@@ -249,7 +249,7 @@ Die Verbindung wird dabei solange zum Starten von anderen Anwendungen gesperrt, 
 \label{subsubsec:implRestConnector}
 
 Der zweite implementierte Connector, der \texttt{RestConnector} dient vor allem dem Monitoring mithilfe der REST"=API.
-Aus diesem Grund lösen alle Methoden, die nicht dem Monitoring durch die REST"=API dienen, eine entsprechende \texttt{PlatformNotSupportedException} aus.
+Aus diesem Grund lösen alle Methoden, die nicht dem Monitoring durch die REST"=API dienen, eine entsprechende \texttt{PlatformNotSupported""Exception} aus.
 
 Zum Abrufen der Daten dienen ebenfalls SSH"=Verbindungen, jedoch ist hier eine pro Host, auf dem das Cluster ausgeführt wird, ausreichend.
 Auf dem Host wird zum Abrufen der Daten das Tool curl\footnote{\url{https://curl.haxx.se/}} (Version 7.47) genutzt, wobei die Daten immer explizit im JSON"=Format angefragt werden.
@@ -257,7 +257,7 @@ Auf dem Host wird zum Abrufen der Daten das Tool curl\footnote{\url{https://curl
 Da die Daten von Anwendungs"=Containern immer durch die \ac{NM} der ausführenden Nodes zurückgegeben werden, kann es hier passieren, dass der entsprechende Node aufgrund eines Komponentenfehlers beendet oder nicht erreichbar ist.
 Wenn daher statt den Container"=Daten eine Fehlermeldung zurückgegeben wird, werden in so einem Fall keine Rohdaten vom Connector zurückgegeben, sondern \texttt{String.Empty}.
 
-Auch die Funktionen des \texttt{RestConnector}s können unabhängig vom genutzten \texttt{HostMode} genutzt werden (vgl. \cref{subsec:hostMode}).
+Auch die Funktionen des \texttt{RestConnector}s können unabhängig vom genutzten \texttt{Host""Mode} genutzt werden (vgl. \cref{subsec:hostMode}).
 Die Verwaltung der korrekten Adressen von \ac{RM} und \ac{TLS} erfolgt analog zum benötigten Setupscript zum \texttt{CmdConnector} durch die \texttt{ModelSettings}"=Klasse.
 Ein Unterschied besteht jedoch bei den Adressen der \ac{NM} zum Monitoring der Container.
 Da die Adressen der jeweiligen Nodes in der von \texttt{YarnHost} vererbten Eigenschaft \texttt{HttpUrl} gespeichert sind, werden die Adressen auch vom Connector genutzt, um mithilfe der REST"=API die Daten der auf einem Node ausgeführten Container zu abzurufen.
