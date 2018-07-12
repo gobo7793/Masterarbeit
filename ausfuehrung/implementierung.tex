@@ -12,7 +12,7 @@ caption={[Methode zur Ausführung der Testfälle]
 [TestCaseSource(nameof(GetTestCases))]
 public void ExecuteCaseStudy(int benchmarkSeed, double faultProbability, int hostsCount, int clientCount, int stepCount, bool isMutated)
 {
-  // write test case parameter to log
+  // write test c§§ase parameter to log
   
   InitInstances();
   var isFailed = false;
@@ -20,20 +20,20 @@ public void ExecuteCaseStudy(int benchmarkSeed, double faultProbability, int hos
   {
     // Setup
     StartCluster(hostsCount, isMutated);
-    Thread.Sleep(5000); // wait for startup
+    Thread.Sleep(5000); // wait f§§or startup
     
     var simTest = new SimulationTests();
-    // save test case parameter to simTest
+    // save test c§§ase parameter to simTest
     
     // Execution
     simTest.SimulateHadoopFaults();
   }
-  // catch exceptions and set isFailed=true
+  // c§§atch exceptions and s§§et isFailed=t§§rue
   finally
   {
     // Teardown
     StopCluster();
-    MoveCaseStudyLogs(/* test case parameter */);
+    MoveCaseStudyLogs(/* test c§§ase parameter */);
   }
   Assert.False(isFailed);
 }

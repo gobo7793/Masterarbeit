@@ -73,7 +73,7 @@ Analoge Zuordnungen bestehen auch zu den Clients bzw. den Anwendungs"=Containern
 Die Eigenschaft \texttt{AmContainerId} speichert zudem die Container"=ID des \ac{AppMstr}"=Containers.
 
 Die Eigenschaften mit dem Präfix \texttt{CPU} bzw. \texttt{Memory} in \texttt{YarnNode} dienen zur Speicherung der derzeitigen Auslastung der CPU"=Kerne bzw. des Speichers eines Nodes.
-Benötigt werden diese Werte zur in \cref{subsubsec:simulationFaultActivation} beschriebenen Berechnung, ob ein Komponentenfehler aktiviert oder deaktiviert wird.
+Benötigt werden diese Werte zur Berechnung, ob ein Komponentenfehler aktiviert oder deaktiviert wird.
 Die Eigenschaft durch die Basisklasse \texttt{YarnHost} bereitgestellte Eigenschaft \texttt{HttpUrl} beschreibt die für die Nutzung der REST"=API benötigte Adresse des Nodes (vgl. \cref{subsubsec:implRestConnector}).
 Da die Adresse vom \texttt{HostMode} abhängig ist, wird sie mithilfe der \texttt{ModelSettings} beim initialisieren des Modells entsprechend festgelegt (vgl. \cref{subsec:hostMode,subsec:modelClass}).
 
@@ -134,7 +134,7 @@ public class YarnNode : YarnHost, IYarnReadable
       if(isStopped)
         IsActive = false;
       else if(retry)
-        StopNode(false); // try again once
+        StopNode(false); // t§§ry again once
     }
     return !IsActive;
   }
@@ -186,7 +186,7 @@ var nodeUsage = (node.MemoryUsage + node.CpuUsage) / 2;
 if(nodeUsage < 0.1) nodeUsage = 0.1;
 else if(nodeUsage > 0.9) nodeUsage = 0.9;
 
-NodeUsageOnActivation = nodeUsage; // for using on repairing
+NodeUsageOnActivation = nodeUsage; // f§§or u§§sing on repairing
 
 var faultUsage = nodeUsage * ActivationProbability * 2;
 
@@ -254,7 +254,7 @@ public void MonitorStatus()
   var parsedAttempts = Parser.ParseAppAttemptList(AppId);
   foreach(var parsed in parsedAttempts)
   {
-    // search attempt with this id or an free attempt
+    // search attempt with t§§his id or an free attempt
     attempt.IsSelfMonitoring = IsSelfMonitoring;
     if(IsSelfMonitoring)
       attempt.AttemptId = parsed.AttemptId;
@@ -290,7 +290,7 @@ caption={[Definition der Constraints in YarnApp]
     Definition der Constraints in \texttt{YarnApp} (gekürzt)}]
 public Func<bool>[] SutConstraints => new Func<bool>[]
 {
-  // task will be completed if not canceled
+  // task will be completed i§§f not canceled
   () =>
   {
     if(FinalStatus != EFinalStatus.FAILED)
@@ -305,12 +305,12 @@ public Func<bool>[] SutConstraints => new Func<bool>[]
 
 public Func<bool>[] TestConstraints => new Func<bool>[]
 {
-  // current state is detected and saved
+  // current state i§§s detected and saved
   () =>
   {
     var prev = PreviousParsedComponent as IApplicationResult;
     var curr = CurrentParsedComponent as IApplicationResult;
-    // compare prev, curr and this and return the result
+    // compare prev, curr and t§§his and r§§eturn the result
     // or otherwise
     return false;
   },
