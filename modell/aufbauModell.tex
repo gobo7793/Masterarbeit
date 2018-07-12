@@ -48,3 +48,8 @@ Andere Befehle und Zugriffe auf das reale Cluster, wie \zB das Injizieren von Ko
 
 Die Implementierung des \ac{YARN}"=Modells wird in \cref{sec:yarnModel} beschrieben, die Implementierung des Treibers in \cref{sec:sshDriver}.
 Die Umsetzung des realen Clusters wird in \cref{sec:realCluster} beschrieben.
+
+In allen Komponenten des Modells werden, sofern benötigt, mithilfe des Frameworks log4net\footnote{\url{https://logging.apache.org/log4net/}} (Version 2.0.8), Logausgaben getätigt.
+Dies betrifft vor allem das Monitoring (vgl. \cref{subsubsec:yarnComponentInterface}), aber auch weitere Informationen wie zur Validierung der Constraints (vgl. \cref{subsec:oracleImpl}) oder reine Debug"=Informationen.
+All diese Informationen werden im Programmlog zusammengefasst, welches auch zur Auswertung der ausgeführten Tests dient.
+Zu Analysezwecken im Fehlerfall wird zudem jede Kommunikation der SSH"=Verbindung in einem eigenen Log, dem SSH"=Log, abgespeichert (vgl. \cref{subsec:sshConnection}).

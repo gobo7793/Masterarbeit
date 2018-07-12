@@ -276,7 +276,7 @@ Zudem besteht bei der Nutzung eines SSH"=Schlüssels die Möglichkeit, die Verbi
 
 Die Verbindungsklasse ist auch dafür zuständig, die vom Connector erhaltenen auszuführenden Befehle an den Host zur Ausführung zu senden und auf die Rückgabe der Befehlsausgabe zu warten.
 Hierbei wird zudem jede Kommunikation zwischen dem Treiber und dem Cluster"=Host in einer eigenen, von den Tests unabhängigen, Logdatei gespeichert, dem SSH"=Log.
-Dabei ist die Verbindungsklasse auch dafür zuständig, dass beim teilsynchronen Starten einer Anwendung die Anwendungs"=ID ermittelt und die Anwendung anschließend asynchron ausgeführt wird.
+Die Verbindungsklasse ist auch dafür zuständig, dass beim teilsynchronen Starten einer Anwendung die Anwendungs"=ID ermittelt und die Anwendung anschließend asynchron ausgeführt wird (vgl. \cref{subsubsec:implCmdConnector,subsec:yarnClient}).
 
 Pro SSH"=Verbindung kann nur jeweils ein Befehl gleichzeitig auf dem Host ausgeführt werden.
 Daher muss die Verbindungsklasse sicherstellen, dass die Verbindung auch bei asynchron ausgeführten Befehlen solange als belegt markiert ist, solange der Befehl nicht beendet ist.
