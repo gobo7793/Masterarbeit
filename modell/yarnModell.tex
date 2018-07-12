@@ -166,15 +166,44 @@ Das Reparieren von Komponentenfehlern geschieht analog hierzu.
 Hierfür werden in der \texttt{Update()}"=Methode die beiden Start"=Methoden aufgerufen, die einen Fehlerhaften Node reparieren.
 Eine Besonderheit bildet hierbei die Reparatur des Komponentenfehlers \texttt{NodeConnectionErrorFault}, bei der der Node komplett neu gestartet wird, da es sonst passieren kann, dass der wieder ans Netzwerk angebundene Node sich nicht mit dem \ac{RM} verbindet.
 
-Ob ein Komponentenfehler in einem Testfall aktiviert wird, entscheidet sich anhand der Auslastung des Nodes.
-Hierfür sind beide Komponentenfehler mit dem Attribut \texttt{NodeFault} versehen, mit dessen Hilfe entschieden wird, ob ein Komponentenfehler aktiviert oder deaktiviert und somit injiziert bzw. repariert wird.
-Der Entscheidungsprozess hierfür ist in \cref{subsubsec:simulationFaultActivation} beschrieben.
-\todo{Nein, hier beschreiben}
+Ob ein Komponentenfehler in einem Testfall aktiviert wird, ist Abhängig von folgenden Parametern:
+
+\begin{itemize}
+    \item Auslastung des Nodes im vorhergehenden Testfall
+    \item Generellen Wahrscheinlichkeit zur Fehleraktivierung
+    \item Einer Zufallszahl
+\end{itemize}
+
+Um zu bestimmen, ob ein Komponentenfehler aktiviert wird, sind alle Komponentenfehler mit dem Attribut \texttt{NodeFault} markiert.
+Mithilfe dieses Attributes wird bei der Ausführung eines Testfalls folgendermaßen berechnet, ob der Komponentenfehler aktiviert wird:
+
+\begin{lstlisting}[label=lst:faultActivationCalc,style=cs,
+caption={[Berechnung der Aktivierung von Komponentenfehlern]
+    Berechnung der Aktivierung von Komponentenfehlern (zusammengefasst).}]
+var node = AllNodes.First(n => n.Name == nodeName);
+var nodeUsage = (node.MemoryUsage + node.CpuUsage) / 2;
+
+if(nodeUsage < 0.1) nodeUsage = 0.1;
+else if(nodeUsage > 0.9) nodeUsage = 0.9;
+
+NodeUsageOnActivation = nodeUsage; // for using on repairing
+
+var faultUsage = nodeUsage * ActivationProbability * 2;
+
+var probability = 1 - faultUsage;
+var randomValue = RandomGen.NextDouble();
+Logger.Info($"Activation probability: {probability} < {randomValue}");
+return probability < randomValue;
+\end{lstlisting}
+
+Die Entscheidung zur Deaktivierung eines Komponentenfehlers verhält sich analog.
+Anstatt der generellen Aktivierungswahrscheinlichkeit wird hierbei die generelle Wahrscheinlichkeit zur Deaktivierung der Komponentenfehler genutzt.
+Außerdem spielt bei der Deaktivierung die Auslastung des Nodes zum Zeitpunkt der Aktivierung eine Rolle, welche hierzu in der Eigenschaft \texttt{NodeUsageOnActivation} des Attributs entsprechend gespeichert und zur Deaktivierung genutzt wird.
 
 Da beide Fehler zudem auch gleichzeitig aktiviert werden können, wurde \texttt{NodeDead""Fault} mithilfe entsprechender \ac{ss}"=Funktionen eine höhere Priorität vergeben, wodurch dieser Vorrang vor dem anderen Komponentenfehler erhält.
 Dadurch wird in solchen Fällen der Node beendet und nicht zunächst noch vom Netzwerk getrennt.
 
-Zur einfachen Identifikation der aktiven Komponentenfehler dienen die beiden Eigenschaften \texttt{IsActive} und \texttt{IsConnected}.
+Zur einfachen Identifikation der aktiven Komponentenfehler innerhalb des \ac{YARN}"=Modells dienen die beiden Eigenschaften \texttt{IsActive} und \texttt{IsConnected}.
 In \cref{lst:faultInjection} wird bereits die Auswirkung der beiden Eigenschaft gezeigt, indem verhindert wird, dass ein möglicherweise bereits injizierter bzw. reparierter Komponentenfehler erneut injiziert bzw. repariert wird.
 Sie dienen aber auch zur Validierung der Constraints, bei denen mithilfe der beiden Eigenschaften geprüft wird, ob ein Node korrekt als aktiv bzw. defekt erkannt wurde.
 
@@ -321,6 +350,7 @@ public void UpdateBenchmark()
 Da die auf dem Cluster ausgeführten Anwendungen \uU nicht gestartet werden, wenn im \ac{HDFS} das Ausgabeverzeichnis bereits vorhanden ist, muss dieses beim Starten eines Benchmarks ebenfalls zunächst gelöscht werden.
 Anschließend kann die Anwendung gestartet werden.
 Die weitere Ausführung des Clients wird dabei solange unterbrochen, bis der gestarteten Anwendung eine \emph{Application ID} zugewiesen wurde, die wiederum vom Client abgespeichert wird.
+Benötigt wird die ID vom Client vor allem um damit die zu beendende Anwendung zu identifizieren, wenn eine neue Anwendung gestartet werden soll.
 Hierbei wird auch eine noch leere \texttt{YarnApp}"=Instanz ermittelt, um diese analog zu den anderen \ac{YARN}"=Komponenten zum Speichern der Daten zu nutzen.
 Der Unterschied hierbei ist jedoch, dass immer eine neue Instanz genutzt wird, da eine neue Anwendung automatisch immer eine ID erhält, welche im Cluster noch nicht existiert.
 Wenn keine leere \texttt{YarnApp}"=Instanz mehr verfügbar ist, wird analog zum Monitoring ebenfalls eine \texttt{OutOfMemoryException} ausgelöst.

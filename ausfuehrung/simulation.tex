@@ -19,16 +19,6 @@ Der grundlegende Ablauf einer Simulation sieht wie folgt aus:
 \begin{lstlisting}[label=lst:hadoopSimulation,style=cs,
 caption={[Simulation in dieser Fallstudie]
     Simulation in dieser Fallstudie (gekürzt).}]
-[Test]
-public void SimulateHadoop()
-{
-  ModelSettings.FaultActivationProbability = 0.0;
-  ModelSettings.FaultRepairProbability = 1.0;
-  
-  var execRes = ExecuteSimulation();
-  Assert.IsTrue(execRes, "fatal error occured, see log for details");
-}
-
 private bool ExecuteSimulation()
 {
   var model = InitModel();
@@ -70,15 +60,18 @@ private bool ExecuteSimulation()
 }
 \end{lstlisting}
 
-Da der Ablauf der Simulation unabhängig von der Aktivierung der Komponentenfehler der gleiche ist, ist hier nur die Variante ohne deren Aktivierung aufgezeigt.
-Im Falle einer Aktivierung der Komponentenfehler unterscheiden sich beide Simulationsvarianten nur durch die Angabe der generellen Wahrscheinlichkeiten zum Aktivieren und Deaktivieren der Komponentenfehler.
+Hierbei gibt es zwei Varianten zum Ausführen der Simulation, welche abhängig von der Aktivierung der Komponentenfehler ist.
+Sollen keine Komponentenfehler aktiviert bzw. deaktiviert werden, werden die entsprechenden Variablen zur Festlegung der generellen Wahrscheinlichkeiten (vgl. \cref{subsec:simulationModelInit} entsprechend gesetzt und die Simulation ausgeführt.
 Da die einzelnen Schritte einer Simulation eine gewisse Mindestdauer haben, wird nach jedem Schritt geprüft, wie viel Zeit für die Ausführung des Schrittes benötigt wurde.
 Liegt die Zeit unterhalb der Mindestdauer für einen Schritt, wird die Ausführung des nächsten Schrittes solange hinausgezögert, bis die Mindestdauer des Schrittes erreicht wurde.
-Weitere zeitliche Verzögerungen während der Ausführung eines Simulations"=Schrittes sind in \cref{subsec:simulationStep} beschrieben.
 
 Wenn während der Simulation eine im Modell nicht behandelte \texttt{Exception} auftritt, wird diese außerhalb der Simulation abgefangen und entsprechend geloggt.
 Dadurch wird zudem die Simulation beim aktuellen Stand abgebrochen.
-Nach Abschluss der Simulation werden immer alle zu dem Zeitpunkt mit Komponentenfehlern injizierten Nodes neu gestartet.
+Nach Abschluss der Simulation werden immer alle noch ausgeführten Anwendungen beendet und defekte Nodes neu gestartet, sofern nötig.
+
+Für die Simulation selbst sind zudem ebenfalls Constraints definiert.
+Dies ist dadurch nötig, da die in \cref{subsec:testRequirements} definierte Anforderung, dass Komponentenfehler Injiziert bzw. Repariert werden, nicht immer innerhalb eines Testfalls validiert werden können.
+Aus diesem Grund wird diese Anforderung in Form von Constraints nach Abschluss einer Simulation durch das Oracle geprüft.
 
 \subsection{Initialisierung des Modells}
 \label{subsec:simulationModelInit}
@@ -163,7 +156,7 @@ Wenn keine Eingabedaten vorab generiert werden, werden als Eingabeverzeichnisse 
 Die Eigenschaft \texttt{RecreatePreInputs} definiert hierfür, ob bereits bestehende Eingabedaten neu generiert werden, was standardmäßig nicht der Fall ist bzw. dieses Feld auf \texttt{false} gesetzt ist.
 Der genaue Ablauf der Bereitstellung der Eingabedaten wird in \todo{Vorabgenerierung der Eingabedaten irgendwo schreiben und hier drauf verweisen} beschrieben.
 
-Die Auswirkungen der in \texttt{InitModel()} definierten Einstellung \texttt{ModelSettings.Host""Mode} wird bereits in \todo{ModelSettings.HostMode beschrieben und hier verweisen} beschrieben.
+Weitere Informationen zum \texttt{HostMode} sind in \cref{subsec:hostMode,subsec:implementedConnectors,subsec:modelClass} zu finden.
 
 Die direkt im Anschluss an die Initialisierung des Simulators ausgerufene Methode \texttt{CollectYarnNodeFaults()} ermittelt alle im initialisierten Modell enthaltenen Komponentenfehler, die mit dem \texttt{NodeFaultAttribute} markiert sind:
 
@@ -192,217 +185,13 @@ Die jeweiligen Instanzen der Attribute und Nodes werden für die in \cref{subsub
 Die beiden im Tupel gespeicherten Instanzen des \texttt{IntWrapper} dienen zur Speicherung der Anzahl der Aktivierungen bzw. Deaktivierungen der Komponentenfehler.
 Da der Wert einer Struktur wie \texttt{int} nicht direkt in einem Tupel geändert werden kann, dient die Klasse \texttt{IntWrapper} hierfür als Adapter.
 
-\subsection{Ablauf eines Simulations"=Schrittes}
-\label{subsec:simulationStep}
-
-Der Ablauf eines Schrittes lässt sich in die folgenden fünf Abschnitte einteilen.
-Während die \nameref{subsubsec:simulationFaultActivation} komplett außerhalb des ausgeführten Modells erfolgt (durch die in \cref{lst:hadoopSimulation} aufgerufene \texttt{HandleFaults()}"=Methode), werden die anderen Abschnitte durch die \texttt{Update()}"=Methode des \texttt{YarnController}s innerhalb des Modells während der Ausführung eines Simulations"=Schrittes ausgeführt.
-Die \nameref{subsubsec:simulationStepOutput} werden dagegen gemischt durchgeführt.
-
-\subsubsection{Aktivierung und Deaktivierung der Komponentenfehler}
-\label{subsubsec:simulationFaultActivation}
-
-Zur Aktivierung der Komponentenfehler gibt es drei Einzelschritte.
-Der erste Schritt ist die Prüfung, ob der Fehler bereits aktiviert wurde.
-Bei einem derzeit nicht injizierten Komponentenfehler, wird im zweiten Schritt geprüft, ob der Fehler aktiviert werden soll bevor er im dritten Schritt im realen Cluster injiziert wird.
-
-Zur Entscheidung, ob ein Komponentenfehler aktiviert wird, hängt von folgenden Parametern ab:
-
-\begin{itemize}
-    \item Von der Auslastung des Nodes im vorhergehenden Simulationsschritt,
-    \item von der in \texttt{ModelSettings.FaultActivationProbability} definierten generellen Wahrscheinlichkeit zur Fehleraktivierung,
-    \item sowie von einer Zufallszahl.
-\end{itemize}
-
-Ob ein Komponentenfehler aktiviert wird, wird folgendermaßen anhand dieser Parameter berechnet:
-
-\begin{lstlisting}[label=lst:faultActivationCalc,style=cs,
-caption={[Berechnung der Aktivierung von Komponentenfehlern]
-    Berechnung der Aktivierung von Komponentenfehlern (zusammengefasst).}]
-var node = Nodes.First(n => n.Name == nodeName);
-var nodeUsage = (node.MemoryUsage + node.CpuUsage) / 2;
-
-if(nodeUsage < 0.1) nodeUsage = 0.1;
-else if(nodeUsage > 0.9) nodeUsage = 0.9;
-
-NodeUsageOnActivation = nodeUsage; // for using on repairing
-
-var faultUsage = nodeUsage * ActivationProbability * 2;
-
-var probability = 1 - faultUsage;
-var randomValue = RandomGen.NextDouble();
-Logger.Info($"Activation probability: {probability} < {randomValue}");
-return probability < randomValue;
-\end{lstlisting}
-
-Die Entscheidung zur Deaktivierung eines Komponentenfehlers verhält sich analog.
-Anstatt der generellen Aktivierungswahrscheinlichkeit in \texttt{ModelSettings.Fault""ActivationProbability} wird hierbei die generelle Wahrscheinlichkeit zur Deaktivierung in \texttt{ModelSettings.FaultRepairProbability} genutzt.
-Außerdem spielt bei der Deaktivierung die Auslastung des Nodes zum Zeitpunkt der Aktivierung eine Rolle, welche hierzu in Zeile 7 in \cref{lst:faultActivationCalc} entsprechend gespeichert wird.
-Der grundlegende Algorithmus zur Entscheidung ist jedoch gleich.
-
-\subsubsection{Ausführung Benchmarks}
-\label{subsubsec:simulationBenchmarkExecution}
-
-Damit die Ausführung der Benchmarks vor dem Monitoring der Anwendungen sowie dem Auswerten der Constraints durch das Oracle stattfindet, wird die Ausführung der Benchmarks ebenfalls durch den \texttt{YarnController} initiiert.
-Dazu wird vom \texttt{YarnController} aus für jeden Client die entsprechende Methode aufgerufen, welche ihrerseits den in \cref{sec:appImplementation} erläuterten \texttt{BenchmarkController} nutzt, um den folgenden Benchmark zu bestimmen und im Falle eines Wechsels des Benchmarks diesen zu starten:
-
-\begin{lstlisting}[label=lst:hadoopSimulationStartBenchmark,style=cs,
-caption={[Auswahl und Start des nachfolgenden Benchmarks]
-    Auswahl und Start des nachfolgenden Benchmarks (gekürzt).
-    Die Methode \texttt{BenchmarkController.ChangeBenchmark()} ist bereits in \cref{lst:benchmarkChanging} aufgeführt.}]
-public void UpdateBenchmark()
-{
-    var benchChanged = BenchController.ChangeBenchmark();
-    
-    if(benchChanged)
-    {
-        StopCurrentBenchmark();
-        StartBenchmark(BenchController.CurrentBenchmark);
-    }
-}
-\end{lstlisting}
-
-Da ein Client auf dem Cluster nur eine Anwendung gleichzeitig ausführt, wird zunächst der zuvor ausgeführte Benchmark abgebrochen.
-Bevor der neue Benchmark im Anschluss auf dem Cluster gestartet werden kann, wird zunächst geprüft, ob das Ausgabeverzeichnis der Anwendung im \ac{HDFS} vorhanden ist und gelöscht, da die Anwendung auf dem Cluster andernfalls nicht gestartet werden kann.
-Beim Starten der zum Benchmark zugehörigen Anwendung wird zunächst solange gewartet, bis der Anwendung vom \ac{RM} eine \emph{Application ID} zugewiesen wurde, da diese in einer \texttt{YarnApp}"=Instanz sowie in \texttt{Client.CurrentExecutingAppId} gespeichert wird.
-Sollte keine \texttt{YarnApp}"=Instanz mehr verfügbar sein, wird stattdessen eine \texttt{OutOfMemoryException} ausgelöst, da während der Simulation keine neuen Instanzen erzeugt werden dürfen (vgl. \cref{sec:ssharp}).
-
-\subsubsection{Monitoring der ausgeführten Anwendungen}
-\label{subsubsec:simulationMonitoring}
-
-\todo{besser mit modellkapiutel koordinieren}
-Bevor das Monitoring der Anwendungen durchgeführt wird, wird zunächst fünf Sekunden gewartet, bis der \ac{AppMstr} sowie weitere Container der Anwendung allokiert bzw. gestartet wurden.
-Diese Wartezeit ist prinzipiell optional, wird hier jedoch genutzt, damit die Auslastung des Clusters besser ermittelt werden kann.
-Die Wartezeit vor dem Monitoring ist bereits in der in\cref{subsec:simulationBasics} beschriebenen Mindestdauer eines Schrittes enthalten.
-
-Beim Monitoring werden zunächst die Daten der Nodes, danach die der Anwendungen, ihrer Attempts und zum Abschluss deren Container ermittelt.
-Für das Monitoring selbst gib es zwei Ausführungsvarianten.
-Die eine Variante liegt darin, dass jede \texttt{IYarnComponent} (also Nodes, Anwendungen, Attempts und Container) jeweils ihre eigenen Daten ermittelt.
-Entwickelt wurde diese Variante vor allem für das Monitoring durch die entsprechenden Kommandozeilen"=Befehle.
-Die zweite Variante, welche optimal zur Nutzung der REST"=API von Hadoop ist, liegt darin, dass die jeweils übergeordnete Komponente alle Daten für all ihre jeweils untergeordneten Komponenten ermittelt und zur Speicherung übergibt.
-Unterschieden werden die beiden Variante durch die Variable \texttt{IYarnComponent.IsSelfMonitoring}:
-
-\begin{lstlisting}[label=lst:hadoopSimulationMonitoring,style=cs,
-caption={[Monitoring der Anwendungen]
-    Monitoring der Anwendungen (gekürzt).
-    Wenn \texttt{IsSelfMonitoring} auf \texttt{false} gesetzt ist, werden die Daten der Anwendung selbst bereits vom \texttt{YarnController} ermittelt und mithilfe von \texttt{YarnApp.SetStatus} gespeichert, analog zu den Attempts, deren Status hier bereits gespeichert wird.}]
-public void MonitorStatus()
-{
-  if(IsSelfMonitoring)
-  {
-    var parsed = Parser.ParseAppDetails(AppId);
-    if(parsed != null)
-    SetStatus(parsed);
-  }
-  
-  var parsedAttempts = Parser.ParseAppAttemptList(AppId);
-  foreach(var parsed in parsedAttempts)
-  {
-    var attempt = // get existing or empty attempt instance
-    if(attempt == null)
-    // throw OutOfMemoryException
-    
-    attempt.AppId = AppId;
-    attempt.IsSelfMonitoring = IsSelfMonitoring;
-    if(IsSelfMonitoring)
-    attempt.AttemptId = parsed.AttemptId;
-    else
-    {
-      attempt.SetStatus(parsed);
-      attempt.MonitorStatus();
-    }
-  }
-}
-\end{lstlisting}
-
-Die \texttt{OutOfMemoryException} im vorangegangenen \cref{lst:hadoopSimulationMonitoring} ist analog zur gleichen Ausnahme beim Starten der Anwendung und wird dann ausgelöst, wenn bereits alle \texttt{YarnAppAttempt}"=Instanzen für diese Anwendung belegt sind.
-
-Das Monitoring der Container bietet eine Besonderheit.
-Während bei Anwendungen und Attempts auch die Daten von beendeten Anwendungen ermittelt und gespeichert werden, ist dies bei beendeten Containern nicht der Fall.
-Das Monitoring für Container wird nur für zum Zeitpunkt des Monitoring aktive bzw. allokierte Container durchgeführt.
-Während bei den Anwendungen und Attempts auch solche, deren Daten ausschließlich beim \ac{TLS} gespeichert sind, ermittelt werden, werden die Daten des \ac{TLS} bei Containern nur als Ergänzung der Daten von derzeit ausgeführten Containern vom \ac{RM} genutzt.
-Da Container nur während der der Laufzeit von Anwendungen bzw. Attempts zu deren Ausführung existieren, werden die beim vorherigen Schritt ermittelten Container"=Daten gelöscht, bevor die aktuellen Daten der Container eines Attempts ermittelt werden.
-
-\subsubsection{Validierung durch das Oracle}
-\label{subsubsec:simulationOracle}
-
-\todo{besser mit modellkapiutel koordinieren}
-Im direkten Anschluss an das Monitoring erfolgt die Validierung der Constraints durch das Oracle.
-Das Oracle validiert hierbei analog zum Monitoring zunächst die Nodes und danach die Anwendungen, Attempts und Container auf ihre Constraints.
-Hierbei wird zunächst überprüft, ob die in \cref{subsec:functionalRequirements} beschrieben funktionalen Anforderungen an Hadoop in Form der in \todo{constraint implementierung} implementierten Constraints für die jeweiligen Komponenten noch erfüllt werden können.
-Ist das nicht der Fall, wird dies geloggt und die weiteren Komponenten geprüft.
-
-Das Oracle überprüft auch, ob für das Cluster eine weitere Rekonfiguration möglich ist.
-Dies ist dann der Fall, wenn noch mindestens ein Node vorhanden ist, der keine Fehler aufweist und damit den \emph{State} \texttt{Running} hat:
-
-\begin{lstlisting}[label=lst:hadoopSimulationReconf,style=cs,
-caption={Prüfung nach der Möglichkeit weiterer Rekonfigurationen}]
-public bool IsReconfPossible()
-{
-  Logger.Debug("Checking if reconfiguration is possible");
-  
-  var isReconfPossible = ConnectedNodes.Any(n => n.State == ENodeState.RUNNING);
-  if(!isReconfPossible)
-  {
-    Logger.Error("No reconfiguration possible!");
-    throw new Exception("No reconfiguration possible!");
-  }
-  return true;
-}
-\end{lstlisting}
-
-Ist eine Rekonfiguration nicht mehr möglich, wird durch die hierbei ausgelöste \texttt{Exception} die gesamte Simulation abgebrochen.
-
-Zum Abschluss eines Schrittes werden die in \cref{subsec:testRequirements} beschriebenen Behauptungen an das Testverfahren selbst validiert.
-Hierbei können jedoch nicht alle Behauptungen in Form von Constraints durch das Oracle automatisch während der Ausführung validiert werden.
-Von den implementierten Constraints können zudem nicht alle direkt innerhalb des Modells während der Ausführung eines Simulations"=Schrittes validiert werden, weshalb außerhalb der Simulation ebenfalls Constraints definiert sind, die zum Abschluss der Simulation geprüft werden (vgl. \todo{constraint implementierung}).
-
-\subsubsection{Ausgaben während eines Schrittes}
-\label{subsubsec:simulationStepOutput}
-
-Die wesentlichen Ausgaben während eines Tests wurden bereits in \cref{subsec:dataOrganisation} definiert und beschrieben.
-Neben diesen Daten werden im Programmlog weitere Daten gespeichert, damit die Ausführung eines Testfalles besser nachvollzogen werden kann.
-Zudem werden alle Ein"= und Ausgabedaten der SSH"=Verbindungen zwischen dem Modell und dem realen Cluster in einer eigenen Log"=Datei gespeichert.
-Dieses SSH"=Log dient dazu, die Ursache von unerwarteten Fehlern herauszufinden.
-
-Neben den bereits beschriebenen Daten werden im Programmlog folgende Daten gespeichert:
-
-\begin{itemize}
-    \item Verbundene SSH"=Verbindungen mit ihrer ID zur besseren Zuordnung im SSH"=Log
-    \item Ausführung der Erstellung von vorab generierten Eingabedaten
-    \item Vollständiger Pfad des Setup"=Scriptes (vgl. \cref{sec:realCluster})
-    \item URL des Controllers zur Nutzung der REST"=API
-    \item Vorschau auf bzw. derzeit vom \texttt{BenchmarkController} ausgewählte Benchmarks
-    \item Ausführung von Komponentenfehlern
-    \item Diagnostik"=Daten der YARN"=Komponenten
-    \item Welche Constraints bei welchen Komponenten verletzt wurden
-    \item Die Information, wenn eine Rekonfiguration nicht möglich ist (vgl. \cref{lst:hadoopSimulationReconf})
-\end{itemize}
-
-Nach Abschluss der Simulation wird ein erneutes Monitoring des gesamten Clusters durchgeführt und der hierbei ermittelte Status als finaler Clusterstatus ausgegeben.
-Zudem werden einige statistische Kenndaten zur Simulation ausgegeben:
-
-\begin{itemize}
-    \item Gesamtdauer der Simulation
-    \item Anzahl erfolgreicher Schritte
-    \item Anzahl der maximal möglichen, aktivierbaren Komponentenfehler
-    \item Anzahl aktivierter und deaktivierter Komponentenfehler
-    \item Letzter ermittelter \ac{MARP}"=Wert
-    \item Anzahl aller ausgeführten, erfolgreicher, nicht erfolgreicher sowie abgebrochener Anwendungen
-    \item Anzahl aller ausgeführten Attempts
-    \item Anzahl aller während der Ausführung erkannten Container
-    \item Anzahl aller validierten Constraints und fehlerhaften Constraints, getrennt nach \ac{SuT}- und Testsystem"=Constraints
-\end{itemize}
-
-Ein möglicher Programmlog sowie das exakte Ausgabeformat für eine Ausführung eines Testfalls findet sich in \cref{app:outputFormat}.
-
 \subsection{Weitere mit der Simulation zusammenhängende Methoden}
 \label{subsec:simulationUtilities}
 
 Neben der Ausführung der Simulation mit und ohne der Möglichkeit zur Aktivierung der Komponentenfehler gibt es noch einige weitere Methoden, die mit der Simulation zusammenhängen.
 Darüber besteht die Möglichkeit, die vorab generierten Eingabedaten für die Simulation, ohne die Simulation selbst auszuführen, zu generieren.
 Da die Generierung der Eingabedaten nur dann durchgeführt wird, wenn die Verzeichnisse im \ac{HDFS} noch nicht vorhanden sind (und somit auch die Daten selbst nicht), besteht auch die Möglichkeit, die bestehenden Eingabedaten zu löschen und anschließend neu zu geniereren \todo{vgl. abschnitt benchcontroller damit und dann evtl. neu formulieren}.
-Zudem kann die Simulation der durch den \texttt{BenchmarkController} ausgewählten Benchmarks direkt und ohne die Ausführung der gesamten Simulation durchgeführt werden:
+Zudem kann die Simulation der durch den Benchmark Controller ausgewählten Benchmarks direkt und ohne die Ausführung der gesamten Simulation durchgeführt werden:
 
 \begin{lstlisting}[label=lst:hadoopSimulationBenchmarks,style=cs,
 caption={Simulation der auszuführenden Benchmarks}]
@@ -421,3 +210,65 @@ public void SimulateBenchmarks()
   }
 }
 \end{lstlisting}
+
+\subsection{Ablauf eines Tests und der Testfälle}
+\label{subsec:simulationStep}
+
+Zu Beginn eines Tests werden zunächst die in \cref{subsec:dataOrganisation} definierten, grundlegenden Daten des Tests im Programmlog gespeichert.
+Daneben werden aber auch noch weitere, den \texttt{HostMode} (vgl. \cref{subsec:hostMode}) betreffende Daten im Programmlog abgespeichert:
+
+\begin{itemize}
+    \item Verbundene SSH"=Verbindungen mit ihrer ID zur besseren Zuordnung im SSH"=Log
+    \item Ausführung der Erstellung von vorab generierten Eingabedaten
+    \item Vollständiger Pfad des verwendeten Setup"=Scriptes
+    \item Adresse des Controllers zur Nutzung der REST"=API
+    \item Simulation der auszuführenden Benchmarks (vgl. \cref{subsec:simulationUtilities}
+\end{itemize}
+
+Im Anschluss werden das auszuführende \ac{YARN}"=Modell und der zur Ausführung des Tests genutzte Simulator initialisiert, bevor die Testfälle selbst ausgeführt werden.
+
+Der Ablauf eines Testfalls lässt sich mehrere Abschnitte einteilen.
+Zunächst wird vom Simulator selbst mithilfe der in \cref{subsubsec:yarnComponentFaults} erwähnten Attribute geprüft bzw. entschieden, ob ein Komponentenfehler aktiviert und im Cluster injiziert wird.
+Anschließend führt der Simulator einen Simulations"=Schritt durch, führt also für alle Komponenten des Modells die \texttt{Update()}"=Methode aus.
+Hierdurch werden deaktivierte Komponentenfehler auch im Cluster wieder repariert, da \texttt{YarnNode.Update()} die entsprechenden Start"=Methoden aufruft (vgl. \cref{subsubsec:yarnComponentFaults}).
+
+Anschließend wird die in \cref{subsec:yarnController} erläuterte Routine des Controllers ausgeführt.
+Dabei wird zunächst der \ac{MARP}"=Wert aus dem Cluster ausgelesen, bevor die Benchmark"=Anwendungen des Testfalls gestartet werden.
+Jeder Client nutzt dafür die in \cref{subsec:yarnClient} beschriebe Routine, um zunächst durch den Benchmark Controller die zu startende Anwendung auszuwählen (vgl. \cref{sec:appImplementation}) und zu starten.
+Die dabei vom Cluster zugewiesene ID der Anwendung wird vom Client gespeichert, um die Anwendung in nachfolgenden Testfällen bei Bedarf abbrechen zu können, wenn eine neue Anwendung gestartet werden soll.
+
+Sobald alle Anwendungen gestartet sind, wird vom Controller das Monitoring aller Nodes, Anwendungen und ihrer Attempts durchgeführt.
+Dabei wird auch der \ac{MARP}"=Wert ein zweites mal ausgelesen, da er sich durch die zuvor noch aktiven bzw. neu gestarteten Anwendungen unterschiedlich verändert haben könnte.
+
+Den Abschluss eines Testfalls bildet die Validierung der Werte des Clusters, die beim Monitoring im \ac{YARN}"=Modell gespeichert wurden.
+Dazu werden für jede Komponente im Modell die jeweiligen auf den Anforderungen in \cref{sec:requirements} basierenden Constraints (vgl. \cref{subsubsec:yarnComponentConstraints,subsec:yarnController}) durch das Oracle geprüft (vgl. \cref{subsec:oracleImpl}).
+Wenn ein Constraint nicht erfolgreich Validiert wurde, wird dies jeweils im Programmlog ausgegeben bzw. die Ausführung der Simulation abgebrochen, wenn sich das Cluster nicht mehr rekonfigurieren kann.
+
+Nach Abschluss eines Testfalls werden durch den Simulator die in \cref{subsec:dataOrganisation} geforderten Daten im Programmlog abgespeichert, die beim Monitoring erkannt wurden.
+Daneben werden bei der Ausführung eines Testfalls aber auch weitere Daten im Programmlog gespeichert wie \zB:
+
+\begin{itemize}
+    \item Ausführung von Komponentenfehlern
+    \item Diagnostik"=Daten der YARN"=Komponenten
+    \item Welche Constraints bei welchen Komponenten verletzt wurden
+    \item Die Information, wenn eine Rekonfiguration nicht möglich ist
+\end{itemize}
+
+Zum Abschluss der Ausführung des Tests werden zudem die für die Simulation als gesamtes betreffenden Constraints validiert, welche nicht im \ac{YARN}"=Modell selbst implementiert wurden (vgl. \cref{subsec:simulationBasics}).
+
+Nach Abschluss des Tests in Form der Simulation wird ein erneutes Monitoring des gesamten Clusters durchgeführt und der hierbei ermittelte Status als finaler Clusterstatus im Programmlog gespeichert.
+Zudem werden einige statistische Kenndaten zum Test im Programmlog gespeichert:
+
+\begin{itemize}
+    \item Gesamtdauer der Simulation
+    \item Anzahl erfolgreicher Schritte
+    \item Anzahl der maximal möglichen, aktivierbaren Komponentenfehler
+    \item Anzahl aktivierter und deaktivierter Komponentenfehler
+    \item Letzter ermittelter \ac{MARP}"=Wert
+    \item Anzahl aller ausgeführten, erfolgreicher, nicht erfolgreicher sowie abgebrochener Anwendungen
+    \item Anzahl aller ausgeführten Attempts
+    \item Anzahl aller während der Ausführung erkannten Container
+    \item Anzahl aller validierten Constraints und fehlerhaften Constraints, getrennt nach \ac{SuT}- und Testsystem"=Constraints
+\end{itemize}
+
+Der auszugsweise Programmlog eines Tests, sowie das exakte Ausgabeformat für eine Ausführung eines Testfalls findet sich in \cref{app:outputFormat}.
