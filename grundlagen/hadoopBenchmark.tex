@@ -30,7 +30,7 @@ Aufgrund eines der Kernkonzepte von Docker, wonach Docker"=Images auf einem pass
 
 Zum Starten des Clusters ist ein Script enthalten, welches basierend auf dem zu nutzenden Szenario das Cluster in der entsprechenden Konfiguration startet.
 
-Die Plattform Hadoop"=Benchmark enthält auch einige Benchmark"=Anwendungen:
+In der Plattform Hadoop"=Benchmark sind auch bereit einige Benchmarks integriert:
 
 \begin{itemize}
     \item Hadoop Mapreduce Examples
@@ -40,10 +40,5 @@ Die Plattform Hadoop"=Benchmark enthält auch einige Benchmark"=Anwendungen:
 
 Die Benchmarks werden ebenfalls mithilfe der in der Plattform enthaltenen Scripte gestartet.
 Hierbei besitzt jeder Benchmark ein eigenes Script, das den Benchmark in einem Docker"=Container startet und so dem Cluster zur Ausführung übersendet.
-
-%Eine Besonderheit bildet der SWIM"=Benchmark, welcher sehr Ressourcenintensiv ist und daher auf einem \emph{Single Node Cluster}, also einem kompletten Hadoop"=Cluster auf nur einem physischem Host, sehr zeitintensiv sein kann.
-%Beim Intel HiBench"=Benchmark sind die verfügbaren Anwendungen dagegen in verschiedene \emph{Worklaods} wie \emph{Machine Learning} unterteilt.
-%Hierbei können die enthaltenen Anwendungen einzeln oder als ganze Workloads auf dem Cluster ausgeführt werden.
-%Einige der Hibench"=Workloads bzw. Anwendungen basieren auf den Mapreduce Examples, welche wiederum voneinander unabhängige Beispielanwendungen für Hadoop darstellen.
 
 Genauere Informationen zu den in der Plattform enthaltenen Benchmarks sind in \cref{sec:appOverview} erläutert.

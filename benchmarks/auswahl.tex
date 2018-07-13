@@ -7,7 +7,8 @@ Eine zufallsbasierte Markow"=Kette wurde aus dem Grund verwendet, dass auch in d
 Mithilfe der Festlegung eines bestimmten Seeds für den in der Fallstudie benötigten Pseudo"=Zufallsgenerator besteht bei Bedarf dennoch die Möglichkeit, einen Test mit den gleichen Anwendungen wiederholen zu können.
 
 Einige der in \cref{sec:appOverview} erwähnten Mapreduce Examples werden häufig als Benchmark verwendet.
-Einige Beispiele dafür sind die Anwendungen \acl{so} und \texttt{grep} (ermittelt Anzahl von Regex"=Übereinstimmungen), die bereits im Referenzpapier zum MapReduce"=Algorithmus als Benchmarks verwendet wurden \cite{Dean2008}.
+Einige Beispiele dafür sind die Anwendungen \acl{so} und \texttt{grep}, die bereits im Referenzpapier des \ac{MR}"=Frameworks zum Testen genutzt wurden \cite{Dean2004}.
+Zum Testen des \ac{HDFS} dient in \cite{Shvachko2010} der DFSIO"=Benchmark, um den Durchsatz beim Lesen und Schreiben einer großen Datenmenge auf dem \ac{HDFS} zu messen.
 \acl{tsr} ist ebenfalls ein weit verbreiteter Benchmark, der die Hadoop"=Implementierung der standardisierten \emph{Sort Benchmarks}\footnote{\url{https://sortbenchmark.org/}} darstellt \cite{Graves2013}.
 Ebenfalls als guter Benchmark dient die Anwendung \acl{wc}, mit der ein großer Datensatz stark verkleinert bzw. zusammengefasst wird und dient daher als gute Repräsentation für Anwendungsarten, bei denen Daten extrahiert werden \cite{Huang2010,Chen2012}.
 
@@ -17,41 +18,64 @@ Auffällig ist hierbei, dass die meisten Anwendungen in einem Hadoop"=Cluster in
 Zu einem ähnlichen Ergebnis kamen auch \citeauthor{Ren2013} in \cite{Ren2013} und folgerten daher, dass für kleine Jobs evtl. einfachere Frameworks abseits von Hadoop besser geeignet wären.
 Die Autoren der Studie in \cite{HadoopDataTypes} bezeichneten Hadoop aufgrund ihrer Ergebnisse als \enquote{potentielle Technologie zum Verarbeiten aller Arten von Daten}, stellten aber eine ähnliche Vermutung an wie \citeauthor{Ren2013}, dass Hadoop primär Daten nutze, die auch mit \enquote{traditionellen Plattformen} verarbeiten werden könnten.
 
-Basierend auf den Ergebnissen der Studien und der in den anderen Publikationen verwendeten Benchmark"=Anwendungen, wurden folgende Anwendungen der Mapreduce"=Examples und Jobclient"=Tests in das Transitionssystem übernommen:
+Basierend auf den Ergebnissen der Studien in \cite{Huang2010,Chen2012,HadoopDataTypes,Ren2013} und der in den Publikationen \cite{Shvachko2010,Dean2004,Graves2013} verwendeten Benchmark"=Anwendungen, wurden folgende Anwendungen der Mapreduce Examples und Jobclient"=Tests in das Transitionssystem übernommen:
 
 \begin{itemize}
     \item Generieren von Eingabedaten für andere Anwendungen:
     \begin{itemize}
-        \item Textdateien: \ac{rtw} und \ac{dfw}
-        \item Binärdateien: \ac{rw} und \ac{tg}
+        \item Textdateien:
+        \begin{itemize}
+            \item \ac{rtw}: Generierung von zufälligen Zeichenfolgen
+            \item \ac{dfw}: Schreiben einer großen Datenmenge auf dem \ac{HDFS}
+        \end{itemize}
+        \item Binärdateien:
+        \begin{itemize}
+            \item \ac{rw}: Generierung von zufälligen Binärdaten
+            \item \ac{tg}: Generierung der Eingabedaten für den \acl{tsr}"=Benchmark
+       \end{itemize}
     \end{itemize}
 
     \item Verarbeitung von Eingabedaten:
     \begin{itemize}
-        \item Auslesen bzw. Zusammenfassen: \ac{wc} und \ac{dfr}
-        \item Transformieren: \ac{so} für Textdaten und \ac{tsr} für Binärdaten
-        \item Validierung: \ac{tms} und \ac{tvl} für die jeweiligen Sortier"=Anwendungen
+        \item Auslesen bzw. Zusammenfassen:
+        \begin{itemize}
+            \item \ac{wc}: Auslesen einer Textdatei und Ermitteln der Anzahl der darin enthaltenen Wörter
+            \item \ac{dfr}: Auslesen einer großen Datenmenge auf dem \ac{HDFS}
+        \end{itemize}
+        \item Transformieren:
+        \begin{itemize}
+            \item \ac{so}: Sortieren von Daten, wird in dieser Fallstudie zum Sortieren von Textdaten genutzt
+            \item \ac{tsr}: Sortieren von großen Binärdatenmengen
+        \end{itemize}
+        \item Validierung der Transformationen:
+        \begin{itemize}
+            \item \ac{tms}: Validierung der von \acl{so} transformierten Daten
+            \item \ac{tvl}: Validierung der vom \acl{tsr} sortierten Binärdaten
+        \end{itemize}
     \end{itemize}
 
-    \item Ausführen von Berechnungen:
+    \item Ausführen von Berechnungen:\todo{evtl. noch literatur dazu finden}
     \begin{itemize}
-        \item \acl{pi}\acused{pi}: Quasi-Monte-Carlo-Methode zur einfachen Berechnung von $\pi$ 
-        \item \ac{pt}: Berechnung von Pentomino-Problemen
+        \item \acl{pi}\acused{pi}: Ausführung der Quasi"=Monte"=Carlo"=Methode zur einfachen Berechnung von $\pi$
+        \item \ac{pt}: Berechnung von Pentomino"=Problemen
     \end{itemize}
 
-    \item Dummy"=Anwendungen: \ac{sl} und \ac{fl}
+    \item Dummy"=Anwendungen:
+    \begin{itemize}
+        \item  \ac{sl}: Blockieren von Ressourcen
+        \item  \ac{fl}: Fehlschlagen einer Anwendung
+    \end{itemize}
 \end{itemize}
 
 Der Grund für die Berücksichtigung von mehreren gleichen bzw. ähnlichen Anwendungen für einige Kategorien liegt darin, dass die unterschiedlichen Anwendungen eine unterschiedliche Ausführungsdauer bzw. Datenrepräsentation (Text und Binär) repräsentieren.
 So stehen die beiden \texttt{TestDFSIO}"=Varianten für eine umfangreichere Datennutzung, während die jeweils anderen Anwendungen einen kleineren Umfang repräsentieren.
 Ähnlich verhält es sich bei den beiden Berechnungs"=Anwendungen, bei denen die \acl{pt}"=Anwendung die deutlich umfangreicheren Berechnungen durchführt.
-\texttt{TestDFSIO} enthält zudem die Möglichkeit, Daten zu genieren und zu lesen, weshalb diese Anwendung in zwei Kategorien verwendet wurde.
-Haupteinsatzzweck der Anwendung liegt vor allem darin, den Datendurchsatz des \ac{HDFS} zu testen.
+\texttt{TestDFSIO} enthält zudem die Möglichkeit, Daten zu generieren und zu lesen, weshalb dieser Benchmark in zwei Kategorien als Anwendung genutzt wird.
 
 Eine Besonderheit bilden die beiden Dummy"=Anwendungen.
-Beide werden in dieser Fallstudie dafür genutzt, um zu simulieren, wenn auf dem Cluster \zB derzeit nichts ausgeführt wird, oder ein unerwarteter Fehler während der Ausführung auftaucht.
+Beide werden in dieser Fallstudie dafür genutzt, um zu simulieren, wenn auf dem Cluster \zB derzeit nichts ausgeführt wird, oder ein Fehler während der Ausführung einer Anwendung auftritt.
 Daher können beide Anwendungen unabhängig von der derzeit ausgeführten Anwendung als nachfolgende Anwendung ausgewählt werden.
-Als nachfolgende Anwendungen für die Dummy"=Anwendungen kommen nur Anwendungen in Betracht, welche ihrerseits keine Eingabedaten benötigen. Dies sind:
+Als nachfolgende Anwendungen für die Dummy"=Anwendungen wurden nur Anwendungen definiert, die ihrerseits keine Eingabedaten benötigten bzw. diese für andere Anwendungen generieren:
 
 \begin{itemize}
     \item \acl{dfw}

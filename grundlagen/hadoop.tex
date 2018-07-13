@@ -25,9 +25,9 @@ Die Eingabe"= und Ausgabedaten sind hierbei als \emph{Key"=Value}"=Paare definie
 Hierbei werden zunächst die eingelesenen Eingabedaten in kleine und dadurch einfach zu verarbeitende Datenmengen aufgeteilt.
 Die geteilten Daten werden dann in mehreren, parallel ausgeführten Map"=Tasks verarbeitet und zwischengespeichert.
 Die zwischengespeicherten Daten werden anschließend von einem oder mehreren Reduce"=Tasks zusammengeführt und in die Ausgabedateien geschrieben.
-Das Framework ist hierbei sehr Fehlertolerant, da ein fehlerhafter Task jederzeit neu gestartet werden kann \cite{Dean2008,Dean2010}.
+Das Framework ist hierbei sehr Fehlertolerant, da ein fehlerhafter Task jederzeit neu gestartet werden kann \cite{Dean2004,Dean2010}.
 Zur Speicherung der Ein-, Zwischen- und Ausgabedaten wird im Falle von Hadoop das \ac{HDFS} genutzt \cite{HadoopMapRedTutorial271}.
-Für weitere Details zum \ac{MR}"=Framework sei auf \cite{Dean2008} und \cite{Dean2010} verwiesen, eine ausführliche Betrachtung des \ac{MR}"=Frameworks mit Vorteilen und Problemen lässt sich in \cite{Lee2012} finden.
+Für weitere Details zum \ac{MR}"=Framework sei hier auf \cite{Dean2004} und \cite{Dean2010} verwiesen, eine ausführliche Betrachtung des \ac{MR}"=Frameworks mit Vorteilen und Problemen lässt sich in \cite{Lee2012} finden.
 
 Da das \ac{MR}"=Framework bzw. seine Implementierung in Hadoop nicht perfekt ist und in der Praxis zum Teil auch zweckentfremdet wurde, wurde in \cite{Vavilapalli2013} das \textbf{\ac{YARN}}"=Framework vorgestellt.
 Die Kernidee ist hierbei die Trennung von Ressourcenmanagement und Scheduling vom eigentlichen Programm.
@@ -77,7 +77,7 @@ Unterstützt wird der NameNode vom \emph{Secondary NameNode}, der Teile der inte
 Die Daten selbst werden in mehreren Blöcke aufgeteilt auf den \emph{DataNodes} gespeichert.
 Um den Zugriff auf die Daten im Falle eines Node"=Ausfalls zu gewährleisten, wird jeder Block auf anderen Nodes repliziert.
 Dateioperationen (wie Öffnen oder Schließen) werden direkt auf den DataNodes ausgeführt.
-Sie sind darüber hinaus auch dafür verantwortlich, dass die gespeicherten Daten gelesen und beschrieben werden können \cite{HadoopHdfsDesc271}.
+Sie sind darüber hinaus auch dafür verantwortlich, dass die gespeicherten Daten gelesen und beschrieben werden können \cite{Shvachko2010,HadoopHdfsDesc271}.
 
 Das Überprüfen der DataNodes durch den NameNode erfolgt genauso wie bei den entsprechenden \ac{YARN}"=Komponenten periodisch im Abstand von mehreren Minuten.
 Auch hier dauert es bei einer Standard"=Konfiguration daher mehrere Minuten, bis erkannt wird, wenn ein DataNode nicht mehr verfügbar ist \cite{HadoopHdfsConfig271}.
