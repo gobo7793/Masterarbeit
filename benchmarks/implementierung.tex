@@ -1,9 +1,18 @@
-\section{Implementierung der Anwendungen im Modell}
-\label{sec:appImplementation}
+\section{Entwicklung des Benchmark"=Controllers}
+\label{sec:benchmarkController}
 
-Die Verwaltung der auszuführenden Benchmarks wurde komplett vom restlichen YARN"=Modell getrennt.
-Verbunden sind beide durch die Eigenschaft \texttt{Client.BenchController}, das den vom Client verwendeten \texttt{BenchmarkController} enthält, der zur Verwaltung der auszuführenden Anwendung dient.
-Der Controller besteht aus zwei wesentlichen Teilen, einem statischen und einem dynamischen.
+Die im \ac{YARN}"=Modell (vgl. \cref{sec:yarnModel}) implementierten Benchmarks und das zur Auswahl der Benchmarks entwickelte Transitionssystem bilden zusammen den Benchmark"=Controller.
+Der Benchmark Controller wurde als eigene Klasse \texttt{BenchmarkController} im Modell implementiert und wird von den Clients genutzt, um die Auswahl der Benchmarks vorzunehmen.
+Der Benchmark Controller verwaltet die implementierten Benchmarks und stellt diese den Clients zum Starten zur Verfügung (vgl. \cref{subsec:yarnClient}).
+
+\subsection{Implementierung der Benchmarks}
+\label{subsec:appImplementation}
+
+\subsection{Implementierung des Transitionssystems}
+\label{subsec:transitionImpl}
+
+\subsection{Auswahl der der nachfolgenden Benchmarks}
+\label{subsec:selectionNextBenchmark}
 
 Der \textbf{statische Teil} des Controllers definiert die möglichen Anwendungen sowie das im Abschnitt zuvor definierte und in \cref{tab:transMatrix} dargestellte Transitionssystem.
 Die einzelnen Anwendungen werden mithilfe der Klasse \texttt{Benchmark} repräsentiert, in der die benötigten Informationen wie \zB der Befehl zum Starten der Anwendung definiert werden.

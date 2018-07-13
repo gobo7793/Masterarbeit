@@ -158,7 +158,7 @@ Der genaue Ablauf der Bereitstellung der Eingabedaten wird in \todo{Vorabgenerie
 
 Weitere Informationen zum \texttt{HostMode} sind in \cref{subsec:hostMode,subsec:implementedConnectors,subsec:modelClass} zu finden.
 
-Die direkt im Anschluss an die Initialisierung des Simulators ausgerufene Methode \texttt{CollectYarnNodeFaults()} ermittelt alle im initialisierten Modell enthaltenen Komponentenfehler, die mit dem \texttt{NodeFaultAttribute} markiert sind:
+Die direkt im Anschluss an die Initialisierung des Simulators ausgerufene Methode \texttt{CollectYarnNodeFaults()} ermittelt alle im initialisierten Modell enthaltenen Komponentenfehler, die mit dem \texttt{NodeFaultAttribute} markiert sind (vgl. \cref{subsubsec:yarnComponentFaults}):
 
 \begin{lstlisting}[label=lst:hadoopSimulationCollectFaults,style=cs,
 caption={[Ermitteln der Komponentenfehler mit dem NodeFaultAttribute]
@@ -181,7 +181,7 @@ private FaultTuple[] CollectYarnNodeFaults(Model model)
 
 Die gefundenen Komponentenfehler werden als Array aus Tupel, bestehend aus dem Komponentenfehler selbst, dem Attribut sowie dem dazugehörigen Node zurückgegeben.
 Zur Speicherung hierfür dient der Typ \texttt{FaultTuple}, welcher ein Alias für das hierfür genutzte \texttt{Tupel<T>} darstellt.
-Die jeweiligen Instanzen der Attribute und Nodes werden für die in \cref{subsubsec:simulationFaultActivation} beschriebene Aktivierung der dazugehörigen Komponentenfehler benötigt.
+Die jeweiligen Instanzen der Attribute und Nodes werden für die in \cref{subsubsec:yarnComponentFaults} beschriebene Aktivierung der dazugehörigen Komponentenfehler benötigt.
 Die beiden im Tupel gespeicherten Instanzen des \texttt{IntWrapper} dienen zur Speicherung der Anzahl der Aktivierungen bzw. Deaktivierungen der Komponentenfehler.
 Da der Wert einer Struktur wie \texttt{int} nicht direkt in einem Tupel geändert werden kann, dient die Klasse \texttt{IntWrapper} hierfür als Adapter.
 
@@ -191,7 +191,7 @@ Da der Wert einer Struktur wie \texttt{int} nicht direkt in einem Tupel geänder
 Neben der Ausführung der Simulation mit und ohne der Möglichkeit zur Aktivierung der Komponentenfehler gibt es noch einige weitere Methoden, die mit der Simulation zusammenhängen.
 Darüber besteht die Möglichkeit, die vorab generierten Eingabedaten für die Simulation, ohne die Simulation selbst auszuführen, zu generieren.
 Da die Generierung der Eingabedaten nur dann durchgeführt wird, wenn die Verzeichnisse im \ac{HDFS} noch nicht vorhanden sind (und somit auch die Daten selbst nicht), besteht auch die Möglichkeit, die bestehenden Eingabedaten zu löschen und anschließend neu zu geniereren \todo{vgl. abschnitt benchcontroller damit und dann evtl. neu formulieren}.
-Zudem kann die Simulation der durch den Benchmark Controller ausgewählten Benchmarks direkt und ohne die Ausführung der gesamten Simulation durchgeführt werden:
+Zudem kann die Simulation der durch den Benchmark"=Controller ausgewählten Benchmarks direkt und ohne die Ausführung der gesamten Simulation durchgeführt werden:
 
 \begin{lstlisting}[label=lst:hadoopSimulationBenchmarks,style=cs,
 caption={Simulation der auszuführenden Benchmarks}]
@@ -234,7 +234,7 @@ Hierdurch werden deaktivierte Komponentenfehler auch im Cluster wieder repariert
 
 Anschließend wird die in \cref{subsec:yarnController} erläuterte Routine des Controllers ausgeführt.
 Dabei wird zunächst der \ac{MARP}"=Wert aus dem Cluster ausgelesen, bevor die Benchmark"=Anwendungen des Testfalls gestartet werden.
-Jeder Client nutzt dafür die in \cref{subsec:yarnClient} beschriebe Routine, um zunächst durch den Benchmark Controller die zu startende Anwendung auszuwählen (vgl. \cref{sec:appImplementation}) und zu starten.
+Jeder Client nutzt dafür die in \cref{subsec:yarnClient} beschriebe Routine, um zunächst durch den Benchmark"=Controller die zu startende Anwendung auszuwählen (vgl. \cref{subsec:selectionNextBenchmark}) und zu starten.
 Die dabei vom Cluster zugewiesene ID der Anwendung wird vom Client gespeichert, um die Anwendung in nachfolgenden Testfällen bei Bedarf abbrechen zu können, wenn eine neue Anwendung gestartet werden soll.
 
 Sobald alle Anwendungen gestartet sind, wird vom Controller das Monitoring aller Nodes, Anwendungen und ihrer Attempts durchgeführt.

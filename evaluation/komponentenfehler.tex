@@ -1,11 +1,11 @@
 \section{Betrachtung der Komponentenfehler}
 \label{sec:faultEval}
 
-Die Aktivierung und Deaktivierung der Komponentenfehler in einem Testfall hängt neben dem zur Berechnung benötigtem Seed vor allem von den zuvor ausgeführten Testfällen bzw. der Lastverteilung bei den zuvor ausgeführten Testfällen eines Tests ab (vgl. \cref{subsubsec:simulationFaultActivation}).
+Die Aktivierung und Deaktivierung der Komponentenfehler in einem Testfall hängt neben dem zur Berechnung benötigtem Seed vor allem von den zuvor ausgeführten Testfällen bzw. der Lastverteilung bei den zuvor ausgeführten Testfällen eines Tests ab (vgl. \cref{subsubsec:yarnComponentFaults}).
 Daher wurden abhängig von der Lastverteilung im Cluster auch bei einer mehrmaligen Ausführung der gleichen Konfiguration bei einigen Testausführungen unterschiedliche Komponentenfehler aktiviert.
 
 Unterschieden werden muss hierbei zudem zwischen aktivierten und injizierten Komponentenfehlern.
-Während beide implementierten Komponentenfehler für einen Node in einem Testfall auch gleichzeitig aktiviert werden konnten, wurde gemäß \todo{Abschnitt mit Komponentenfehler im Node} in so einem Fall jedoch nur der \texttt{NodeDead}"=Fehler im Cluster injiziert.
+Während beide implementierten Komponentenfehler für einen Node in einem Testfall auch gleichzeitig aktiviert werden konnten, wurde gemäß \cref{subsubsec:yarnComponentFaults} in so einem Fall jedoch nur der \texttt{NodeDead}"=Fehler im Cluster injiziert.
 Die Deaktivierung bzw. das Reparieren der Komponentenfehler verhält sich analog hierzu.
 
 Im Folgenden wird nun ein Überblick über die bei den Tests aktivierten bzw. deaktivierten und nicht injizierten Komponentenfehler bzw. erkannten Injektionen und Reperaturen der Komponentenfehler gegeben.
@@ -19,7 +19,7 @@ Die Anzahl der aktivierten und deaktivierten Komponentenfehler unterschied sich 
 Bei den anderen korrespondierenden Konfigurationen unterschied sich die Anzahl bei allen jeweiligen Tests um mehr als einen Komponentenfehler.
 Mit jeweils 20 aktivierten Komponentenfehlern wurden bei den Tests 28.1, 31.1 und 32 die meisten aktiviert, die meisten Komponentenfehler deaktiviert wurden bei den Tests der Konfigurationen 11 und 12 mit jeweils 15 Stück.
 Nur im Test zur Konfiguration 2 wurden mit 3 Stück alle aktivierten Komponentenfehler während der Simulation auch wieder deaktiviert.
-In den Tests 4, 5.1, 5.2 und 6 wurden jeweils 6 oder 7 Komponentenfehler aktiviert, jedoch keine deaktiviert, weshalb diese Tests bereits beim 3. ausgeführten Testfall gemäß \cref{subsubsec:simulationOracle} abgebrochen wurden (vgl. \cref{subsec:noReconf36}).
+In den Tests 4, 5.1, 5.2 und 6 wurden jeweils 6 oder 7 Komponentenfehler aktiviert, jedoch keine deaktiviert, weshalb diese Tests bereits beim 3. ausgeführten Testfall gemäß \cref{subsec:oracleImpl} abgebrochen wurden (vgl. \cref{subsec:noReconf36}).
 
 Im Vergleich zwischen den Tests von korrespondierenden Testkonfigurationen sind die Tests der Konfigurationen 1 und 2 auffällig.
 Während beim Test 1.1 mit 5 Komponentenfehlern bzw. beim Test 1.2 mit 7 Komponentenfehlern jeweils rund jeder achte mögliche Komponentenfehler aktiviert wurde, wurden beim Test 2 lediglich 3 Komponentenfehler für 4 Nodes in 5 Testfällen (insgesamt also 40 mögliche Komponentenfehler) aktiviert.

@@ -2,7 +2,7 @@
 \label{sec:noReconfig}
 
 Insgesamt 13 der 42 ausgeführten Tests wurden vorzeitig abgebrochen, da eine Rekonfiguration des Clusters nicht möglich war.
-Dies entspricht dem in \cref{subsec:testRequirements} gefordertem und in \cref{subsubsec:simulationOracle} implementierten Verhalten, wenn alle Node im Cluster defekt sind.
+Dies entspricht dem in \cref{subsec:testRequirements} gefordertem und in \cref{subsec:oracleImpl} implementierten Verhalten, wenn alle Node im Cluster defekt sind.
 Im Folgenden wird für die betroffenen Testkonfigurationen und Tests betrachtet, weshalb es dazu kam.
 
 \subsection{Testkonfigurationen 3 bis 6}
@@ -14,7 +14,7 @@ Das liegt einerseits daran, dass im Gegensatz zu den beiden Konfigurationen mit 
 In Test 3, welcher somit theoretisch ebenfalls abgebrochen werden hätte müssen, wurden 11 Anwendungen im Cluster gestartet.
 Dies liegt an der geringeren Auslastung eines einzelnen Nodes im Gegensatz zu den anderen Tests.
 In den abgebrochenen Tests hatte Node 4 im ersten Testfall eine hohe bzw. sehr hohe Auslastung, im Test 3 jedoch nur eine mittlere.
-Diese mittlere Auslastung reichte jedoch aus, um den Node im ausgeführten 3. Testfall gemäß \todo{deaktivieren von komponentenfehler} wieder zu aktivieren, während die anderen noch aktiven Nodes spätestens in diesem Testfall aufgrund der hohen Last einen Komponentenfehler injiziert bekamen.
+Diese mittlere Auslastung reichte jedoch aus, um den Node im ausgeführten 3. Testfall gemäß \cref{subsubsec:yarnComponentFaults} wieder zu aktivieren, während die anderen noch aktiven Nodes spätestens in diesem Testfall aufgrund der hohen Last einen Komponentenfehler injiziert bekamen.
 Durch diesen einen nun weiterhin ausgeführten Node ist es dem Cluster daher möglich gewesen, sich im Test 3 zu rekonfigurieren.
 
 \subsection{Testkonfigurationen 15 und 16}

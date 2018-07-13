@@ -3,11 +3,11 @@
 
 Die Dauer aller Simulationen betrug ca. 4:16:44 Stunden, die gesamte Ausführungsdauer inkl. Starten und Beenden des Clusters bei jeder Konfiguration betrug ca. 5:19:57 Stunden.
 Von den 290 Testfällen, die ausgeführt werden hätten sollen, wurden nur 222 Testfälle (77 \%) ausgeführt.
-Der Grund für den Abbruch von 14 Tests liegt zum Großteil im in \cref{subsubsec:simulationOracle} beschriebenen Abbruch der Simulation, wenn keine Rekonfiguration des Clusters mehr möglich ist, also bei allen Nodes des Clusters ein Komponentenfehler injiziert und dies beim Monitoring erkannt wurde.
+Der Grund für den Abbruch von 14 Tests liegt zum Großteil im in \cref{subsec:oracleImpl} beschriebenen Abbruch der Simulation, wenn keine Rekonfiguration des Clusters mehr möglich ist, also bei allen Nodes des Clusters ein Komponentenfehler injiziert und dies beim Monitoring erkannt wurde.
 Ein Test wurde aufgrund der zu geringen Anzahl an Submittern abgebrochen, was in \cref{subsec:notEnoughSubmitter} genauer erläutert wird.
 
 Insgesamt wurde bei allen Tests 439 Komponentenfehler aktiviert (14 \% von 3100 möglichen), von denen jedoch nicht alle injiziert wurden, da bei einigen Testfällen beide Komponentenfehler der Nodes gleichzeitig aktiviert wurden.
-In diesen Fällen überwog gemäß \todo{Abschnitt mit Komponentenfehler im Node} die Aktivierung es Komponentenfehlers, der den Node komplett beendet.
+In diesen Fällen überwog gemäß \cref{subsubsec:yarnComponentFaults} die Aktivierung es Komponentenfehlers, der den Node komplett beendet.
 Von allen aktivierten Komponentenfehlern wurden während der Simulationen 262 Komponentenfehler deaktiviert bzw. repariert, was eine Quote von 60 \% ergibt.
 In 4 der ausgeführten Testfällen wurde jedoch kein einziger Komponentenfehler deaktiviert, weshalb die Tests der Konfigurationen 4, 5.1, 5.2 und 6 entsprechend frühzeitig abgebrochen wurden (vgl. \cref{subsec:actDeactFaults} und \cref{subsec:noReconf36}).
 
@@ -19,7 +19,7 @@ Auffällig ist hierbei, dass mit 214 Attempts 9 Attempts mehr aufgrund eines \ac
 32 weitere Attempts wurden aufgrund eines Fehlers im Map"=Task abgebrochen, 12 weitere terminierten mit dem Exitcode -100, was ebenfalls auf Fehler hindeutet.
 Das ergibt dadurch eine Quote von 46,5 \% aller gestarteten Attempts, die nicht erfolgreich abgeschlossen werden konnten.
 Beim Monitoring wurden 3150 Anwendungs"=Container erkannt, was im Schnitt 7,72 Container pro Anwendung bzw. 5,68 pro Attempt ergibt.
-Da bei den zu startenden Anwendungen einige kleine und einige sehr ressourcenintensive Anwendungen enthalten sind (vgl. \cref{sec:appSelection}), kann sich die Anzahl der Container zwischen den einzelnen Anwendungen sehr unterscheiden.
+Da bei den zu startenden Anwendungen einige kleine und einige sehr ressourcenintensive Anwendungen enthalten sind (vgl. \cref{subsec:appSelection}), kann sich die Anzahl der Container zwischen den einzelnen Anwendungen sehr unterscheiden.
 
 Vom Oracle wurden bei allen Tests zusammengezählt 78.825 Constraints validiert, von denen 573 vom Oracle als ungültig validiert wurden (0,73 \%).
 Die meisten ungültigen Constraints hatten hierbei die Tests 31.2 und 32 mit 40 bzw. 42 Constraints (von jeweils 5140 geprüften), die höchste Quote Konfiguration 8 mit 1,97 \% der Constraints (13 von 661).

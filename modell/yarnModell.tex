@@ -18,6 +18,7 @@ Im Klassendiagramm wird zudem ersichtlich, dass jedem Client mehrere Anwendungen
 Der Client stellt somit auch die den relevanten \ac{YARN}"=Komponenten übergeordnete Komponente dar.
 
 Zunächst wird im Folgenden zunächst die dem Modell übergeordnete zentrale Klasse \texttt{Model} erläutert, danach die relevanten \ac{YARN}"=Komponenten mit ihren Komponentenfehlern, anschließend die anderen Komponenten des \ac{YARN}"=Modells.
+Der Aufbau des Benchmark"=Controllers wird in \cref{sec:benchmarkController} erläutert.
 
 \subsection{Die Klassen Model und ModelSettings}
 \label{subsec:modelClass}
@@ -166,6 +167,7 @@ Das Reparieren von Komponentenfehlern geschieht analog hierzu.
 Hierfür werden in der \texttt{Update()}"=Methode die beiden Start"=Methoden aufgerufen, die einen Fehlerhaften Node reparieren.
 Eine Besonderheit bildet hierbei die Reparatur des Komponentenfehlers \texttt{NodeConnectionErrorFault}, bei der der Node komplett neu gestartet wird, da es sonst passieren kann, dass der wieder ans Netzwerk angebundene Node sich nicht mit dem \ac{RM} verbindet.
 
+\todo{Eigener Abschnitt?}
 Ob ein Komponentenfehler in einem Testfall aktiviert wird, ist Abhängig von folgenden Parametern:
 
 \begin{itemize}
@@ -326,15 +328,15 @@ Wenn die ID der Komponenten"=Instanzen leer ist, und die jeweilige Instanz somit
 \label{subsec:yarnClient}
 
 Der Client im \ac{YARN}"=Modell simuliert einen Client und dient somit zum Starten der Benchmarks in dieser Fallstudie.
-Die Auswahl des zu startenden Benchmarks erfolgt durch den Benchmark Controller, welcher in \cref{sec:appImplementation} erläutert wird.
-Jeder Client besitzt hierzu einen eigenen Benchmark Controller, womit die auszuführenden Benchmarks für jeden Client unabhängig von anderen Clients ausgewählt werden.
+Die Auswahl des zu startenden Benchmarks erfolgt durch den Benchmark"=Controller, welcher in \cref{sec:benchmarkController} erläutert wird.
+Jeder Client besitzt hierzu einen eigenen Benchmark"=Controller, womit die auszuführenden Benchmarks für jeden Client unabhängig von anderen Clients ausgewählt werden.
 Ein Client kann jedoch nur eine Anwendung gleichzeitig starten und muss eine zuvor gestartete Anwendung beenden, bevor er eine neue starten kann.
 Dies wird jedoch nur durchgeführt, wenn sich der auszuführende Benchmark geändert hat:
 
 \begin{lstlisting}[label=lst:startClientBenchmark,style=cs,
 caption={[Auswahl und Start des nachfolgenden Benchmarks]
     Auswahl und Start des nachfolgenden Benchmarks (gekürzt).
-    Der Benchmark Controller und seine Methode \texttt{BenchmarkController.ChangeBenchmark()} wird in \cref{sec:appImplementation} erläutert.}]
+    Der Benchmark"=Controller und seine Methode \texttt{BenchmarkController.ChangeBenchmark()} wird in \cref{sec:benchmarkController} erläutert.}]
 public void UpdateBenchmark()
 {
   var benchChanged = BenchController.ChangeBenchmark();
@@ -385,7 +387,7 @@ public override void Update()
 }
 \end{lstlisting}
 
-Nach einem ersten Monitoring des \ac{MARP}"=Wertes wird durch den Controller sichergestellt, dass jeder simulierte Client eine Anwendung startet, sofern vom Benchmark Controller hierbei eine neue Anwendung ausgewählt wird (vgl. \cref{subsec:yarnClient,sec:appImplementation}).
+Nach einem ersten Monitoring des \ac{MARP}"=Wertes wird durch den Controller sichergestellt, dass jeder simulierte Client eine Anwendung startet, sofern vom Benchmark"=Controller hierbei eine neue Anwendung ausgewählt wird (vgl. \cref{subsec:yarnClient,sec:benchmarkController}).
 
 Vor dem Monitoring wird zunächst fünf Sekunden gewartet, damit die gestarteten Anwendungen auf dem Cluster die benötigten Ressourcen erhalten können, wodurch die Auslastung des Clusters besser ermittelt werden kann.
 Zum Monitoring nutzt der Controller die von \texttt{IYarnReadable} bereitgestellte Eigenschaft um das Selbstmonitoring der einzelnen \ac{YARN}"=Komponenten zu deaktivieren und führt dabei das Monitoring der Nodes und Anwendungen aus.
