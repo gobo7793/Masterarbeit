@@ -1,6 +1,4 @@
-\documentclass[12pt,a4paper,%
-%draft%
-ngerman]{scrreprt}
+\documentclass[12pt,a4paper,ngerman]{scrreprt}
 % prevent warning \float@addtolists detected
 \usepackage{scrhack} 
 
@@ -154,6 +152,9 @@ ngerman]{scrreprt}
 {\global\colonfoundonthislinefalse}
 %%%%%%%%%% end listings
 
+% TOC im TOC
+\usepackage{tocbibind}
+
 \makeatletter
 
 % Default centering floatboxes
@@ -179,6 +180,9 @@ ngerman]{scrreprt}
     \@starttoc{lol}%
 }
 
+% Dreistellige Seitenzahlen im TOC
+\renewcommand{\@pnumwidth}{1.7em}
+
 \makeatother
 
 % Hurenkinder, Schusterjungen
@@ -192,6 +196,7 @@ ngerman]{scrreprt}
 \usepackage{hyperref}
 \usepackage{cleveref}
 
+% Todos
 \usepackage{todonotes}
 \presetkeys{todonotes}{inline}{}
 

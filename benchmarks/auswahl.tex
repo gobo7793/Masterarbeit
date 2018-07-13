@@ -78,6 +78,10 @@ So stehen die beiden \texttt{TestDFSIO}"=Varianten für eine umfangreichere Date
 Eine Besonderheit bilden die beiden Dummy"=Anwendungen.
 Beide werden bei der Ausführung dieser Fallstudie dafür genutzt, um zu simulieren, wenn nichts ausgeführt werden soll oder bei der Ausführung der Anwendungen ein Fehler auftritt.
 
+Auf die Implementierung einer Anwendung der HiBench"=Suite wurde verzichtet.
+Da beim Starten einer Anwendung durch den Client die vom Cluster zugewiesene ID benötigt wird, um die Anwendung in späteren Testfällen beenden zu können, kann der HiBench nicht sinnvoll im Testmodell genutzt werden.
+Der Grund hierfür ist, dass beim Starten einer Anwendung der HiBench"=Suite die ID erst nach Abschluss der gesamten Anwendung zurückgegeben wird, womit eine asynchrone Ausführung der Anwendung nicht mehr möglich wäre.
+
 \subsection{Entwicklung der Markow"=Kette}
 \label{subsec:markovChain}
 

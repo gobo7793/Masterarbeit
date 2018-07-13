@@ -176,6 +176,9 @@ Ob ein Komponentenfehler in einem Testfall aktiviert wird, ist Abhängig von fol
     \item Einer Zufallszahl
 \end{itemize}
 
+Der hierfür benötigte Zufallsgenerator wird mithilfe des in \cref{subsec:testcaseGeneration} spezifizierten Basisseeds initialisiert.
+Da der Zufallsgenerator ein statischer Generator ist, werden über einen Test bei der gleichen Anzahl an möglichen Komponentenfehler immer die gleichen Werte zurückgegeben, nicht jedoch zwingend für einen bestimmten Komponentenfehler eines Nodes.
+
 Um zu bestimmen, ob ein Komponentenfehler aktiviert wird, sind alle Komponentenfehler mit dem Attribut \texttt{NodeFault} markiert.
 Mithilfe dieses Attributes wird bei der Ausführung eines Testfalls folgendermaßen berechnet, ob der Komponentenfehler aktiviert wird:
 
@@ -336,7 +339,7 @@ Dies wird jedoch nur durchgeführt, wenn sich der auszuführende Benchmark geän
 \begin{lstlisting}[label=lst:startClientBenchmark,style=cs,
 caption={[Auswahl und Start des nachfolgenden Benchmarks]
     Auswahl und Start des nachfolgenden Benchmarks (gekürzt).
-    Der Benchmark"=Controller und seine Methode \texttt{BenchmarkController.ChangeBenchmark()} wird in \cref{sec:benchmarkController} erläutert.}]
+    Die Methode \texttt{ChangeBenchmark()} des Benchmark"=Controllers wird in \cref{subsec:selectionNextBenchmark} erläutert.}]
 public void UpdateBenchmark()
 {
   var benchChanged = BenchController.ChangeBenchmark();
@@ -346,6 +349,14 @@ public void UpdateBenchmark()
     StopCurrentBenchmark();
     StartBenchmark(BenchController.CurrentBenchmark);
   }
+}
+
+public void StartBenchmark(Benchmark benchmark)
+{
+  if(benchmark.HasOutputDir)
+    SubmittingConnector.RemoveHdfsDir(benchmark.GetOutputDir(ClientDir));
+  var appId = SubmittingConnector.StartApplicationAsyncTillId(benchmark.GetStartCmd(ClientDir));
+  // save application id
 }
 \end{lstlisting}
 

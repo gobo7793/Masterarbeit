@@ -181,9 +181,9 @@ Aufgrund der Besonderheiten der REST"=API im Bezug auf Attempts und Container, w
 Sollten jedoch nur die Daten jeweils eines Attempts bzw. Containers benötigt werden, werden diese Listen entsprechend gefiltert:
 
 \begin{lstlisting}[label=lst:restParseDetails,style=cs,
-caption={[Konvertierung und Rückgabe der Daten eines einzelnen Containers durch den RestParser]
-    Konvertierung und Rückgabe der Daten eines einzelnen Containers durch den \texttt{RestParser}.
-    Hierbei muss zunächst die ID des übergeordneten Attempts ermittelt werden, bevor aus der Liste aller Container die Daten des gesuchten Containers zurückgegeben werden können.
+caption={[Konvertierung und Rückgabe der Daten durch den RestParser]
+    Konvertierung und Rückgabe der Daten eines durch den \texttt{RestParser}.
+    Hierbei muss für den hier gezeigten, einzelnen Container zunächst ID des übergeordneten Attempts ermittelt werden, bevor aus der Liste aller Container die Daten des gesuchten Containers zurückgegeben werden können.
     Bei Attempts ist dieses Vorgehen analog.}]
 public IContainerResult ParseContainerDetails(string containerId)
 {
@@ -244,6 +244,7 @@ Notwendig ist hierfür jedoch, dass die Scripte immer die in \cref{app:setupScri
 Da das Starten der Anwendungen die einzige asynchrone Operation darstellt, die der Connector durchführen muss, werden hierfür die meisten SSH"=Verbindung aufgebaut.
 Wenn eine Anwendung gestartet werden soll, wird immer eine freie SSH"=Verbindung ausgewählt und die Anwendung mithilfe dieser gestartet.
 Die Verbindung wird dabei solange zum Starten von anderen Anwendungen gesperrt, solange der ausführende Befehl, also die gestartete Anwendung, nicht beendet wurde (vgl. \cref{sec:sshDriver}).
+Die Befehlsparameter zum Starten der Anwendungen wird von den jeweiligen Benchmarks zur Verfügung gestellt, sodass der Connector nur das Benchmark"=Script mit den bereitgestellten Befehlsparametern ausführen muss (vgl. \cref{subsec:scripts,subsec:appImplementation}).
 
 \subsubsection{Implementierung des RestConnectors}
 \label{subsubsec:implRestConnector}

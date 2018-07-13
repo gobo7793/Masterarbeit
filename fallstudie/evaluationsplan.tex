@@ -40,7 +40,7 @@ Als Basis zur Definition einer Testkonfiguration dienen die in \cref{subsec:thes
     \item Anzahl genutzter Hosts
     \item Basisanzahl der Nodes
     \item Anzahl simulierter Clients
-    \item Verwendeter Seed für Zufallsgeneratoren
+    \item Verwendeter Basisseed für Zufallsgeneratoren
     \item Anzahl auszuführender Testfälle
     \item Mindestdauer für einen Testfall
     \item Nutzung einer oder mehreren Mutationen
@@ -49,11 +49,10 @@ Als Basis zur Definition einer Testkonfiguration dienen die in \cref{subsec:thes
     \item Verwendung von vorab generierten Eingabedaten
 \end{itemize}
 
-Die Auswahl der ausgeführten Anwendungen erfolgt während der Testausführung anhand des Seeds der Testkonfiguration.
+Die Auswahl der ausgeführten Anwendungen erfolgt während der Testausführung anhand des Basisseeds der Testkonfiguration.
 Zwar werden durch das Transitionssystem wahrscheinlichkeitsbasierend zufällig Anwendungen ausgewählt, jedoch kann dies durch den Charakter des im .NET"=Framework vorhandenen Zufallsgenerators gesteuert werden.
-Der in .NET implementierte Zufallsgenerator ist nämlich kein \emph{echter}, sondern ein Pseudo"=Zufallsgenerator, der mithilfe von mathematischen Formeln und anhand eines Seeds Zufallszahlen berechnet.
-Zwar wird standardmäßig ein zeitbasierter Seed zur Initialisierung des Zufallsgenerators genutzt, durch die Angabe eines spezifischen Seeds kann jedoch die Wiederausführbarkeit der Tests sichergestellt werden.
-\todo{Wo wird Seed wie genutzt? am besten in implementierung davon!}
+Der in .NET implementierte Zufallsgenerator ist nämlich kein \emph{echter}, sondern ein Pseudo"=Zufallsgenerator, der mithilfe eines mathematischen Algorithmus' Zufallszahlen berechnet \cite{RandomClassDoc}.
+Zwar wird standardmäßig ein zeitbasierter Seed als Startwert für den Algorithmus genutzt, durch die Angabe eines spezifischen Seeds kann jedoch die Wiederausführbarkeit der Tests sichergestellt werden.
 
 Auch die Aktivierung und Deaktivierung von Komponentenfehlern selbst soll während der Ausführung eines Testfalls festgelegt werden, wodurch die Wahrscheinlichkeit für deren Aktivierung bzw. Deaktivierung einen maßgeblichen Einfluss besitzt.
 Da Anwendungen, die Eingabedaten für andere Anwendungen generieren, \uU nicht erfolgreich beendet werden können, kann eine Testkonfiguration mit vorab generierten und im \ac{HDFS} gespeicherten Daten durchgeführt werden.

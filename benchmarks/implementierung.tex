@@ -2,38 +2,23 @@
 \label{sec:benchmarkController}
 
 Die im \ac{YARN}"=Modell (vgl. \cref{sec:yarnModel}) implementierten Benchmarks und das zur Auswahl der Benchmarks entwickelte Transitionssystem bilden zusammen den Benchmark"=Controller.
-Der Benchmark Controller wurde als eigene Klasse \texttt{BenchmarkController} im Modell implementiert und wird von den Clients genutzt, um die Auswahl der Benchmarks vorzunehmen.
-Der Benchmark Controller verwaltet die implementierten Benchmarks und stellt diese den Clients zum Starten zur Verfügung (vgl. \cref{subsec:yarnClient}).
+Der Benchmark"=Controller wurde als eigene Klasse \texttt{BenchmarkController} im Modell implementiert und wird von den Clients genutzt, um die Auswahl der Benchmarks vorzunehmen.
+Der Benchmark"=Controller verwaltet die implementierten Benchmarks und stellt diese den Clients zum Starten zur Verfügung (vgl. \cref{subsec:yarnClient}).
+Damit die Clients unabhängig voneinander sind, wird für jeden Client ein eigener Benchmark"=Controller instanziiert.
 
-\subsection{Implementierung der Benchmarks}
+\subsection{Implementierung von Benchmarks und Transitionssystem}
 \label{subsec:appImplementation}
 
-\subsection{Implementierung des Transitionssystems}
-\label{subsec:transitionImpl}
+Die Benchmarks wurden mithilfe der Klasse \texttt{Benchmark} implementiert.
+Sie enthält alle zur Ausführung der Benchmarks benötigten Informationen und stellt diese der \texttt{BenchmarkController}"=Klasse bzw. dem Client bereit, um die Anwendung des Benchmarks zu starten.
+Da mehrere Clients unabhängig voneinander agieren können müssen, erhält jeder Client ein spezifisches Unterverzeichnis im \ac{HDFS}, in dem sich die Ein- und Ausgabeverzeichnisse für die von ihm gestarteten Anwendungen befinden.
+Das muss auch bei der Definition der Startbefehle der Anwendungen berücksichtigt werden, weshalb hierfür entsprechende Platzhalter ersetzt werden müssen, wenn mithilfe der Methode \texttt{GetStartCmd()} der Start"=Befehl des Benchmarks zurückgegeben wird:
 
-\subsection{Auswahl der der nachfolgenden Benchmarks}
-\label{subsec:selectionNextBenchmark}
-
-Der \textbf{statische Teil} des Controllers definiert die möglichen Anwendungen sowie das im Abschnitt zuvor definierte und in \cref{tab:transMatrix} dargestellte Transitionssystem.
-Die einzelnen Anwendungen werden mithilfe der Klasse \texttt{Benchmark} repräsentiert, in der die benötigten Informationen wie \zB der Befehl zum Starten der Anwendung definiert werden.
-Da mehrere Clients unabhängig voneinander agieren können müssen, erhält jeder Client zudem ein eigenes Unterverzeichnis im \ac{HDFS}, in dem sich die Ein- und Ausgabeverzeichnisse für die von ihm gestarteten Anwendungen befinden.
-Das muss auch bei der Definition der Startbefehle der Anwendungen berücksichtigt werden, weshalb in \cref{lst:benchmarkDefinition} entsprechende Platzhalter vorhanden sind.
-Aus diesem Grund muss vor dem Start der Anwendung mithilfe der Methode \texttt{GetStartCmd()} der Startbefehl generiert werden, indem der zu startende Client das in \texttt{Client.ClientDir} gespeicherte Client"=Basisverzeichnis übergibt.
-Da einige Anwendungen zudem voraussetzen, dass das genutzte Ausgabe"=Verzeichnis noch nicht im \ac{HDFS} existiert, muss das Verzeichnis vor dem Anwendungsstart gelöscht werden.
-
-Jede Anwendung erhält zudem eine eigene ID, die mit ihrem Index im Array \texttt{BenchmarkController.Benchmarks} übereinstimmt.
-Diese wird bei der in \cref{lst:benchmarkChanging} dargestellte Auswahl der nachfolgenden Anwendung benötigt, um innerhalb des gesamten Transitionssystems in \texttt{BenchmarkController.BenchTransitions} die Wahrscheinlichkeiten für die Wechsel von der derzeitigen Anwendung zu anderen Anwendungen auszuwählen.
-
-\begin{lstlisting}[label=lst:benchmarkDefinition,style=cs,
-caption={[Definition und Start einer Anwendung]
-    Definition und Start einer Anwendung (gekürztes Beispiel).
-    Die Generierung des komplettes Startbefehls mit Nutzung des Benchmark"=Scriptes führt der vom Client verwendete Connector durch, weshalb hier nur definiert werden muss, dass das Example"=Programm \acl{wc} gestartet wird.}]
+\begin{lstlisting}[label=lst:benchmarkClass,style=cs,
+caption={[Wesentliche Methoden der Klasse Benchmark]
+    Wesentliche Methoden der Klasse \texttt{Benchmark}}]
 public class Benchmark
 {
-  public const string BaseDirHolder = "$DIR";
-  public const string OutDirHolder = "$OUT";
-  public const string InDirHolder = "$IN";
-  
   public Benchmark(int id, string name, string startCmd, string outputDir, string inputDir)
   {
     _StartCmd = startCmd;
@@ -45,73 +30,83 @@ public class Benchmark
   {
     var result = _StartCmd.Replace(OutDirHolder, GetOutputDir(clientDir)).Replace(InDirHolder, GetInputDir(clientDir));
     if(result.Contains(BaseDirHolder))
-    result = ReplaceClientDir(result, clientDir);
+      result = ReplaceClientDir(result, clientDir);
     return result;
   }
 }
-
-using static Benchmark;
-public class BenchmarkController
-{
-  
-  public static Benchmark[] Benchmarks { get; } // benchmarks
-  public static int[][] BenchTransitions { get; } // transitions
-  
-  static BenchmarkController()
-  {
-    Benchmarks = new[]
-    {
-      new Benchmark(04, "wordcount", $"example wordcount {InDirHolder} {OutDirHolder}", $"{BaseDirHolder}/wcout", $"{BaseDirHolder}/rantw"),
-    };
-  }
-}
-
-public class Client : Component
-{
-    public string StartBenchmark(Benchmark benchmark)
-    {
-        if(benchmark.HasOutputDir)
-        SubmittingConnector.RemoveHdfsDir(benchmark.GetOutputDir(ClientDir));
-        var appId = SubmittingConnector.StartApplicationAsync(benchmark.GetStartCmd(ClientDir));
-    }
-}
 \end{lstlisting}
 
-Der \textbf{dynamische Teil} des Controllers ist für die Auswahl der auszuführenden Anwendung zuständig, was auch die Auswahl der initial auszuführenden Anwendung einschließt.
-Zur Auswahl der initialen Anwendung wird basierend auf der \acl{sl}"=Anwendung das Transitionssystem genutzt und so eine Anwendung ausgewählt, die keine Eingabedaten benötigt bzw. diese für andere Anwendungen generiert.
+Alle im Modell enthaltenen Benchmarks sind als Array im \texttt{BenchmarkController} gespeichert.
+Hier werden auch die benötigten Befehle zum Starten der Anwendungen der Benchmarks definiert:
 
-Das im vorherigen Abschnitt definierte und im statischen Teil implementierte Transitionssystem kommt auch immer dann zum Einsatz, wenn Entschieden werden muss, welche Anwendung der derzeit ausgeführten Anwendung folgt.
-Jeder Client bzw. sein \texttt{BenchmarkController} entscheidet unabhängig von anderen Clients einmal pro \sS-Takt, welche Anwendung ausgeführt wird.
+\begin{lstlisting}[label=lst:benchmarkDefinition,style=cs,
+caption={[Definition der verfügbaren Benchmarks im BenchmarkController]
+    Definition der verfügbaren Benchmarks im \texttt{BenchmarkController} (gekürzt)}]
+public Benchmark[] Benchmarks => new[]
+{
+  new Benchmark(04, "wordcount", $"example wordcount {InDirHolder} {OutDirHolder}", $"{BaseDirHolder}/wcout",
+};
+\end{lstlisting}
+
+Der hierbei definierte und durch \texttt{GetStartCmd()} zurückgegebene vollständige Startbefehl wird beim Starten der Anwendungen vom Connector als Befehlsparameter dem Benchmark"=Script angehängt (vgl. \cref{subsubsec:implCmdConnector}).
+Damit kann durch das Benchmark"=Script die zu startende Anwendung identifiziert und das jeweilige Start"=Script ausgeführt werden (vgl. \cref{subsec:scripts}).
+
+Das Transitionssystem selbst wurde im \texttt{BenchmarkController} als zweidimensionaler Array implementiert, auf das mithilfe von \texttt{Benchmark.ID} zugegriffen werden kann.
+Entsprechend wichtig ist hierbei die Reihenfolge der jeweiligen Werte innerhalb des Arrays, welche immer gleich sein muss mit den jeweiligen IDs:
+
+\begin{lstlisting}[label=lst:transitionSystemImpl,style=cs,
+caption={[Implementierung des Transitionssystems im BenchmarkController]
+    Implementierung des Transitionssystems im \texttt{BenchmarkController} (gekürzt)}]
+public double[][] BenchTransitions => new[]
+{
+  /* f§§rom / to ->    00    01   02   ...*/
+  /* f§§rom / to ->   dfw   rtw   tg   ...*/
+  new[] /* 00 */ { .600, .073,  000, ... ,
+  new[] /* 01 */ { .036, .600,  000, ... ,
+  new[] /* 02 */ {  000, .036, .600, ... ,
+};
+\end{lstlisting}
+
+\subsection{Auswahl der nachfolgenden Benchmarks}
+\label{subsec:selectionNextBenchmark}
+
+Zur Auswahl der Nachfolgenden Anwendung dient die Methode \texttt{ChangeBenchmark()} des \texttt{BenchmarkController}s.
+Hier wird mithilfe des Transitionssystems und unabhängig von anderen Clients bestimmt, welcher Benchmark ausgeführt werden soll und dieser in \texttt{CurrentBenchmark} gespeichert:
 
 \begin{lstlisting}[label=lst:benchmarkChanging,style=cs,
-caption={[Normalisierung und Auswahl der nachfolgenden Anwendung]
-    Normalisierung und Auswahl der nachfolgenden Anwendung (gekürzt)}]
+caption={[Auswahl des nachfolgenden Benchmarks]
+    Auswahl des nachfolgenden Benchmarks (gekürzt).
+    Dies stellt einen Ausschnitt der Methode \texttt{ChangeBenchmark()} dar, welche vom Client zur Bestimmung des nachfolgenden Benchmarks aufgerufen wird (vgl. \cref{subsec:yarnClient}).}]
 // g§§et probabilities f§§rom current benchmark
 var transitions = BenchTransitions[CurrentBenchmark.Id];
 
+// calculate next benchmark
 var ranNumber = RandomGen.NextDouble();
 var cumulative = 0D;
 for(int i = 0; i < transitions.Length; i++)
 {
   cumulative += transitions[i];
   if(ranNumber >= cumulative)
-  continue;
+    continue;
+  
+  // prevent saving current benchmark a§§s previous
+  if(CurrentBenchmark == _BenchmarksInstance[i])
+    break;
   
   // save benchmarks
   PreviousBenchmark = CurrentBenchmark;
   CurrentBenchmark = Benchmarks[i];
+  return true;
 }
 \end{lstlisting}
 
-Nachdem eine neue Anwendung ausgewählt wurde, muss zunächst sichergestellt werden, dass die bisher ausgeführte Anwendung beendet ist.
-Dafür wird der in \cref{lst:hadoopAppKill} dargestellte Befehl von Hadoop zum Abbruch von Anwendungen ausgeführt, wodurch die derzeit ausgeführte Anwendung beendet wird, sollte sie noch nicht abgeschlossen sein.
-Im Anschluss kann das von der neuen Anwendung benötigte \ac{HDFS}"=Ausgabeverzeichnis gelöscht werden, bevor die Anwendung selbst gestartet wird.
+Bevor auf die Daten des implementierten Transitionssystems zugegriffen wird, wird außerdem zunächst geprüft, ob die Markow"=Kette alle möglichen Übergänge für den aktuellen Benchmark enthält.
+Ist das nicht der Fall, wird eine \texttt{InvalidOperationException} ausgelöst.
+Wenn die Auswahl des Benchmarks dagegen erfolgreich war, wird an den aufrufenden Client \texttt{true} zurückgegeben und der ausgewählte Benchmark kann gestartet werden (vgl. \cref{subsec:yarnClient}).
 
-Eine Anwendung wird wie in \cref{lst:benchmarkDefinition} gezeigt zwar asynchron gestartet, allerdings wird zunächst noch synchron auf die Ausgabe der \texttt{applicationId} gewartet.
-Die gesamte Ausgabe einer zu startenden Anwendung ist in \cref{lst:hadoopAppStart} zu finden.
-Die ID wird vom Cluster im Rahmen der Übergabe und Initialisierung der Anwendung vergeben.
-Erst nachdem diese bekannt ist, wird die restliche Ausführung der Anwendung asynchron durchgeführt.
-Benötigt wird die ID damit der zu startende Client die Anwendung im Falle eines Anwendungswechsels in den folgenden Takten beenden kann.
-Ohne die direkte Speicherung der ID wäre es sonst nicht möglich, klar entscheiden zu können, welchem Client die Anwendung zugeordnet ist.
-Dies ist auch der Grund, weshalb kein HiBench"=Workload in das Transitionssystem aufgenommen wurde, da hier die \texttt{applicationId} gemeinsam mit der gesamten Ausgabe der einzelnen HiBench"=Anwendungen erst nach Abschluss der Ausführung ausgegeben wird.
-Gespeichert wird die ID zunächst in einer noch verfügbaren \texttt{YarnApp}"=Instanz, welche anschließend selbst in \texttt{Client.CurrentExecutingApp} gespeichert wird.
+Der zur Auswahl des nachfolgenden Benchmarks benötigte Zufallsgenerator \texttt{Random""Gen} wird bei der Initialisierung des Benchmark"=Controllers basierend auf dem in \cref{subsec:testcaseGeneration} spezifizierten Basisseed initialisiert.
+Damit die Benchmark"=Controller aller Clients nicht die gleichen Benchmarks auswählen, wird zum Basisseed die numerische ID des Clients addiert und der Zufallsgenerator mit diesem Wert initialisiert.
+Als initiale Anwendung wird zudem immer der \acl{sl}"=Benchmark genutzt, womit als erste Anwendung immer eine Anwendung ohne benötigte Eingabedaten gestartet wird (vgl. \cref{subsec:markovChain}).
+
+\subsection{Vorabgenerierung von Eingabedaten}
+\label{subsec:precreateInputData}
