@@ -1,10 +1,13 @@
-\section{Auswahl der verwendeten Anwendungen}
-\label{sec:appSelection}
+\section{Entwicklung des Transitionssystems}
+\label{sec:transitionsystem}
 
 Damit die Fallstudie die Realität abbilden kann, wurden von allen verfügbaren Anwendungen einige ausgewählt und in ein Transitionssystem in Form einer Markow"=Kette überführt.
 Diese Kette definiert die Ausführungsreihenfolge zwischen den einzelnen Anwendungen.
 Eine zufallsbasierte Markow"=Kette wurde aus dem Grund verwendet, dass auch in der Realität Anwendungen nicht immer in der gleichen Reihenfolge ausgeführt werden und daher auch in der Fallstudie eine unterschiedliche Ausführungsreihenfolge der Anwendungen gewährleistet werden soll.
 Mithilfe der Festlegung eines bestimmten Seeds für den in der Fallstudie benötigten Pseudo"=Zufallsgenerator besteht bei Bedarf dennoch die Möglichkeit, einen Test mit den gleichen Anwendungen wiederholen zu können.
+
+\subsection{Auswahl der Anwendungen}
+\label{subsec:appSelection}
 
 Einige der in \cref{sec:appOverview} erwähnten Mapreduce Examples werden häufig als Benchmark verwendet.
 Einige Beispiele dafür sind die Anwendungen \acl{so} und \texttt{grep}, die bereits im Referenzpapier des \ac{MR}"=Frameworks zum Testen genutzt wurden \cite{Dean2004}.
@@ -73,9 +76,18 @@ So stehen die beiden \texttt{TestDFSIO}"=Varianten für eine umfangreichere Date
 \texttt{TestDFSIO} enthält zudem die Möglichkeit, Daten zu generieren und zu lesen, weshalb dieser Benchmark in zwei Kategorien als Anwendung genutzt wird.
 
 Eine Besonderheit bilden die beiden Dummy"=Anwendungen.
-Beide werden in dieser Fallstudie dafür genutzt, um zu simulieren, wenn auf dem Cluster \zB derzeit nichts ausgeführt wird, oder ein Fehler während der Ausführung einer Anwendung auftritt.
-Daher können beide Anwendungen unabhängig von der derzeit ausgeführten Anwendung als nachfolgende Anwendung ausgewählt werden.
-Als nachfolgende Anwendungen für die Dummy"=Anwendungen wurden nur Anwendungen definiert, die ihrerseits keine Eingabedaten benötigten bzw. diese für andere Anwendungen generieren:
+Beide werden bei der Ausführung dieser Fallstudie dafür genutzt, um zu simulieren, wenn nichts ausgeführt werden soll oder bei der Ausführung der Anwendungen ein Fehler auftritt.
+
+\subsection{Entwicklung der Markow"=Kette}
+\label{subsec:markovChain}
+
+Basierend auf den ausgewählten Anwendungen und der in den Studien genannten Anwendungstypen wurde das Transitionssystem in Form einer Markov"=Kette entwickelt.
+Die Markov"=Kette definiert die Wahrscheinlichkeiten, mit denen die ausführenden Anwendungen bei der Ausführung eines Testfalls gewechselt werden.
+Damit die Übergänge nicht bei jedem Testfall stattfinden, sondern Anwendungen auch mehrere Testfälle lang ausgeführt werden können, wurden Selbst"=Transitionen auf 60 Prozent definiert.
+
+Für die beiden Dummy"=Anwendungen gelten einige Besonderheiten.
+Zum einen können beide Anwendungen unabhängig von der derzeit ausgeführten Anwendung mit einer sehr geringen Wahrscheinlichkeit als nachfolgende Anwendung ausgewählt werden.
+Für die Übergänge zu den Dummy"=Anwendungen nachfolgende Anwendungen wurden nur Anwendungen definiert, die ihrerseits keine Eingabedaten benötigten bzw. diese für andere Anwendungen generieren:
 
 \begin{itemize}
     \item \acl{dfw}
@@ -86,7 +98,11 @@ Als nachfolgende Anwendungen für die Dummy"=Anwendungen wurden nur Anwendungen 
     \item \acl{pt}
 \end{itemize}
 
-\begin{table}
+Bei der Entwicklung der Markow"=Kette des Transitionssystems wurde zudem berücksichtigt, welche Anwendungsdaten welche Art von Eingabedaten benötigen.
+Dadurch wird sichergestellt, dass benötigte Eingabedaten immer vorhanden sind, da diese ebenfalls im Rahmen der Ausführung der Benchmarks generiert werden.
+Anwendungen ohne Eingabedaten können dagegen fast jederzeit ausgeführt werden, wie die entwickelte Markov"=Kette zeigt:
+
+\begin{table}[h]
     \resizebox{\linewidth}{!}{\begin{tabu}{l|[1.5pt]c|c|c|c|c|c|c|c|c|c|c|c|c|c}
     	                   & \textit{\acs{dfw}} & \textit{\acs{rtw}} & \textit{\acs{tg}} & \textit{\acs{dfr}} & \textit{\acs{wc}} & \textit{\acs{rw}} & \textit{\acs{so}} & \textit{\acs{tsr}} & \textit{\acs{pi}} & \textit{\acs{pt}} & \textit{\acs{tms}} & \textit{\acs{tvl}} & \textit{\acs{sl}} & \textit{\acs{fl}} \\ \tabucline[1.5pt]{-}
     	\textit{\acs{dfw}} &        .600        &        .073        &         0         &        .145        &         0         &         0         &         0         &         0          &       .073        &       .073        &         0          &         0          &       .018        &       .018        \\ \hline
@@ -104,11 +120,6 @@ Als nachfolgende Anwendungen für die Dummy"=Anwendungen wurden nur Anwendungen 
     	\textit{\acs{sl}}  &        .167        &        .167        &       .167        &         0          &         0         &       .167        &         0         &         0          &       .167        &       .167        &         0          &         0          &         0         &         0         \\ \hline
     	\textit{\acs{fl}}  &        .167        &        .167        &       .167        &         0          &         0         &       .167        &         0         &         0          &       .167        &       .167        &         0          &         0          &         0         &         0
     \end{tabu}}
-    \caption
-    {Verwendete Markov"=Kette für die Anwendungs"=Übergänge in Tabellenform.}
+    \caption{Entwickelte Markov"=Kette für die Anwendungs"=Übergänge in Tabellenform}
     \label{tab:transMatrix}
 \end{table}
-
-Für die in \cref{tab:transMatrix} dargestellte Markow"=Kette der Übergänge zwischen den Anwendungen wurde neben den Ergebnissen aus den Studien zudem berücksichtigt, welche Anwendungen bestimmte Eingabedaten benötigen.
-Dadurch wird sichergestellt, dass die für einige Anwendungen benötigten Eingabedaten immer vorhanden sind, da diese ebenfalls im Rahmen der Ausführung der Benchmarks generiert werden.
-Anwendungen ohne Eingabedaten können dagegen fast jederzeit ausgeführt werden.
