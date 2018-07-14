@@ -1,87 +1,87 @@
-\section{Implementierung des \acs{YARN}"=Modells}
+\section{Implementierung des \glsentryshort{YARN}"=Modells}
 \label{sec:yarnModel}
 
-Das implementierte \ac{YARN}"=Modell besteht, wie bereits in \cref{sec:modelArchitecture} gezeigt, aus fünf Komponenten und den Komponentenfehlern der hier relevanten \ac{YARN}"=Komponenten.
-Die vier implementierten \ac{YARN}"=Komponenten sind die Anwendungen, ihre Attempts und Container, sowie die Nodes.
-Zudem wurde eine Klasse implementiert, die zur Repräsentation des \ac{RM} dient, und als Controller im Rahmen des Testens mit \ac{ss} dient.
-Einen Überblick über den Aufbau des implementierten \ac{YARN}"=Modells gibt folgendes Klassendiagramm:
+Das implementierte \gls{YARN}"=Modell besteht, wie bereits in \cref{sec:modelArchitecture} gezeigt, aus fünf Komponenten und den Komponentenfehlern der hier relevanten \gls{YARN}"=Komponenten.
+Die vier implementierten \gls{YARN}"=Komponenten sind die Anwendungen, ihre \glspl{Attempt} und Container, sowie die Nodes.
+Zudem wurde eine Klasse implementiert, die zur Repräsentation des \gls{RM} dient, und als Controller im Rahmen des Testens mit \gls{ss} dient.
+Einen Überblick über den Aufbau des implementierten \gls{YARN}"=Modells gibt folgendes Klassendiagramm:
 
 \begin{figure}[h]
     \includegraphics{./resources/yarnModel_ls_MA.pdf}
-    \caption[Grundlegender Aufbau des \acs{YARN}"=Modells]
-        {Grundlegender Aufbau des \acs{YARN}"=Modells.
-        Assoziationen und weitere Verbindungen zum Treiber und \acs{ss} sind hier aus Gründen der Übersichtlichkeit nicht dargestellt.}
+    \caption[Grundlegender Aufbau des \acrshort{YARN}"=Modells]
+        {Grundlegender Aufbau des \acrshort{YARN}"=Modells.
+        Assoziationen und weitere Verbindungen zum Treiber und \acrshort{ss} sind hier aus Gründen der Übersichtlichkeit nicht dargestellt.}
     \label{fig:yarnModelClassDiagram}
 \end{figure}
 
-Im Klassendiagramm wird zudem ersichtlich, dass jedem Client mehrere Anwendungen in Form der Klasse \texttt{YarnApp} zugeordnet sind, jeder Anwendung mehrere Attempts (\texttt{YarnAppAttempt}) und jedem Attempt mehrere Anwendungs"=Container (\texttt{YarnAppContainer}).
-Der Client stellt somit auch die den relevanten \ac{YARN}"=Komponenten übergeordnete Komponente dar.
+Im Klassendiagramm wird zudem ersichtlich, dass jedem Client mehrere \glspl{Anwendung} in Form der Klasse \texttt{YarnApp} zugeordnet sind, jeder \gls{Anwendung} mehrere \glspl{Attempt} (\texttt{YarnAppAttempt}) und jedem \gls{Attempt} mehrere Anwendungs"=Container (\texttt{YarnAppContainer}).
+Der Client stellt somit auch die den relevanten \gls{YARN}"=Komponenten übergeordnete Komponente dar.
 
-Zunächst wird im Folgenden zunächst die dem Modell übergeordnete zentrale Klasse \texttt{Model} erläutert, danach die relevanten \ac{YARN}"=Komponenten mit ihren Komponentenfehlern, anschließend die anderen Komponenten des \ac{YARN}"=Modells.
+Zunächst wird im Folgenden zunächst die dem Modell übergeordnete zentrale Klasse \texttt{Model} erläutert, danach die relevanten \gls{YARN}"=Komponenten mit ihren Komponentenfehlern, anschließend die anderen Komponenten des \gls{YARN}"=Modells.
 Der Aufbau des Benchmark"=Controllers wird in \cref{sec:benchmarkController} erläutert.
 
 \subsection{Die Klassen Model und ModelSettings}
 \label{subsec:modelClass}
 
-Die Klasse \texttt{Model} stellt die zentrale Schnittstelle des Testsystems mit \ac{ss} dar, während die Klasse \texttt{ModelSettings} alle generellen, variablen Einstellungen und Konstanten des \ac{YARN}"=Modells bereitstellt.
-Da die \texttt{Model}"=Klasse auch das gesamte Modell repräsentiert, wird sie zur Verwaltung des von \ac{ss} auszuführenden Modells genutzt.
-Hierfür werden alle Komponenten wie Clients oder Anwendungen zusätzlich zur Struktur innerhalb des Modells auch direkt in entsprechenden Eigenschaften dieser Klasse gespeichert, welche zur Interaktion mit \ac{ss} entsprechend markiert sind (vgl. \cref{subsec:ssharpModel}).
+Die Klasse \texttt{Model} stellt die zentrale Schnittstelle des Testsystems mit \gls{ss} dar, während die Klasse \texttt{ModelSettings} alle generellen, variablen Einstellungen und Konstanten des \gls{YARN}"=Modells bereitstellt.
+Da die \texttt{Model}"=Klasse auch das gesamte Modell repräsentiert, wird sie zur Verwaltung des von \gls{ss} auszuführenden Modells genutzt.
+Hierfür werden alle Komponenten wie Clients oder \glspl{Anwendung} zusätzlich zur Struktur innerhalb des Modells auch direkt in entsprechenden Eigenschaften dieser Klasse gespeichert, welche zur Interaktion mit \gls{ss} entsprechend markiert sind (vgl. \cref{subsec:ssharpModel}).
 
 Daneben dient die Klasse auch zur Initialisierung des gesamten Modells.
 Hierbei werden zunächst der Controller, der Treiber in Form der benötigten Parser und Connectoren, sowie die Nodes des Clusters initialisiert.
-Anschließend wird für jeden Client eine gewisse Anzahl an \texttt{YarnApp}"=Instanzen zum Speichern der Daten von Anwendungen, für jede Anwendung eine gewisse Anzahl an \texttt{YarnAppAttempt}"=Instanzen für Attempts, sowie für jeden Attempt eine gewisse Anzahl an \texttt{YarnAppContainer} für die Daten der Anwendungs"=Container initialisiert.
-Die genaue Anzahl der erzeugten Instanzen kann hierbei für jede \ac{YARN}"=Komponente und auch für Clients nach Bedarf angepasst werden, wodurch auch einzelne Komponenten wie \zB in der Fallstudie die Anwendungs"=Container, deaktiviert werden können.
+Anschließend wird für jeden Client eine gewisse Anzahl an \texttt{YarnApp}"=Instanzen zum Speichern der Daten von Anwendungen, für jede \gls{Anwendung} eine gewisse Anzahl an \texttt{YarnAppAttempt}"=Instanzen für Attempts, sowie für jeden \gls{Attempt} eine gewisse Anzahl an \texttt{YarnAppContainer} für die Daten der Anwendungs"=Container initialisiert.
+Die genaue Anzahl der erzeugten Instanzen kann hierbei für jede \gls{YARN}"=Komponente und auch für Clients nach Bedarf angepasst werden, wodurch auch einzelne Komponenten wie \zB in der Fallstudie die Anwendungs"=Container, deaktiviert werden können.
 
-Alle initialisierten \ac{YARN}"=Komponenten werden durch die \texttt{Model}"=Klasse auch innerhalb des Modells zur Verfügung gestellt, sofern Komponenten diese benötigen.
+Alle initialisierten \gls{YARN}"=Komponenten werden durch die \texttt{Model}"=Klasse auch innerhalb des Modells zur Verfügung gestellt, sofern Komponenten diese benötigen.
 Darunter zählen auch die bei der Ausführung des Modells benötigten Parser und Connectoren.
-Aufgrund der Einschränkungen von \ac{ss} im Umgang mit dem Treiber (vgl. \cref{subsec:driverModelIntegration}), sowie zur einfacheren Bereitstellung von benötigten Komponenten und Funktionen im Modell, ist die \texttt{Model}"=Klasse als Singleton realisiert.
+Aufgrund der Einschränkungen von \gls{ss} im Umgang mit dem Treiber (vgl. \cref{subsec:driverModelIntegration}), sowie zur einfacheren Bereitstellung von benötigten Komponenten und Funktionen im Modell, ist die \texttt{Model}"=Klasse als Singleton realisiert.
 
 Die \texttt{ModelSettings}"=Klasse dient zum Speichern der variablen Einstellungen sowie zum Bereitstellen von generellen, Modell- oder Testsystemweiten Konstanten.
-Gespeichert und bereitgestellt werden hier Daten wie \zB die Zugangsdaten der SSH"=Verbindungen oder der genutzten \texttt{HostMode} (vgl.  \cref{subsec:implementedConnectors,subsec:hostMode}), um ihn im \ac{YARN}"=Modell und dem Treiber transparent zu machen.
+Gespeichert und bereitgestellt werden hier Daten wie \zB die Zugangsdaten der SSH"=Verbindungen oder der genutzten \texttt{HostMode} (vgl.  \cref{subsec:implementedConnectors,subsec:hostMode}), um ihn im \gls{YARN}"=Modell und dem Treiber transparent zu machen.
 Die \texttt{ModelSettings} sind damit zur Verwaltung des \texttt{HostMode}s zuständig und dafür verantwortlich, immer die korrekten Pfade und Adressen für den genutzten \texttt{HostMode} dem Treiber bereit zu stellen.
-Dies betrifft \zB den Pfad zum benötigten Setupscript (vgl. \cref{subsec:scripts}) oder die zur Nutzung der REST"=API benötigten Adressen.
+Dies betrifft \zB den Pfad zum benötigten Setupscript (vgl. \cref{subsec:scripts}) oder die zur Nutzung der \gls{REST}"=API benötigten Adressen.
 Eine Besonderheit bildet hierbei die Eigenschaft \texttt{HttpUrl} der \texttt{YarnNode}s, welche beim Initialisieren des Modells durch die \texttt{ModelSettings} die zum \texttt{HostMode} passende Adresse erhält (vgl. \cref{subsec:yarnComponents,subsec:hostMode}).
 
-\subsection{Relevante \acs{YARN}"=Komponenten}
+\subsection{Relevante \glsentryshort{YARN}"=Komponenten}
 \label{subsec:yarnComponents}
 
-Die vier implementierten, relevanten \ac{YARN}"=Komponenten sind die Anwendungen, ihre Attempts und Container sowie die Nodes des Clusters.
+Die vier implementierten, relevanten \gls{YARN}"=Komponenten sind die Anwendungen, ihre \glspl{Attempt} und \gls{Container} sowie die Nodes des Clusters.
 Obwohl die die Anwendungs"=Container in dieser Fallstudie nicht benötigt werden, waren sie für die in \cite{Eberhardinger2018} beschriebene Fallstudie notwendig, welche ebenfalls mit dem hier beschriebenen Modell durchgeführt wurden.
 
-Eine Übersicht über die Implementierung der \ac{YARN}"=Komponenten gibt folgendes Klassendiagramm:
+Eine Übersicht über die Implementierung der \gls{YARN}"=Komponenten gibt folgendes Klassendiagramm:
 
 \begin{figure}[h]
     \includegraphics[width=\columnwidth]{./resources/yarnComponents.pdf}
-    \caption[Für die Fallstudie relevante, implementierte \acs{YARN}"=Komponenten]
-        {Für die Fallstudie relevante, implementierte \acs{YARN}"=Komponenten, hier dargestellt mit den wichtigsten Eigenschaften und Methoden.
+    \caption[Für die Fallstudie relevante, implementierte \acrshort{YARN}"=Komponenten]
+        {Für die Fallstudie relevante, implementierte \acrshort{YARN}"=Komponenten, hier dargestellt mit den wichtigsten Eigenschaften und Methoden.
         Dies sind alle für die spätere Durchführung und zur Ausgabe des Zustandes (vgl. \cref{subsec:dataOrganisation}) wichtigen Eigenschaften und Methoden.
         Aus Gründen der Übersichtlichkeit sind die implementierten Komponentenfehler, einige der \texttt{IYarnReadable} bereitgestellten, relevanten Eigenschaften und Methoden, sowie die Klasse \texttt{YarnAppContainer} nicht aufgeführt.}
     \label{fig:yarnComponentsClassDiagram}
 \end{figure}
 
-Die Eigenschaft \texttt{AmHost} speichert den ausführenden Node des \ac{AppMstr} der Anwendung bzw. des Attempts, die Eigenschaft \texttt{IsKillable} gibt an, ob eine Anwendung derzeit ausgeführt ist und somit vorzeitig abgebrochen werden kann.
+Die Eigenschaft \texttt{AmHost} speichert den ausführenden Node des \gls{AppMstr} der \gls{Anwendung} bzw. des Attempts, die Eigenschaft \texttt{IsKillable} gibt an, ob eine \gls{Anwendung} derzeit ausgeführt ist und somit vorzeitig abgebrochen werden kann.
 Die Eigenschaften \texttt{Diagnostics} bzw. \texttt{HealthReport} stellen von Hadoop zur Verfügung gestellte weitere Informationen bei Fehlern dar.
-Die \texttt{State}"=Eigenschaften bzw. \texttt{FinalState} speichern die von Hadoop angegebenen Zustände der \ac{YARN}"=Komponenten.
+Die \texttt{State}"=Eigenschaften bzw. \texttt{FinalState} speichern die von Hadoop angegebenen Zustände der \gls{YARN}"=Komponenten.
 Hierfür wurden entsprechende Auflistungen basierend auf den in \cite{HadoopRmApi271} angegebenen möglichen Werten für die jeweiligen Zustände im Modell implementiert.
 
-Da für diese Fallstudie die Daten der Container selbst nicht relevant sind, wird im hier verwendeten Modell nur gespeichert, wie viele Anwendungs"=Container beim Monitoring im aktuellen Testfall (\texttt{RunningContainerCount}) bzw. für alle bisher ausgeführten Testfälle kumuliert (\texttt{DetectedContainerCount}) erkannt wurden.
-Für die Tests in \cite{Eberhardinger2018} werden die Daten der Container genauso wie die der anderen \ac{YARN}"=Komponenten gespeichert.
+Da für diese Fallstudie die Daten der \gls{Container} selbst nicht relevant sind, wird im hier verwendeten Modell nur gespeichert, wie viele Anwendungs"=Container beim Monitoring im aktuellen \gls{Testfall} (\texttt{RunningContainerCount}) bzw. für alle bisher ausgeführten \glspl{Testfall} kumuliert (\texttt{DetectedContainerCount}) erkannt wurden.
+Für die \glspl{Test} in \cite{Eberhardinger2018} werden die Daten der \gls{Container} genauso wie die der anderen \gls{YARN}"=Komponenten gespeichert.
 Hierfür enthalten die Klassen \texttt{YarnAppAttempt} und \texttt{YarnAppContainer} entsprechende Eigenschaften zur jeweiligen Zuordnung analog zu denen zwischen \texttt{YarnApp} und \texttt{YarnAppAttempt}.
 Analoge Zuordnungen bestehen auch zu den Clients bzw. den Anwendungs"=Containern, sofern benötigtt.
-Die Eigenschaft \texttt{AmContainerId} speichert zudem die Container"=ID des \ac{AppMstr}"=Containers.
+Die Eigenschaft \texttt{AmContainerId} speichert zudem die Container"=ID des \gls{AppMstr}"=Containers.
 
 Die Eigenschaften mit dem Präfix \texttt{CPU} bzw. \texttt{Memory} in \texttt{YarnNode} dienen zur Speicherung der derzeitigen Auslastung der CPU"=Kerne bzw. des Speichers eines Nodes.
 Benötigt werden diese Werte zur Berechnung, ob ein Komponentenfehler aktiviert oder deaktiviert wird.
-Die Eigenschaft durch die Basisklasse \texttt{YarnHost} bereitgestellte Eigenschaft \texttt{HttpUrl} beschreibt die für die Nutzung der REST"=API benötigte Adresse des Nodes (vgl. \cref{subsubsec:implRestConnector}).
+Die Eigenschaft durch die Basisklasse \texttt{YarnHost} bereitgestellte Eigenschaft \texttt{HttpUrl} beschreibt die für die Nutzung der \gls{REST}"=API benötigte Adresse des Nodes (vgl. \cref{subsubsec:implRestConnector}).
 Da die Adresse vom \texttt{HostMode} abhängig ist, wird sie mithilfe der \texttt{ModelSettings} beim initialisieren des Modells entsprechend festgelegt (vgl. \cref{subsec:hostMode,subsec:modelClass}).
 
 Die Eigenschaften \texttt{SutConstraints} und \texttt{TestConstraints} sowie die Methoden \texttt{MonitorStatus()} und \texttt{SetStatus()} werden von \texttt{IYarnReadable} bereitgestellt und speichern die Constraints bzw. dienen zur Durchführung des Monitorings der implementierten Komponenten.
 Die Start"= und Stop"=Methoden sowie die Eigenschaften \texttt{IsActive} und \texttt{IsConnected} in \texttt{YarnNode} dienen zur Identifikation und Injizierung bzw. Reparieren der Komponentenfehlern.
 Diese Eigenschaften und Methoden werden daher auf den folgenden Seiten näher beschrieben.
 
-Neben den dargestellten, relevanten Eigenschaften und Methoden wurden zahlreiche weitere implementiert, welche einerseits zur Vollständigkeit der implementierten Komponenten für die Tests in \cite{Eberhardinger2018}, andererseits auch zur Ausführung mithilfe des \ac{ss}"=Frameworks benötigt werden.
-Letztere sind \zB zur Speicherung von Strings notwendig, welche aufgrund der Einschränkungen von \ac{ss} (vgl. \cref{sec:ssharp}) nicht jederzeit frei genutzt werden können.
-Strings sind im \ac{YARN}"=Modell daher zur Speicherung immer als  \texttt{char}"=Arrays implementiert, werden jedoch zur einfacheren Nutzung im Modell in Strings konvertiert:
+Neben den dargestellten, relevanten Eigenschaften und Methoden wurden zahlreiche weitere implementiert, welche einerseits zur Vollständigkeit der implementierten Komponenten für die \glspl{Test} in \cite{Eberhardinger2018}, andererseits auch zur Ausführung mithilfe des \gls{ss}"=Frameworks benötigt werden.
+Letztere sind \zB zur Speicherung von Strings notwendig, welche aufgrund der Einschränkungen von \gls{ss} (vgl. \cref{sec:ssharp}) nicht jederzeit frei genutzt werden können.
+Strings sind im \gls{YARN}"=Modell daher zur Speicherung immer als  \texttt{char}"=Arrays implementiert, werden jedoch zur einfacheren Nutzung im Modell in Strings konvertiert:
 
 \begin{lstlisting}[label=lst:modelCharArrayAsString,style=cs,
 caption={[Implementierung der Eigenschaft AppId]
@@ -97,15 +97,15 @@ public string AppId
 }
 \end{lstlisting}
 
-Die \texttt{Update()}"=Methoden starten bei allen vier implementierten \ac{YARN}"=Komponenten die jeweiligen Monitoring"=Funktionen, bei \texttt{YarnNode} werden zudem \texttt{StartNode()} und \texttt{StartConnection()} ausgeführt um mögliche zuvor injizierte Komponentenfehler im realen Cluster zu reparieren.
+Die \texttt{Update()}"=Methoden starten bei allen vier implementierten \gls{YARN}"=Komponenten die jeweiligen Monitoring"=Funktionen, bei \texttt{YarnNode} werden zudem \texttt{StartNode()} und \texttt{StartConnection()} ausgeführt um mögliche zuvor injizierte Komponentenfehler im realen Cluster zu reparieren.
 
-Da bei der Ausführung des Modells durch \ac{ss} keine neuen Instanzen erzeugt werden können (vgl. \cref{sec:ssharp}), dienen die jeweiligen IDs der Komponenten auch als Indikator, ob die jeweilige Komponenten"=Instanz derzeit benötigt wird und somit Daten gespeichert werden sollen.
+Da bei der Ausführung des Modells durch \gls{ss} keine neuen Instanzen erzeugt werden können (vgl. \cref{sec:ssharp}), dienen die jeweiligen IDs der Komponenten auch als Indikator, ob die jeweilige Komponenten"=Instanz derzeit benötigt wird und somit Daten gespeichert werden sollen.
 Daher wird das Monitoring auch nur dann ausgeführt, wenn der Instanz eine nicht leere ID \zB in Form der \texttt{AppId} zugewiesen wurde.
 
 \subsection{Implementierung der Komponentenfehler}
 \label{subsec:yarnComponentFaults}
 
-Die im \ac{YARN}"=Modell implementierten Komponentenfehler wurden direkt in den entsprechenden \ac{YARN}"=Komponenten implementiert.
+Die im \gls{YARN}"=Modell implementierten Komponentenfehler wurden direkt in den entsprechenden \gls{YARN}"=Komponenten implementiert.
 Implementiert wurden hierbei mit \texttt{NodeDeadFault} und \texttt{NodeConnectionErrorFault} zwei jeweils als \texttt{TransientFault} definierte Komponentenfehler für die durch \texttt{YarnNode} repräsentierten Nodes.
 Während durch \texttt{NodeDeadFault} der komplette Node beendet wird, trennt \texttt{NodeConnectionErrorFault} nur die Verbindung des Nodes zum Cluster.
 Die dazugehörigen Effekt"=Klassen der Komponentenfehler sind jeweils als innere Klassen in \texttt{YarnNode} implementiert.
@@ -162,19 +162,19 @@ public class CmdConnector : IHadoopConnector
 
 Das Reparieren von Komponentenfehlern geschieht analog hierzu.
 Hierfür werden in der \texttt{Update()}"=Methode die beiden Start"=Methoden aufgerufen, die einen Fehlerhaften Node reparieren.
-Eine Besonderheit bildet hierbei die Reparatur des Komponentenfehlers \texttt{NodeConnectionErrorFault}, bei der der Node komplett neu gestartet wird, da es sonst passieren kann, dass der wieder ans Netzwerk angebundene Node sich nicht mit dem \ac{RM} verbindet.
+Eine Besonderheit bildet hierbei die Reparatur des Komponentenfehlers \texttt{NodeConnectionErrorFault}, bei der der Node komplett neu gestartet wird, da es sonst passieren kann, dass der wieder ans Netzwerk angebundene Node sich nicht mit dem \gls{RM} verbindet.
 
-Da beide Fehler zudem auch gleichzeitig aktiviert werden können, wurde dem Komponentenfehler \texttt{NodeDeadFault} mithilfe entsprechender \ac{ss}"=Funktionen eine höhere Priorität vergeben, wodurch dieser Vorrang vor dem anderen Komponentenfehler erhält.
+Da beide Fehler zudem auch gleichzeitig aktiviert werden können, wurde dem Komponentenfehler \texttt{NodeDeadFault} mithilfe entsprechender \gls{ss}"=Funktionen eine höhere Priorität vergeben, wodurch dieser Vorrang vor dem anderen Komponentenfehler erhält.
 Dadurch wird in solchen Fällen der Node beendet und nicht zunächst noch zusätzlich auch vom Netzwerk getrennt.
 
-Zur einfachen Identifikation der aktiven Komponentenfehler innerhalb des \ac{YARN}"=Modells dienen die beiden Eigenschaften \texttt{IsActive} und \texttt{IsConnected}.
+Zur einfachen Identifikation der aktiven Komponentenfehler innerhalb des \gls{YARN}"=Modells dienen die beiden Eigenschaften \texttt{IsActive} und \texttt{IsConnected}.
 In \cref{lst:faultInjection} wird bereits die Auswirkung der beiden Eigenschaft gezeigt, indem verhindert wird, dass ein möglicherweise bereits injizierter bzw. reparierter Komponentenfehler erneut injiziert bzw. repariert wird.
 Sie dienen aber auch zur Validierung der Constraints, bei denen mithilfe der beiden Eigenschaften geprüft wird, ob ein Node korrekt als aktiv bzw. defekt erkannt wurde.
 
 \subsection{Aktivierung von Komponentenfehler}
 \label{subsec:faultActivation}
 
-Ob ein Komponentenfehler in einem Testfall aktiviert wird, ist Abhängig von folgenden Parametern:
+Ob ein Komponentenfehler in einem \gls{Testfall} aktiviert wird, ist Abhängig von folgenden Parametern:
 
 \begin{itemize}
     \item Auslastung des Nodes im vorhergehenden Testfall
@@ -183,7 +183,7 @@ Ob ein Komponentenfehler in einem Testfall aktiviert wird, ist Abhängig von fol
 \end{itemize}
 
 Der hierfür benötigte Zufallsgenerator wird mithilfe des in \cref{subsec:testcaseGeneration} spezifizierten Basisseeds initialisiert.
-Da der Zufallsgenerator ein statischer Generator ist, werden über einen Test bei der gleichen Anzahl an möglichen Komponentenfehler immer die gleichen Werte zurückgegeben, nicht jedoch zwingend für einen bestimmten Komponentenfehler eines Nodes.
+Da der Zufallsgenerator ein statischer Generator ist, werden über einen \gls{Test} bei der gleichen Anzahl an möglichen Komponentenfehler immer die gleichen Werte zurückgegeben, nicht jedoch zwingend für einen bestimmten Komponentenfehler eines Nodes.
 
 Um zu bestimmen, ob ein Komponentenfehler aktiviert wird, sind alle Komponentenfehler mit dem Attribut \texttt{NodeFault} markiert.
 Mithilfe dieses Attributes wird bei der Ausführung eines Testfalls folgendermaßen berechnet, ob der Komponentenfehler aktiviert wird:
@@ -214,8 +214,8 @@ Außerdem spielt bei der Deaktivierung die Auslastung des Nodes zum Zeitpunkt de
 \subsection{Interface IYarnReadable und Monitoring}
 \label{subsec:yarnComponentInterface}
 
-Das Interface \texttt{IYarnReadable} ist das zentrale Erkennungsmerkmal der im Modell abgebildeten und implementierten \ac{YARN}"=Komponenten.
-Es dient zum einen zur Identifikation aller implementierten \ac{YARN}"=Komponenten, andererseits stellt es auch Eigenschaften und Methoden bereit, welche einerseits dem Testen in \ac{ss} dienen, primär aber dem Ermitteln der Daten aus dem realen Cluster:
+Das Interface \texttt{IYarnReadable} ist das zentrale Erkennungsmerkmal der im Modell abgebildeten und implementierten \gls{YARN}"=Komponenten.
+Es dient zum einen zur Identifikation aller implementierten \gls{YARN}"=Komponenten, andererseits stellt es auch Eigenschaften und Methoden bereit, welche einerseits dem Testen in \gls{ss} dienen, primär aber dem Ermitteln der Daten aus dem realen Cluster:
 
 \begin{itemize}
     \item \texttt{GetId()}
@@ -234,11 +234,11 @@ Es dient zum einen zur Identifikation aller implementierten \ac{YARN}"=Komponent
 
 Die beiden erstgenannten Methoden dienen primär zu Debugging"=Zwecken und zur Rückgabe der ID beim Zugriff auf die jeweiligen Komponenten mithilfe das Interfaces bzw. der Werte aller Eigenschaften der Komponente als ein String.
 
-Die nachfolgenden vier Eigenschaften und Methoden dienen zum Monitoring der entsprechenden \ac{YARN}"=Komponenten.
+Die nachfolgenden vier Eigenschaften und Methoden dienen zum Monitoring der entsprechenden \gls{YARN}"=Komponenten.
 Während die Eigenschaft \texttt{Parser} den zu verwendenden Parser (vgl. \cref{subsec:implementedParsers}) speichert, dient die Eigenschaft \texttt{IsSelfMonito""ring} zur Unterscheidung, ob die Daten einer Komponente von dieser selbst ermittelt werden oder dies die übergeordnete Komponente durchführt.
-Diese Unterscheidung ist nötig, da \ac{YARN} zwei unterschiedliche Schnittstellen bietet, die Rückgabe der Daten durch die \ac{CLI} oder mithilfe der REST"=API.
+Diese Unterscheidung ist nötig, da \gls{YARN} zwei unterschiedliche Schnittstellen bietet, die Rückgabe der Daten durch die \gls{CLI} oder mithilfe der \gls{REST}"=API.
 Ausführlichere Informationen zu den beiden Varianten sind in \cref{sec:sshDriver} zu finden.
-Bei der Nutzung der \ac{CLI} zur Ermittlung der Daten eignet sich daher die Selbstermittlung der Daten besser, während bei der Nutzung der Rest"=API die Ermittlung der Daten durch die übergeordnete Komponente geeigneter ist.
+Bei der Nutzung der \gls{CLI} zur Ermittlung der Daten eignet sich daher die Selbstermittlung der Daten besser, während bei der Nutzung der Rest"=API die Ermittlung der Daten durch die übergeordnete Komponente geeigneter ist.
 Aus diesem Grund ist auch die Methode \texttt{SetStatus()} definiert, da hier unabhängig von der Datenermittlung der aktuelle Status der Komponente abgespeichert werden kann.
 Die Durchführung des Monitoring findet in beiden Fällen jedoch mithilfe der Methode \texttt{MonitorStatus()} statt:
 
@@ -276,16 +276,16 @@ Wenn dies der Fall ist, werden die vom realen Cluster ermittelten Daten weiterhi
 Wenn keine freie Instanz mehr nötig ist, wird eine entsprechende \texttt{OutOfMemoryException} ausgelöst, damit die Ausführung des Modells abgebrochen werden kann.
 
 Eine Besonderheit bildet das Monitoring der Anwendungs=Container.
-Da eine Anwendung sehr schnell eine sehr hohe Anzahl an Container allokiert und jede Container"=Instanz im Modell Speicherplatz benötigt, werden nur die Daten der während des Monitoring ausgeführten Container ermittelt.
-Bei Anwendungen und Attempts werden dagegen auch die Daten von bereits beendeten Anwendungen bzw. Attempts gespeichert.
+Da eine \gls{Anwendung} sehr schnell eine sehr hohe Anzahl an \gls{Container} allokiert und jede Container"=Instanz im Modell Speicherplatz benötigt, werden nur die Daten der während des Monitoring ausgeführten \gls{Container} ermittelt.
+Bei \glspl{Anwendung} und \glspl{Attempt} werden dagegen auch die Daten von bereits beendeten \glspl{Anwendung} bzw. \glspl{Attempt} gespeichert.
 
-Die vier restlichen Eigenschaften und Methoden des Interfaces dienen zur Auswertung der Komponente durch \ac{ss}.
+Die vier restlichen Eigenschaften und Methoden des Interfaces dienen zur Auswertung der Komponente durch \gls{ss}.
 Die beiden Eigenschaften \texttt{SutConstraints} und \texttt{TestConstraints} dienen zur Implementierung der in \cref{sec:requirements} definierten Anforderungen in Form von Constraints.
 
-\subsection{Constraints der \acs{YARN}"=Komponenten}
+\subsection{Constraints der \glsentryshort{YARN}"=Komponenten}
 \label{subsec:yarnComponentConstraints}
 
-Einige der in \cref{sec:requirements} definierten Anforderungen an das \ac{SuT} und gesamte Testsystem sind auch für die \ac{YARN}"=Komponenten relevant.
+Einige der in \cref{sec:requirements} definierten Anforderungen an das \gls{SuT} und gesamte Testsystem sind auch für die \gls{YARN}"=Komponenten relevant.
 Die relevanten Bestandteile der Anforderungen für die jeweiligen Komponenten sind mithilfe der beiden in \texttt{IYarnReadable} definierten Eigenschaften \texttt{SutConstraints} und \texttt{TestConstraints} implementiert.
 Realisiert sind die beiden Eigenschaften für die Constraints jeweils als \texttt{Func<bool>[]}:
 
@@ -329,10 +329,10 @@ Wenn die ID der Komponenten"=Instanzen leer ist, und die jeweilige Instanz somit
 \subsection{Implementierung des Clients}
 \label{subsec:yarnClient}
 
-Der Client im \ac{YARN}"=Modell simuliert einen Client und dient somit zum Starten der Benchmarks in dieser Fallstudie.
+Der Client im \gls{YARN}"=Modell simuliert einen Client und dient somit zum Starten der Benchmarks in dieser Fallstudie.
 Die Auswahl des zu startenden Benchmarks erfolgt durch den Benchmark"=Controller, welcher in \cref{sec:benchmarkController} erläutert wird.
 Jeder Client besitzt hierzu einen eigenen Benchmark"=Controller, womit die auszuführenden Benchmarks für jeden Client unabhängig von anderen Clients ausgewählt werden.
-Ein Client kann jedoch nur eine Anwendung gleichzeitig starten und muss eine zuvor gestartete Anwendung beenden, bevor er eine neue starten kann.
+Ein Client kann jedoch nur eine \gls{Anwendung} gleichzeitig starten und muss eine zuvor gestartete \gls{Anwendung} beenden, bevor er eine neue starten kann.
 Dies wird jedoch nur durchgeführt, wenn sich der auszuführende Benchmark geändert hat:
 
 \begin{lstlisting}[label=lst:startClientBenchmark,style=cs,
@@ -359,23 +359,23 @@ public void StartBenchmark(Benchmark benchmark)
 }
 \end{lstlisting}
 
-Da die auf dem Cluster ausgeführten Anwendungen \uU nicht gestartet werden, wenn im \ac{HDFS} das Ausgabeverzeichnis bereits vorhanden ist, muss dieses beim Starten eines Benchmarks zunächst gelöscht werden.
+Da die auf dem Cluster ausgeführten \glspl{Anwendung} \uU nicht gestartet werden, wenn im \gls{HDFS} das Ausgabeverzeichnis bereits vorhanden ist, muss dieses beim Starten eines Benchmarks zunächst gelöscht werden.
 Um mehrere Clients unabhängig voneinander nutzen zu können, besitzt jeder Client zudem ein spezifisches Verzeichnis, das seiner eigenen Client"=ID entspricht.
 Die Ein- und Ausgabedaten werden dadurch nur im Verzeichnis des jeweiligen Clients gespeichert.
 
-Wenn eine Anwendung gestartet wurde, wird diese zunächst synchron ausgeführt, bis von der gestarteten Anwendung ihre vom Cluster zugewiesene ID zurückgegeben wird.
-Diese ID wird vom Client abgespeichert und wird dafür benötigt, um in späteren Testfällen die Anwendung wieder beenden zu können
-Zudem wird auch eine noch leere \texttt{YarnApp}"=Instanz ermittelt und dieser die ID ebenfalls zugewiesen, um diese analog zu den anderen \ac{YARN}"=Komponenten zum Speichern der Daten der Anwendung zu nutzen.
-Der Unterschied hierbei ist jedoch, dass immer eine neue Instanz genutzt wird, da eine neue Anwendung automatisch immer eine ID erhält, welche im Cluster noch nicht existiert.
+Wenn eine \gls{Anwendung} gestartet wurde, wird diese zunächst synchron ausgeführt, bis von der gestarteten \gls{Anwendung} ihre vom Cluster zugewiesene ID zurückgegeben wird.
+Diese ID wird vom Client abgespeichert und wird dafür benötigt, um in späteren Testfällen die \gls{Anwendung} wieder beenden zu können
+Zudem wird auch eine noch leere \texttt{YarnApp}"=Instanz ermittelt und dieser die ID ebenfalls zugewiesen, um diese analog zu den anderen \gls{YARN}"=Komponenten zum Speichern der Daten der \gls{Anwendung} zu nutzen.
+Der Unterschied hierbei ist jedoch, dass immer eine neue Instanz genutzt wird, da eine neue \gls{Anwendung} automatisch immer eine ID erhält, welche im Cluster noch nicht existiert.
 Wenn keine leere \texttt{YarnApp}"=Instanz mehr verfügbar ist, wird analog zum Monitoring ebenfalls eine \texttt{OutOfMemoryException} ausgelöst.
 
 \subsection{Implementierung des Controllers}
 \label{subsec:yarnController}
 
-Der Controller repräsentiert zum einen den \ac{RM} des Hadoop"=Clusters, weshalb er auch von \texttt{YarnHost} erbt, genauso wie die Klasse der Nodes des \ac{YARN}"=Modells.
-Seine Hauptaufgabe besteht jedoch darin, als Controller zum Testen mit \ac{ss} zu dienen (vgl. \cref{subsec:ssharpModel}).
+Der Controller repräsentiert zum einen den \gls{RM} des Hadoop"=Clusters, weshalb er auch von \texttt{YarnHost} erbt, genauso wie die Klasse der Nodes des \gls{YARN}"=Modells.
+Seine Hauptaufgabe besteht jedoch darin, als Controller zum Testen mit \gls{ss} zu dienen (vgl. \cref{subsec:ssharpModel}).
 
-Der Controller steuert einen Großteil der Ausführung eines einzelnen Testfalls und ist die einzige Komponente des \ac{YARN}"=Modells, welche direkt mit dem Oracle interagiert:
+Der Controller steuert einen Großteil der Ausführung eines einzelnen Testfalls und ist die einzige Komponente des \gls{YARN}"=Modells, welche direkt mit dem Oracle interagiert:
 
 \begin{lstlisting}[label=lst:controllerUpdate,style=cs,
 caption={[Update()"=Methode des Controllers]
@@ -399,12 +399,12 @@ public override void Update()
 }
 \end{lstlisting}
 
-Nach einem ersten Monitoring des \ac{MARP}"=Wertes wird durch den Controller sichergestellt, dass jeder simulierte Client eine Anwendung startet, sofern vom Benchmark"=Controller hierbei eine neue Anwendung ausgewählt wird (vgl. \cref{subsec:yarnClient,sec:benchmarkController}).
+Nach einem ersten Monitoring des \gls{MARP}"=Wertes wird durch den Controller sichergestellt, dass jeder simulierte Client eine \gls{Anwendung} startet, sofern vom Benchmark"=Controller hierbei eine neue \gls{Anwendung} ausgewählt wird (vgl. \cref{subsec:yarnClient,sec:benchmarkController}).
 
-Vor dem Monitoring wird zunächst fünf Sekunden gewartet, damit die gestarteten Anwendungen auf dem Cluster die benötigten Ressourcen erhalten können, wodurch die Auslastung des Clusters besser ermittelt werden kann.
-Zum Monitoring nutzt der Controller die von \texttt{IYarnReadable} bereitgestellte Eigenschaft um das Selbstmonitoring der einzelnen \ac{YARN}"=Komponenten zu deaktivieren und führt dabei das Monitoring der Nodes und Anwendungen aus.
-Er startet zudem bei jeder Anwendung auch das Monitoring der jeweiligen Attempts bzw. dadurch auch das der Anwendungs"=Container, sofern benötigt.
-Dabei wird der \ac{MARP}"=Wert hier erneut ausgelesen, da er sich abhängig von den ausgeführten Anwendungen jederzeit verändern kann.
+Vor dem Monitoring wird zunächst fünf Sekunden gewartet, damit die gestarteten \glspl{Anwendung} auf dem Cluster die benötigten Ressourcen erhalten können, wodurch die Auslastung des Clusters besser ermittelt werden kann.
+Zum Monitoring nutzt der Controller die von \texttt{IYarnReadable} bereitgestellte Eigenschaft um das Selbstmonitoring der einzelnen \gls{YARN}"=Komponenten zu deaktivieren und führt dabei das Monitoring der Nodes und \glspl{Anwendung} aus.
+Er startet zudem bei jeder \gls{Anwendung} auch das Monitoring der jeweiligen \glspl{Attempt} bzw. dadurch auch das der Anwendungs"=Container, sofern benötigt.
+Dabei wird der \gls{MARP}"=Wert hier erneut ausgelesen, da er sich abhängig von den ausgeführten \glspl{Anwendung} jederzeit verändern kann.
 Abschließend startet der Controller die Validierung der Constraints durch das Oracle sowie die Prüfung, ob eine weitere Rekonfiguration des Clusters möglich ist.
 
 Für den Controller selbst sind ebenfalls einige der in \cref{sec:requirements} definierten Anforderungen relevant.
@@ -414,7 +414,7 @@ Die hierbei relevanten Anforderungen sind ebenfalls direkt im Controller impleme
 \label{subsec:oracleImpl}
 
 Das Oracle dient zur Validierung der  in \cref{sec:requirements} definierten Anforderungen automatisiert durch das Testsystem.
-Hierzu validiert es die Constraints aller \ac{YARN}"=Komponenten und des Controllers, jeweils getrennt nach Constraints für das \ac{SuT} und das gesamte Testsystem, und prüft, ob eine Rekonfiguration des Clusters möglich ist.
+Hierzu validiert es die Constraints aller \gls{YARN}"=Komponenten und des Controllers, jeweils getrennt nach Constraints für das \gls{SuT} und das gesamte Testsystem, und prüft, ob eine Rekonfiguration des Clusters möglich ist.
 Da die beiden von \texttt{IYarnReadable} bereitgestellten Eigenschaften zum Speichern der Constraints vom Typ \texttt{Func<bool>[]} sind, können so jeweils alle implementierten Constraints nacheinander validiert werden:
 
 \begin{lstlisting}[label=lst:oracleValidateConstraints,style=cs,
@@ -472,5 +472,5 @@ public bool IsReconfPossible()
 \end{lstlisting}
 
 Die bereits in \cref{lst:oracleValidateConstraints} genutzte Methode \texttt{CountCheck()} dient zu statistischen Zwecken.
-Hierbei wird getrennt nach Constraint"=Typ (für das \ac{SuT} oder für das Testsystem) gezählt, wie viele Constraints insgesamt validiert wurden und wie viele verletzt wurden.
+Hierbei wird getrennt nach Constraint"=Typ (für das \gls{SuT} oder für das Testsystem) gezählt, wie viele Constraints insgesamt validiert wurden und wie viele verletzt wurden.
 Die jeweiligen Werte können beim Abschluss einer Ausführung des Modells entsprechend ausgegeben werden.

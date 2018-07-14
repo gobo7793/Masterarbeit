@@ -2,8 +2,8 @@
 \label{sec:requirements}
 
 Zur Überprüfung des Clusters und des Testssystems selbst werden hierfür jeweils mehrere Anforderungen gestellt.
-Unterschieden wird hierbei zwischen funktionalen Anforderungen an das \ac{SuT} und Anforderungen an das Testsystem.
-Während die funktionalen Anforderungen ausschließlich vom Hadoop"=Cluster als \ac{SuT} erfüllt werden müssen, müssen die Test"=Anforderungen vom gesamten Testsystem erfüllt werden.
+Unterschieden wird hierbei zwischen funktionalen Anforderungen an das \gls{SuT} und Anforderungen an das Testsystem.
+Während die funktionalen Anforderungen ausschließlich vom Hadoop"=Cluster als \gls{SuT} erfüllt werden müssen, müssen die Test"=Anforderungen vom gesamten Testsystem erfüllt werden.
 
 Mithilfe der im Folgenden definierten Anforderungen soll bereits automatisiert geprüft werden können, inwieweit eine Testautomatisierung möglich ist.
 Hierfür werden die Anforderungen, sofern möglich, in Form  Form von Constraints ebenfalls im Modell implementiert.
@@ -12,13 +12,13 @@ Mithilfe dieser Constraints können die Anforderungen somit ebenfalls automatisi
 \subsection{Funktionale Anforderungen an das Cluster}
 \label{subsec:functionalRequirements}
 
-Obwohl in dieser Masterarbeit der Fokus auf Testautomatisierung und Validieren eines Testsystems liegt, müssen auch die funktionalen Anforderungen an das \ac{SuT}, also das Hadoop"=Cluster selbst, berücksichtigt werden.
+Obwohl in dieser Masterarbeit der Fokus auf Testautomatisierung und Validieren eines Testsystems liegt, müssen auch die funktionalen Anforderungen an das \gls{SuT}, also das Hadoop"=Cluster selbst, berücksichtigt werden.
 Da im Rahmen der Publikation \cite{Eberhardinger2018} ebenfalls der in \cref{sec:clusterSetup} beschriebene und in dieser Fallstudie genutzte Versuchsaufbau genutzt wurde, wurden im Rahmen dieser Fallstudie auch funktionale Anforderungen an das Cluster selbst durch das Oracle geprüft.
-Dies betrifft konkret folgende, bereits in \cite{Eberhardinger2018} definierte, Anforderungen an das \ac{SuT}:
+Dies betrifft konkret folgende, bereits in \cite{Eberhardinger2018} definierte, Anforderungen an das \gls{SuT}:
 
 \begin{enumerate}
     \item Ein Task wird vollständig ausgeführt, sofern er nicht abgebrochen wird
-    \item Kein Task oder Anwendung wird an inaktive, defekte oder nicht verbundene Nodes gesendet
+    \item Kein Task oder \gls{Anwendung} wird an inaktive, defekte oder nicht verbundene Nodes gesendet
     \item Die Konfiguration wird aktualisiert, sobald eine entsprechende Regel erfüllt ist
     \item Defekte oder Verbindungsabbrüche werden erkannt
 \end{enumerate}
@@ -27,22 +27,22 @@ Dies betrifft konkret folgende, bereits in \cite{Eberhardinger2018} definierte, 
 \label{subsec:testRequirements}
 
 Neben den funktionalen Anforderungen, gibt es weitere Anforderungen an das gesamte Testsystem.
-Diese Anforderungen betreffen das Hadoop"=Cluster, die Selfbalancing"=Komponente, das entwickelte \ac{ss}"=Modell sowie der Treiber zur Kommunikation zwischen Modell und Cluster.
+Diese Anforderungen betreffen das Hadoop"=Cluster, die Selfbalancing"=Komponente, das entwickelte \gls{ss}"=Modell sowie der Treiber zur Kommunikation zwischen Modell und Cluster.
 Konkret sind dies folgende Anforderungen an das Testsystem:
 
 \begin{enumerate}
-    \item Der \ac{MARP}"=Wert ändert sich basierend auf den derzeit ausgeführten Anwendungen
+    \item Der \gls{MARP}"=Wert ändert sich basierend auf den derzeit ausgeführten Anwendungen
     \item Der jeweils aktuelle Status des Clusters wird erkannt und im Modell gespeichert
     \item Defekte Nodes und Verbindungsabbrüche werden erkannt
     \item Im Modell implementierte Komponentenfehler werden im realen Cluster injiziert und repariert
     \item Wenn alle Nodes defekt sind, wird erkannt, dass sich das Cluster nicht mehr rekonfigurieren kann
-    \item Ein Test kann vollautomatisch ausgeführt werden
+    \item Ein \gls{Test} kann vollautomatisch ausgeführt werden
     \item Das Cluster kann ohne Auswirkungen auf seine Funktionsweise auf einem oder mehreren Hosts ausgeführt werden
-    \item Es können mehrere Benchmark"=Anwendungen gleichzeitig gestartet und ausgeführt werden
-    \item Tests und Testfälle können zeitlich unabhängig und mehrmals ausgeführt werden
+    \item Es können mehrere Benchmark\gls{Anwendung}en gleichzeitig gestartet und ausgeführt werden
+    \item \glspl{Test} und \glspl{Testfall} können zeitlich unabhängig und mehrmals ausgeführt werden
 \end{enumerate}
 
 Die funktionalen Anforderungen dienen zudem ebenfalls als Anforderungen an das Testsystem und erweitern somit die hier genannten Anforderungen.
 
 Eine Besonderheit bildet zudem die fünfte Anforderung, wonach erkannt werden muss, dass im Cluster keine weitere Rekonfiguration möglich ist.
-Wird diese Anforderung verletzt soll der ausgeführte Test abgebrochen werden, während bei den anderen, auch den funktionalen, Anforderungen dies nur durch das Oracle vermerkt werden soll, die Ausführung aber nicht weiter durch das Oracle beeinträchtigt werden soll.
+Wird diese Anforderung verletzt soll der ausgeführte \gls{Test} abgebrochen werden, während bei den anderen, auch den funktionalen, Anforderungen dies nur durch das Oracle vermerkt werden soll, die Ausführung aber nicht weiter durch das Oracle beeinträchtigt werden soll.

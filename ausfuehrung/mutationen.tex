@@ -3,8 +3,8 @@
 
 Zur Entwicklung der für die Mutationstests verwendeten Mutanten wurde der von \citeauthor{Groce2018} in \cite{Groce2018} vorgestellte \textbf{Universalmutator}\footnote{\url{https://github.com/agroce/universalmutator}} genutzt.
 Der Universalmutator ist ein Tool, das den vorhandenen Quellcode eines Programmes verändert, sodass damit Mutationstests durchgeführt werden können.
-Diese werden vor allem in der Forschung eingesetzt, um Testsysteme zu verifizieren, in dem das \ac{SuT} verändert wird.
-Ziel hierbei ist es, mithilfe des Testsystems zu erkennen, dass das \ac{SuT} verändert wurde bzw. nicht korrekt funktioniert.
+Diese werden vor allem in der Forschung eingesetzt, um Testsysteme zu verifizieren, in dem das \gls{SuT} verändert wird.
+Ziel hierbei ist es, mithilfe des Testsystems zu erkennen, dass das \gls{SuT} verändert wurde bzw. nicht korrekt funktioniert.
 \todo{Allgemeines zu Mutationstests in Grundlagen?}
 
 Der Universalmutator kann zum Entwickeln von Mutationstests hierbei nicht nur innerhalb einer bestimmten Umgebung bzw. Programmiersprache, sondern prinzipiell für alle Programmiersprachen eingesetzt werden.
@@ -21,25 +21,25 @@ Von allen validen Mutationen wurden anschließend für jede der vier Klassen der
 
 \begin{enumerate}
     \item
-    Zur Ermittlung der Veränderung des \ac{MARP}"=Wertes muss zunächst der jeweils aktuelle Arbeitsspeicher"=Verbrauch im Cluster eingelesen werden.
+    Zur Ermittlung der Veränderung des \gls{MARP}"=Wertes muss zunächst der jeweils aktuelle Arbeitsspeicher"=Verbrauch im Cluster eingelesen werden.
     Dies geschieht im \texttt{Controller} mithilfe einer \texttt{for}"=Schleife, mit der der Speicherverbrauch im Cluster nahezu sekündlich aus der \texttt{memLog}"=Datei eingelesen wird.
     Der Mutant verändert die Schleifenbedingung, damit die Schleife kein einziges mal ausgeführt wird.
     Dadurch wird verhindert, dass der Speicherverbrauch des Cluster vom \texttt{Controller} eingelesen und verwendet werden kann.
     Dadurch ist der Speicherverbrauch des Clusters auch nicht für den in \cite{Zhang2016} vorgestellten Algorithmus der Selfbalancing"=Komponente verfügbar.
     
     \item 
-    Der \texttt{Effectuator} dient dazu, um die Veränderung des \ac{MARP}"=Wertes im Cluster zu speichern.
+    Der \texttt{Effectuator} dient dazu, um die Veränderung des \gls{MARP}"=Wertes im Cluster zu speichern.
     Dazu wird das entsprechende Shell"=Script mithilfe der \emph{Bash}"=Shell ausgeführt.
-    Der Mutant sorgt dafür, dass anstatt des korrekten Dateipfades der Bash (\texttt{/bin/bash}) ein ungültiger Dateipfad (hier \texttt{\%bin/bash}) aufgerufen wird und somit der neue \ac{MARP}"=Wert nicht in das Cluster übertragen werden kann.
+    Der Mutant sorgt dafür, dass anstatt des korrekten Dateipfades der Bash (\texttt{/bin/bash}) ein ungültiger Dateipfad (hier \texttt{\%bin/bash}) aufgerufen wird und somit der neue \gls{MARP}"=Wert nicht in das Cluster übertragen werden kann.
     
     \item
-    Mithilfe des \texttt{ControlNodeMonitor} wird das Schell"=Script zum Ermitteln der Anzahl der aktiven \ac{YARN}"=Jobs ausgeführt.
+    Mithilfe des \texttt{ControlNodeMonitor} wird das Schell"=Script zum Ermitteln der Anzahl der aktiven \gls{YARN}"=Jobs ausgeführt.
     Dies geschieht in einem eigenen Thread, der mithilfe einer \texttt{while}"=Schleife, die solange aktiv ist, solange der Thread aktiv ist.
     Hierbei wird das Script rund einmal pro Sekunde aufgerufen und danach ermittelt, ob bei der Ausführung des Shell"=Scriptes Fehler aufgetreten sind.
     Dazu wird ein entsprechender \texttt{BufferedReader} geöffnet und der Error"=Stream des Scriptes eingelesen und anschließend von der Selfbalancing"=Komponente ausgegeben.
     Umgesetzt wird das mithilfe einer \texttt{while}"=Schleife, die solange den Fehler ausgibt, solange die mithilfe von \texttt{BufferedReader.readLine()} ausgelesene Fehlermeldung nicht \texttt{null} ist, also noch weiteren Text enthält.
     Der Mutant ändert die Schleifenbedingung nun so ab, dass die Schleife durchlaufen wird, solange die Fehlermeldung keinen Text enthält, \texttt{readLine()} also \texttt{null} zurück gibt.
-    Dadurch wird der \texttt{ControlNodeMonitor} in einer Dauerschleife gefangen und die Anzahl der aktiven \ac{YARN}"=Jobs wird einmalig direkt nach dem Start der Selfbalancing"=Komponente ermittelt.
+    Dadurch wird der \texttt{ControlNodeMonitor} in einer Dauerschleife gefangen und die Anzahl der aktiven \gls{YARN}"=Jobs wird einmalig direkt nach dem Start der Selfbalancing"=Komponente ermittelt.
             
     \item
     Die Klasse \texttt{MemUtilization} funktioniert analog wie die \texttt{ControlNodeMonitor}"=Klasse, führt jedoch das Script zum Auslesen des Arbeitsspeicher"=Verbrauches aus dem Cluster aus.
@@ -47,7 +47,7 @@ Von allen validen Mutationen wurden anschließend für jede der vier Klassen der
     Dadurch wird verhindert, dass das entsprechende Shell"=Script überhaupt ausgeführt wird und der Speicherverbrauch somit nicht ausgelesen wird.
 \end{enumerate}
 
-Aufgrund der verwendeten Mutationen erhält die Selfbalancing"=Komponente bei jedem einzelnen Mutanten bereits nicht alle benötigten Informationen zur Anpassung des \ac{MARP}"=Wertes bzw. kann die Änderung des Wertes nicht in der Konfiguration des Clusters speichern.
+Aufgrund der verwendeten Mutationen erhält die Selfbalancing"=Komponente bei jedem einzelnen Mutanten bereits nicht alle benötigten Informationen zur Anpassung des \gls{MARP}"=Wertes bzw. kann die Änderung des Wertes nicht in der Konfiguration des Clusters speichern.
 
 Für jede Mutation wurde ein Mutationsszenario im Rahmen der Plattform Hadoop"=Benchmark entwickelt, bei dem keine weitere Mutationen enthalten sind (vgl. \cref{sec:realCluster}).
 Zudem wurde ein weiteres Mutationsszenario entwickelt, bei dem alle vier Mutationen enthalten sind.

@@ -1,35 +1,35 @@
 \section{Grundlegender Versuchsaufbau}
 \label{sec:clusterSetup}
 
-Neben den Anforderungen an Hadoop und das gesamte Testsystem muss auch der grundlegende Versuchsaufbau und das \ac{SuT} in definiert werden.
-Im Grunde wird, wie bereits in \cref{ch:intro} erwähnt, Hadoop mithilfe des \ac{ss}"=Frameworks nachgebildet und dieses Modell mit einem realen Cluster verbunden.
+Neben den Anforderungen an Hadoop und das gesamte Testsystem muss auch der grundlegende Versuchsaufbau und das \gls{SuT} in definiert werden.
+Im Grunde wird, wie bereits in \cref{ch:intro} erwähnt, Hadoop mithilfe des \gls{ss}"=Frameworks nachgebildet und dieses Modell mit einem realen Cluster verbunden.
 \todo{dort erwähnen}
 In diesem Cluster sollen anhand des Modells unterschiedliche Komponentenfehler injiziert und repariert werden, als auch unterschiedliche Benchmarks gestartet werden.
 Hierbei soll nicht nur das Verhalten von Hadoop selbst analysiert werden, sondern auch das der von \citeauthor{Zhang2016} entwickelten Selfbalancing"=Komponente.
 Anhand dieses Verhaltens und dem des kompletten Testsystems soll schließlich ermittelt werden, ob eine Testautomatisierung in diesem Versuchsaufbau erfolgreich war.
 Es ist hierbei der gleiche Versuchsaufbau wie in \cite{Eberhardinger2018}, da dafür das gleiche Testsystem genutzt wurde wie für diese Fallstudie, in deren Rahmen es entwickelt wurde.
 
-Bei der Entwicklung des Modells liegt der Fokus auf dem grundlegenden Aufbau von \ac{YARN}.
-Dazu gehören die Anwendungen und ihre Attempts, sowie zum Teil auch ihre Container.
+Bei der Entwicklung des Modells liegt der Fokus auf dem grundlegenden Aufbau von \gls{YARN}.
+Dazu gehören die \glspl{Anwendung} und ihre Attempts, sowie zum Teil auch ihre Container.
 Daneben muss das Modell auch die Nodes des Clusters und zum Ausführen der Benchmarks auch simulierte Clients enthalten.
-Da bei den Tests auch Ausfälle von Nodes eine Rolle spielen, müssen hierfür entsprechende Komponentenfehler implementiert werden, die mithilfe von \ac{ss} aktiviert und deaktiviert werden können.
+Da bei den \glspl{Test} auch Ausfälle von Nodes eine Rolle spielen, müssen hierfür entsprechende Komponentenfehler implementiert werden, die mithilfe von \gls{ss} aktiviert und deaktiviert werden können.
 Das Modell soll dabei immer den aktuellen Status des realen Clusters repräsentieren, weshalb regelmäßig alle benötigten Daten des realen Clusters ausgelesen und im Modell gespeichert werden müssen.
 
-Da die Auswahl der ausgeführten Benchmarks eines jeden Clients nicht bei jedem Test manuell bestimmt werden soll, wird hierfür ein Transitionssystem verwendet.
-Mithilfe dieses Transitionssystems, in dem die Wahrscheinlichkeiten von Wechseln zwischen zwei Anwendungen definiert sind, soll während der Ausführung eines Testfalls zufällig eine nachfolgende Anwendung ausgewählt werden.
+Da die Auswahl der ausgeführten Benchmarks eines jeden Clients nicht bei jedem \gls{Test} manuell bestimmt werden soll, wird hierfür ein Transitionssystem verwendet.
+Mithilfe dieses Transitionssystems, in dem die Wahrscheinlichkeiten von Wechseln zwischen zwei \glspl{Anwendung} definiert sind, soll während der Ausführung eines Testfalls zufällig eine nachfolgende \gls{Anwendung} ausgewählt werden.
 
 Die Verbindung zwischen dem Modell und dem realen Hadoop"=Cluster wird mithilfe eines dafür entwickelten Treibers durchgeführt.
-Der Treiber ist dafür verantwortlich, Komponentenfehler und Anwendungen an das reale Cluster zu senden.
+Der Treiber ist dafür verantwortlich, Komponentenfehler und \glspl{Anwendung} an das reale Cluster zu senden.
 Zudem dient er dazu, um den Status des Clusters jederzeit ermitteln und an das Modell zur dortigen Speicherung übergeben zu können.
 Er kann daher nicht nur aus der Verbindung zum Cluster selbst bestehen, sondern muss auch die Kommunikation zwischen Modell und Cluster sicherstellen und übermittelte Daten entsprechend umwandeln.
 
-Das \ac{SuT} selbst stellt das reale Hadoop"=Cluster dar, das mithilfe der von \citeauthor{Zhang2016} entwickelten Plattform Hadoop"=Benchmark, die Hadoop 2.7.1 enthält, umgesetzt werden soll.
+Das \gls{SuT} selbst stellt das reale Hadoop"=Cluster dar, das mithilfe der von \citeauthor{Zhang2016} entwickelten Plattform Hadoop"=Benchmark, die Hadoop 2.7.1 enthält, umgesetzt werden soll.
 Hierfür sollen basierend auf dem in der Plattform enthaltenen Szenario mit der Selfbalancing"=Komponente für diese Fallstudie angepasste Szenarien genutzt werden.
 Zudem soll auch mithilfe von Mutationstests, bei denen einer oder mehrere Mutanten in der Selfbalancing"=Komponente implementiert werden, das Testsystem geprüft werden.
 
 Dieser Versuchsaufbau soll zudem mithilfe eines dafür entwickelten \emph{Oracles} geprüft werden.
 Das Oracle dient zur Validierung der in \cref{sec:requirements} definierten Anforderungen an das Cluster und das Testsystem.
-Hierfür werden, sofern möglich, die Anforderungen als \emph{Constraints} im Modell implementiert und bei jedem Test automatisch geprüft.
+Hierfür werden, sofern möglich, die Anforderungen als \emph{Constraints} im Modell implementiert und bei jedem \gls{Test} automatisch geprüft.
 Die Implementierung der Constraints erfolgt hierbei nicht zentral mithilfe des Oracles, sondern dezentral in den jeweiligen Komponenten des Modells.
 Für jede implementierte Komponente werden somit nur die jeweils relevanten Bestandteile der Anforderungen als Constraints implementiert und durch das Oracle validiert.
 

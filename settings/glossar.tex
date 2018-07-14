@@ -1,0 +1,76 @@
+% Benchmarks
+\newacronym[type=apps]{dfw}{dfw}{\texttt{TestDFSIO -write}}
+\newacronym[type=apps]{rtw}{rtw}{\texttt{randomtextwriter}}
+\newacronym[type=apps]{tg}{tg}{\texttt{teragen}}
+\newacronym[type=apps]{dfr}{dfr}{\texttt{TestDFSIO -read}}
+\newacronym[type=apps]{wc}{wc}{\texttt{wordcount}}
+\newacronym[type=apps]{rw}{rw}{\texttt{randomwriter}}
+\newacronym[type=apps]{so}{so}{\texttt{sort}}
+\newacronym[type=apps]{tsr}{tsr}{\texttt{terasort}}
+\newacronym[type=apps]{pi}{pi}{\texttt{pi}}
+\newacronym[type=apps]{pt}{pt}{\texttt{pentomino}}
+\newacronym[type=apps]{tms}{tms}{\texttt{testmapredsort}}
+\newacronym[type=apps]{tvl}{tvl}{\texttt{teravalidate}}
+\newacronym[type=apps]{sl}{sl}{\texttt{sleep}}
+\newacronym[type=apps]{fl}{fl}{\texttt{fail}}
+
+% Abkürzungen/Akronyme
+%\newacronym[longplural={plural}]{label}{abbrv}{full}
+\newacronym{AM}{AM}{ApplicationManager}
+\newacronym{AppMstr}{AppMstr}{ApplicationMaster}
+\newacronym{DCCA}{DCCA}{Deductive Cause-Consequence Analysis}
+\newacronym{HDFS}{HDFS}{Hadoop Distributed File System}
+\newacronym{CLI}{CLI}{Kommandozeile}
+\newacronym{MARP}{MARP}{\texttt{maximum-am-resource\-percent}}
+\newacronym{MC}{MC}{Model Checking}
+\newacronym{MCr}{MC}{Model Checker}
+\newacronym{MR}{MR}{MapReduce}
+\newacronym{NM}{NM}{NodeManager}
+\newacronym[firstplural=Regular Expressions (Regex)]{Regex}{Regex}{Regular Expression}
+\newacronym{RM}{RM}{ResourceManager}
+\newacronym{ss}{S\#}{Safety Sharp}
+\newacronym{SWIM}{SWIM}{Statistical Workload Injector for Mapreduce}
+\newacronym{TLS}{TLS}{Timeline Server}
+\newacronym{YARN}{YARN}{Yet Another Resource Negotiator}
+
+% Glossar
+\longnewglossaryentry{Anwendung}{
+    name=Anwendung,
+    plural=Anwendungen,}
+    {Ein auf dem Hadoop-Cluster ausgeführtes Programm.}
+\longnewglossaryentry{Attempt}{
+    name=Attempt,
+    plural=Attempts,}
+    {Ausführungsinstanz einer Anwendung auf dem Hadoop-Cluster.}
+\longnewglossaryentry{Container}{
+        name=Container,
+        plural=Container,}
+    {1. Ausführungsinstanz eines Tasks auf dem Hadoop-Cluster.
+        2. Ausgeführte Instanz eines Docker-Images.}
+\longnewglossaryentry{Testkonfiguration}{
+    name=Testkonfiguration,
+    plural=Testkonfigurationen,}
+    {Eine Konfiguration bestehend aus mehreren Parametern, die einen Test definieren.
+        Die Nummerierung der in \cref{sec:selectTestcases} definierten Konfigurationen erfolgte fortlaufend.}
+\longnewglossaryentry{Testfall}{
+    name=Testfall,
+    plural=Testfälle,}
+    {Ein ausgeführter Simulations"=Schritt.
+        Ein Testfall wird während der Laufzeit basierend auf einer zugrundeliegenden Testkonfiguration sowie den Ereignissen und Ergebnissen zuvor ausgeführter Testfälle der zugrundeliegenden Konfiguration generiert.
+        In einem Testfall können daher unterschiedliche Komponentenfehler aktiviert und deaktiviert sowie unterschiedliche Anwendungen gestartet werden, auch wenn sie durch die gleiche Testkonfiguration generiert wurden (vgl. \cref{subsec:simulationStep}).}
+\longnewglossaryentry{Test}{
+    name=Test,
+    plural=Tests,}
+    {Eine Ausführung einer Testkonfiguration mit mehreren Testfällen.
+        Um mehrmalige Ausführungen einer Testkonfiguration zu kennzeichnen, wurde der jeweiligen Konfiguration eine weitere Ziffer angehängt.
+        Alle ausgeführten Test sind in \cref{app:overviewExecutedTestCases} zu finden.}
+\longnewglossaryentry{REST}{
+    name=REST,
+    plural=REST,}
+    {Abkürzung für \emph{Representational State Transfer}.
+        Programmierparadigma um maschinenlesbare Schnittstellen, meist für Webservices, bereitzustellen.}
+
+%\newdualentry[glossary options][acronym options]{label}{abbrv}{long}{description}
+\newdualentry[plural=Systems under Test][]
+    {SuT}{SuT}{System under Test}
+    {Das mit einem Test zu testende System selbst.}

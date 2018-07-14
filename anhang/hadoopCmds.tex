@@ -1,16 +1,16 @@
-\chapter{\acs{CLI}"=Befehle von Hadoop}
+\chapter{\glsentryshort{CLI}"=Befehle von Hadoop}
 \label{app:hadoopCmds}
 
 Für jede der vier relevanten YARN"=Komponenten können die Daten jeweils als Liste oder als ausführlicher Report ausgegeben werden.
-Im Folgenden sind beispielhaft die dafür notwendigen Befehle für Anwendungen aufgelistet, für Attempts, Container und Nodes sind analoge Befehle verfügbar.
+Im Folgenden sind beispielhaft die dafür notwendigen Befehle für \glspl{Anwendung} aufgelistet, für Attempts, \gls{Container} und Nodes sind analoge Befehle verfügbar.
 Neben den Monitoring"=Befehlen sind auch einige weitere für diese Arbeit relevante Befehle mit ihren Ausgaben aufgelistet.
-Die Ausgaben zu den Befehlen sind hier zudem auf das wesentliche gekürzt, \uA da Hadoop bei einigen Befehlen ausgibt, über welche Services (in \cref{lst:hadoopAppListCmd} \zB \ac{TLS}, \ac{RM} und \emph{Application History Server}) die Daten ermittelt werden.
+Die Ausgaben zu den Befehlen sind hier zudem auf das wesentliche gekürzt, \uA da Hadoop bei einigen Befehlen ausgibt, über welche Services (in \cref{lst:hadoopAppListCmd} \zB \gls{TLS}, \gls{RM} und \emph{Application History Server}) die Daten ermittelt werden.
 Weiterführende Informationen zu den hier aufgeführten Befehlen sowie die vollständige Befehlsreferenz sind in der Dokumentation von Hadoop in \cite{HadoopYarnCmds271} zu finden.
 
 \begin{lstlisting}[label=lst:hadoopAppListCmd,style=plain,
-caption={[\acs{CLI}"=Ausgabe der Anwendungsliste]
-    \acs{CLI}"=Ausgabe der Anwendungsliste.
-    Anwendungen können mithilfe der Optionen \mbox{\texttt{-{}-appTypes}} und \mbox{\texttt{-{}-appStates}} gefiltert werden.}]
+caption={[\acrshort{CLI}"=Ausgabe der Anwendungsliste]
+    \acrshort{CLI}"=Ausgabe der Anwendungsliste.
+    \glspl{Anwendung} können mithilfe der Optionen \mbox{\texttt{-{}-appTypes}} und \mbox{\texttt{-{}-appStates}} gefiltert werden.}]
 $ yarn application --list --appStates ALL
 18/02/08 15:37:51 INFO impl.TimelineClientImpl: Timeline service address: http://0.0.0.0:8188/ws/v1/timeline/
 18/02/08 15:37:51 INFO client.RMProxy: Connecting to ResourceManager at controller/10.0.0.3:8032
@@ -21,7 +21,7 @@ application_1518100641776_0001	QuasiMonteCarlo	MAPREDUCE	root	default	FINISHED	S
 \end{lstlisting}
 
 \begin{lstlisting}[label=lst:hadoopAppDetailsCmd,style=plain,
-caption={\acs{CLI}"=Ausgabe des Reports einer Anwendung}]
+caption={\acrshort{CLI}"=Ausgabe des Reports einer Anwendung}]
 $ yarn application --status application_1518100641776_0001
 ...
 Application Report : 
@@ -43,9 +43,9 @@ Application Report :
 \end{lstlisting}
 
 \begin{lstlisting}[label=lst:hadoopAppStart,style=plain,
-caption={[Starten einer Anwendung in Hadoop"=Benchmark]
-    Starten einer Anwendung in Hadoop"=Benchmark.
-    Hier mit dem Mapreduce Example \acl{pi} und dem Abbruch der Anwendung durch den in \cref{lst:hadoopAppKill} gezeigten Befehl.
+caption={[Starten einer \gls{Anwendung} in Hadoop"=Benchmark]
+    Starten einer \gls{Anwendung} in Hadoop"=Benchmark.
+    Hier mit dem Mapreduce Example \acrlong{pi} und dem Abbruch der \gls{Anwendung} durch den in \cref{lst:hadoopAppKill} gezeigten Befehl.
     Die Anwendungs"=ID \mbox{\texttt{application\_1520342317799\_0002}} ist hier in Zeile 13 enthalten.}]
 $ hadoop-benchmark/benchmarks/hadoop-mapreduce-examples/run.sh pi 20 1000
 Number of Maps  = 20
@@ -75,7 +75,7 @@ Job Finished in 37.53 seconds
 \begin{lstlisting}[label=lst:hadoopAppKill,style=plain,
 caption={[Vorzeitiges Beenden einer Anwendung]
     Vorzeitiges Beenden einer Anwendung.
-    Hier wird die in \cref{lst:hadoopAppStart} gestartete Anwendung vorzeitig beendet.}]
+    Hier wird die in \cref{lst:hadoopAppStart} gestartete \gls{Anwendung} vorzeitig beendet.}]
 $ yarn application -kill application_1520342317799_0002
 ...
 Killing application application_1520342317799_0002

@@ -1,13 +1,13 @@
 \section{Implementierung der Tests}
 \label{sec:implTestcases}
 
-Genauso wie die Simulation wurde zur Implementierung das NUnit"=Framework sowie zur Ausführung der \emph{ReSharper Unit Test Runner}\footnote{\url{https://www.jetbrains.com/resharper/}} (Version 2018.1) genutzt.
-Alle zur Ausführung der Testfälle der Fallstudie relevanten Methoden wurden zudem in der Klasse \texttt{CaseStudyTests} zusammengefasst, welche die bereits in \cref{sec:implSimulation} beschriebene Simulation nutzt.
-Zur Ausführung der Tests wurde folgende Methode entwickelt, bei der mithilfe von NUnit die Testfälle ermittelt werden:
+Genauso wie die Simulation wurde zur Implementierung das NUnit"=Framework sowie zur Ausführung der \emph{ReSharper Unit \gls{Test} Runner}\footnote{\url{https://www.jetbrains.com/resharper/}} (Version 2018.1) genutzt.
+Alle zur Ausführung der \glspl{Testfall} der Fallstudie relevanten Methoden wurden zudem in der Klasse \texttt{CaseStudyTests} zusammengefasst, welche die bereits in \cref{sec:implSimulation} beschriebene Simulation nutzt.
+Zur Ausführung der \glspl{Test} wurde folgende Methode entwickelt, bei der mithilfe von NUnit die \glspl{Testfall} ermittelt werden:
 
 \begin{lstlisting}[label=lst:executeTestCases,style=cs,
 caption={[Methode zur Ausführung der Testfälle]
-    Methode zur Ausführung der Testfälle (gekürzt)}]
+    Methode zur Ausführung der \glspl{Testfall} (gekürzt)}]
 [Test]
 [TestCaseSource(nameof(GetTestCases))]
 public void ExecuteCaseStudy(int benchmarkSeed, double faultProbability, int hostsCount, int clientCount, int stepCount, bool isMutated)
@@ -39,18 +39,18 @@ public void ExecuteCaseStudy(int benchmarkSeed, double faultProbability, int hos
 }
 \end{lstlisting}
 
-Das Starten und Beenden des jeweiligen Cluster dient der automatisierten Ausführung aller Tests inkl. denen mit der mutierten Selfbalancing"=Komponente.
+Das Starten und Beenden des jeweiligen Cluster dient der automatisierten Ausführung aller \glspl{Test} inkl. denen mit der mutierten Selfbalancing"=Komponente.
 Dadurch ist es möglich, das Cluster neben dem normalen Szenario auch in einem Mutationsszenario zu starten.
-Durch das Beenden des Clusters im Finally"=Block ist es möglich, bei einer abgebrochenen Simulation andere Testfälle regulär auszuführen, da dadurch das Cluster regulär beendet wird und die Daten des abgebrochenen Testfalls wie bei einem erfolgreichen Test gespeichert werden.
+Durch das Beenden des Clusters im Finally"=Block ist es möglich, bei einer abgebrochenen Simulation andere \glspl{Testfall} regulär auszuführen, da dadurch das Cluster regulär beendet wird und die Daten des abgebrochenen Testfalls wie bei einem erfolgreichen \gls{Test} gespeichert werden.
 
-Da die verwendeten Connectoren bzw. SSH"=Verbindungen prinzipiell nur einmal initialisiert werden müssen und anschließend für alle auszuführenden Testfälle verwendet werden können, werden diese einmalig in \texttt{InitInstances()} initialisiert und anschließend bei jedem weiteren ausgeführten Test wiederverwendet.
+Da die verwendeten Connectoren bzw. SSH"=Verbindungen prinzipiell nur einmal initialisiert werden müssen und anschließend für alle auszuführenden \glspl{Testfall} verwendet werden können, werden diese einmalig in \texttt{InitInstances()} initialisiert und anschließend bei jedem weiteren ausgeführten \gls{Test} wiederverwendet.
 Eine möglicherweise bereits zuvor verwendete Modell"=Instanz wird hier jedoch in jedem Fall genauso wie einige statische Zählvariablen gelöscht bzw. zurückgesetzt.
 
-Mithilfe der im \texttt{TestCaseSourceAttribute} referenzierten Methode \texttt{GetTestCases()} werden die implementierten Testkonfigurationen ermittelt:
+Mithilfe der im \texttt{TestCaseSourceAttribute} referenzierten Methode \texttt{GetTestCases()} werden die implementierten \glspl{Testkonfiguration} ermittelt:
 
 \begin{lstlisting}[label=lstgetTestCases:,style=cs,
 caption={[Implementierung der Testkonfigurationen]
-    Implementierung der Testfälle (gekürzt).
+    Implementierung der \glspl{Testfall} (gekürzt).
     Die hier nicht gezeigten Methoden zur Rückgabe der implementierten Werte wie \texttt{GetFaultProbabilities()} sind nach dem gleichen Schema aufgebaut wie \texttt{GetSeeds()}.
     Mithilfe der Eigenschaft \texttt{MutationConfig} erfolgt die Auswahl des zu verwendeten Mutationsszenarios.}]
 public string MutationConfig { get; set; } = "mut1234";
@@ -78,8 +78,8 @@ private IEnumerable<int> GetSeeds()
 
 Hierbei werden nur Konfigurationen generiert, auf denen die in \cref{sec:selectTestcases} genannten Bedingungen zutreffen, womit anstatt den möglichen 48 Testfällen nur die gewählten 32 generiert werden.
 
-Damit die bei der Ausführung der Tests generierten Logs einfacher zur Evaluation genutzt werden können, werden die angefallenen Logdateien nach jeder Ausführung in ein entsprechendes Verzeichnis verschoben.
-Hierbei werden die Logdateien gemäß der Parameter der Testkonfiguration wie folgt umbenannt:
+Damit die bei der Ausführung der \glspl{Test} generierten Logs einfacher zur Evaluation genutzt werden können, werden die angefallenen Logdateien nach jeder Ausführung in ein entsprechendes Verzeichnis verschoben.
+Hierbei werden die Logdateien gemäß der Parameter der \gls{Testkonfiguration} wie folgt umbenannt:
 
 \begin{lstlisting}[label=lst:moveTestCaseLogs,style=cs,
 caption={Bestimmung des Dateinamens zur Umbenennung der Logdateien}]
@@ -89,4 +89,4 @@ var faultProbStr = faultProbability.ToString(CultureInfo.InvariantCulture);
 var baseFileName = $"0x{benchmarkSeed:X8}-{faultProbStr}F-{hostsCount:D1}H-{clientCount:D1}C-{stepCount:D2}S-{mutated}-{todayStrShort}";
 \end{lstlisting}
 
-Da beim Monitoring immer die Daten aller auf dem Cluster ausgeführten Anwendungen übertragen und im SSH"=Log gespeichert werden, hat das Neustarten des Clusters bei jedem Testfall zudem den Nebeneffekt, dass im SSH"=Log keine Daten von ausgeführten Anwendungen eines anderen Testfalls enthalten sind.
+Da beim Monitoring immer die Daten aller auf dem Cluster ausgeführten \glspl{Anwendung} übertragen und im SSH"=Log gespeichert werden, hat das Neustarten des Clusters bei jedem \gls{Testfall} zudem den Nebeneffekt, dass im SSH"=Log keine Daten von ausgeführten \glspl{Anwendung} eines anderen Testfalls enthalten sind.

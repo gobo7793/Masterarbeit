@@ -1,16 +1,16 @@
 \chapter{REST"=API von Hadoop}
 \label{app:hadoopRestApi}
 
-Wie bei der Ausgabe der Daten der YARN"=Komponenten mithilfe der \ac{CLI} können auch bei der Ausgabe mithilfe der REST"=API die Daten als Liste oder als einzelner Report ausgegeben werden.
-Der Unterschied zur \ac{CLI} liegt jedoch darin, dass in Listenform und als einzelner Report immer die vollständigen Objekte der Komponenten zurückgegeben werden.
+Wie bei der Ausgabe der Daten der YARN"=Komponenten mithilfe der \gls{CLI} können auch bei der Ausgabe mithilfe der \gls{REST}"=API die Daten als Liste oder als einzelner Report ausgegeben werden.
+Der Unterschied zur \gls{CLI} liegt jedoch darin, dass in Listenform und als einzelner Report immer die vollständigen Objekte der Komponenten zurückgegeben werden.
 Neben der hier gezeigten und auch in der Fallstudie genutzten Ausgabe im JSON"=Format unterstützt Hadoop auch eine Ausgabe im XML"=Format.
-Im Folgenden sind daher beispielhaft die Ausgaben im JSON"=Format für die Anwendungsliste vom \ac{RM} und für Ausführungen vom \ac{TLS} aufgeführt.
-Im Rahmen dieser Masterarbeit sind die Rückgaben für Listen von Anwendungen, Attempts, Container und der Nodes vom \ac{RM} und bzw. \ac{NM} (Container) sowie des \ac{TLS} (Attempts und Container)relevant.
-Weitere Informationen zur REST"=API sowie hier nicht gezeigte Pfade für die \ac{YARN}"=Komponenten sind in der Dokumentation in \cite{HadoopYarnTlServer271,HadoopRmApi271,HadoopNmApi271} zu finden.
+Im Folgenden sind daher beispielhaft die Ausgaben im JSON"=Format für die Anwendungsliste vom \gls{RM} und für Ausführungen vom \gls{TLS} aufgeführt.
+Im Rahmen dieser Masterarbeit sind die Rückgaben für Listen von Anwendungen, Attempts, \gls{Container} und der Nodes vom \gls{RM} und bzw. \gls{NM} (Container) sowie des \gls{TLS} (Attempts und Container)relevant.
+Weitere Informationen zur \gls{REST}"=API sowie hier nicht gezeigte Pfade für die \gls{YARN}"=Komponenten sind in der Dokumentation in \cite{HadoopYarnTlServer271,HadoopRmApi271,HadoopNmApi271} zu finden.
 
 \begin{lstlisting}[label=lst:hadoopAppListRestRm,style=json,
-caption={[REST"=-Ausgabe aller Anwendungen vom \acs{RM}]
-    REST"=Ausgabe aller Anwendungen vom \acs{RM}.
+caption={[REST"=-Ausgabe aller \glspl{Anwendung} vom \acrshort{RM}]
+    \gls{REST}"=Ausgabe aller \glspl{Anwendung} vom \acrshort{RM}.
     Die Liste kann mithilfe verschiedener Query"=Parameter gefiltert werden.\\
     URL: \url{http://addr:port/ws/v1/cluster/apps}}]
 {
@@ -51,8 +51,8 @@ caption={[REST"=-Ausgabe aller Anwendungen vom \acs{RM}]
 \end{lstlisting}
 
 \begin{lstlisting}[label=lst:hadoopAttemptListRestTls,style=json,
-caption={[REST"=Ausgabe aller Ausführungen einer Anwendung vom \acs{TLS}]
-    REST"=Ausgabe aller Ausführungen einer Anwendung vom \acs{TLS}.\\
+caption={[REST"=Ausgabe aller Ausführungen einer \gls{Anwendung} vom \acrshort{TLS}]
+    \gls{REST}"=Ausgabe aller Ausführungen einer \gls{Anwendung} vom \acrshort{TLS}.\\
     URL: \url{http://addr:port/ws/v1/applicationhistory/apps/{appid}/appattempts}}]
 {
   "appAttempt": [

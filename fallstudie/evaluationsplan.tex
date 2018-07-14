@@ -1,8 +1,8 @@
-\section{Planung der Tests und der Evaluation}
+\section{Planung der \glsentryshort{Test} und der Evaluation}
 \label{sec:evaluationPlan}
 
 Um das Testsystem zu validieren, wurde zunächst ein Evaluationsplan aufgestellt.
-In diesem ist festgehalten, was getestet wird, wie die Testkonfigurationen definiert sind, und wie die bei der Ausführung gewonnen Daten organisiert werden.
+In diesem ist festgehalten, was getestet wird, wie die \glspl{Testkonfiguration} definiert sind, und wie die bei der Ausführung gewonnen Daten organisiert werden.
 
 \subsection{Behauptungen und Variablen}
 \label{subsec:theses}
@@ -14,7 +14,7 @@ Basierend auf den Anforderungen wurden daher folgende unabhängigen Variablen zu
 \begin{itemize}
     \item Anzahl der Hosts und Nodes
     \item Anzahl der Clients
-    \item Anzahl der Testfälle pro Test
+    \item Anzahl der \glspl{Testfall} pro Test
     \item \emph{Seed} für Zufallsgeneratoren
     \item Generelle Wahrscheinlichkeit zur Aktivierung und Deaktivierung der Komponentenfehler
 \end{itemize}
@@ -28,13 +28,13 @@ Basierend auf den unabhängigen Variablen wurden \uA folgende abhängigen Variab
     \item Anzahl und Gründe für evtl. nicht vollständig ausgeführte Anwendungen
 \end{itemize}
 
-Während die unabhängigen Variablen dazu genutzt werden, um Testkonfigurationen zu definieren (vgl. \cref{subsec:testcaseGeneration}), dienen die abhängigen Variablen als wichtige Kennzahlen im Rahmen der Evaluation in \cref{ch:evaluationResults}.
+Während die unabhängigen Variablen dazu genutzt werden, um \glspl{Testkonfiguration} zu definieren (vgl. \cref{subsec:testcaseGeneration}), dienen die abhängigen Variablen als wichtige Kennzahlen im Rahmen der Evaluation in \cref{ch:evaluationResults}.
 
 \subsection{Generierung der Testkonfigurationen}
 \label{subsec:testcaseGeneration}
 
-Um nun anhand der in \cref{subsec:theses} definierten Variablen die in \cref{sec:requirements} definierten Anforderungen zu prüfen, sind mehrere Tests nötig.
-Als Basis zur Definition einer Testkonfiguration dienen die in \cref{subsec:theses} definierten unabhängigen Variablen, die durch weitere Angaben ergänzt werden:
+Um nun anhand der in \cref{subsec:theses} definierten Variablen die in \cref{sec:requirements} definierten Anforderungen zu prüfen, sind mehrere \glspl{Test} nötig.
+Als Basis zur Definition einer \gls{Testkonfiguration} dienen die in \cref{subsec:theses} definierten unabhängigen Variablen, die durch weitere Angaben ergänzt werden:
 
 \begin{itemize}
     \item Anzahl genutzter Hosts
@@ -49,23 +49,23 @@ Als Basis zur Definition einer Testkonfiguration dienen die in \cref{subsec:thes
     \item Verwendung von vorab generierten Eingabedaten
 \end{itemize}
 
-Die Auswahl der ausgeführten Anwendungen erfolgt während der Testausführung anhand des Basisseeds der Testkonfiguration.
-Zwar werden durch das Transitionssystem wahrscheinlichkeitsbasierend zufällig Anwendungen ausgewählt, jedoch kann dies durch den Charakter des im .NET"=Framework vorhandenen Zufallsgenerators gesteuert werden.
+Die Auswahl der ausgeführten \glspl{Anwendung} erfolgt während der Testausführung anhand des Basisseeds der Testkonfiguration.
+Zwar werden durch das Transitionssystem wahrscheinlichkeitsbasierend zufällig \glspl{Anwendung} ausgewählt, jedoch kann dies durch den Charakter des im .NET"=Framework vorhandenen Zufallsgenerators gesteuert werden.
 Der in .NET implementierte Zufallsgenerator ist nämlich kein \emph{echter}, sondern ein Pseudo"=Zufallsgenerator, der mithilfe eines mathematischen Algorithmus' Zufallszahlen berechnet \cite{RandomClassDoc}.
-Zwar wird standardmäßig ein zeitbasierter Seed als Startwert für den Algorithmus genutzt, durch die Angabe eines spezifischen Seeds kann jedoch die Wiederausführbarkeit der Tests sichergestellt werden.
+Zwar wird standardmäßig ein zeitbasierter Seed als Startwert für den Algorithmus genutzt, durch die Angabe eines spezifischen Seeds kann jedoch die Wiederausführbarkeit der \glspl{Test} sichergestellt werden.
 
 Auch die Aktivierung und Deaktivierung von Komponentenfehlern selbst soll während der Ausführung eines Testfalls festgelegt werden, wodurch die Wahrscheinlichkeit für deren Aktivierung bzw. Deaktivierung einen maßgeblichen Einfluss besitzt.
-Da Anwendungen, die Eingabedaten für andere Anwendungen generieren, \uU nicht erfolgreich beendet werden können, kann eine Testkonfiguration mit vorab generierten und im \ac{HDFS} gespeicherten Daten durchgeführt werden.
-Dadurch wird es ermöglicht, dass in solchen Tests spätere Anwendungen nicht vom Erfolg der zuvor ausgeführten Anwendungen zur Generierung der Eingabedaten abhängig sind.
-Da einige Tests zudem als Mutationstests durchgeführt werden sollen, muss für eine Testkonfiguration dies entsprechend definiert werden.
+Da Anwendungen, die Eingabedaten für andere \glspl{Anwendung} generieren, \uU nicht erfolgreich beendet werden können, kann eine \gls{Testkonfiguration} mit vorab generierten und im \gls{HDFS} gespeicherten Daten durchgeführt werden.
+Dadurch wird es ermöglicht, dass in solchen \glspl{Test} spätere \glspl{Anwendung} nicht vom Erfolg der zuvor ausgeführten \glspl{Anwendung} zur Generierung der Eingabedaten abhängig sind.
+Da einige \glspl{Test} zudem als Mutationstests durchgeführt werden sollen, muss für eine \gls{Testkonfiguration} dies entsprechend definiert werden.
 
-Die Auswahl der konkreten Testkonfigurationen in \cref{sec:selectTestcases} erfolgte im Rahmen der in \cref{sec:implTestcases} beschriebenen Implementierung der Tests.
+Die Auswahl der konkreten \glspl{Testkonfiguration} in \cref{sec:selectTestcases} erfolgte im Rahmen der in \cref{sec:implTestcases} beschriebenen Implementierung der Tests.
 
 \subsection{Organisation und Ausgabe der Daten}
 \label{subsec:dataOrganisation}
 
 Damit die bei der Ausführung gewonnenen Daten auch zur Evaluation genutzt werden können, wurde hierzu festgelegt, welche Daten während der Ausführung ausgegeben werden.
-Alle relevante Daten werden hierzu während der Ausführung der Testfälle in eine Log"=Datei ausgegeben und gespeichert.
+Alle relevante Daten werden hierzu während der Ausführung der \glspl{Testfall} in eine Log"=Datei ausgegeben und gespeichert.
 Zur Unterscheidung von einzelnen Ausführungen werden die Daten klar strukturiert.
 
 Beim Start eines Testfalls sollen daher zunächst einige generelle Daten ausgegeben werden:
@@ -75,7 +75,7 @@ Beim Start eines Testfalls sollen daher zunächst einige generelle Daten ausgege
     \item Wahrscheinlichkeit für Aktivierung und Deaktivierung der Komponentenfehler
     \item Anzahl genutzter Hosts, Nodes und Clients
     \item Anzahl der ausgeführten Simulations"=Schritte
-    \item Angabe, ob ein normaler Test oder ein Mutationstest ausgeführt wird
+    \item Angabe, ob ein normaler \gls{Test} oder ein Mutationstest ausgeführt wird
 \end{itemize}
 
 Im Rahmen der Simulation können weitere Daten ausgegeben werden, wie \zB:
@@ -86,7 +86,7 @@ Im Rahmen der Simulation können weitere Daten ausgegeben werden, wie \zB:
     \item Auszuführende Benchmarks pro Client
 \end{itemize}
 
-Die Ausgabe der Daten der \ac{YARN}"=Komponenten wird bei jedem erfolgreichen Testfall durchgeführt, damit das Verhalten des Clusters berücksichtigt werden kann.
+Die Ausgabe der Daten der \gls{YARN}"=Komponenten wird bei jedem erfolgreichen \gls{Testfall} durchgeführt, damit das Verhalten des Clusters berücksichtigt werden kann.
 Bei nicht erfolgreichen Testfällen wird die Simulation dagegen beendet.
 Für solche Fälle werden nach Abschluss der Simulation erneut die Daten des Clusters ausgelesen und ausgegeben.
 Es können hierbei alle Daten ausgegeben werden, welche erkannt werden können, mindestens jedoch:
@@ -97,7 +97,7 @@ Es können hierbei alle Daten ausgegeben werden, welche erkannt werden können, 
         \item ID bzw. Name des Nodes
         \item Aktueller Status
         \item Informationen zur Fehleraktivierung
-        \item Anzahl ausgeführter Container auf dem Node
+        \item Anzahl ausgeführter \gls{Container} auf dem Node
         \item Angaben zur Speicherauslastung
         \item Angaben zur CPU"=Auslastung
     \end{itemize}
@@ -106,7 +106,7 @@ Es können hierbei alle Daten ausgegeben werden, welche erkannt werden können, 
     \begin{itemize}
         \item ID bzw. Name des Clints
         \item Aktuell ausgeführter Benchmark
-        \item ID der aktuell ausgeführten Anwendung auf dem Cluster
+        \item ID der aktuell ausgeführten \gls{Anwendung} auf dem Cluster
     \end{itemize}
 
     \item Für jede Anwendung:
@@ -114,17 +114,17 @@ Es können hierbei alle Daten ausgegeben werden, welche erkannt werden können, 
         \item ID der Anwendung
         \item Bezeichnung der Anwendung
         \item Aktueller und finaler Status der Anwendung
-        \item ID bzw. Name des Nodes, auf dem der \ac{AppMstr} ausgeführt wird
+        \item ID bzw. Name des Nodes, auf dem der \gls{AppMstr} ausgeführt wird
     \end{itemize}
 
     \item Für jeden Attempt:
     \begin{itemize}
         \item ID des Attempts
         \item Aktueller Status des Attempts
-        \item ID des \ac{AppMstr}"=Containers
-        \item ID bzw. Name des Nodes, auf dem der \ac{AppMstr} ausgeführt wird
+        \item ID des \gls{AppMstr}"=Containers
+        \item ID bzw. Name des Nodes, auf dem der \gls{AppMstr} ausgeführt wird
         \item Anzahl der derzeit ausgeführten Container
     \end{itemize}
 \end{itemize}
 
-Die Details zur Implementierung und dem Ausgabeformat während der Ausführung der Simulation sind in \cref{subsec:simulationStep} erläutert, die zur Ausgabe der generellen Testfalldaten in \cref{sec:implTestcases}. Ein Beispiel einer möglichen Ausgabe für einen Testfall findet sich in \cref{app:outputFormat}.
+Die Details zur Implementierung und dem Ausgabeformat während der Ausführung der Simulation sind in \cref{subsec:simulationStep} erläutert, die zur Ausgabe der generellen Testfalldaten in \cref{sec:implTestcases}. Ein Beispiel einer möglichen Ausgabe für einen \gls{Testfall} findet sich in \cref{app:outputFormat}.

@@ -1,4 +1,4 @@
-\documentclass[12pt,a4paper,ngerman]{scrreprt}
+\documentclass[12pt,a4paper,ngerman,bibliography=totoc]{scrreprt}
 % prevent warning \float@addtolists detected
 \usepackage{scrhack} 
 
@@ -15,7 +15,6 @@
 \author{Gerald Siegert}
 \date{\today}
 \input{./settings/variablen}
-\input{./settings/trennung}
 
 % Seitenränder
 \usepackage{geometry}
@@ -35,7 +34,7 @@
 \renewcommand*{\chapterpagestyle}{scrheadings}
 
 \newpairofpagestyles[scrheadings]{lists}{%
-    \ihead{Verzeichnisse}%
+\ihead{Verzeichnisse}%
 }
 
 % Grafiken
@@ -51,9 +50,6 @@
 
 % Textfarben
 \usepackage{xcolor}
-
-% Abkürzungen
-\usepackage[nohyperlinks,printonlyused]{acronym}
 
 % Zeilenabstand
 \usepackage[onehalfspacing]{setspace}
@@ -152,9 +148,6 @@
 {\global\colonfoundonthislinefalse}
 %%%%%%%%%% end listings
 
-% TOC im TOC
-\usepackage{tocbibind}
-
 \makeatletter
 
 % Default centering floatboxes
@@ -181,7 +174,7 @@
 }
 
 % Dreistellige Seitenzahlen im TOC
-\renewcommand{\@pnumwidth}{1.7em}
+\renewcommand{\@pnumwidth}{1.85em}
 
 \makeatother
 
@@ -190,10 +183,29 @@
 \widowpenalty = 10000
 \displaywidowpenalty = 10000 
 
-% Referenzen
+% Referenzen/Lesezeichen
 \PassOptionsToPackage{hyphens}{url}
 \usepackage{varioref}
-\usepackage{hyperref}
+\usepackage[bookmarksnumbered,pdfpagemode=UseNone]{hyperref}
+\usepackage{bookmark}
+
+% Glossar/Abkürzungen
+\usepackage[toc,nonumberlist,nopostdot]{glossaries}
+%\setglossarystyle{altlist}
+\renewcommand{\glossarysection}[2][]{}
+\usepackage{xparse}
+\DeclareDocumentCommand{\newdualentry}{ O{} O{} m m m m } {
+    \newglossaryentry{gls-#3}{name={#5},text={#5\glsadd{#3}},
+        description={#6},#1
+    }
+    \makenoidxglossaries
+    \newacronym[see={[Glossary:]{gls-#3}},#2]{#3}{#4}{#5\glsadd{gls-#3}}
+}
+\glsdisablehyper
+\newglossary*{apps}{Anwendungen}
+\makenoidxglossaries
+\input{./settings/glossar}
+
 \usepackage{cleveref}
 
 % Todos
@@ -210,19 +222,38 @@
     \end{titlepage}
     
     % Abstract
+    \clearpage
     \pagenumbering{Roman}
     \include{./settings/abstract}
     
     % Verzeichnisse
-    \newpage
+    \clearpage
     \begin{singlespace}
+        \pdfbookmark[chapter]{\contentsname}{toc}
         \tableofcontents
-        \include{./settings/verzeichnisse}
+        
+        \addchap{Verzeichnisse}
+        \pagestyle{lists}
+        
+        \renewcommand{\listfigurename}{Abbildungen}
+        \listoffigures
+        
+        \renewcommand{\lstlistlistingname}{Listings}
+        \lstlistoflistings
+        
+        \renewcommand{\listtablename}{Tabellen}
+        \listoftables
+        
+        \clearpage
+        \pagestyle{scrheadings}
+        \addchap{Glossar und Abkürzungen}
+        \printnoidxglossary[sort=word,title={Glossar und Abkürzungen}]
+        \textbf{Abkürzungen der Benchmarks (vgl. \cref{subsec:appSelection}):}
+        \printnoidxglossary[sort=def,type=apps]
     \end{singlespace}
     
     % Inhalt
-    \pagestyle{scrheadings}
-    \newpage
+    \clearpage
     \pagenumbering{arabic}
     
     \include{./einleitung/einleitung}
@@ -235,15 +266,13 @@
     \include{./schluss/schluss}
     
     % Literatur
-    \newpage
+    \clearpage
     \begin{singlespace}
-        \addcontentsline{toc}{chapter}{Literatur}
-        \renewcommand\refname{Literatur}
         \printbibliography
     \end{singlespace}
     
     % Anhang
-    \newpage
+    \clearpage
     \appendix
     \input{./anhang/anhang}
 \end{document}

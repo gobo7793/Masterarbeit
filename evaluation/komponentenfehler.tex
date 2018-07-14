@@ -1,51 +1,51 @@
 \section{Betrachtung der Komponentenfehler}
 \label{sec:faultEval}
 
-Die Aktivierung und Deaktivierung der Komponentenfehler in einem Testfall hängt neben dem zur Berechnung benötigtem Seed vor allem von den zuvor ausgeführten Testfällen bzw. der Lastverteilung bei den zuvor ausgeführten Testfällen eines Tests ab (vgl. \cref{subsec:faultActivation}).
+Die Aktivierung und Deaktivierung der Komponentenfehler in einem \gls{Testfall} hängt neben dem zur Berechnung benötigtem Seed vor allem von den zuvor ausgeführten Testfällen bzw. der Lastverteilung bei den zuvor ausgeführten Testfällen eines \glspl{Test} ab (vgl. \cref{subsec:faultActivation}).
 Daher wurden abhängig von der Lastverteilung im Cluster auch bei einer mehrmaligen Ausführung der gleichen Konfiguration bei einigen Testausführungen unterschiedliche Komponentenfehler aktiviert.
 
 Unterschieden werden muss hierbei zudem zwischen aktivierten und injizierten Komponentenfehlern.
-Während beide implementierten Komponentenfehler für einen Node in einem Testfall auch gleichzeitig aktiviert werden konnten, wurde gemäß \cref{subsec:yarnComponentFaults} in so einem Fall jedoch nur der \texttt{NodeDead}"=Fehler im Cluster injiziert.
+Während beide implementierten Komponentenfehler für einen Node in einem \gls{Testfall} auch gleichzeitig aktiviert werden konnten, wurde gemäß \cref{subsec:yarnComponentFaults} in so einem Fall jedoch nur der \texttt{NodeDead}"=Fehler im Cluster injiziert.
 Die Deaktivierung bzw. das Reparieren der Komponentenfehler verhält sich analog hierzu.
 
-Im Folgenden wird nun ein Überblick über die bei den Tests aktivierten bzw. deaktivierten und nicht injizierten Komponentenfehler bzw. erkannten Injektionen und Reperaturen der Komponentenfehler gegeben.
+Im Folgenden wird nun ein Überblick über die bei den \glspl{Test} aktivierten bzw. deaktivierten und nicht injizierten Komponentenfehler bzw. erkannten Injektionen und Reperaturen der Komponentenfehler gegeben.
 
 \subsection{Aktivierte und deaktivierte Komponentenfehler}
 \label{subsec:actDeactFaults}
 
-Die Aktivierung und Deaktivierung der Komponentenfehler hing manchmal stark, manchmal weniger stark von der ausgeführten Testkonfiguration ab.
-Im Vergleich zwischen korrespondierenden Konfigurationen, die sich nur in der Nutzung des Mutationsszenarios unterschieden, wurde nur 5 mal bei allen Tests die gleiche Anzahl an Komponentenfehler aktiviert, bei der Deaktivierung der Komponentenfehler besitzen nur 4 korrespondierende Konfigurationen die gleiche Anzahl bei allen Tests.
-Die Anzahl der aktivierten und deaktivierten Komponentenfehler unterschied sich dagegen in 8 bzw. 7 korrespondierenden Testkonfigurationen um einen einen Komponentenfehler in allen Testausführungen.
-Bei den anderen korrespondierenden Konfigurationen unterschied sich die Anzahl bei allen jeweiligen Tests um mehr als einen Komponentenfehler.
-Mit jeweils 20 aktivierten Komponentenfehlern wurden bei den Tests 28.1, 31.1 und 32 die meisten aktiviert, die meisten Komponentenfehler deaktiviert wurden bei den Tests der Konfigurationen 11 und 12 mit jeweils 15 Stück.
-Nur im Test zur Konfiguration 2 wurden mit 3 Stück alle aktivierten Komponentenfehler während der Simulation auch wieder deaktiviert.
-In den Tests 4, 5.1, 5.2 und 6 wurden jeweils 6 oder 7 Komponentenfehler aktiviert, jedoch keine deaktiviert, weshalb diese Tests bereits beim 3. ausgeführten Testfall gemäß \cref{subsec:oracleImpl} abgebrochen wurden (vgl. \cref{subsec:noReconf36}).
+Die Aktivierung und Deaktivierung der Komponentenfehler hing manchmal stark, manchmal weniger stark von der ausgeführten \gls{Testkonfiguration} ab.
+Im Vergleich zwischen korrespondierenden Konfigurationen, die sich nur in der Nutzung des Mutationsszenarios unterschieden, wurde nur 5 mal bei allen \glspl{Test} die gleiche Anzahl an Komponentenfehler aktiviert, bei der Deaktivierung der Komponentenfehler besitzen nur 4 korrespondierende Konfigurationen die gleiche Anzahl bei allen Tests.
+Die Anzahl der aktivierten und deaktivierten Komponentenfehler unterschied sich dagegen in 8 bzw. 7 korrespondierenden \glspl{Testkonfiguration} um einen einen Komponentenfehler in allen Testausführungen.
+Bei den anderen korrespondierenden Konfigurationen unterschied sich die Anzahl bei allen jeweiligen \glspl{Test} um mehr als einen Komponentenfehler.
+Mit jeweils 20 aktivierten Komponentenfehlern wurden bei den \glspl{Test} 28.1, 31.1 und 32 die meisten aktiviert, die meisten Komponentenfehler deaktiviert wurden bei den \glspl{Test} der Konfigurationen 11 und 12 mit jeweils 15 Stück.
+Nur im \gls{Test} zur Konfiguration 2 wurden mit 3 Stück alle aktivierten Komponentenfehler während der Simulation auch wieder deaktiviert.
+In den \glspl{Test} 4, 5.1, 5.2 und 6 wurden jeweils 6 oder 7 Komponentenfehler aktiviert, jedoch keine deaktiviert, weshalb diese \glspl{Test} bereits beim 3. ausgeführten \gls{Testfall} gemäß \cref{subsec:oracleImpl} abgebrochen wurden (vgl. \cref{subsec:noReconf36}).
 
-Im Vergleich zwischen den Tests von korrespondierenden Testkonfigurationen sind die Tests der Konfigurationen 1 und 2 auffällig.
-Während beim Test 1.1 mit 5 Komponentenfehlern bzw. beim Test 1.2 mit 7 Komponentenfehlern jeweils rund jeder achte mögliche Komponentenfehler aktiviert wurde, wurden beim Test 2 lediglich 3 Komponentenfehler für 4 Nodes in 5 Testfällen (insgesamt also 40 mögliche Komponentenfehler) aktiviert.
-Eine geringere Quote weist lediglich Test 9.2 auf, bei dem mit 4 von 60 möglichen Komponentenfehler nur 7 \% aktiviert wurden.
-Die Testkonfiguration 9 ist darüber hinaus auch deshalb auffällig, da im Test 9.1 fast dreimal so viele Komponentenfehler, also 11 Stück, aktiviert wurden.
-Auch in den korrespondierenden Tests der Konfiguration 10 liegt die Anzahl der aktivierten Komponentenfehler mit 7 bis 11 jeweils mehr als doppelt so hoch wie in Test 9.2.
+Im Vergleich zwischen den \glspl{Test} von korrespondierenden \glspl{Testkonfiguration} sind die \glspl{Test} der Konfigurationen 1 und 2 auffällig.
+Während beim \gls{Test} 1.1 mit 5 Komponentenfehlern bzw. beim \gls{Test} 1.2 mit 7 Komponentenfehlern jeweils rund jeder achte mögliche Komponentenfehler aktiviert wurde, wurden beim \gls{Test} 2 lediglich 3 Komponentenfehler für 4 Nodes in 5 Testfällen (insgesamt also 40 mögliche Komponentenfehler) aktiviert.
+Eine geringere Quote weist lediglich \gls{Test} 9.2 auf, bei dem mit 4 von 60 möglichen Komponentenfehler nur 7 \% aktiviert wurden.
+Die \gls{Testkonfiguration} 9 ist darüber hinaus auch deshalb auffällig, da im \gls{Test} 9.1 fast dreimal so viele Komponentenfehler, also 11 Stück, aktiviert wurden.
+Auch in den korrespondierenden \glspl{Test} der Konfiguration 10 liegt die Anzahl der aktivierten Komponentenfehler mit 7 bis 11 jeweils mehr als doppelt so hoch wie in \gls{Test} 9.2.
 
-Auffällig ist zudem, dass bei korrespondierenden Testkonfigurationen mit unterschiedlicher Anzahl an aktivierten Komponentenfehlern die niedrigere Anzahl meist diejenigen mit Mutationen aufweisen.
-Nur bei den Konfigurationen 9 und 10, 13 und 14, 27 und 28 und 31 und 32 weisen einige Tests ohne Mutationen eine geringere Anzahl an aktivierten Komponentenfehler auf als Tests mit Mutationen.
-Dies liegt wohl auch darin begründet, dass durch den veränderten \ac{MARP}"=Wert die verfügbaren Ressourcen besser an die Anwendungen verteilt werden konnten und bestätigt damit die Funktionalität der von \citeauthor{Zhang2016} entwickelten Komponente.
+Auffällig ist zudem, dass bei korrespondierenden \glspl{Testkonfiguration} mit unterschiedlicher Anzahl an aktivierten Komponentenfehlern die niedrigere Anzahl meist diejenigen mit Mutationen aufweisen.
+Nur bei den Konfigurationen 9 und 10, 13 und 14, 27 und 28 und 31 und 32 weisen einige \glspl{Test} ohne Mutationen eine geringere Anzahl an aktivierten Komponentenfehler auf als \glspl{Test} mit Mutationen.
+Dies liegt wohl auch darin begründet, dass durch den veränderten \gls{MARP}"=Wert die verfügbaren Ressourcen besser an die \glspl{Anwendung} verteilt werden konnten und bestätigt damit die Funktionalität der von \citeauthor{Zhang2016} entwickelten Komponente.
 
 Weitere Auffälligkeiten ergeben sich zudem beim Vergleich der Ausführungszeiten der Simulationen.
-Die Tests 9.2, 15, 31.1 sowie 31.2 stellen die einzigen Test ohne Mutationen dar, bei denen die Simulation schneller abgeschlossen wurde als in den korrespondierenden Tests mit Mutationsszenario.
-Da sich das mit der generellen Aussage beim Vergleich der aktivierten Komponentenfehler deckt, kann davon ausgegangen werden, dass die geringere Anzahl an Komponentenfehler zudem die Auswirkung hat, dass Anwendungen schneller gestartet werden können.
-Der Grund hierfür könnte darin liegen, dass bei weniger injizierten Komponentenfehler auch entsprechend weniger Verwaltungsaufwand für bereits ausgeführte Anwendungen nötig ist, wodurch neu gestartete Anwendungen ebenfalls schneller durch das Cluster verarbeitet werden können.
-Um hier jedoch eine fundierte Aussage treffen zu können, wären weitere vergleichende Tests nötig (vgl. \todo{auf Diskussion dazu, evtl. auch mit diskussion zu selfbalancing-komponente verbinden})
+Die \glspl{Test} 9.2, 15, 31.1 sowie 31.2 stellen die einzigen \gls{Test} ohne Mutationen dar, bei denen die Simulation schneller abgeschlossen wurde als in den korrespondierenden \glspl{Test} mit Mutationsszenario.
+Da sich das mit der generellen Aussage beim Vergleich der aktivierten Komponentenfehler deckt, kann davon ausgegangen werden, dass die geringere Anzahl an Komponentenfehler zudem die Auswirkung hat, dass \glspl{Anwendung} schneller gestartet werden können.
+Der Grund hierfür könnte darin liegen, dass bei weniger injizierten Komponentenfehler auch entsprechend weniger Verwaltungsaufwand für bereits ausgeführte \glspl{Anwendung} nötig ist, wodurch neu gestartete \glspl{Anwendung} ebenfalls schneller durch das Cluster verarbeitet werden können.
+Um hier jedoch eine fundierte Aussage treffen zu können, wären weitere vergleichende \glspl{Test} nötig (vgl. \todo{auf Diskussion dazu, evtl. auch mit diskussion zu selfbalancing-komponente verbinden})
 
 \subsection{Nicht erkannte, injizierte bzw. reparierte Komponentenfehler}
 \label{subsec:notDetectedFaults}
 
-Bei 18 aller ausgeführten Tests kam es vor, dass ein injizierter bzw. reparierter Komponentenfehler zunächst nicht vom Testsystem erkannt wurde.
+Bei 18 aller ausgeführten \glspl{Test} kam es vor, dass ein injizierter bzw. reparierter Komponentenfehler zunächst nicht vom Testsystem erkannt wurde.
 Das betraf konkret drei mal das Injizieren eines Komponentenfehlers sowie 16 mal das Reparieren eines Komponentenfehlers:
 
 \begin{table}[h]
     \begin{tabular}{c|ccc}
-    	 Test   & Testfall &      Art       & Node \\ \hline
+    	 \gls{Test}   & \gls{Testfall} &      Art       & Node \\ \hline
     	  1.1   &    5     &  Node beenden  &  4   \\
     	   2    &    5     &  Node starten  &  2   \\
     	  7.1   &    2     &  Node beenden  &  5   \\
@@ -59,24 +59,24 @@ Das betraf konkret drei mal das Injizieren eines Komponentenfehlers sowie 16 mal
     \label{tab:notDetectedFaults}
 \end{table}
 
-Bei den aufgetretenen als ungültig validierten Constraints fällt auf, dass die betroffenen Nodes im jeweils nachfolgenden Testfall mit ihrem jeweils korrekten Status erkannt wurden.
+Bei den aufgetretenen als ungültig validierten Constraints fällt auf, dass die betroffenen Nodes im jeweils nachfolgenden \gls{Testfall} mit ihrem jeweils korrekten Status erkannt wurden.
 Die 19 als ungültig markierten Constraints zu den Anforderungen aus \cref{sec:requirements}, dass defekte Nodes und Verbindungsabbrüche erkannt werden, wurden somit korrekt, als auch inkorrekt, als ungültig validiert.
 Dies liegt daran, dass das Cluster bei defekten Nodes erst einige Zeit benötigt, um zu erkennen, dass ein Node ausgefallen ist.
-Auch wenn ein Node nicht mehr defekt ist, benötigt dieser bzw. der \ac{RM} erst einige Zeit, bis erkannt wird, dass der Node wieder aktiv ist.
-Dies liegt einerseits daran, dass Hadoop bzw. der \ac{RM} nicht kontinuierlich, sondern periodisch nach einer bestimmten Zeitspanne den Status der Nodes prüft und bei nicht erreichbaren Nodes zunächst solange wartet, bis die Abfrage durch einen \emph{Timeout} beendet wird.
+Auch wenn ein Node nicht mehr defekt ist, benötigt dieser bzw. der \gls{RM} erst einige Zeit, bis erkannt wird, dass der Node wieder aktiv ist.
+Dies liegt einerseits daran, dass Hadoop bzw. der \gls{RM} nicht kontinuierlich, sondern periodisch nach einer bestimmten Zeitspanne den Status der Nodes prüft und bei nicht erreichbaren Nodes zunächst solange wartet, bis die Abfrage durch einen \emph{Timeout} beendet wird.
 Zwar wurden beide Zeitspannen im getesteten Cluster auf jeweils 10 Sekunden festgelegt, jedoch reichte diese Zeitspanne wohl nicht immer aus, um den Status rechtzeitig zu erkennen.
-Beim Starten bzw. Wiederverbinden eines Nodes sieht dies analog dazu aus, wobei Hadoop auf dem jeweiligen Node hier zunächst gestartet werden muss, bevor es sich dann selbstständig mit dem \ac{RM} verbindet, was ebenfalls eine gewisse Zeit benötigt.
-Dies wird auch dadurch bestätigt, dass für die betroffenen Nodes in den jeweils nachfolgenden Testfällen bzw. dem finalen Clusterstatus oder in korrespondierenden Tests der Status korrekt erkannt wurde, den die Nodes gemäß aufgrund der Komponentenfehler besitzen sollten.
+Beim Starten bzw. Wiederverbinden eines Nodes sieht dies analog dazu aus, wobei Hadoop auf dem jeweiligen Node hier zunächst gestartet werden muss, bevor es sich dann selbstständig mit dem \gls{RM} verbindet, was ebenfalls eine gewisse Zeit benötigt.
+Dies wird auch dadurch bestätigt, dass für die betroffenen Nodes in den jeweils nachfolgenden Testfällen bzw. dem finalen Clusterstatus oder in korrespondierenden \glspl{Test} der Status korrekt erkannt wurde, den die Nodes gemäß aufgrund der Komponentenfehler besitzen sollten.
 
-Eine Besonderheit bilden hierbei zunächst die beiden Tests zur Konfiguration 7.
-Im Test 7.1 wurde der gleiche Node zunächst nicht als defekt erkannt bevor er im letzten Testfall noch als defekt erkannt wurde, obwohl er bereits wieder gestartet wurde.
-Dazwischen wurde der betroffene Node 5 zunächst im Testfall 3 wieder gestartet, bevor er im Testfall 4 wieder beendet wurde, von denen beide Aktionen korrekt erkannt wurden.
-Im Unterschied zum ersten Test der Konfiguration wurde im Test 7.2 nur das Starten des Nodes nicht korrekt erkannt, während das beenden des Nodes 5 im 2. Testfall erkannt wurde.
-Im finalen Clusterstatus ist der Node jedoch wie im Test 7.1 korrekt als aktiv markiert.
+Eine Besonderheit bilden hierbei zunächst die beiden \glspl{Test} zur Konfiguration 7.
+Im \gls{Test} 7.1 wurde der gleiche Node zunächst nicht als defekt erkannt bevor er im letzten \gls{Testfall} noch als defekt erkannt wurde, obwohl er bereits wieder gestartet wurde.
+Dazwischen wurde der betroffene Node 5 zunächst im \gls{Testfall} 3 wieder gestartet, bevor er im \gls{Testfall} 4 wieder beendet wurde, von denen beide Aktionen korrekt erkannt wurden.
+Im Unterschied zum ersten \gls{Test} der Konfiguration wurde im \gls{Test} 7.2 nur das Starten des Nodes nicht korrekt erkannt, während das beenden des Nodes 5 im 2. \gls{Testfall} erkannt wurde.
+Im finalen Clusterstatus ist der Node jedoch wie im \gls{Test} 7.1 korrekt als aktiv markiert.
 
-Die zweite Besonderheit bilden die Tests der Konfigurationen 17 bis 28.
-Hier wurde in allen Tests der Node 4 im jeweils ersten Testfall direkt vom Cluster getrennt, was noch korrekt erkannt wurde.
-In den Testkonfigurationen 25 bis 28 wurde im nachfolgenden dritten Testfall jedoch der Node direkt wieder vom Netzwerk getrennt, weshalb hier nur vermutet werden kann, dass der Node im zweiten Testfall korrekt mit dem Cluster verbunden wurde.
-Davon kann jedoch ausgegangen werden, da in den sechs Tests auf einem Host (Tests 17 bis 22) der Node im nachfolgenden, dritten Testfall nicht verändert wird und auch als aktiv erkannt wurde.
-Auch in den Tests 29 bis 32 wurde alles korrekt erkannt, da hier der Node im ersten Testfall ebenfalls getrennt, im zweiten wieder verbunden, und im dritten Testfall zudem erneut vom Cluster getrennt wird.
-In den Tests 23 bis 28.2 wird der Node dagegen zwar ebenfalls im dritten Testfall wieder vom Cluster getrennt, jedoch wird dies hier auch wieder korrekt erkannt.
+Die zweite Besonderheit bilden die \glspl{Test} der Konfigurationen 17 bis 28.
+Hier wurde in allen \glspl{Test} der Node 4 im jeweils ersten \gls{Testfall} direkt vom Cluster getrennt, was noch korrekt erkannt wurde.
+In den \glspl{Testkonfiguration} 25 bis 28 wurde im nachfolgenden dritten \gls{Testfall} jedoch der Node direkt wieder vom Netzwerk getrennt, weshalb hier nur vermutet werden kann, dass der Node im zweiten \gls{Testfall} korrekt mit dem Cluster verbunden wurde.
+Davon kann jedoch ausgegangen werden, da in den sechs \glspl{Test} auf einem Host (Tests 17 bis 22) der Node im nachfolgenden, dritten \gls{Testfall} nicht verändert wird und auch als aktiv erkannt wurde.
+Auch in den \glspl{Test} 29 bis 32 wurde alles korrekt erkannt, da hier der Node im ersten \gls{Testfall} ebenfalls getrennt, im zweiten wieder verbunden, und im dritten \gls{Testfall} zudem erneut vom Cluster getrennt wird.
+In den \glspl{Test} 23 bis 28.2 wird der Node dagegen zwar ebenfalls im dritten \gls{Testfall} wieder vom Cluster getrennt, jedoch wird dies hier auch wieder korrekt erkannt.

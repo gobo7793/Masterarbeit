@@ -1,7 +1,24 @@
 %Grundlegende Variablen
 \newcommand{\zB}{z.\,B.\xspace}
 \newcommand{\uA}{u.\,A.\xspace}
-\newcommand{\sS}{S\#\xspace}
 \newcommand{\cS}{C\#\xspace}
 \newcommand{\uU}{u. U.\xspace}
 \newcommand{\isse}{Institute for Software \& Systems Engineering\xspace}
+
+%Eigene Trennungen
+%\hyphenchar\font=\string"7F
+%\hyphenation
+%{
+%    %zeit-in-ten-siv
+%}
+% \texttt{} trennen
+\renewcommand{\texttt}[1]{%
+    \begingroup
+    \ttfamily
+    \begingroup\lccode`~=`/\lowercase{\endgroup\def~}{/\discretionary{}{}{}}%
+    \begingroup\lccode`~=`[\lowercase{\endgroup\def~}{[\discretionary{}{}{}}%
+    \begingroup\lccode`~=`.\lowercase{\endgroup\def~}{.\discretionary{}{}{}}%
+    \catcode`/=\active\catcode`[=\active\catcode`.=\active
+    \scantokens{#1\noexpand}%
+    \endgroup
+}
