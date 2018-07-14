@@ -1,11 +1,11 @@
 \section{Betrachtung der Komponentenfehler}
 \label{sec:faultEval}
 
-Die Aktivierung und Deaktivierung der Komponentenfehler in einem Testfall hängt neben dem zur Berechnung benötigtem Seed vor allem von den zuvor ausgeführten Testfällen bzw. der Lastverteilung bei den zuvor ausgeführten Testfällen eines Tests ab (vgl. \cref{subsubsec:yarnComponentFaults}).
+Die Aktivierung und Deaktivierung der Komponentenfehler in einem Testfall hängt neben dem zur Berechnung benötigtem Seed vor allem von den zuvor ausgeführten Testfällen bzw. der Lastverteilung bei den zuvor ausgeführten Testfällen eines Tests ab (vgl. \cref{subsec:faultActivation}).
 Daher wurden abhängig von der Lastverteilung im Cluster auch bei einer mehrmaligen Ausführung der gleichen Konfiguration bei einigen Testausführungen unterschiedliche Komponentenfehler aktiviert.
 
 Unterschieden werden muss hierbei zudem zwischen aktivierten und injizierten Komponentenfehlern.
-Während beide implementierten Komponentenfehler für einen Node in einem Testfall auch gleichzeitig aktiviert werden konnten, wurde gemäß \cref{subsubsec:yarnComponentFaults} in so einem Fall jedoch nur der \texttt{NodeDead}"=Fehler im Cluster injiziert.
+Während beide implementierten Komponentenfehler für einen Node in einem Testfall auch gleichzeitig aktiviert werden konnten, wurde gemäß \cref{subsec:yarnComponentFaults} in so einem Fall jedoch nur der \texttt{NodeDead}"=Fehler im Cluster injiziert.
 Die Deaktivierung bzw. das Reparieren der Komponentenfehler verhält sich analog hierzu.
 
 Im Folgenden wird nun ein Überblick über die bei den Tests aktivierten bzw. deaktivierten und nicht injizierten Komponentenfehler bzw. erkannten Injektionen und Reperaturen der Komponentenfehler gegeben.

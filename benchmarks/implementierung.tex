@@ -110,3 +110,29 @@ Als initiale Anwendung wird zudem immer der \acl{sl}"=Benchmark genutzt, womit a
 
 \subsection{Vorabgenerierung von Eingabedaten}
 \label{subsec:precreateInputData}
+
+Neben der Generierung der für einige Anwendungen benötigten Eingabedaten während der Testausführung gibt es auch die Möglichkeit, die Eingabedaten vorab zu generieren und anschließend immer diese zu nutzen.
+Um die vorab generierten Daten in einem Test zu nutzen, muss die entsprechende Eigenschaft \texttt{ModelSettings.IsPrecreateBenchInputs} auf \texttt{true} gesetzt werden.
+Dadurch werden auch direkt die Eingabedaten generiert.
+
+Die Vorabgenerierung der Daten startet die Anwendungen, welche Eingabedaten für andere Anwendungen generieren und speichert diese in einem nur hierfür genutzten Verzeichnis im \ac{HDFS}.
+Folgende fünf Anwendungen reichen aus, um für alle anderen Anwendungen Eingabedaten bereit zu stellen:
+
+\begin{itemize}
+    \item \acl{dfw}
+    \item \acl{rtw}
+    \item \acl{tg}
+    \item \acl{so}
+    \item \acl{tsr}
+\end{itemize}
+
+Gestartet werden kann die Vorabgenerierung mithilfe des Benchmark"=Controllers.
+Hierbei werden die Anwendungen, sofern möglich, gleichzeitig ausgeführt und anschließend gewartet, bis alle fünf Anwendungen beendet sind.
+Hierbei wird standardmäßig die Generierung der Eingabedaten einer Anwendung übersprungen, wenn das entsprechende Ausgabeverzeichnis der Anwendung bereits existiert.
+
+Es ist dabei jedoch möglich, die Verzeichnisse jeweils zu löschen, um somit die Daten vollständig neu zu generieren.
+Hierbei wird zudem ein \ac{HDFS}"=Filecheck ausgeführt, um fehlerhafte Daten zu finden und zu löschen.
+Fehlerhafte Daten können im \ac{HDFS} \zB dadurch entstehen, dass alle Nodes defekt sind, auf denen ein Block repliziert wurde, sich die Datei jedoch noch im Index des \ac{HDFS} befindet (vgl. \cref{sec:hadoop}.
+Die vollständige Neugenerierung der Eingabedaten kann mithilfe der Eigenschaft \texttt{ModelSettings.IsPrecreateBenchInputsRecreate} gesteuert werden.
+
+Um beim Starten der Anwendungen die vorab generierten Eingabedaten zu nutzen, wird beim Starten der Anwendungen das Verzeichnis der vorab generierten Daten als entsprechendes Client"=Verzeichnis genutzt (vgl. \cref{subsec:yarnClient,subsec:appImplementation}).

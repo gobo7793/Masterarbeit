@@ -70,7 +70,7 @@ Dadurch wird zudem die Simulation beim aktuellen Stand abgebrochen.
 Nach Abschluss der Simulation werden immer alle noch ausgeführten Anwendungen beendet und defekte Nodes neu gestartet, sofern nötig.
 
 Für die Simulation selbst sind zudem ebenfalls Constraints definiert.
-Dies ist dadurch nötig, da die in \cref{subsec:testRequirements} definierte Anforderung, dass Komponentenfehler Injiziert bzw. Repariert werden, nicht immer innerhalb eines Testfalls validiert werden können.
+Dies ist dadurch nötig, da die in \cref{subsec:testRequirements} definierte Anforderung, dass Komponentenfehler injiziert bzw. repariert werden, nicht immer innerhalb eines Testfalls validiert werden können.
 Aus diesem Grund wird diese Anforderung in Form von Constraints nach Abschluss einer Simulation durch das Oracle geprüft.
 
 \subsection{Initialisierung des Modells}
@@ -152,13 +152,13 @@ Die einfachen Eigenschaften sind:
 Eine Besonderheit bildet die Eigenschaft \texttt{PrecreatedInputs}.
 Es definiert, ob die ausgeführten Anwendungen auf dem Cluster vorab generierte Eingabedaten nutzen oder alle Eingabedaten während der Ausführung selbst generieren.
 Der Unterschied zwischen beiden Varianten liegt darin, dass vorab generierte Eingabedaten in einem anderen Verzeichnis im \ac{HDFS} gespeichert sind und während der Simulation die Eingabedaten aus diesem Verzeichnis gelesen werden.
-Wenn keine Eingabedaten vorab generiert werden, werden als Eingabeverzeichnisse für die Anwendungen die Ausgabeverzeichnisse der entsprechenden Benchmarks genutzt, die die dafür benötigten Daten generieren.
+Wenn keine Eingabedaten vorab generiert werden, werden als Eingabeverzeichnisse für die Anwendungen die Ausgabeverzeichnisse der entsprechenden Benchmarks genutzt, die die dafür benötigten Daten generieren (vgl. \cref{subsec:precreateInputData}).
 Die Eigenschaft \texttt{RecreatePreInputs} definiert hierfür, ob bereits bestehende Eingabedaten neu generiert werden, was standardmäßig nicht der Fall ist bzw. dieses Feld auf \texttt{false} gesetzt ist.
-Der genaue Ablauf der Bereitstellung der Eingabedaten wird in \todo{Vorabgenerierung der Eingabedaten irgendwo schreiben und hier drauf verweisen} beschrieben.
+Die Werte der beiden Eigenschaften werden daher entsprechend in ihren korrespondierenden Eigenschaften in \texttt{ModelSettings} gespeichert.
 
-Weitere Informationen zum \texttt{HostMode} sind in \cref{subsec:hostMode,subsec:implementedConnectors,subsec:modelClass} zu finden.
+Weitere Informationen zum \texttt{HostMode} sind in den Abschnitten \labelcref{subsec:hostMode,subsec:implementedConnectors,subsec:modelClass} zu finden.
 
-Die direkt im Anschluss an die Initialisierung des Simulators ausgerufene Methode \texttt{CollectYarnNodeFaults()} ermittelt alle im initialisierten Modell enthaltenen Komponentenfehler, die mit dem \texttt{NodeFaultAttribute} markiert sind (vgl. \cref{subsubsec:yarnComponentFaults}):
+Die direkt im Anschluss an die Initialisierung des Simulators ausgerufene Methode \texttt{CollectYarnNodeFaults()} ermittelt alle im initialisierten Modell enthaltenen Komponentenfehler, die mit dem \texttt{NodeFaultAttribute} markiert sind (vgl. \cref{subsec:yarnComponentFaults}):
 
 \begin{lstlisting}[label=lst:hadoopSimulationCollectFaults,style=cs,
 caption={[Ermitteln der Komponentenfehler mit dem NodeFaultAttribute]
@@ -181,7 +181,7 @@ private FaultTuple[] CollectYarnNodeFaults(Model model)
 
 Die gefundenen Komponentenfehler werden als Array aus Tupel, bestehend aus dem Komponentenfehler selbst, dem Attribut sowie dem dazugehörigen Node zurückgegeben.
 Zur Speicherung hierfür dient der Typ \texttt{FaultTuple}, welcher ein Alias für das hierfür genutzte \texttt{Tupel<T>} darstellt.
-Die jeweiligen Instanzen der Attribute und Nodes werden für die in \cref{subsubsec:yarnComponentFaults} beschriebene Aktivierung der dazugehörigen Komponentenfehler benötigt.
+Die jeweiligen Instanzen der Attribute und Nodes werden für die in \cref{subsec:faultActivation} beschriebene Aktivierung der dazugehörigen Komponentenfehler benötigt.
 Die beiden im Tupel gespeicherten Instanzen des \texttt{IntWrapper} dienen zur Speicherung der Anzahl der Aktivierungen bzw. Deaktivierungen der Komponentenfehler.
 Da der Wert einer Struktur wie \texttt{int} nicht direkt in einem Tupel geändert werden kann, dient die Klasse \texttt{IntWrapper} hierfür als Adapter.
 
@@ -189,12 +189,13 @@ Da der Wert einer Struktur wie \texttt{int} nicht direkt in einem Tupel geänder
 \label{subsec:simulationUtilities}
 
 Neben der Ausführung der Simulation mit und ohne der Möglichkeit zur Aktivierung der Komponentenfehler gibt es noch einige weitere Methoden, die mit der Simulation zusammenhängen.
-Darüber besteht die Möglichkeit, die vorab generierten Eingabedaten für die Simulation, ohne die Simulation selbst auszuführen, zu generieren.
-Da die Generierung der Eingabedaten nur dann durchgeführt wird, wenn die Verzeichnisse im \ac{HDFS} noch nicht vorhanden sind (und somit auch die Daten selbst nicht), besteht auch die Möglichkeit, die bestehenden Eingabedaten zu löschen und anschließend neu zu geniereren \todo{vgl. abschnitt benchcontroller damit und dann evtl. neu formulieren}.
-Zudem kann die Simulation der durch den Benchmark"=Controller ausgewählten Benchmarks direkt und ohne die Ausführung der gesamten Simulation durchgeführt werden:
+So kann \zB die in \cref{subsec:precreateInputData} beschrieben Vorabgenerierung der Eingabedaten durch eine entsprechende Methode durchgeführt werden.
+Es ist aber auch möglich, die Simulation der durch den Benchmark"=Controller ausgewählten Benchmarks die Ausführung der gesamten Simulation durchzuführen.
+Hierzu kann die bei der Ausführung der Simulation aufgerufene Methode \texttt{SimulateBenchmark()} als eigener Test durchgeführt werden:
 
 \begin{lstlisting}[label=lst:hadoopSimulationBenchmarks,style=cs,
 caption={Simulation der auszuführenden Benchmarks}]
+[Test]
 public void SimulateBenchmarks()
 {
   for(int i = 1; i <= _ClientCount; i++)
@@ -228,9 +229,9 @@ Daneben werden aber auch noch weitere, den \texttt{HostMode} (vgl. \cref{subsec:
 Im Anschluss werden das auszuführende \ac{YARN}"=Modell und der zur Ausführung des Tests genutzte Simulator initialisiert, bevor die Testfälle selbst ausgeführt werden.
 
 Der Ablauf eines Testfalls lässt sich mehrere Abschnitte einteilen.
-Zunächst wird vom Simulator selbst mithilfe der in \cref{subsubsec:yarnComponentFaults} erwähnten Attribute geprüft bzw. entschieden, ob ein Komponentenfehler aktiviert und im Cluster injiziert wird.
+Zunächst wird vom Simulator selbst mithilfe der in \cref{subsec:yarnComponentFaults} den Komponentenfehlern zugewiesenen Attribute geprüft bzw. entschieden, ob ein Komponentenfehler aktiviert und im Cluster injiziert wird.
 Anschließend führt der Simulator einen Simulations"=Schritt durch, führt also für alle Komponenten des Modells die \texttt{Update()}"=Methode aus.
-Hierdurch werden deaktivierte Komponentenfehler auch im Cluster wieder repariert, da \texttt{YarnNode.Update()} die entsprechenden Start"=Methoden aufruft (vgl. \cref{subsubsec:yarnComponentFaults}).
+Hierdurch werden deaktivierte Komponentenfehler auch im Cluster wieder repariert, da \texttt{YarnNode.Update()} die entsprechenden Start"=Methoden aufruft (vgl. \cref{subsec:yarnComponentFaults}).
 
 Anschließend wird die in \cref{subsec:yarnController} erläuterte Routine des Controllers ausgeführt.
 Dabei wird zunächst der \ac{MARP}"=Wert aus dem Cluster ausgelesen, bevor die Benchmark"=Anwendungen des Testfalls gestartet werden.
@@ -241,7 +242,7 @@ Sobald alle Anwendungen gestartet sind, wird vom Controller das Monitoring aller
 Dabei wird auch der \ac{MARP}"=Wert ein zweites mal ausgelesen, da er sich durch die zuvor noch aktiven bzw. neu gestarteten Anwendungen unterschiedlich verändert haben könnte.
 
 Den Abschluss eines Testfalls bildet die Validierung der Werte des Clusters, die beim Monitoring im \ac{YARN}"=Modell gespeichert wurden.
-Dazu werden für jede Komponente im Modell die jeweiligen auf den Anforderungen in \cref{sec:requirements} basierenden Constraints (vgl. \cref{subsubsec:yarnComponentConstraints,subsec:yarnController}) durch das Oracle geprüft (vgl. \cref{subsec:oracleImpl}).
+Dazu werden für jede Komponente im Modell die jeweiligen auf den Anforderungen in \cref{sec:requirements} basierenden Constraints (vgl. \cref{subsec:yarnComponentConstraints,subsec:yarnController}) durch das Oracle geprüft (vgl. \cref{subsec:oracleImpl}).
 Wenn ein Constraint nicht erfolgreich Validiert wurde, wird dies jeweils im Programmlog ausgegeben bzw. die Ausführung der Simulation abgebrochen, wenn sich das Cluster nicht mehr rekonfigurieren kann.
 
 Nach Abschluss eines Testfalls werden durch den Simulator die in \cref{subsec:dataOrganisation} geforderten Daten im Programmlog abgespeichert, die beim Monitoring erkannt wurden.
