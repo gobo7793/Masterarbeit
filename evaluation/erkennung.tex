@@ -13,7 +13,7 @@ Hier geht es jedoch nicht um \glspl{Anwendung} bzw. Attempts, die zwar bereits g
 In diesen Fällen ist es daher das normale Verhalten von Hadoop, keinen ausführenden Node anzugeben, da keiner vorhanden ist.
 Wenn dieser Status zu lange anhält, wurden die \glspl{Attempt} bzw. \gls{AppMstr} durch Hadoop mit einem Timeout beendet (vgl. \cref{subsec:failedApps}).
 
-Anders sieht das jedoch in den sechs \glspl{Test} 7.1, 8 und 23 bis 26 aus.
+Anders sieht das jedoch in den sechs \glspl{Test} 7.1, 8 und 23 bis 26 aus (vgl. \cref{app:overviewExecutedTestCases}).
 In diesen \glspl{Test} wurden zwar regulär die Daten der Nodes ermittelt und auch in den Logdateien ausgegeben, jedoch nicht alle ausführenden Nodes von \glspl{Anwendung} und Attempts.
 Konkret betrifft das hier die beiden auf Host 2 ausgeführten Nodes der betroffenen \gls{AppMstr}.
 In allen sechs betroffenen \glspl{Test} wurden nur die vier auf Host 1 ausgeführten Nodes als ausführende Nodes der \glspl{Attempt} bzw. \glspl{Anwendung} erkannt und auch in den Logdateien ausgegeben.
@@ -21,7 +21,7 @@ Die auf Host 2 ausgeführten Nodes wurden gemäß des SSH"=Logs allerdingsn eben
 Zwar tritt hierbei ein gewisses Muster auf (pro Seed die jeweils zuerst ausgeführten \glspl{Test} mit Nodes auf beiden Hosts), allerdings konnte dieser Fehler nicht gezielt reproduziert werden.
 Bei der erneuten Ausführung der \gls{Testkonfiguration} 7 (Test 7.2) wurden alle Nodes korrekt erkannt und vom Testsystem im Programmlog gespeichert.
 Zum gegenwärtigen Zeitpunkt kann daher nicht gesagt werden, weshalb die ausführenden Nodes in den betroffenen Testfällen nicht immer gespeichert wurden.
-Es kann nur vermutet werden, dass während dem Parsen der übertragenen Daten mit diesen Daten die betroffenen Nodes im Modell nicht gefunden werden konnten (vgl. \todo{Parser/Node-Speicherung, da erklären, dass Objekt vom Node gespeichert wird und nicht ID}).
+Es kann nur vermutet werden, dass während dem Parsen der übertragenen Daten mit diesen Daten die betroffenen Nodes im Modell nicht gefunden werden konnten (vgl. \cref{subsec:implementedParsers}).
 Dennoch lässt sich sagen, dass die beiden verletzten Anforderungen nach einer genaueren Begutachtung der Gründe dafür ein falscher Alarm des Oracles war.
 
 \subsection{Diagnostic"=Daten von Anwendungen}

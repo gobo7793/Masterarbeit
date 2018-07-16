@@ -1,7 +1,7 @@
 \section{Betrachtung der Komponentenfehler}
 \label{sec:faultEval}
 
-Die Aktivierung und Deaktivierung der Komponentenfehler in einem \gls{Testfall} hängt neben dem zur Berechnung benötigtem Seed vor allem von den zuvor ausgeführten Testfällen bzw. der Lastverteilung bei den zuvor ausgeführten Testfällen eines \glspl{Test} ab (vgl. \cref{subsec:faultActivation}).
+Die Aktivierung und Deaktivierung der Komponentenfehler in einem \gls{Testfall} hängt neben dem zur Berechnung benötigtem Basisseed vor allem von den zuvor ausgeführten Testfällen bzw. der Lastverteilung bei den zuvor ausgeführten Testfällen eines \glspl{Test} ab (vgl. \cref{subsec:faultActivation}).
 Daher wurden abhängig von der Lastverteilung im Cluster auch bei einer mehrmaligen Ausführung der gleichen Konfiguration bei einigen Testausführungen unterschiedliche Komponentenfehler aktiviert.
 
 Unterschieden werden muss hierbei zudem zwischen aktivierten und injizierten Komponentenfehlern.
@@ -13,7 +13,7 @@ Im Folgenden wird nun ein Überblick über die bei den \glspl{Test} aktivierten 
 \subsection{Aktivierte und deaktivierte Komponentenfehler}
 \label{subsec:actDeactFaults}
 
-Die Aktivierung und Deaktivierung der Komponentenfehler hing manchmal stark, manchmal weniger stark von der ausgeführten \gls{Testkonfiguration} ab.
+Die Aktivierung und Deaktivierung der Komponentenfehler hing manchmal stark, manchmal weniger stark von der ausgeführten \gls{Testkonfiguration} ab (die Übersicht der \glspl{Testkonfiguration} findet sich in \cref{app:overviewExecutedTestCases}).
 Im Vergleich zwischen korrespondierenden Konfigurationen, die sich nur in der Nutzung des Mutationsszenarios unterschieden, wurde nur 5 mal bei allen \glspl{Test} die gleiche Anzahl an Komponentenfehler aktiviert, bei der Deaktivierung der Komponentenfehler besitzen nur 4 korrespondierende Konfigurationen die gleiche Anzahl bei allen Tests.
 Die Anzahl der aktivierten und deaktivierten Komponentenfehler unterschied sich dagegen in 8 bzw. 7 korrespondierenden \glspl{Testkonfiguration} um einen einen Komponentenfehler in allen Testausführungen.
 Bei den anderen korrespondierenden Konfigurationen unterschied sich die Anzahl bei allen jeweiligen \glspl{Test} um mehr als einen Komponentenfehler.
@@ -55,7 +55,7 @@ Das betraf konkret drei mal das Injizieren eines Komponentenfehlers sowie 16 mal
     	17-28.2 &    2     & Node verbinden &  4
     \end{tabular} 
     \caption[Übersicht der nicht erkannten, injizierten/reparierten Komponentenfehler]
-    {Übersicht der nicht erkannten, injizierten bzw. reparierten Komponentenfehler}
+    {Übersicht der nicht erkannten, injizierten bzw. reparierten Komponentenfehler. Die Übersicht der Tests findet sich in \cref{app:overviewExecutedTestCases}.}
     \label{tab:notDetectedFaults}
 \end{table}
 

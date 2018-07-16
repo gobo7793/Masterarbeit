@@ -3,7 +3,7 @@
 
 Zusammenfassend basierend auf der vorhandenen Datenbasis der 43 ausgeführten \glspl{Test} lässt sich sagen, dass sich das entwickelte Testsystem und das Hadoop"=Cluster im Großen und Ganzen so verhält, wie es erwartet werden konnte.
 Dennoch wurden nicht alle der in \cref{subsec:functionalRequirements} definierten funktionalen Anforderungen an das Cluster selbst und der in \cref{subsec:testRequirements} definierten Anforderungen an das gesamte Testsystem vollständig erfüllt.
-Die meisten dieser Anforderungen wurden mithilfe der in \todo{Constraints} definierten Constraints implementiert, wodurch die Anforderungen bei jedem \gls{Testfall} automatisch validiert werden konnten.
+Die meisten dieser Anforderungen wurden mithilfe der definierten Constraints implementiert (vgl. \cref{subsec:yarnComponentConstraints,subsec:yarnController,subsec:simulationBasics}), wodurch die Anforderungen bei jedem \gls{Testfall} automatisch validiert werden konnten.
 
 Vor allem die Cluster"=Anforderung, wonach alle Tasks vollständig ausgeführt werden, sofern sie nicht abgebrochen werden, wurde bei den 110 nicht erfolgreichen \glspl{Anwendung} nicht erfüllt.
 Aber auch bei einigen vollständig ausgeführten \glspl{Anwendung} wurde diese nicht komplett erfüllt, was die mit dem Exitcode -100 beendeten \glspl{Attempt} zeigen (vgl. \cref{subsec:failedApps}).
@@ -16,7 +16,7 @@ Genauso verhält es sich bei den in \cref{subsec:notDetectedFaults} beschriebene
 Auch die Anforderung, dass sich der MARP"=Wert anhand der ausgeführten \glspl{Anwendung} verändert, wurde nicht immer erfüllt.
 Die Betrachtung der Werte bei den einzelnen \glspl{Test} in \cref{sec:marpValueResults} ergab, dass es durchaus möglich ist, dass die bei einem \gls{Test} ausgeführten \glspl{Anwendung} nicht ausreichen, damit sich der Wert verändert.
 Dennoch war es anhand dieser Anforderung möglich, die in \cref{sec:implMutationTests} implementierten Mutanten der Selfbalancing"=Komponente, bis auf einige in \cref{sec:killingMutants} erläuterte Besonderheiten, in den ausgeführten \glspl{Test} zu erkennen.
-Auch die Anforderung, dass die in \todo{impl komponentenfehler} implementierten Komponentenfehler im realen Cluster injiziert und repariert werden, konnte aufgrund des in \cref{subsec:noReconf1922} erläuterten Falls nicht immer erfüllt werden.
+Auch die Anforderung, dass die in \cref{subsec:yarnComponentFaults} implementierten Komponentenfehler im realen Cluster injiziert und repariert werden, konnte aufgrund des in \cref{subsec:noReconf1922} erläuterten Falls nicht immer erfüllt werden.
 In diesem Kontext zeigte sich aber, dass immer erkannt werden konnte, wenn keine weitere Rekonfiguration des Clusters möglich ist und diese Anforderung somit erfüllt wird (vgl. \cref{sec:noReconfig}).
 Zudem konnte in einigen der in \cref{subsec:notStartedApps} erläuterten Fällen die Anforderung, dass mehrere Benchmark\gls{Anwendung}en gleichzeitig gestartet und ausgeführt werden können, nicht erfüllt werden.
 

@@ -1,8 +1,8 @@
 \section{Betrachtung der Anwendungen}
 \label{sec:appEval}
 
-Bei der Betrachtung der \glspl{Anwendung} sind vor allem zwei Punkte aufgefallen:
-Viele \glspl{Anwendung} wurden aufgrund von Fehlern beendet und einige Anwendungen, vor allem beim zweiten Seed, konnten nicht gestartet werden.
+Bei der Betrachtung der auf dem Cluster auszuführenden \glspl{Anwendung} sind vor allem zwei Punkte aufgefallen:
+Viele \glspl{Anwendung} wurden aufgrund von Fehlern beendet und einige Anwendungen, vor allem bei den \glspl{Test} der Konfigurationen 17 bis 32 (vgl. \cref{app:overviewExecutedTestCases}), konnten nicht gestartet werden.
 Dies widerspricht zum Teil den in \cref{sec:requirements} definierten Anforderungen, hat aber mehrere Gründe, die im Folgenden erläutert werden.
 
 \subsection{Aufgrund von Fehlern abgebrochene Anwendungen}
@@ -64,17 +64,16 @@ Dadurch wird der zweite \gls{AppMstr} bzw. \gls{Attempt} aufgrund des Timeouts v
 Bei den \glspl{Test} 19, 25 und 27 bis 32 kam es vor, dass insgesamt 29 \glspl{Anwendung} nicht gestartet werden konnten.
 Meistens war die \gls{Anwendung} \acrlong{tsr} davon betroffen, einige male die \gls{Anwendung} \acrlong{tvl}.
 Ursächlich dafür ist die jeweils hohe Auslastung des Clusters in den Testfällen zuvor, bei denen den benötigten \gls{AppMstr} der \acrlong{tg}\gls{Anwendung}en keine Ressourcen auf den ausführenden Nodes allokiert werden konnte und diese daher mit einem \gls{AppMstr}"=Timeout beendet wurden (vgl. \cref{subsec:failedApps}).
-Da in \cref{sec:selectTestcases} definiert wurde, dass benötigte Eingabedaten für \glspl{Anwendung} während der Ausführung der \glspl{Test} generiert werden, konnten so die benötigten Eingabedaten für die \gls{Anwendung} \acrlong{tsr} nicht generiert werden (vgl. \todo{details zu tsort}).
+Da in \cref{sec:selectTestcases} definiert wurde, dass benötigte Eingabedaten für \glspl{Anwendung} während der Ausführung der \glspl{Test} generiert werden, konnten so die benötigten Eingabedaten für die \gls{Anwendung} \acrlong{tsr} nicht generiert werden (vgl. \cref{subsec:appSelection}).
 Aufgrund der fehlenden Daten wurde daher die \gls{Anwendung} direkt wieder abgebrochen, wodurch in 42 Testfällen nicht jeder Client eine \gls{Anwendung} ausgeführt hat.
-In diesen Fällen wurde als Resultat zudem das Constraint der Anforderung aus \cref{subsec:testRequirements}, wonach mehrere Benchmark\gls{Anwendung}en gleichzeitig gestartet und ausgeführt werden können, aufgrund der Implementation aus \todo{Constraint-Impl} durch das Oracle als ungültig validiert.
-Analog dazu verhält es sich bei der \gls{Anwendung} \acrlong{tvl}, welche wiederum die \acrlong{tsr}"=Ausgabedaten als Eingabedaten benötigt (vgl. \todo{details zu tvalidate}).
+In diesen Fällen wurde als Resultat zudem das Constraint der Anforderung aus \cref{subsec:testRequirements}, wonach mehrere Benchmark\gls{Anwendung}en gleichzeitig gestartet und ausgeführt werden können, aufgrund der Implementation (vgl. \cref{subsec:yarnComponentFaults} durch das Oracle als ungültig validiert.
+Analog dazu verhält es sich bei der \gls{Anwendung} \acrlong{tvl}, welche wiederum die \acrlong{tsr}"=Ausgabedaten als Eingabedaten benötigt (vgl. \cref{subsec:appSelection}).
 
 \subsection{Nicht ausreichend Submitter}
 \label{subsec:notEnoughSubmitter}
 
 Ein unerwarteter Fehler trat bei der Ausführung des Testfalls 31.1 auf.
-Hierbei kam es vor, dass die für die anderen \glspl{Test} genutzten acht Submitter des Connectors zum Starten von \glspl{Anwendung} (vgl. \cref{subsec:implementedConnectors}) nicht ausreichend waren.
-Der \gls{Test} wurde hierbei im achten \gls{Testfall} abgebrochen, weil keine weiteren freien Submitter zur Verfügung standen.
+Hierbei kam es vor, dass die für die anderen \glspl{Test} genutzten acht Submitter des Connectors zum Starten von \glspl{Anwendung} nicht ausreichend waren.
+Der \gls{Test} wurde hierbei im achten \gls{Testfall} abgebrochen, weil keine weiteren freien Submitter zur Verfügung standen (vgl. \cref{subsubsec:implCmdConnector}).
 Daher wurde der \gls{Test} zur Konfiguration 31 mit zehn Submittern erneut ausgeführt, wodurch dieser wie in \cref{subsec:noReconf3132} erläutert im achten \gls{Testfall} aufgrund fehlender Rekonfigurierbarkeit abgebrochen wurde.
 Die Gründe für den Abbruch des \glspl{Test} 31.1 liegen darin, dass die Docker"=Container der Benchmarks (vgl. \cref{sec:realCluster}) nicht korrekt beendet wurden und die Submitter daher auf weitere Ausgaben der gestarteten \glspl{Anwendung} gewartet haben.
-\todo{Warten der submitter (auch im Treiber) nochmal genauer erklären}
