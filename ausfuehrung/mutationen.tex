@@ -1,23 +1,25 @@
 \section{Generierung der Mutanten}
 \label{sec:implMutationTests}
 
-Zur Entwicklung der für die Mutationstests verwendeten Mutanten wurde der von \citeauthor{Groce2018} in \cite{Groce2018} vorgestellte \textbf{Universalmutator}\footnote{\url{https://github.com/agroce/universalmutator}} genutzt.
-Der Universalmutator ist ein Tool, das den vorhandenen Quellcode eines Programmes verändert, sodass damit Mutationstests durchgeführt werden können.
-Diese werden vor allem in der Forschung eingesetzt, um Testsysteme zu verifizieren, in dem das \gls{SuT} verändert wird.
-Ziel hierbei ist es, mithilfe des Testsystems zu erkennen, dass das \gls{SuT} verändert wurde bzw. nicht korrekt funktioniert.
-\todo{Allgemeines zu Mutationstests in Grundlagen?}
+Um das entwickelte Testsystem selbst zu validieren, wurden einige \glspl{Mutationstest} entwickelt.
+Mutationstests werden vor allem in der Forschung eingesetzt, um Fehler im \gls{SuT} oder dem Testsystem selbst zu finden, in dem das \gls{SuT} verändert wird.
+Ziel ist es, die im \gls{SuT} implementierten Mutanten zu finden und dabei weitere mögliche Fehlerquellen zu ermitteln \cite{DeMillo1978,Hamlet1977,Jia2011,Groce2018}.
 
-Der Universalmutator kann zum Entwickeln von Mutationstests hierbei nicht nur innerhalb einer bestimmten Umgebung bzw. Programmiersprache, sondern prinzipiell für alle Programmiersprachen eingesetzt werden.
-Dies wird dadurch ermöglicht, dass die vom Universalmutator generierten Mutanten basierend auf einem oder mehreren Regelsätzen durchgeführt werden und damit der Quellcode verändert wird.
-So kann vom Universalmutator Quellcode \uA in den Sprachen Python, Java, C/C++ oder Swift mutiert werden \cite{Groce2018}.
+Da sich \glspl{Mutationstest} zu einem großen Forschungszweig entwickelt haben, gibt es hierfür entsprechend viele Tools, um solche Tests zu entwickeln \cite{Jia2011,Groce2018}.
+Einige Beispiele hierfür sind PIT\footnote{\url{http://pitest.org/}} und Judy\footnote{\url{http://mutationtesting.org/}} für Java"=Programme \cite{Coles2016,Madeyski2010}, und Milu\footnote{\url{https://github.com/yuejia/Milu}} für in C entwickelte Programme \cite{Jia2008}.
+
+Ein weiteres, sehr einfach zu nutzendes Tool zum erstellen von \glspl{Mutationstest} ist der in \cite{Groce2018} vorgestellte Universalmutator\footnote{\url{https://github.com/agroce/universalmutator}}.
+Er kann zum Entwickeln von \glspl{Mutationstest} nicht nur innerhalb einer bestimmten Umgebung bzw. Programmiersprache, sondern prinzipiell für alle Programmiersprachen eingesetzt werden.
+Dies wird dadurch ermöglicht, dass die vom Universalmutator generierten Mutanten basierend auf einem oder mehreren \gls{Regex}"=basierten Regelsätzen durchgeführt werden und somit der Quellcode verändert wird.
+So kann vom Universalmutator Quellcode \uA in den Sprachen Python, Java, C/C++, oder Swift mutiert werden \cite{Groce2018}.
 
 Da bei der Ausführung des Universalmutators auch zahlreiche Mutanten erzeugt werden, die nicht kompiliert bzw. ausgeführt werden können, nutzt das Tool die Compiler der jeweiligen Sprache zur Validierung der generierten Mutationen.
 Ein validierter Mutant zeichnet sich hierbei dadurch aus, dass dieser durch den Original"=Compiler der jeweiligen Sprache kompiliert werden kann und die generierten Objektdateien bzw. Bytecode nicht dem nicht-mutierten Original oder anderen bereits generierten Mutationen entsprechen \cite{Groce2018}.
 Diese Validierung kann mithilfe von entsprechenden Startparametern durch ein benutzerdefiniertes Programm durchgeführt werden oder alternativ nicht durchgeführt werden \cite{Groce2018,UniversalmutatorSourceGenmutants}.
 
-Da in dieser Fallstudie nicht nur Hadoop bzw. die Selfbalancing"=Komponente getestet werden soll, sondern vor allem das in den vorherigen Abschnitten und Kapiteln beschriebene Testsystem, wurden auch Mutationstests erstellt.
+Da in dieser Fallstudie nicht nur Hadoop bzw. die Selfbalancing"=Komponente getestet werden soll, sondern vor allem das in den vorherigen Abschnitten und Kapiteln beschriebene Testsystem, wurden auch \glspl{Mutationstest} erstellt.
 Hierbei wurden mithilfe des Universalmutators insgesamt 431 valide Mutationen aus dem Quellcode der Selfbalancing"=Komponente generiert.
-Von allen validen Mutationen wurden anschließend für jede der vier Klassen der Selfbalancing"=Komponente jeweils ein Mutant zufällig ausgewählt, welche als Basis für die in dieser Fallstudie verwendeten Mutationstests dienen:
+Von allen validen Mutationen wurden anschließend für jede der vier Klassen der Selfbalancing"=Komponente jeweils ein Mutant zufällig ausgewählt, welche als Basis für die in dieser Fallstudie verwendeten \glspl{Mutationstest} dienen:
 
 \begin{enumerate}
     \item

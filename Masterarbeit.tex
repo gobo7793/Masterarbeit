@@ -47,6 +47,7 @@
 \usepackage{multirow}
 \usepackage{tabu}
 \usepackage{makecell}
+\usepackage{multicol}
 
 % Textfarben
 \usepackage{xcolor}
@@ -248,8 +249,10 @@
         \pagestyle{scrheadings}
         \addchap{Glossar und Abkürzungen}
         \printnoidxglossary[sort=word,title={Glossar und Abkürzungen}]
-        \textbf{Abkürzungen der Benchmarks (vgl. \cref{subsec:appSelection}):}
-        \printnoidxglossary[sort=def,type=apps]
+        \subsubsection*{Abkürzungen der Benchmarks (vgl. \cref{subsec:appSelection})}
+        \begin{multicols}{2}
+            \printnoidxglossary[sort=def,type=apps]
+        \end{multicols}        
     \end{singlespace}
     
     % Inhalt

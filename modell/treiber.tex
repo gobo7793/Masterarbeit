@@ -58,6 +58,8 @@ Dennoch werden Befehle auf den Cluster"=Hosts ausschließlich mithilfe des Conne
 Der Parser dient dazu, die von Hadoop zurückgegebenen Daten der \gls{YARN}"=Komponenten einzulesen und dem Modell zu übergeben.
 Zur Datenhaltung innerhalb der Parser"=Komponente des Treibers wurden hierfür entsprechende Klassen entwickelt, welche die von \texttt{IParsedComponent} abgeleiteten Interfaces implementieren.
 Dadurch sind die Datenhaltungs"=Klassen auch direkt dafür geeignet, die Daten an das Modell zu übergeben.
+Eine Besonderheit bilden hierbei die ausführenden Nodes der Container bzw. \gls{AppMstr}"=Container.
+Während bei den anderen \gls{YARN}"=Komponenten nur ihre ID zurückgegeben wird, werden bei den ausführenden Nodes direkt ihre korrespondierenden Instanzen im Modell zurückgegeben.
 
 Der grundlegende Ablauf der Initialisierung und dem Abrufen und Konvertieren der Daten ist bei beiden implementierten Parser gleich.
 Beim Initialisieren des Parsers wird zunächst der benötigte, passende Connector initialisiert.
@@ -244,6 +246,7 @@ Notwendig ist hierfür jedoch, dass die Scripte immer die in \cref{app:setupScri
 Da das Starten der \glspl{Anwendung} die einzige asynchrone Operation darstellt, die der Connector durchführen muss, werden hierfür die meisten SSH"=Verbindung aufgebaut.
 Wenn eine \gls{Anwendung} gestartet werden soll, wird immer eine freie SSH"=Verbindung ausgewählt und die \gls{Anwendung} mithilfe dieser gestartet.
 Die Verbindung wird dabei solange zum Starten von anderen \glspl{Anwendung} gesperrt, solange der ausführende Befehl, also die gestartete Anwendung, nicht beendet wurde (vgl. \cref{sec:sshDriver}).
+Sind dadurch alle Submitter belegt und eine weitere Anwendung soll gestartet werden, wird nach einer gewissen Zeit eine \texttt{TimeoutException} ausgelöst.
 Die Befehlsparameter zum Starten der \glspl{Anwendung} wird von den jeweiligen Benchmarks zur Verfügung gestellt, sodass der Connector nur das Benchmark"=Script mit den bereitgestellten Befehlsparametern ausführen muss (vgl. \cref{subsec:scripts,subsec:appImplementation}).
 
 \subsubsection{Implementierung des RestConnectors}
