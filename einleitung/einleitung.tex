@@ -1,20 +1,41 @@
 \chapter{Einleitung}
 \label{ch:intro}
 
-Im Bereich der Softwaretests wird heutzutage sehr viel mit automatisierten Testverfahren gearbeitet.
+Im Bereich der Softwaretests wird heutzutage oftmals mit automatisierten Testverfahren gearbeitet.
 Dies ist insofern logisch, als dass diese Testautomatisierung einerseits Aufwand und damit andererseits direkt Kosten einer Software einspart.
-Daher gibt es vor allem im Bereich der Komponententests zahlreiche Frameworks, mit denen \glspl{Test} einfach und automatisiert erstellt bzw. ausgeführt werden können.
-Ein Beispiel für ein solches Testframework wäre das \emph{xUnit}"=Framework, zu dem \uA JUnit\footnote{\url{https://junit.org}} für Java und NUnit\footnote{\url{https://nunit.org/}} für .NET zählen.
-Dabei werden zunächst einzelne \glspl{Testfall} erstellt und können im Anschluss mit der jeweils aktuellen Codebasis jederzeit ausgeführt werden.
-Automatisierte \glspl{Test} können auch dazu genutzt werden, um einen einzelnen \gls{Test} mit verschiedenen Eingaben durchzuführen.
-Dadurch können verschiedene Eingabeklassen (wie negative oder positive Ganzzahlen) mit sehr geringem Aufwand in einem \gls{Test} genutzt werden und somit verschiedene \glspl{Testfall} direkt ausgeführt werden, wodurch eine massive Kosteneinsparung einhergeht \cite{Polo2013}.
+Daher gibt es vor allem im Bereich der Komponententests zahlreiche Frameworks, mit denen Tests einfach und automatisiert erstellt bzw. ausgeführt werden können.
+Einige Beispiele für solche Testframeworks sind die \emph{xUnit}"=Frameworks wie JUnit\footnote{\url{https://junit.org}} für Java"=Programme und NUnit\footnote{\url{https://nunit.org/}} für .NET"=Programme.
+Dabei werden zunächst einzelne Testfälle erstellt und können im Anschluss mit der jeweils aktuellen Codebasis jederzeit ausgeführt werden.
+Automatisierte Tests können auch dazu genutzt werden, um einzelne Tests mit unterschiedlichen Eingabedaten durchzuführen.
+Dadurch können verschiedene Eingabeklassen (wie negative oder positive Ganzzahlen) mit sehr geringem Aufwand in einem Test genutzt werden und somit verschiedene Testfälle direkt ausgeführt werden, wodurch eine massive Kosteneinsparung einhergeht \cite{Polo2013}.
 
 Es gibt aber nicht nur Frameworks für Komponententests, sondern auch für modellbasierte Testverfahren wie \zB dem \gls{MC}.
 Beim \gls{MC} wird ein Modell mithilfe eines entsprechenden Frameworks automatisiert auf seine Spezifikation getestet und geprüft, unter welchen Umständen diese verletzt wird \cite{Grumberg1999,Habermaier2015}.
+Ein solches Framework, das zudem weitere Möglichkeiten zum Testen von Systemen bietet, ist \gls{ss}.
+Mithilfe von \gls{ss} können, meist selbstorganisierende oder sicherheitskritische, Systeme mit einem modellbasierten Ansatz vollautomatisch getestet werden.
 
-In dieser Masterarbeit soll daher nun ein verteiltes, adaptives Load"=Balancing"=System getestet werden.
-Hauptziel ist es, zu ermitteln, wie ein modellbasierter Testansatz auf ein komplexes Beispiel übertragen werden kann.
-Dafür wird zunächst ein reales System als vereinfachtes Modell nachgebildet und anschließend mithilfe eines \gls{MC} getestet.
-Es soll dabei auch ermittelt werden, wie ein reales System in das Modell eingebunden werden kann und wie bei Problemen mit asynchronen Prozessen innerhalb des verteilten Systems umgegangen werden muss.
+Das Framework \gls{ss} ist jedoch nicht nur auf den Einsatz mit selbstorganisierenden und sicherheitskritischen System beschränkt.
+So wurde bereits in \cite{Eberhardinger2017} mit der von \citeauthor{Cheng2008} entwickelten ZNN.com"=Fallstudie \cite{Cheng2008} ein Load"=Balancing"=System als \gls{ss}"=Modell implementiert und entsprechende Tests ausgeführt.
 
-\todo{vielleicht Testing MapReduce-Based Systems einbringen?}
+In dieser Masterarbeit soll daher nun eine ähnliche Fallstudie durchgeführt werden.
+Konkret soll hier mit Apache Hadoop\footnote{\url{https://hadoop.apache.org/}} ein reales und in der Forschung und Praxis eingesetztes verteiltes Load"=Balancing"=System \cite{PoweredByHadoop} als zu testendes System (\acrlong{SuT}, kurz \acrshort{SuT}\glsunset{SuT}) dienen.
+Hadoop soll jedoch nicht in seiner Standardversion getestet werden, sondern gemeinsam mit der von \citeauthor{Zhang2016} entwickelten, selbstadaptiven Komponente \cite{Zhang2016}.
+Diese Komponente sorgt dafür, dass einige sonst statische Einstellungen von Hadoop während der Laufzeit abhängig von der Auslastung des Hadoop"=Clusters dynamisch verändert werden \cite{Zhang2016}.
+Mithilfe des \gls{ss}"=Frameworks soll hierfür ein modellbasierter Ansatz entwickelt und ausgeführt werden.
+Damit einhergehend soll auch analysiert werden, wie ein reales System in einem zum Testen entwickelten Modell eingebunden werden kann.
+Ziel ist es hierbei nicht Hadoop selbst zu testen, sondern den hierfür entwickelten Testansatz.
+Aus diesem Grund sollen hierfür auch einige Mutationstests entwickelt werden, bei denen die selbstadaptive Komponente von \citeauthor{Zhang2016} entsprechende Mutationen erhält, welche bei der Testausführung vom Testsystem erkannt werden sollen.
+
+Da der im Rahmen dieser Masterarbeit entwickelte Testansatz auch alle wesentlichen Komponenten von Hadoop beschreibt, wurde er auch zum Testen von Hadoop selbst genutzt.
+Die hierfür durchgeführte Fallstudie wurde bereits in \cite{Eberhardinger2018} publiziert.
+
+Hadoop wurde für diese Fallstudie vor allem aus dem Grund ausgewählt, da es bereits in der Praxis sehr häufig eingesetzt wird \cite{PoweredByHadoop} und die auf einem Hadoop"=Cluster ausgeführten Anwendungen dynamisch auf dem Cluster allokiert werden.
+Die von \citeauthor{Zhang2016} entwickelte Komponente ergänzt Hadoop, sodass Anwendungen schneller und optimaler ausgeführt werden können \cite{Zhang2016}.
+Dadurch bildet Hadoop ein verteiltes, selbstadaptives Load"=Balancing"=System, das mithilfe von \gls{ss} getestet werden kann.
+Das für die Tests genutzte reale Hadoop"=Cluster soll hierbei in einer Docker"=Umgebung\footnote{\url{https://www.docker.com/}} ausgeführt werden, um so ein verteiltes Cluster zu simulieren.
+
+Zunächst werden in dieser Masterarbeit im \cref{ch:basics} weitere Details zu \gls{ss} sowie Hadoop und der hierfür entwickelten selbstadaptiven Komponente erläutert.
+In \cref{ch:caseStudy} folgt der grundlegende Aufbau dieser Fallstudie, deren Implementierung in \cref{ch:model} erläutert wird.
+Da für die Ausführung dynamisch die auf dem Hadoop"=Cluster auszuführenden Anwendungen ausgewählt werden sollen, wird die Entwicklung des hierfür benötigten Transitionssystems in \cref{ch:benchmarks} beschrieben.
+Im darauf folgenden \cref{ch:testExecution} werden die zur Ausführung benötigten Implementierungen beschrieben.
+Die Evaluation der in dieser Fallstudie ausgeführten Tests folgt anschließend in \cref{ch:evaluationResults}, bevor abschließend in \cref{ch:outro} die Ergebnisse der Fallstudie zusammenfassend diskutiert werden.
