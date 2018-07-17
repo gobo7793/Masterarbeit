@@ -45,10 +45,10 @@ Der Effekt eines Komponentenfehlers wird in der entsprechenden Effekt"=Klasse de
 Neben den eigentlichen Komponenten enthält jedes Modell zudem eine zentrale \texttt{Model}"=Klasse, die von \texttt{ModelBase} erbt.
 Sie stellt die zentrale Schnittstelle zwischen \gls{ss} und dem Modell selbst dar und wird zur Ausführung bzw. der Analyse des Systemmodells durch \gls{ss} benötigt \cite{SSWikiModels}.
 
-Das Systemmodell kann nach der Modellierung vom \gls{ss}"=Compiler kompiliert werden und mithilfe der \gls{ss}"=Laufzeitumgebung ausgeführt werden:
+Das Systemmodell kann nach der Modellierung vom \gls{ss}"=Compiler kompiliert werden und bindet sich mithilfe der \gls{ss}"=Laufzeitumgebung nach folgendem Schema in die grundlegende Architektur des Testens mit \gls{ss} ein:
 
-\begin{figure}[h]\todo{Figure 4 aus Unified Simulation!}
-    %\includegraphics{./resources/.pdf}
+\begin{figure}[h]
+    \includegraphics{./resources/ssharpArchitecture.pdf}
     \caption[Grundlegende Architektur eines Tests mit \glsentryshort{ss}]
     {Grundlegende Architektur eines Tests mit \glsentryshort{ss} (entnommen aus \cite{Habermaier2016})}
     \label{fig:ssharpTestApproach}
@@ -60,10 +60,10 @@ Dabei werden die in \cref{fig:ssharpTestApproach} abgebildeten Gegenbeispiele da
 
 Ein \gls{ss}"=Modell enthält jedoch auch noch weitere Bestandteile, was sich vor allem beim Ansatz des Back"=to"=Back"=Testings mithilfe der \gls{DCCA} zeigt:
 
-\begin{figure}[h]\todo{Figure 4 aus B2B Testing!}
-    %\includegraphics{./resources/.pdf}
-    \caption[Ansatz des Back"=to"=Back"=Testings mithilfe von \glsentryshort{ss}]
-    {Ansatz des Back"=to"=Back"=Testings mithilfe von \glsentryshort{ss} (entnommen aus \cite{Eberhardinger2016})}
+\begin{figure}[h]
+    \includegraphics[width=\columnwidth]{./resources/b2bTestApproach.pdf}
+    \caption[Ansatz des Back"=to"=Back"=Testings mit \glsentryshort{ss}]
+    {Ansatz des Back"=to"=Back"=Testings mit \glsentryshort{ss} (entnommen aus \cite{Eberhardinger2016})}
     \label{fig:ssharpB2BTesting}
 \end{figure}
 
