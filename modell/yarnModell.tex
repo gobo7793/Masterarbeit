@@ -23,7 +23,7 @@ Der Aufbau des Benchmark"=Controllers wird in \cref{sec:benchmarkController} erl
 \subsection{Die Klassen Model und ModelSettings}
 \label{subsec:modelClass}
 
-Die Klasse \texttt{Model} stellt die zentrale Schnittstelle des Testsystems mit \gls{ss} dar, während die Klasse \texttt{ModelSettings} alle generellen, variablen Einstellungen und Konstanten des \gls{YARN}"=Modells bereitstellt.
+Die Klasse \texttt{Model} stellt die zentrale Schnittstelle des Testsystems mit \gls{ss} dar (vgl. \cref{subsec:ssharpModel}), während die Klasse \texttt{ModelSettings} alle generellen, variablen Einstellungen und Konstanten des \gls{YARN}"=Modells bereitstellt.
 Da die \texttt{Model}"=Klasse auch das gesamte Modell repräsentiert, wird sie zur Verwaltung des von \gls{ss} auszuführenden Modells genutzt.
 Hierfür werden alle Komponenten wie Clients oder \glspl{Anwendung} zusätzlich zur Struktur innerhalb des Modells auch direkt in entsprechenden Eigenschaften dieser Klasse gespeichert, welche zur Interaktion mit \gls{ss} entsprechend markiert sind (vgl. \cref{subsec:ssharpModel}).
 
@@ -46,6 +46,7 @@ Eine Besonderheit bildet hierbei die Eigenschaft \texttt{HttpUrl} der \texttt{Ya
 \label{subsec:yarnComponents}
 
 Die vier implementierten, relevanten \gls{YARN}"=Komponenten sind die Anwendungen, ihre \glspl{Attempt} und \gls{Container} sowie die Nodes des Clusters.
+Diese vier implementierten \gls{YARN}"=Komponenten stellen das zum Testen mit \gls{ss} benötigte Modell des \gls{SuT} dar (vgl. \cref{subsec:ssharpModel}).
 Obwohl die die Anwendungs"=Container in dieser Fallstudie nicht benötigt werden, waren sie für die in \cite{Eberhardinger2018} beschriebene Fallstudie notwendig, welche ebenfalls mit dem hier beschriebenen Modell durchgeführt wurden.
 
 Eine Übersicht über die Implementierung der \gls{YARN}"=Komponenten gibt folgendes Klassendiagramm:
@@ -174,7 +175,7 @@ Sie dienen aber auch zur Validierung der Constraints, bei denen mithilfe der bei
 \subsection{Aktivierung von Komponentenfehler}
 \label{subsec:faultActivation}
 
-Ob ein Komponentenfehler in einem \gls{Testfall} aktiviert wird, ist Abhängig von folgenden Parametern:
+Ob ein Komponentenfehler in einem \gls{Testfall} aktiviert wird, ist abhängig von folgenden Parametern:
 
 \begin{itemize}
     \item Auslastung des Nodes im vorhergehenden Testfall
@@ -184,6 +185,7 @@ Ob ein Komponentenfehler in einem \gls{Testfall} aktiviert wird, ist Abhängig v
 
 Der hierfür benötigte Zufallsgenerator wird mithilfe des in \cref{subsec:testcaseGeneration} spezifizierten Basisseeds initialisiert.
 Da der Zufallsgenerator ein statischer Generator ist, werden über einen \gls{Test} bei der gleichen Anzahl an möglichen Komponentenfehler immer die gleichen Werte zurückgegeben, nicht jedoch zwingend für einen bestimmten Komponentenfehler eines Nodes.
+Die Komponentenfehler werden damit nicht automatisiert durch \gls{ss} aktiviert (vgl. \cref{subsec:ssharpExecution}), sondern werden mithilfe von speziell hierfür entwickelten Klassen und Methoden aktiviert und im realen Cluster injiziert.
 
 Um zu bestimmen, ob ein Komponentenfehler aktiviert wird, sind alle Komponentenfehler mit dem Attribut \texttt{NodeFault} markiert.
 Mithilfe dieses Attributes wird bei der Ausführung eines Testfalls folgendermaßen berechnet, ob der Komponentenfehler aktiviert wird:
@@ -285,7 +287,7 @@ Die beiden Eigenschaften \texttt{SutConstraints} und \texttt{TestConstraints} di
 \subsection{Constraints der \glsentryshort{YARN}"=Komponenten}
 \label{subsec:yarnComponentConstraints}
 
-Einige der in \cref{sec:requirements} definierten Anforderungen an das \gls{SuT} und gesamte Testsystem sind auch für die \gls{YARN}"=Komponenten relevant.
+Einige der in \cref{sec:requirements} definierten Anforderungen an das \gls{SuT} und gesamte Testsystem sind auch für die \gls{YARN}"=Komponenten relevant und werden in Form von Constraints im Modell implementiert (vgl. \cref{subsec:ssharpModel}).
 Die relevanten Bestandteile der Anforderungen für die jeweiligen Komponenten sind mithilfe der beiden in \texttt{IYarnReadable} definierten Eigenschaften \texttt{SutConstraints} und \texttt{TestConstraints} implementiert.
 Realisiert sind die beiden Eigenschaften für die Constraints jeweils als \texttt{Func<bool>[]}:
 
@@ -413,7 +415,7 @@ Die hierbei relevanten Anforderungen sind ebenfalls direkt im Controller impleme
 \subsection{Implementierung des Oracles}
 \label{subsec:oracleImpl}
 
-Das Oracle dient zur Validierung der  in \cref{sec:requirements} definierten Anforderungen automatisiert durch das Testsystem.
+Das Oracle dient zur Validierung der  in \cref{sec:requirements} definierten Anforderungen automatisiert durch das Testsystem (vgl. \cref{subsec:ssharpModel}).
 Hierzu validiert es die Constraints aller \gls{YARN}"=Komponenten und des Controllers, jeweils getrennt nach Constraints für das \gls{SuT} und das gesamte Testsystem, und prüft, ob eine Rekonfiguration des Clusters möglich ist.
 Da die beiden von \texttt{IYarnReadable} bereitgestellten Eigenschaften zum Speichern der Constraints vom Typ \texttt{Func<bool>[]} sind, können so jeweils alle implementierten Constraints nacheinander validiert werden:
 
