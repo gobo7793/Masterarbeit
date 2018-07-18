@@ -1,2 +1,39 @@
 \chapter{Reflexion und Abschluss}
 \label{ch:outro}
+
+Die Evaluation der ausgeführten Tests hat gezeigt, dass sich das entwickelte Testsystem und das Hadoop"=Cluster im Großen und Ganzen so verhalten haben, wie es erwartet wurde (vgl. \cref{sec:evaluationResults}).
+Dennoch wurden auffällig viele Anwendungen aufgrund verschiedener Fehler beendet (vgl. \cref{sec:appEval}), was auf Probleme im Testsystem oder der Auswahl der Testkonfiguration hinweist.
+
+Die Analyse der fehlgeschlagenen Anwendungen hat gezeigt, dass es hierfür vier konkrete Ursachen gibt (vgl. \cref{subsec:failedApps}):
+
+\begin{itemize}
+    \item Der Node ist nicht erreichbar, was zu einem \gls{AppMstr}"=Timeout führt
+    \item Der den \gls{AppMstr} ausführende Node ist zur sehr ausgelastet, was ebenfalls zu einem \gls{AppMstr}"=Timeout führt
+    \item Benötigte Dateien im \gls{HDFS} werden nicht gefunden, was in einem Map"=Task"=Fehler resultiert
+    \item Es wird versucht, den \gls{AppMstr} auf einem defekten Node auszuführen, was sich im Exitcode -100 zeigt
+\end{itemize}
+
+Es ist erkennbar, dass drei der vier Ursachen im direkten oder indirekten Zusammenhang mit der Injizierung von Komponentenfehlern im realen Cluster zusammen hängen.
+Dies zeigt sich vor allem an der häufigen Zahl an \gls{AppMstr}"=Timeouts, welche bei einem injiziertem Komponentenfehler die direkte Folge davon ist, wenn auf dem Node ein \gls{AppMstr} ausgeführt wurde.
+Es ist daher anzunehmen, dass die in \cref{sec:selectTestcases} ausgewählte generelle Wahrscheinlichkeit zur Aktivierung und Deaktivierung der Komponentenfehler von 0,3 vor allem für hohe Auslastungsgrade eine nicht sehr ausgewogene Mischung ergibt.
+Während bei niedrigen Auslastungsgraden kaum Komponentenfehler aktiviert wurden, war die bei hohen Auslastungsgraden häufig der Fall, was sich auch in der Anzahl der 14 abgebrochenen Tests zeigt (vgl. \cref{sec:noReconfig}).
+
+Mit 14 Prozent aller möglichen Komponentenfehler wurden zwar nicht viele Fehler aktiviert.
+Jedoch muss man bei diesem Wert beachten, dass für jeden Node pro Testfall bis zu zwei Komponentenfehler aktivierbar sind.
+Aus diesem Grund wurden nicht 14 Prozent der möglichen Defekte ausgelöst, sondern rund ein Viertel.
+Das ergibt umgerechnet pro ausgeführtem Testfall im Schnitt mindestens einen Node, bei dem ein Komponentenfehler injiziert und somit ein Defekt ausgelöst wurde.
+Die Quote von rund einem Viertel defekter Nodes dürfte im Praxisbetrieb jedoch eher unwahrscheinlich sein.
+Da viele in der Praxis eingesetzten Cluster eine zwei-, drei- oder zum Teil auch eine vierstellige Zahl an Nodes aufweisen \cite{PoweredByHadoop}, müssten hier für eine ähnliche Quote bis zu mehrere hundert Nodes gleichzeitig ausfallen.
+Ein Beispiel mit den Daten des Musik"=Streaming"=Dienstes Spotify\footnote{\url{https://www.spotify.com/}} verdeutlicht hierbei die Tragweite eines solchen Ausfalls.
+Das von Spotify genutzte Cluster zur Analyse der Hörgewohnheiten und für Musikempfehlungen für seine Benutzer und Kunden weist folgende Kenndaten auf \cite{PoweredByHadoop}:
+
+\begin{itemize}
+    \item 1.650 Nodes
+    \item 43.000 virtualisierte Kerne
+    \item 70 TB Arbeitsspeicher
+    \item 65 PB Speicherplatz
+    \item mehr als 20.000 täglich auf dem Cluster ausgeführte Jobs
+\end{itemize}
+
+Es stellt damit auch eines der größten Hadoop"=Cluster dar.
+Es ist schnell ersichtlich, dass beim Ausfall von über 400 Nodes wohl ein Großteil der über 20.000 ausgeführten Anwendungen nicht mehr ausgeführt werden könnte.
