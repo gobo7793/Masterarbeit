@@ -36,4 +36,26 @@ Das von Spotify genutzte Cluster zur Analyse der Hörgewohnheiten und für Musik
 \end{itemize}
 
 Es stellt damit auch eines der größten Hadoop"=Cluster dar.
-Es ist schnell ersichtlich, dass beim Ausfall von über 400 Nodes wohl ein Großteil der über 20.000 ausgeführten Anwendungen nicht mehr ausgeführt werden könnte.
+Es ist schnell ersichtlich, dass beim Ausfall von über 400 Nodes wohl ein Großteil der über 20.000 ausgeführten Anwendungen nicht mehr ausgeführt werden könnten und einzelne Blöcke von möglicherweise benötigten Daten im \gls{HDFS} nicht mehr verfügbar wären (vgl. \cref{sec:hadoop}).
+
+Daher lässt sich die hohe Anzahl an fehlgeschlagenen Anwendungen wohl vor allem an der generellen Wahrscheinlichkeit zur Aktivierung der Komponentenfehlern festmachen.
+Es wäre daher durchaus sinnvoll gewesen, einige der ausgeführten Tests auch ohne Aktivierung der Komponentenfehler durchzuführen.
+So hätte besser festgestellt werden können, ob das an zu vielen aktivierten Komponentenfehlern liegt oder ob der Grund im Testsystem selbst liegt.
+
+Jedoch hätten selbst dadurch \uU nicht alle fehlerhaften Anwendungen unterbunden werden können.
+Unabhängig von der Anzahl der Nodes gab es zahlreiche Testfälle, bei denen das Cluster vollständig ausgelastet war und daher keine weiteren \gls{AppMstr} ausgeführt werden konnten.
+In solchen Fällen kam es oftmals vor, dass einzelne \gls{AppMstr} mit einem Timeout beendet wurden, da die benötigten Ressourcen nicht allokiert werden konnten.
+Da es mit \acrlong{dfw}, \acrlong{dfr} und \acrlong{pt} einige Benchmarks gab, welche bereits bei den ausgefühten Tests unabhängig von der Anzahl der aktiven Nodes das komplette Cluster ausgelastet hatten, hätte es hier sehr wahrscheinlich dennoch entsprechende Timeouts gegeben.
+Jedoch hätten sich die \gls{AppMstr}"=Timeouts darauf beschränkt, dass keine Ressourcen allokiert werden konnten, was eine deutlich geringere Zahl gewesen wäre.
+
+Durch eine Testausführung ohne Aktivierung der Komponentenfehler hätten vermutlich auch viele der 29 nicht gestarteten Anwendungen (vgl. \cref{subsec:notStartedApps}) gestartet werden können.
+Mit 7 Prozent ist der Anteil der nicht gestarteten Anwendungen im Verhältnis zu allen gestarteten Anwendungen zwar kein signifikanter Anteil, aber auch keinen komplett zu vernachlässigender Anteil.
+Zwar hätten die nicht gestarteten Anwendungen keine signifikant höhere Auslastung des Clusters bedeutet, aber dennoch wurde hiermit auch eine in \cref{sec:requirements} nicht erwähnte Anforderung verletzt, wonach alle Anwendungen der ausgewählten Benchmarks auch gestartet werden müssten.
+Da hierbei immer Anwendungen der Terasort"=Suite betroffen waren, gab es hierfür auch zwei Gründe.
+Der erste Grund war eine zu hohe Auslastung des Clusters, wodurch die benötigten Daten von der \acrlong{tg} nicht generiert werden konnten, da die Anwendung keine Ressourcen zur Ausführung des \gls{AppMstr} erhalten hat oder die Anwendung auch deshalb vorab abgebrochen wurde.
+Der zweite Grund liegt in der Injizierung der Komponentenfehler, wodurch erfolgreich generierte Daten für die nachfolgenden Anwendungen nicht mehr verfügbar waren.
+Es ist daher stark davon auszugehen, dass sich die Anzahl der nicht gestarteten Anwendungen bei einer Testausführung ohne Aktivierungen von Komponentenfehlern signifikant reduzieren würde.
+
+Ein spezieller Fall bildet das Fehlen der Diagnostik"=Daten von ausgeführten Anwendungen.
+Hierfür hat sich nach einer Analyse herausgestellt, dass nicht fehlerhafte Daten des Clusters ursächlich waren, sondern ein falsch gesetztes Attribut im Parser (vgl. \cref{subsec:notSavedAppDiagnostics}).
+Dies hätte bereits bei Vorabtests wie den durchgeführten Komponententests der beiden implementierten Parser bereits festgestellt und entsprechend korrigiert werden müssen.

@@ -24,12 +24,13 @@ Zum gegenwärtigen Zeitpunkt kann daher nicht gesagt werden, weshalb die ausfüh
 Es kann nur vermutet werden, dass während dem Parsen der übertragenen Daten mit diesen Daten die betroffenen Nodes im Modell nicht gefunden werden konnten (vgl. \cref{subsec:implementedParsers}).
 Dennoch lässt sich sagen, dass die beiden verletzten Anforderungen nach einer genaueren Begutachtung der Gründe dafür ein falscher Alarm des Oracles war.
 
-\subsection{Diagnostic"=Daten von Anwendungen}
+\subsection{Fehlende Diagnostik"=Daten von Anwendungen}
 \label{subsec:notSavedAppDiagnostics}
 
-Bei allen \glspl{Test} ist zudem aufgefallen, dass die Diagnostic"=Daten von \glspl{Anwendung} nicht im Programmlog enthalten sind.
-Genauso wie bei den nicht erkannten Nodes auf Host 2 (vgl. \cref{subsec:notDetectedHost2}) wurden alle Diagnostic"=Daten von Hadoop an das Testsystem übertragen, die der \glspl{Anwendung} im Gegensatz zu denen der \glspl{Attempt} jedoch nicht gespeichert.
+Bei allen \glspl{Test} ist zudem aufgefallen, dass die Diagnostik"=Daten von \glspl{Anwendung} nicht im Programmlog enthalten sind.
+Genauso wie bei den nicht erkannten Nodes auf Host 2 (vgl. \cref{subsec:notDetectedHost2}) wurden alle Diagnostik"=Daten von Hadoop an das Testsystem übertragen, die der \glspl{Anwendung} im Gegensatz zu denen der \glspl{Attempt} jedoch nicht gespeichert.
 Zur Auswertung der Daten im Rahmen der Evaluation ist dies zwar irrelevant, da dies auch aufgrund der Daten der \glspl{Attempt} geschehen konnte, allerdings wird dadurch die in \cref{subsec:testRequirements} definierte Anforderung an das Testsystem nur teilweise erfüllt, wonach der jeweils aktuelle Status des Clusters erkannt und gespeichert wird.
 
-Eine Analyse ergab, dass die Diagnostic"=Daten der \glspl{Anwendung} aufgrund eines falsch gesetzten Attributs in der \texttt{ApplicationResult}"=Klasse des Parsers nicht im Testsystem gespeichert werden konnten. \todo{Reflexion: Hätte bei vorabtests erkannt werden müssen!}
-Da die Diagnostic"=Daten der \glspl{Anwendung} eine Zusammenfassung der gesamten \gls{Anwendung} darstellen, und alle Diagnostic"=Daten bereits durch die der \glspl{Attempt} vorhanden waren, wurde hier auf erneute Testausführungen verzichtet.
+Eine Analyse ergab, dass die Diagnostik"=Daten der \glspl{Anwendung} aufgrund eines falsch gesetzten Attributs in der \texttt{ApplicationResult}"=Klasse des Parsers nicht im Testsystem gespeichert werden konnten.
+Dadurch konnten die Daten nicht mithilfe von Json.NET dem korrekten Attribut zugeordnet werden, wodurch die Diagnostik"=Daten entsprechend verworfen wurden (vgl. \cref{subsubsec:implRestParser}).
+Da die Diagnostik"=Daten der \glspl{Anwendung} eine Zusammenfassung der gesamten \gls{Anwendung} darstellen, und alle Diagnostik"=Daten bereits durch die der \glspl{Attempt} vorhanden waren, wurde hier auf erneute Testausführungen verzichtet.
