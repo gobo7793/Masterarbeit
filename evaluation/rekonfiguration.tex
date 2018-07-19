@@ -1,4 +1,4 @@
-\section{Rekonfiguration des Clusters nicht möglich}
+\section{Analyse der Testabbrüche}
 \label{sec:noReconfig}
 
 Insgesamt 13 der 42 ausgeführten \glspl{Test} wurden vorzeitig abgebrochen, da eine Rekonfiguration des Clusters nicht möglich war.
@@ -31,8 +31,9 @@ Die Nodes hatten im fünften \gls{Testfall} der vier \glspl{Test} folgende Ausla
     	Auslastung in Prozent & 47 & 97 & 96 & 98
     \end{tabular}
     \caption[Status der Nodes im fünften \gls{Testfall} der \glspl{Test} 13 bis 16]
-        {Status der Nodes im fünften \gls{Testfall} der \glspl{Test} 13 bis 16.
-        Der Wert der Auslastung ist die kumulierte Auslastung aller noch aktiven Nodes.}
+    {Status der Nodes im fünften \gls{Testfall} der \glspl{Test} 13 bis 16.
+    Der Wert der Auslastung ist die kumulierte Auslastung aller noch aktiven Nodes.
+    Eine Übersicht aller Tests findet sich in \cref{app:overviewExecutedTestCases}.}
     \label{tab:loadTests1316}
 \end{table}
 
@@ -58,7 +59,9 @@ Dies liegt in der Historie des Nodes innerhalb des \glspl{Test} begründet:
     	Testfall 3 &                       -                        & \makecell{Injiziert:\\Node\\beendet} &                      -                      & \makecell{Injiziert:\\Node\\beendet} \\ \hline
     	Testfall 4 & \makecell{Repariert:\\Verbunden\\Ausl.: 93 \%} &                  -                   &   \emph{\makecell{Repariert:\\Verbunden}}   &                  -
     \end{tabu} 
-    \caption{Auslastungen und Komponentenfehler in Node 1 der \glspl{Test} 19 bis 22}
+    \caption[Auslastungen und Komponentenfehler in Node 1 der Tests 19 bis 22]
+    {Auslastungen und Komponentenfehler in Node 1 der Tests 19 bis 22.
+    Eine Übersicht aller Tests findet sich in \cref{app:overviewExecutedTestCases}.}
     \label{tab:loadNode1Tests1922}
 \end{table}
 
@@ -81,11 +84,10 @@ Im \gls{Test} 27 ohne Mutationsszenario wird dagegen zwar auch die Verbindung vo
 Node 2 wird in allen drei \glspl{Test} bereits im dritten \gls{Testfall} beendet, da die Auslastung des Nodes im zweiten \gls{Testfall} bei jeweils über 90 Prozent liegt.
 Die übrigen der 19 bzw. 20 aktivierten und zwischen 10 und 13 wieder deaktivierten Komponentenfehlern unterschieden sich in den drei \glspl{Test} bis auf einzelne, hier nicht relevante, Ausnahmen nicht.
 
-\todo{kürzen und die genaue erklärung auf entsprechende abschnitte verweisen}
 Der Grund für die Injizierung von Komponentenfehlern bei noch allen aktiven Nodes im achten \gls{Testfall} liegt in der Auslastung der Nodes im siebten Testfall.
 Diese beträgt im \gls{Test} 27 ohne Mutationen bei den beiden betroffenen Nodes jeweils 100 Prozent, bei den übrigen Nodes ist jedoch keine bzw. eine geringe Auslastung vorhanden.
-In den beiden \glspl{Test} der Konfiguration 28 ist das Cluster jeweils vollständig ausgelastet, wodurch die Wahrscheinlichkeit zur Aktivierung der Komponentenfehler im folgenden \gls{Testfall} stark ansteigt.
-Dadurch war es möglich, dass alle noch aktiven Nodes vom Cluster getrennt bzw. beendet wurden und der \gls{Test} aufgrund fehlender Rekonfigurationsmöglichkeiten abgebrochen wurde.
+In den beiden \glspl{Test} der Konfiguration 28 ist das Cluster jeweils vollständig ausgelastet, wodurch die Wahrscheinlichkeit zur Aktivierung der Komponentenfehler im folgenden \gls{Testfall} stark ansteigt (vgl. \cref{subsec:faultActivation}).
+Dadurch war es möglich, dass alle noch aktiven Nodes vom Cluster getrennt bzw. beendet wurden und der \gls{Test} aufgrund fehlender Rekonfigurationsmöglichkeiten abgebrochen wurde (vgl. \cref{subsec:oracleImpl}).
 
 \subsection{Testkonfigurationen 31 und 32}
 \label{subsec:noReconf3132}
