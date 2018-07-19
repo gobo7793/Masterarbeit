@@ -61,9 +61,5 @@ Aufgrund der Ergebnisse lässt sich sagen, dass mehr injizierte Komponentenfehle
 Da die Ursache für mehr injizierte Komponentenfehler eine höhere Clusterauslastung ist, lässt sich auch ein Zusammenhang mit der Selfbalancing"=Komponente von \citeauthor{Zhang2016} herstellen.
 Dies liegt daran, dass Mutationstests im Vergleich meist die Tests waren, bei denen weniger Komponentenfehler aktiviert wurden (vgl.\cref{subsec:actDeactFaults}).
 Die Ursache hierfür liegt in der geringeren Auslastung der Clusters, die Auswirkung hiervon ist durch mehr aktive Nodes jedoch auch eine schnellere Ausführung der Tests gewesen.
-Daraus lässt sich vor allem auch schlussfolgern, dass mithilfe der Selfbalancing"=Komponente das Cluster besser ausgelastet werden kann als mit den Standardeinstellungen.
+Daraus lässt sich schlussfolgern, dass mithilfe der Selfbalancing"=Komponente das Cluster besser ausgelastet werden kann als mit den Standardeinstellungen.
 Dadurch bestätigt diese Fallstudie auch die Evaluation von \citeauthor{Zhang2016} \cite{Zhang2016} zur Performance eines Clusters mit der Komponente.
-
-Ein spezieller Fall bildet das Fehlen der Diagnostik"=Daten von ausgeführten Anwendungen.
-Hierfür hat sich nach einer Analyse herausgestellt, dass nicht fehlerhafte Daten des Clusters ursächlich waren, sondern ein falsch gesetztes Attribut im Parser (vgl. \cref{subsec:notSavedAppDiagnostics}).
-Dies hätte bereits bei Vorabtests wie den durchgeführten Komponententests der beiden implementierten Parser bereits festgestellt und entsprechend korrigiert werden müssen.
