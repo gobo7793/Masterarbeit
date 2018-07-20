@@ -2,7 +2,8 @@
 \label{sec:evaluationStats}
 
 Die Dauer aller Simulationen betrug ca. 4:16:44 Stunden, die gesamte Ausführungsdauer inkl. Starten und Beenden des Clusters bei jeder Konfiguration betrug ca. 5:19:57 Stunden.
-Von den 290 Testfällen, die ausgeführt werden hätten sollen, wurden nur 222 \glspl{Testfall} (77 \%) ausgeführt.
+Auffällig ist hierbei, dass die Mutationstests meist schneller abgeschlossen wurden als die korrespondierenden Tests ohne Mutationen (vgl. \cref{subsec:actDeactFaults}).
+Von den 290 Testfällen, die zur Ausführung vorgesehen waren, wurden nur 222 \glspl{Testfall} (77 \%) tatsächlich auch ausgeführt.
 Der Grund für den Abbruch von 14 \glspl{Test} liegt zum Großteil im in \cref{subsec:oracleImpl} beschriebenen Abbruch der Simulation, wenn keine Rekonfiguration des Clusters mehr möglich ist, also bei allen Nodes des Clusters ein Komponentenfehler injiziert und dies beim Monitoring erkannt wurde.
 Ein \gls{Test} wurde aufgrund der zu geringen Anzahl an Submittern abgebrochen, was in \cref{subsec:notEnoughSubmitter} genauer erläutert wird.
 

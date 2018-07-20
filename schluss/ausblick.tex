@@ -18,7 +18,7 @@ Dies liegt daran, dass die ausgeführten Testfälle während der Testausführung
 
 Neben den Problemen, dass einige Anwendungen nicht immer beendet wurden, wenn ein Test abgebrochen wurde, gibt es aber auch noch weitere Punkte, bei denen das entwickelte Testsystem nach den Erfahrungen der ausgeführten Tests Optimierungsbedarf aufweist.
 Eine Möglichkeit wäre \zB die vermehrte Nutzung von mehreren Threads für einzelne Abläufe innerhalb der Simulation bzw. des Treibers wie beim Zugriff auf das Clusters.
-Problematisch könnte hierbei jedoch sein, dass Multithreading von \gls{ss} nicht bzw. nur bedingt Unterstützt wird.
+Problematisch könnte hierbei jedoch sein, dass Multithreading von \gls{ss} nicht bzw. nur bedingt Unterstützt wird (vgl. \cref{sec:ssharp}).
 Hierfür müsste daher geprüft werden, an welcher Stelle entsprechende Optimierungen möglich wären.
 
 Ebenso könnte die SSH"=Verbindung selbst analog zu den Parsern und Connectoren (vgl. \cref{subsec:driverModelIntegration}) besser gekapselt werden, \zB in Form eines hierfür definierten Interfaces.

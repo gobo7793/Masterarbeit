@@ -1,5 +1,37 @@
-\addchap{Zusammenfassung}
+\begin{abstract}
+    Durch eine Automatisierung von Tests lassen sich im Bereich der Softwareentwicklung hohe Kosten einsparen.
+    Daher wurden zahlreiche Test"=Frameworks und Möglichkeiten zum Testen von Systemen und ihrer Software entwickelt.
+    Ein solches Framework ist \acrshort{ss}, mit dem mithilfe eines modellbasierten Ansatzes Systeme getestet werden können.
+    Mithilfe des \acrshort{ss}"=Frameworks soll nun ein Testsystem entwickelt werden, um hiermit automatisiert ein verteiltes, adaptives Load"=Balancing"=System zu testen.
+    Hierfür wurde Apache Hadoop ausgewählt, welches mit einer selbstadaptiven Komponente ergänzt wird.
+    Diese selbstadaptive Komponente verändert dynamisch und basierend auf den derzeit auf dem Hadoop"=Cluster ausgeführten Anwendungen einige der sonst statischen Einstellungen von Hadoop, womit die verfügbaren Ressourcen des Clusters optimaler genutzt werden können.
+    
+    Um Hadoop testen zu können, wurde zunächst mithilfe von \acrshort{ss} ein Modell entwickelt, welches die wesentlichen Komponenten des \acrshort{YARN}"=Frameworks von Hadoop abbildet.
+    Dieses Modell wurde wiederum mithilfe eines hierfür entwickelten Treibers mit einem realen Hadoop"=Cluster verbunden.
+    Dadurch wurde es ermöglicht, durch die Testausführung mit \acrshort{ss} unterschiedliche Anwendungen auf dem realen Cluster auszuführen und die Daten der Anwendungen und des Clusters im Modell zu nutzen.
+    Um zu testen, ob sich das entwickelte Testsystem zur Testautomatisierung eines verteilten, adaptiven Load"=Balancing"=Systems eignet, wurde hierfür eine Fallstudie durchgeführt.
+    
+    In dieser Masterarbeit werden der Aufbau und Ablauf der durchgeführten Fallstudie, sowie die Entwicklung und Implementierung des hierfür genutzten Testsystems erläutert.
+    Es wird gezeigt, welche Besonderheiten bei der Durchführung und Auswertung der Fallstudie aufgetreten sind, und inwiefern sich das entwickelte, modellbasierte Testsystem zur Testautomatisierung eines verteilten, adaptiven Load"=Balancing"=Systems eignet.
+\end{abstract}
 
+\clearpage
+\begin{otherlanguage}{english}
+\begin{abstract}
+    By automating tests, high costs can be saved in software development.
+    Therefore, numerous test frameworks and ways to test systems and their software have been developed.
+    One such framework is \acrshort{ss}, which uses a model"=based approach to test systems.
+    Using the \acrshort{ss} framework, a test system will be developed to automatically test a distributed, adaptive load-balancing system.
+    For this, Apache Hadoop was chosen, which is equipped with an adaptive resource manager.
+    The manager detect the current usage of the cluster and modify some of Hadoop's otherwise static settings to make a better use of the available resources.
+    
+    To test hadoop, a \acrshort{ss} model was developed, which contains the essential componentens of the Hadoop \acrshort{YARN} framework.
+    To connect the model to a real Hadoop cluster a driver was developed for this purpose.
+    This allows \acrshort{ss} to run different applications on the real cluster and detect the state of the running applications and the cluster.
+    To determine the developed test system is suitable for the test automation of a distributed, adaptive load-balancing system, a case study was executed.
+    
+    This master thesis explains the structure and processes of the case study, as well as the development and implementation of the test system used for this purpose.
+    It shows the won experiences by executing the case study and shows how the developed, model-based test system is suitable for test automation of a distributed, adaptive load-balancing system.
+\end{abstract}
+\end{otherlanguage}
 
-
-\addchap{Abstract}

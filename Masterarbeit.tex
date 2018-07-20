@@ -1,4 +1,4 @@
-\documentclass[12pt,a4paper,ngerman,bibliography=totoc]{scrreprt}
+\documentclass[12pt,a4paper,notitlepage,abstract=on,english,ngerman,bibliography=totoc]{scrreprt}
 % prevent warning \float@addtolists detected
 \usepackage{scrhack} 
 
@@ -180,9 +180,10 @@
 \makeatother
 
 % Hurenkinder, Schusterjungen
-\clubpenalty = 10000
-\widowpenalty = 10000
-\displaywidowpenalty = 10000 
+\usepackage[all,defaultlines=2]{nowidow}
+%\clubpenalty = 10000
+%\widowpenalty = 10000
+%\displaywidowpenalty = 10000
 
 % Referenzen/Lesezeichen
 \PassOptionsToPackage{hyphens}{url}
@@ -212,6 +213,9 @@
 % Todos
 \usepackage{todonotes}
 \presetkeys{todonotes}{inline}{}
+
+% Abstract
+\renewenvironment{abstract}{\addchap{\abstractname}}{}
 
 \begin{document}
     % Titelseite
