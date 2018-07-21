@@ -1,28 +1,29 @@
 \section{Implementierung der Simulation}
 \label{sec:implSimulation}
 
-Für die Ausführung der Simulation wurden zwei grundlegende \glspl{Test} implementiert.
-Das ist zum einen eine reine Simulation ohne die Aktivierung von Komponentenfehlern, sowie ein weiterer Test, bei dem Komponentenfehler aktiviert werden können.
-Ausgeführt werden können die \glspl{Test} mithilfe des NUnit"=Frameworks.
+Alle zur Ausführung der Simulation relevanten Methoden sind in der Klasse \texttt{SimulationTests} zusammengefasst.
+Hierbei gibt es neben der Simulation mit Aktivierung der Komponentenfehler auch eine Möglichkeit zur Simulation ohne die Aktivierung von Komponentenfehlern sowie weitere, mit der Simulation zusammenhängende Methoden.
 
 \subsection{Grundlegender Aufbau}
 \label{subsec:simulationBasics}
 
 Da im realen Cluster Hadoop kontinuierlich Anpassungen durchführt und \glspl{Test} in \gls{ss} mit diskreten Schritten durchgeführt werden, muss beachtet werden, dass die Werte, die beim \gls{Test} ermittelt werden, immer nur Momentaufnahmen darstellen.
-Ebenso muss beachtet werden, dass bei der Deaktivierung von einzelnen Nodes bzw. deren Netzwerkverbindungen diese nicht in Echtzeit, sondern um einige Zeit verzögert erkannt werden und erst nach einer gewissen Zeit aus der Konfiguration des Clusters entfernt werden.
+Ebenso muss beachtet werden, dass bei der Deaktivierung von einzelnen Nodes bzw. deren Netzwerkverbindungen diese nicht in Echtzeit, sondern um einige Zeit verzögert erkannt werden und erst nach einer gewissen Zeit aus der Konfiguration des Clusters entfernt werden (vgl. \cref{sec:hadoop}).
 Genauso verhält es sich, wenn ein Node bzw. seine Verbindung wieder aktiviert wird, da dieser zunächst gestartet und die Verbindung mit den YARN"=Controller wiederhergestellt werden muss.
 Außerdem werden die für die auf dem Cluster ausgeführten \glspl{Anwendung} benötigten \gls{AppMstr} und YARN"=Container aufgrund der komplexen internen Prozesse von Hadoop nicht innerhalb weniger Millisekunden allokiert, sondern benötigen ebenfalls eine gewisse Zeit.
-Aus diesen Gründen muss ein Simulations"=Schritt um eine gewisse Zeit verzögert werden, sodass alle Aktivitäten innerhalb von Hadoop genügend Zeit zur Ausführung erhalten.
+Aus diesen Gründen muss ein vom Simulator ausgeführter Testfall um eine gewisse Zeit verzögert werden, sodass alle Aktivitäten innerhalb von Hadoop genügend Zeit zur Ausführung erhalten.
+Dadurch erhält jeder Testfall eine gewisse Mindestdauer, die erreicht sein muss, bevor der nachfolgende Testfall ausgeführt wird.
 
 Der grundlegende Ablauf einer Simulation sieht wie folgt aus:
 
 \begin{lstlisting}[label=lst:hadoopSimulation,style=cs,
-caption={[Simulation in dieser Fallstudie]
-    Simulation in dieser Fallstudie (gekürzt).}]
+caption={[Durchführung der Simulation]
+    Durchführung der Simulation (gekürzt).}]
 private bool ExecuteSimulation()
 {
   var model = InitModel();
-  var isWithFaults = FaultActivationProbability > 0.000001; // prevent inaccuracy
+  // 0.000001 to prevent inaccuracy
+  var isWithFaults = FaultActivationProbability > 0.000001;
   
   var wasFatalError = false;
   try
@@ -62,12 +63,11 @@ private bool ExecuteSimulation()
 
 Hierbei gibt es zwei Varianten zum Ausführen der Simulation, welche abhängig von der Aktivierung der Komponentenfehler ist.
 Sollen keine Komponentenfehler aktiviert bzw. deaktiviert werden, werden die entsprechenden Variablen zur Festlegung der generellen Wahrscheinlichkeiten (vgl. \cref{subsec:simulationModelInit} entsprechend gesetzt und die Simulation ausgeführt.
-Da die einzelnen Schritte einer Simulation eine gewisse Mindestdauer haben, wird nach jedem Schritt geprüft, wie viel Zeit für die Ausführung des Schrittes benötigt wurde.
-Liegt die Zeit unterhalb der Mindestdauer für einen Schritt, wird die Ausführung des nächsten Schrittes solange hinausgezögert, bis die Mindestdauer des Schrittes erreicht wurde.
+Nach Abschluss eines Testfalls durch \texttt{SimulateStep()} wird geprüft, ob die Ausführung des Testfalls die Mindestdauer unterschritten hat und die weitere Ausführung in dem Fall entsprechend verzögert.
 
 Wenn während der Simulation eine im Modell nicht behandelte \texttt{Exception} auftritt, wird diese außerhalb der Simulation abgefangen und entsprechend geloggt.
 Dadurch wird zudem die Simulation beim aktuellen Stand abgebrochen.
-Nach Abschluss der Simulation werden immer alle noch ausgeführten \glspl{Anwendung} beendet und defekte Nodes neu gestartet, sofern nötig.
+Nach Abschluss der Simulation werden alle noch ausgeführten \glspl{Anwendung} beendet und defekte Nodes neu gestartet, sofern nötig.
 
 Für die Simulation selbst sind zudem ebenfalls Constraints definiert.
 Dies ist dadurch nötig, da die in \cref{subsec:testRequirements} definierte Anforderung, dass Komponentenfehler injiziert bzw. repariert werden, nicht immer innerhalb eines Testfalls validiert werden können.
@@ -124,7 +124,7 @@ Die einfachen Eigenschaften sind:
         Dadurch wird es ermöglicht, einzelne \glspl{Testfall} erneut ausführen zu können.
         
     \item[StepCount] \hfill \\
-        Definiert die Anzahl der ausgeführten Schritte.
+        Definiert die Anzahl der ausgeführten Testfälle der Simulation.
         
     \item[FaultActivationProbability] \hfill \\
         Definiert die generelle Häufigkeit zum Aktivieren von Komponentenfehlern.
@@ -137,12 +137,13 @@ Die einfachen Eigenschaften sind:
         
     \item[HostsCount] \hfill \\
         Definiert die Anzahl der in der Simulation verwendeten Hosts.
-        Benötigt wird dieser Wert, damit zu jedem verwendeten Host eine SSH"=Verbindung aufgebaut werden kann.
+        Benötigt wird dieser Wert, damit zu jedem verwendeten Host eine SSH"=Verbindung aufgebaut werden kann (vgl. \cref{subsec:implementedConnectors}).
+        Diese Eigenschaft hat jedoch nur einen Einfluss, wenn der \texttt{Mutlihost}"=Mode genutzt wird (vgl. \cref{subsec:hostMode}).
         
     \item[NodeBaseCount] \hfill \\
         Definiert die Anzahl der Nodes auf Host1.
-        Auf Host2 wird die Hälfte der Nodes verwendet.
-        Benötigt wird dieser Wert, um mithilfe der \gls{REST}"=API auf die Hadoop"=Nodes zugreifen zu können, um die Daten der YARN"=Container zu ermitteln.
+        Auf einem möglichen Host2 wird die Hälfte der Nodes verwendet (vgl. \cref{subsec:hostMode}).
+        Benötigt wird dieser Wert, um mithilfe der \gls{REST}"=API auf die Hadoop"=Nodes zugreifen zu können, um die Daten der YARN"=Container zu ermitteln (vgl. \cref{subsubsec:implRestConnector,subsec:modelClass}).
         
     \item[ClientCount] \hfill \\
         Definiert die Anzahl der zu simulierenden Clients.
@@ -152,13 +153,11 @@ Die einfachen Eigenschaften sind:
 Eine Besonderheit bildet die Eigenschaft \texttt{PrecreatedInputs}.
 Es definiert, ob die ausgeführten \glspl{Anwendung} auf dem Cluster vorab generierte Eingabedaten nutzen oder alle Eingabedaten während der Ausführung selbst generieren.
 Der Unterschied zwischen beiden Varianten liegt darin, dass vorab generierte Eingabedaten in einem anderen Verzeichnis im \gls{HDFS} gespeichert sind und während der Simulation die Eingabedaten aus diesem Verzeichnis gelesen werden.
-Wenn keine Eingabedaten vorab generiert werden, werden als Eingabeverzeichnisse für die \glspl{Anwendung} die Ausgabeverzeichnisse der entsprechenden Benchmarks genutzt, die die dafür benötigten Daten generieren (vgl. \cref{subsec:precreateInputData}).
-Die Eigenschaft \texttt{RecreatePreInputs} definiert hierfür, ob bereits bestehende Eingabedaten neu generiert werden, was standardmäßig nicht der Fall ist bzw. dieses Feld auf \texttt{false} gesetzt ist.
+Wenn keine Eingabedaten vorab generiert werden, werden als Eingabeverzeichnisse für die \glspl{Anwendung} die Ausgabeverzeichnisse der entsprechenden Benchmarks genutzt, die die dafür benötigten Daten generieren (vgl. \cref{sec:clusterSetup,subsec:testcaseGeneration,subsec:precreateInputData}).
+Die Eigenschaft \texttt{RecreatePreInputs} definiert hierfür, ob bereits bestehende Eingabedaten neu generiert werden, was standardmäßig nicht der Fall ist bzw. dieses Feld auf \texttt{false} gesetzt ist (vgl. \cref{subsec:precreateInputData}).
 Die Werte der beiden Eigenschaften werden daher entsprechend in ihren korrespondierenden Eigenschaften in \texttt{ModelSettings} gespeichert.
 
-Weitere Informationen zum \texttt{HostMode} sind in den Abschnitten \labelcref{subsec:hostMode,subsec:implementedConnectors,subsec:modelClass} zu finden.
-
-Die direkt im Anschluss an die Initialisierung des Simulators ausgerufene Methode \texttt{CollectYarnNodeFaults()} ermittelt alle im initialisierten Modell enthaltenen Komponentenfehler, die mit dem \texttt{NodeFaultAttribute} markiert sind (vgl. \cref{subsec:yarnComponentFaults}):
+Die direkt im Anschluss an die Initialisierung des Simulators aufgerufene Methode \texttt{CollectYarnNodeFaults()} ermittelt alle im initialisierten Modell enthaltenen Komponentenfehler, die mit dem \texttt{NodeFaultAttribute} markiert sind (vgl. \cref{subsec:yarnComponentFaults}):
 
 \begin{lstlisting}[label=lst:hadoopSimulationCollectFaults,style=cs,
 caption={[Ermitteln der Komponentenfehler mit dem NodeFaultAttribute]
@@ -184,13 +183,14 @@ Zur Speicherung hierfür dient der Typ \texttt{FaultTuple}, welcher ein Alias f�
 Die jeweiligen Instanzen der Attribute und Nodes werden für die in \cref{subsec:faultActivation} beschriebene Aktivierung der dazugehörigen Komponentenfehler benötigt.
 Die beiden im Tupel gespeicherten Instanzen des \texttt{IntWrapper} dienen zur Speicherung der Anzahl der Aktivierungen bzw. Deaktivierungen der Komponentenfehler.
 Da der Wert einer Struktur wie \texttt{int} nicht direkt in einem Tupel geändert werden kann, dient die Klasse \texttt{IntWrapper} hierfür als Adapter.
+Benötigt werden diese Werte zur Validierung der Constraints der Simulation durch das Oracle (vgl. \cref{subsec:simulationBasics})
 
 \subsection{Weitere mit der Simulation zusammenhängende Methoden}
 \label{subsec:simulationUtilities}
 
 Neben der Ausführung der Simulation mit und ohne der Möglichkeit zur Aktivierung der Komponentenfehler gibt es noch einige weitere Methoden, die mit der Simulation zusammenhängen.
-So kann \zB die in \cref{subsec:precreateInputData} beschrieben Vorabgenerierung der Eingabedaten durch eine entsprechende Methode durchgeführt werden.
-Es ist aber auch möglich, die Simulation der durch den Benchmark"=Controller ausgewählten Benchmarks die Ausführung der gesamten Simulation durchzuführen.
+So kann \zB die Vorabgenerierung der Eingabedaten durch eine entsprechende Methode durchgeführt werden (vgl. \cref{subsec:precreateInputData}).
+Es ist aber auch möglich, nur die Simulation der durch den Benchmark"=Controller ausgewählten Benchmarks durchzuführen.
 Hierzu kann die bei der Ausführung der Simulation aufgerufene Methode \texttt{SimulateBenchmark()} als eigener \gls{Test} durchgeführt werden:
 
 \begin{lstlisting}[label=lst:hadoopSimulationBenchmarks,style=cs,
@@ -212,14 +212,14 @@ public void SimulateBenchmarks()
 }
 \end{lstlisting}
 
-\subsection{Ablauf eines \glsentryshort{Test} und der Testfälle}
+\subsection{Ablauf eines Tests und der Testfälle}
 \label{subsec:simulationStep}
 
 Zu Beginn eines \glspl{Test} werden zunächst die in \cref{subsec:dataOrganisation} definierten, grundlegenden Daten des \glspl{Test} im Programmlog gespeichert.
-Daneben werden aber auch noch weitere, den \texttt{HostMode} (vgl. \cref{subsec:hostMode}) betreffende Daten im Programmlog abgespeichert:
+Daneben werden aber auch noch weitere, auch den \texttt{HostMode} (vgl. \cref{subsec:hostMode}) betreffende Daten im Programmlog abgespeichert:
 
 \begin{itemize}
-    \item Verbundene SSH"=Verbindungen mit ihrer ID zur besseren Zuordnung im SSH"=Log
+    \item Verbundene SSH"=Verbindungen mit einer ID zur besseren Zuordnung im SSH"=Log
     \item Ausführung der Erstellung von vorab generierten Eingabedaten
     \item Vollständiger Pfad des verwendeten Setup"=Scriptes
     \item Adresse des Controllers zur Nutzung der \gls{REST}"=API
@@ -229,35 +229,35 @@ Daneben werden aber auch noch weitere, den \texttt{HostMode} (vgl. \cref{subsec:
 Im Anschluss werden das auszuführende \gls{YARN}"=Modell und der zur Ausführung des \glspl{Test} genutzte Simulator initialisiert, bevor die \glspl{Testfall} selbst ausgeführt werden.
 
 Der Ablauf eines Testfalls lässt sich mehrere Abschnitte einteilen.
-Zunächst wird vom Simulator selbst mithilfe der in \cref{subsec:yarnComponentFaults} den Komponentenfehlern zugewiesenen Attribute geprüft bzw. entschieden, ob ein Komponentenfehler aktiviert und im Cluster injiziert wird.
-Anschließend führt der Simulator einen Simulations"=Schritt durch, führt also für alle Komponenten des Modells die \texttt{Update()}"=Methode aus.
+Zunächst wird vom Simulator selbst mithilfe der den Komponentenfehlern zugewiesenen Attribute geprüft bzw. entschieden, ob ein Komponentenfehler aktiviert und im Cluster injiziert wird (vgl. \cref{subsec:yarnComponentFaults,subsec:faultActivation}).
+Anschließend führt der Simulator den Testfall aus, indem für alle Komponenten des Modells die \texttt{Update()}"=Methoden ausgeführt werden.
 Hierdurch werden deaktivierte Komponentenfehler auch im Cluster wieder repariert, da \texttt{YarnNode.Update()} die entsprechenden Start"=Methoden aufruft (vgl. \cref{subsec:yarnComponentFaults}).
 
 Anschließend wird die in \cref{subsec:yarnController} erläuterte Routine des Controllers ausgeführt.
-Dabei wird zunächst der \gls{MARP}"=Wert aus dem Cluster ausgelesen, bevor die Benchmark\gls{Anwendung}en des Testfalls gestartet werden.
+Dabei wird zunächst der \gls{MARP}"=Wert aus dem Cluster ausgelesen, bevor die Benchmark"=Anwendungen des Testfalls gestartet werden.
 Jeder Client nutzt dafür die in \cref{subsec:yarnClient} beschriebe Routine, um zunächst durch den Benchmark"=Controller die zu startende \gls{Anwendung} auszuwählen (vgl. \cref{subsec:selectionNextBenchmark}) und zu starten.
-Die dabei vom Cluster zugewiesene ID der \gls{Anwendung} wird vom Client gespeichert, um die \gls{Anwendung} in nachfolgenden Testfällen bei Bedarf abbrechen zu können, wenn eine neue \gls{Anwendung} gestartet werden soll.
+Die dabei vom Cluster zugewiesene Anwendungs"=ID wird vom Client gespeichert, um die \gls{Anwendung} in nachfolgenden Testfällen bei Bedarf abbrechen zu können, wenn eine neue \gls{Anwendung} gestartet werden soll (vgl. \cref{subsec:yarnClient}).
 
 Sobald alle \glspl{Anwendung} gestartet sind, wird vom Controller das Monitoring aller Nodes, \glspl{Anwendung} und ihrer \glspl{Attempt} durchgeführt.
-Dabei wird auch der \gls{MARP}"=Wert ein zweites mal ausgelesen, da er sich durch die zuvor noch aktiven bzw. neu gestarteten \glspl{Anwendung} unterschiedlich verändert haben könnte.
+Dabei wird auch der \gls{MARP}"=Wert ein zweites mal ausgelesen, da er sich durch die zuvor noch aktiven bzw. neu gestarteten \glspl{Anwendung} unterschiedlich verändert haben könnte (vgl. \cref{subsec:yarnController}).
 
 Den Abschluss eines Testfalls bildet die Validierung der Werte des Clusters, die beim Monitoring im \gls{YARN}"=Modell gespeichert wurden.
-Dazu werden für jede Komponente im Modell die jeweiligen auf den Anforderungen in \cref{sec:requirements} basierenden Constraints (vgl. \cref{subsec:yarnComponentConstraints,subsec:yarnController}) durch das Oracle geprüft (vgl. \cref{subsec:oracleImpl}).
-Wenn ein Constraint nicht erfolgreich Validiert wurde, wird dies jeweils im Programmlog ausgegeben bzw. die Ausführung der Simulation abgebrochen, wenn sich das Cluster nicht mehr rekonfigurieren kann.
+Dazu werden für jede Komponente im Modell die jeweiligen auf den Anforderungen basierenden Constraints durch das Oracle geprüft (vgl. \cref{sec:requirements,subsec:yarnComponentConstraints,subsec:yarnController}).
+Wenn ein Constraint nicht erfolgreich validiert wurde, wird dies jeweils im Programmlog gespeichert bzw. die Ausführung der Simulation abgebrochen, wenn sich das Cluster nicht mehr rekonfigurieren kann (vgl. \cref{subsec:oracleImpl}).
 
 Nach Abschluss eines Testfalls werden durch den Simulator die in \cref{subsec:dataOrganisation} geforderten Daten im Programmlog abgespeichert, die beim Monitoring erkannt wurden.
 Daneben werden bei der Ausführung eines Testfalls aber auch weitere Daten im Programmlog gespeichert wie \zB:
 
 \begin{itemize}
     \item Ausführung von Komponentenfehlern
-    \item Diagnostik"=Daten der YARN"=Komponenten
-    \item Welche Constraints bei welchen Komponenten verletzt wurden
+    \item Diagnostik"=Daten der \gls{YARN}"=Komponenten
+    \item Verletzte Constraints und die betroffenen \gls{YARN}"=Komponenten
     \item Die Information, wenn eine Rekonfiguration nicht möglich ist
 \end{itemize}
 
-Zum Abschluss der Ausführung des \glspl{Test} werden zudem die für die Simulation als gesamtes betreffenden Constraints validiert, welche nicht im \gls{YARN}"=Modell selbst implementiert wurden (vgl. \cref{subsec:simulationBasics}).
+Zum Abschluss der Simulation werden zudem die für die Simulation als gesamtes betreffenden Constraints validiert, welche nicht im \gls{YARN}"=Modell selbst implementiert wurden (vgl. \cref{subsec:simulationBasics}).
 
-Nach Abschluss des \glspl{Test} in Form der Simulation wird ein erneutes Monitoring des gesamten Clusters durchgeführt und der hierbei ermittelte Status als finaler Clusterstatus im Programmlog gespeichert.
+Nach Abschluss der Simulation wird ein erneutes Monitoring des gesamten Clusters durchgeführt und der hierbei ermittelte Status als finaler Clusterstatus im Programmlog gespeichert.
 Zudem werden einige statistische Kenndaten zum \gls{Test} im Programmlog gespeichert:
 
 \begin{itemize}
@@ -266,10 +266,10 @@ Zudem werden einige statistische Kenndaten zum \gls{Test} im Programmlog gespeic
     \item Anzahl der maximal möglichen, aktivierbaren Komponentenfehler
     \item Anzahl aktivierter und deaktivierter Komponentenfehler
     \item Letzter ermittelter \gls{MARP}"=Wert
-    \item Anzahl aller ausgeführten, erfolgreicher, nicht erfolgreicher sowie abgebrochener Anwendungen
+    \item Anzahl aller ausgeführten, erfolgreicher, fehlgeschlagenen sowie abgebrochener Anwendungen
     \item Anzahl aller ausgeführten Attempts
     \item Anzahl aller während der Ausführung erkannten Container
-    \item Anzahl aller validierten Constraints und fehlerhaften Constraints, getrennt nach \gls{SuT}- und Testsystem"=Constraints
+    \item Anzahl aller validierten Constraints und verletzten Constraints, getrennt nach \gls{SuT}- und Testsystem"=Constraints
 \end{itemize}
 
-Der auszugsweise Programmlog eines Tests, sowie das exakte Ausgabeformat für eine Ausführung eines Testfalls findet sich in \cref{app:outputFormat}.
+Der auszugsweise Programmlog eines Tests findet sich in \cref{app:outputFormat}.

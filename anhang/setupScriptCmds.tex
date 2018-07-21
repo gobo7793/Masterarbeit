@@ -7,19 +7,20 @@ Zur Nutzung der implementierten Connectoren muss das genutzte Setupscript mindes
 \begin{lstlisting}[label=lst:setupscriptHelp,style=plain,
 caption={[Benötigte Befehle eines Setupscriptes]
 Benötigte Befehle eines Setupscriptes.
-Das Setupscript für den \texttt{Multihost}"=Mode bietet zum Teil andere Befehle an, besitzt jedoch entsprechende Befehle zur vollständigen Kompatibilität.}]
+Das Setupscript des \mbox{\texttt{Multihost}}"=Modes bietet zum Teil andere Befehle an, besitzt jedoch entsprechende Befehle zur vollständigen Kompatibilität.}]
 hadoop start [node-id]  starting hadoop or the given node
 hadoop stop [node-id]   stopping hadoop or the given node
 hadoop restart [node]   restarts hadoop or the given node
 hadoop destroy          destroys hadoop
-hadoop info [id] [form] list running containers or node container details
+hadoop info [id] [form]
+                    list running containers or node container details
                           and can use --format string
 
-net start <node-id>     enables networking interfaces on the given node
-net stop <node-id>      disables networking interfaces on the given node
+net start <node-id> enables networking interfaces on the given node
+net stop <node-id>  disables networking interfaces on the given node
 
-cmd <cmd>               executes the given command on hadoop controller
-hdfs <cmd>              executes the hdfs command and prints the exit code
-marp                    Gets the current MARP value from hadoop config
+cmd <cmd>           executes the given command on hadoop controller
+hdfs <cmd>          executes the hdfs command and prints the exit code
+marp                Gets the current MARP value from hadoop config
 \end{lstlisting}
 

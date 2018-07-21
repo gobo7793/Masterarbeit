@@ -116,7 +116,7 @@ Als initiale \gls{Anwendung} wird immer der \acrlong{sl}"=Benchmark genutzt, sod
 \subsection{Vorabgenerierung von Eingabedaten}
 \label{subsec:precreateInputData}
 
-Neben der Generierung der für einige \glspl{Anwendung} benötigten Eingabedaten während der Testausführung gibt es auch die Möglichkeit, die Eingabedaten vorab zu generieren und anschließend diese zu nutzen (vgl. \cref{sec:clusterSetup,subsec:testcaseGeneration}).
+Neben der Generierung der für einige \glspl{Anwendung} benötigten Eingabedaten während der Testausführung gibt es auch die Möglichkeit, die Eingabedaten vorab zu generieren und anschließend diese zu nutzen (vgl. \cref{sec:clusterSetup,subsec:testcaseGeneration,subsec:simulationModelInit}).
 Um die vorab generierten Daten in einem \gls{Test} zu nutzen, muss die entsprechende Eigenschaft \texttt{ModelSettings.IsPrecreateBenchInputs} auf \texttt{true} gesetzt werden.
 Dadurch werden auch direkt die Eingabedaten generiert.
 
@@ -137,6 +137,6 @@ Hierbei wird standardmäßig die Generierung der Eingabedaten einer \gls{Anwendu
 Es ist jedoch auch möglich, vorhandene Verzeichnisse zu löschen, um somit die Daten vollständig neu zu generieren.
 Hierbei wird zudem ein \gls{HDFS}"=Filecheck ausgeführt, um fehlerhafte Daten zu finden und zu löschen.
 Fehlerhafte Daten können im \gls{HDFS} \zB dadurch entstehen, dass alle Nodes defekt sind, auf denen ein Block repliziert wurde, sich die Datei jedoch noch im Index des \gls{HDFS} befindet (vgl. \cref{sec:hadoop}.
-Die vollständige Neugenerierung der Eingabedaten kann mithilfe der Eigenschaft \texttt{ModelSettings.IsPrecreateBenchInputsRecreate} gesteuert werden.
+Die vollständige Neugenerierung der Eingabedaten kann mithilfe der Eigenschaft \texttt{ModelSettings.IsPrecreateBenchInputsRecreate} gesteuert werden (vgl. \cref{subsec:simulationModelInit}).
 
 Um beim Starten der \glspl{Anwendung} die vorab generierten Eingabedaten zu nutzen, wird beim Starten der \glspl{Anwendung} das Verzeichnis der vorab generierten Daten als entsprechendes Client"=Verzeichnis genutzt (vgl. \cref{subsec:yarnClient,subsec:appImplementation}).

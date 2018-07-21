@@ -3,23 +3,22 @@
 
 Einige Daten des Clusters wurden nicht im Testsystem gespeichert bzw. im Programmlog ausgegeben.
 Dies verstößt damit gegen die in \cref{subsec:testRequirements} definierte Anforderung an das Testsystem, dass der jeweils aktuelle Status des Clusters erkannt und im Modell gespeichert werden muss.
-Vorgekommen ist das auf zwei Arten, die im folgenden erläutert werden.
+Hierbei muss zwischen zwei unterschiedlichen Fällen unterschieden werden, die im Folgenden erläutert werden.
 
 \subsection{Nicht erkannte Nodes auf Host 2}
 \label{subsec:notDetectedHost2}
 
-Einer der beiden Fälle ist, dass ausführende Nodes von \glspl{Anwendung} bzw. \glspl{Attempt} nicht erkannt bzw. ausgegeben wurden, wodurch vom Oracle auch Verletzungen gegen die in \cref{sec:requirements} definierten Anforderungen erkannt wurden, wonach die Konfiguration des Clusters aktualisiert, und der aktuelle Status im Cluster erkannt und im Testmodell gespeichert werden muss.
-Hier geht es jedoch nicht um \glspl{Anwendung} bzw. Attempts, die zwar bereits gestartet wurden, für die aber noch kein \gls{AppMstr} allokiert werden konnte.
-In diesen Fällen ist es daher das normale Verhalten von Hadoop, keinen ausführenden Node anzugeben, da keiner vorhanden ist.
+Einer der beiden Fälle ist, dass ausführende Nodes von \glspl{Anwendung} bzw. \glspl{Attempt} nicht erkannt bzw. ausgegeben wurden, wodurch vom Oracle auch Verletzungen gegen die in \cref{sec:requirements} definierten Anforderungen erkannt wurden, wonach die Konfiguration des Clusters aktualisiert, der aktuelle Status im Cluster erkannt, und dieser im Testmodell gespeichert werden muss.
+Hierbei muss jedoch unterschieden werden, dass für gestartete Anwendungen und Attempts, deren \gls{AppMstr} jedoch noch kein ausführender Node zugeteilt wurde, es das normale und logische Verhalten von Hadoop ist, hier keine Nodes auszugeben.
 Wenn dieser Status zu lange anhält, wurden die \glspl{Attempt} bzw. \gls{AppMstr} durch Hadoop mit einem Timeout beendet (vgl. \cref{subsec:failedApps}).
 
 Anders sieht das jedoch in den sechs \glspl{Test} 7.1, 8 und 23 bis 26 aus (vgl. \cref{app:overviewExecutedTestCases}).
-In diesen \glspl{Test} wurden zwar regulär die Daten der Nodes ermittelt und auch in den Logdateien ausgegeben, jedoch nicht alle ausführenden Nodes von \glspl{Anwendung} und Attempts.
-Konkret betrifft das hier die beiden auf Host 2 ausgeführten Nodes der betroffenen \gls{AppMstr}.
+In diesen \glspl{Test} wurden zwar regulär die Daten der Nodes ermittelt und auch in den Logdateien gespeichert, jedoch nicht alle ausführenden Nodes der \glspl{Anwendung} und Attempts.
+Konkret betrifft das hier die beiden auf Host 2 ausgeführten Nodes.
 In allen sechs betroffenen \glspl{Test} wurden nur die vier auf Host 1 ausgeführten Nodes als ausführende Nodes der \glspl{Attempt} bzw. \glspl{Anwendung} erkannt und auch in den Logdateien ausgegeben.
-Die auf Host 2 ausgeführten Nodes wurden gemäß des SSH"=Logs allerdingsn ebenfalls übertragen, sofern den \glspl{Attempt} bzw. \glspl{Anwendung} ein Node zugewiesen wurde, jedoch wurden diese nicht im Programmlog ausgegeben.
+Die auf Host 2 ausgeführten Nodes wurden gemäß des SSH"=Logs ebenfalls übertragen, sofern den \glspl{Attempt} bzw. \glspl{Anwendung} ein Node zugewiesen wurde, jedoch wurden diese nicht im Programmlog gespeichert.
 Zwar tritt hierbei ein gewisses Muster auf (pro Seed die jeweils zuerst ausgeführten \glspl{Test} mit Nodes auf beiden Hosts), allerdings konnte dieser Fehler nicht gezielt reproduziert werden.
-Bei der erneuten Ausführung der \gls{Testkonfiguration} 7 (Test 7.2) wurden alle Nodes korrekt erkannt und vom Testsystem im Programmlog gespeichert.
+Bei der erneuten Ausführung der \gls{Testkonfiguration} 7 in Form des Tests 7.2 wurden alle Nodes korrekt erkannt und vom Testsystem im Programmlog gespeichert.
 Zum gegenwärtigen Zeitpunkt kann daher nicht gesagt werden, weshalb die ausführenden Nodes in den betroffenen Testfällen nicht immer gespeichert wurden.
 Es kann nur vermutet werden, dass während dem Parsen der übertragenen Daten mit diesen Daten die betroffenen Nodes im Modell nicht gefunden werden konnten (vgl. \cref{subsec:implementedParsers}).
 Dennoch lässt sich sagen, dass die beiden verletzten Anforderungen nach einer genaueren Begutachtung der Gründe dafür ein falscher Alarm des Oracles war.
@@ -29,7 +28,7 @@ Dennoch lässt sich sagen, dass die beiden verletzten Anforderungen nach einer g
 
 Bei allen \glspl{Test} ist zudem aufgefallen, dass die Diagnostik"=Daten von \glspl{Anwendung} nicht im Programmlog enthalten sind.
 Genauso wie bei den nicht erkannten Nodes auf Host 2 (vgl. \cref{subsec:notDetectedHost2}) wurden alle Diagnostik"=Daten von Hadoop an das Testsystem übertragen, die der \glspl{Anwendung} im Gegensatz zu denen der \glspl{Attempt} jedoch nicht gespeichert.
-Zur Auswertung der Daten im Rahmen der Evaluation ist dies zwar irrelevant, da dies auch aufgrund der Daten der \glspl{Attempt} geschehen konnte, allerdings wird dadurch die in \cref{subsec:testRequirements} definierte Anforderung an das Testsystem nur teilweise erfüllt, wonach der jeweils aktuelle Status des Clusters erkannt und gespeichert wird.
+Zur Auswertung der Daten im Rahmen der Evaluation ist dies zwar irrelevant, da dies auch aufgrund der Daten der \glspl{Attempt} geschehen konnte, allerdings wird dadurch die Anforderung an das Testsystem nur teilweise erfüllt, wonach der jeweils aktuelle Status des Clusters erkannt und gespeichert wird (vgl. \cref{subsec:testRequirements}).
 
 Eine Analyse ergab, dass die Diagnostik"=Daten der \glspl{Anwendung} aufgrund eines falsch gesetzten Attributs in der \texttt{ApplicationResult}"=Klasse des Parsers nicht im Testsystem gespeichert werden konnten.
 Dadurch konnten die Daten nicht mithilfe von Json.NET dem korrekten Attribut zugeordnet werden, wodurch die Diagnostik"=Daten entsprechend verworfen wurden (vgl. \cref{subsubsec:implRestParser}).

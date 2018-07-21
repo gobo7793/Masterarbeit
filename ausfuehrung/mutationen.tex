@@ -3,36 +3,36 @@
 
 Um das entwickelte Testsystem selbst zu validieren, wurden einige \glspl{Mutationstest} entwickelt.
 Mutationstests werden vor allem in der Forschung eingesetzt, um Fehler im \gls{SuT} oder dem Testsystem selbst zu finden, in dem das \gls{SuT} verändert wird.
-Ziel ist es, die im \gls{SuT} implementierten Mutanten zu finden und dabei weitere mögliche Fehlerquellen zu ermitteln \cite{DeMillo1978,Hamlet1977,Jia2011,Groce2018}.
+Ziel ist es, die im \gls{SuT} implementierten Mutanten zu finden, und dabei möglichst weitere Fehlerquellen zu ermitteln \cite{DeMillo1978,Hamlet1977,Jia2011,Groce2018}.
 
 Da sich \glspl{Mutationstest} zu einem großen Forschungszweig entwickelt haben, gibt es hierfür entsprechend viele Tools, um solche Tests zu entwickeln \cite{Jia2011,Groce2018}.
 Einige Beispiele hierfür sind PIT\footnote{\url{http://pitest.org/}} und Judy\footnote{\url{http://mutationtesting.org/}} für Java"=Programme \cite{Coles2016,Madeyski2010}, und Milu\footnote{\url{https://github.com/yuejia/Milu}} für in C entwickelte Programme \cite{Jia2008}.
 
-Ein weiteres, sehr einfach zu nutzendes Tool zum erstellen von \glspl{Mutationstest} ist der in \cite{Groce2018} vorgestellte Universalmutator\footnote{\url{https://github.com/agroce/universalmutator}}.
+Ein weiteres, sehr einfach zu nutzendes Tool zum Entwickeln von \glspl{Mutationstest} ist der Universalmutator\footnote{\url{https://github.com/agroce/universalmutator}} \cite{Groce2018}.
 Er kann zum Entwickeln von \glspl{Mutationstest} nicht nur innerhalb einer bestimmten Umgebung bzw. Programmiersprache, sondern prinzipiell für alle Programmiersprachen eingesetzt werden.
-Dies wird dadurch ermöglicht, dass die vom Universalmutator generierten Mutanten basierend auf einem oder mehreren \gls{Regex}"=basierten Regelsätzen durchgeführt werden und somit der Quellcode verändert wird.
+Dies wird dadurch ermöglicht, dass die vom Universalmutator generierten Mutanten basierend auf einem oder mehreren \gls{Regex}"=basierten Regelsätzen durchgeführt werden und somit der Quellcode der Programme verändert wird.
 So kann vom Universalmutator Quellcode \uA in den Sprachen Python, Java, C/C++, oder Swift mutiert werden \cite{Groce2018}.
 
 Da bei der Ausführung des Universalmutators auch zahlreiche Mutanten erzeugt werden, die nicht kompiliert bzw. ausgeführt werden können, nutzt das Tool die Compiler der jeweiligen Sprache zur Validierung der generierten Mutationen.
 Ein validierter Mutant zeichnet sich hierbei dadurch aus, dass dieser durch den Original"=Compiler der jeweiligen Sprache kompiliert werden kann und die generierten Objektdateien bzw. Bytecode nicht dem nicht-mutierten Original oder anderen bereits generierten Mutationen entsprechen \cite{Groce2018}.
 Diese Validierung kann mithilfe von entsprechenden Startparametern durch ein benutzerdefiniertes Programm durchgeführt werden oder alternativ nicht durchgeführt werden \cite{Groce2018,UniversalmutatorSourceGenmutants}.
 
-Da in dieser Fallstudie nicht nur Hadoop bzw. die Selfbalancing"=Komponente getestet werden soll, sondern vor allem das in den vorherigen Abschnitten und Kapiteln beschriebene Testsystem, wurden auch \glspl{Mutationstest} erstellt.
+Da in dieser Fallstudie nicht nur Hadoop bzw. die Selfbalancing"=Komponente getestet werden soll, sondern vor allem das in den vorherigen Abschnitten und Kapiteln beschriebene Testsystem, wurden auch \glspl{Mutationstest} erstellt (vgl. \cref{sec:clusterSetup}).
 Hierbei wurden mithilfe des Universalmutators insgesamt 431 valide Mutationen aus dem Quellcode der Selfbalancing"=Komponente generiert.
-Von allen validen Mutationen wurden anschließend für jede der vier Klassen der Selfbalancing"=Komponente jeweils ein Mutant zufällig ausgewählt, welche als Basis für die in dieser Fallstudie verwendeten \glspl{Mutationstest} dienen:
+Von allen validen Mutationen wurden anschließend für jede der vier Klassen der Selfbalancing"=Komponente jeweils ein Mutant zufällig ausgewählt, welche als Basis für die in dieser Fallstudie verwendeten \glspl{Mutationstest} dienen (vgl. \cref{subsec:selfbalancingAnalysis}):
 
 \begin{enumerate}
     \item
-    Zur Ermittlung der Veränderung des \gls{MARP}"=Wertes muss zunächst der jeweils aktuelle Arbeitsspeicher"=Verbrauch im Cluster eingelesen werden.
-    Dies geschieht im \texttt{Controller} mithilfe einer \texttt{for}"=Schleife, mit der der Speicherverbrauch im Cluster nahezu sekündlich aus der \texttt{memLog}"=Datei eingelesen wird.
-    Der Mutant verändert die Schleifenbedingung, damit die Schleife kein einziges mal ausgeführt wird.
-    Dadurch wird verhindert, dass der Speicherverbrauch des Cluster vom \texttt{Controller} eingelesen und verwendet werden kann.
-    Dadurch ist der Speicherverbrauch des Clusters auch nicht für den in \cite{Zhang2016} vorgestellten Algorithmus der Selfbalancing"=Komponente verfügbar.
+    Zur Ermittlung der Veränderung des \gls{MARP}"=Wertes muss zunächst der jeweils aktuelle Arbeitsspeicher"=Bedarf des Clusters eingelesen werden.
+    Dies geschieht im \texttt{Controller} mithilfe einer \texttt{for}"=Schleife, mit deren Hilfe der Speicherverbrauch im Cluster nahezu sekündlich aus der \texttt{memLog}"=Datei eingelesen wird.
+    Der Mutant 1 verändert hierbei die Schleifenbedingung, damit die Schleife kein einziges mal ausgeführt wird.
+    Dadurch wird verhindert, dass der Speicherverbrauch des Cluster vom \texttt{Controller} der Selfbalancing"=Komponente eingelesen und verwendet werden kann.
+    Dadurch ist der Speicherverbrauch des Clusters auch nicht für den Algorithmus \cite{Zhang2016} der Selfbalancing"=Komponente verfügbar und der passende \gls{MARP}"=Wert kann nicht berechnet werden.
     
     \item 
     Der \texttt{Effectuator} dient dazu, um die Veränderung des \gls{MARP}"=Wertes im Cluster zu speichern.
     Dazu wird das entsprechende Shell"=Script mithilfe der \emph{Bash}"=Shell ausgeführt.
-    Der Mutant sorgt dafür, dass anstatt des korrekten Dateipfades der Bash (\texttt{/bin/bash}) ein ungültiger Dateipfad (hier \texttt{\%bin/bash}) aufgerufen wird und somit der neue \gls{MARP}"=Wert nicht in das Cluster übertragen werden kann.
+    Der Mutant 2 sorgt dafür, dass anstatt des korrekten Dateipfades der Bash (\texttt{/bin/bash}) ein ungültiger Dateipfad (hier \texttt{\%bin/bash}) aufgerufen wird und somit der neue \gls{MARP}"=Wert nicht in das Cluster übertragen werden kann.
     
     \item
     Mithilfe des \texttt{ControlNodeMonitor} wird das Schell"=Script zum Ermitteln der Anzahl der aktiven \gls{YARN}"=Jobs ausgeführt.
@@ -40,13 +40,14 @@ Von allen validen Mutationen wurden anschließend für jede der vier Klassen der
     Hierbei wird das Script rund einmal pro Sekunde aufgerufen und danach ermittelt, ob bei der Ausführung des Shell"=Scriptes Fehler aufgetreten sind.
     Dazu wird ein entsprechender \texttt{BufferedReader} geöffnet und der Error"=Stream des Scriptes eingelesen und anschließend von der Selfbalancing"=Komponente ausgegeben.
     Umgesetzt wird das mithilfe einer \texttt{while}"=Schleife, die solange den Fehler ausgibt, solange die mithilfe von \texttt{BufferedReader.readLine()} ausgelesene Fehlermeldung nicht \texttt{null} ist, also noch weiteren Text enthält.
-    Der Mutant ändert die Schleifenbedingung nun so ab, dass die Schleife durchlaufen wird, solange die Fehlermeldung keinen Text enthält, \texttt{readLine()} also \texttt{null} zurück gibt.
+    Der Mutant 3 ändert die Schleifenbedingung nun so ab, dass die Schleife durchlaufen wird, solange die Fehlermeldung keinen Text enthält, \texttt{readLine()} also \texttt{null} zurück gibt.
     Dadurch wird der \texttt{ControlNodeMonitor} in einer Dauerschleife gefangen und die Anzahl der aktiven \gls{YARN}"=Jobs wird einmalig direkt nach dem Start der Selfbalancing"=Komponente ermittelt.
+    Dadurch steht die Anzahl der \gls{YARN}"=Jobs nicht zur Berechnung des \gls{MARP}"=Wertes zur Verfügung und kann nicht korrekt berechnet werden.
             
     \item
-    Die Klasse \texttt{MemUtilization} funktioniert analog wie die \texttt{ControlNodeMonitor}"=Klasse, führt jedoch das Script zum Auslesen des Arbeitsspeicher"=Verbrauches aus dem Cluster aus.
-    Dieser Mutant verhindert hierbei die komplette Ausführung des entsprechenden Threads, indem die Bedingung der Schleife für den gesamten Thread so verändert wurde, dass diese nur dann ausgeführt wird, wenn der Thread nicht aktiv ist.
-    Dadurch wird verhindert, dass das entsprechende Shell"=Script überhaupt ausgeführt wird und der Speicherverbrauch somit nicht ausgelesen wird.
+    Die Klasse \texttt{MemUtilization} funktioniert analog wie die \texttt{ControlNodeMonitor}"=Klasse, führt jedoch das Script zum Auslesen des Arbeitsspeicher"=Bedarfs des Clusters aus.
+    Der Mutant 4 verhindert hierbei die komplette Ausführung des entsprechenden Threads, indem die Bedingung der Schleife für den gesamten Thread so verändert wurde, dass diese nur dann ausgeführt wird, wenn der Thread nicht aktiv ist.
+    Dadurch wird verhindert, dass das entsprechende Shell"=Script überhaupt ausgeführt wird und der Speicherverbrauch somit nicht ausgelesen wird und somit auch nicht zur Berechnung des neuen \gls{MARP}"=Wertes zur Verfügung steht.
 \end{enumerate}
 
 Aufgrund der verwendeten Mutationen erhält die Selfbalancing"=Komponente bei jedem einzelnen Mutanten bereits nicht alle benötigten Informationen zur Anpassung des \gls{MARP}"=Wertes bzw. kann die Änderung des Wertes nicht in der Konfiguration des Clusters speichern.

@@ -8,72 +8,71 @@ Dies widerspricht zum Teil den in \cref{sec:requirements} definierten Anforderun
 \subsection{Aufgrund von Fehlern abgebrochene Anwendungen}
 \label{subsec:failedApps}
 
-Wie bereits erwähnt, sind etwas mehr als ein viertel aller gestarteten \glspl{Anwendung} gefailt, was im Schnitt 2,6 gefailte \glspl{Anwendung} pro ausgeführten \gls{Test} ergibt.
-Die meisten gefailten \glspl{Anwendung} sind hierbei mit 9 bzw. 8 bei den \glspl{Test} der Konfigurationen 31 und 32 zu finden.
+Wie bereits erwähnt, sind etwas mehr als ein Viertel aller gestarteten \glspl{Anwendung} fehlgeschlagen, was im Schnitt 2,6 fehlgeschlagene \glspl{Anwendung} pro ausgeführten \gls{Test} ergibt.
+Die meisten fehlgeschlagen \glspl{Anwendung} sind hierbei mit 9 bzw. 8 bei den \glspl{Test} der Konfigurationen 31 und 32 zu finden.
 Auffällig ist zudem der Vergleich zwischen den \glspl{Test} 19 und 20.
-Während bei der Ausführung der \gls{Testkonfiguration} 19 ganze 5 \glspl{Anwendung} gefailt sind, ist bei der Ausführung des \glspl{Test} 20 keine einzige gefailt.
-Ebenfalls auffallend ist, dass bei Konfigurationen mit Mutationsszenario fast immer weniger oder gleich viele \glspl{Anwendung} gefailt sind als bei den korrespondierenden Konfigurationen ohne Mutationsszenario.
-Eine Ausnahme bildet der \gls{Test} 8, bei dem 3 \glspl{Anwendung} gefailt sind, während bei den \glspl{Test} 7.1 und 7.2 jeweils keine \gls{Anwendung} gefailt ist.
-Eine weitere Ausnahme bildet der \gls{Test} 9.2, bei dem eine \gls{Anwendung} mehr gefailt ist als im \gls{Test} 10.3, die restlichen \glspl{Test} der Konfigurationen 9 und 10 verhalten sich jedoch wie andere korrespondierende Testkonfigurationen.
+Während bei der Ausführung der \gls{Testkonfiguration} 19 ganze 5 \glspl{Anwendung} fehlgeschlagen sind, ist dies bei der Ausführung des Tests 20 keine einzige.
+Ebenfalls auffallend ist, dass bei Konfigurationen mit Mutationsszenario fast immer weniger oder gleich viele \glspl{Anwendung} fehlgeschlagen sind als bei den korrespondierenden Konfigurationen ohne Mutationsszenario.
+Eine Ausnahme bildet der \gls{Test} 8, bei dem 3 \glspl{Anwendung} fehlgeschlagen sind, während die Tests 7.1 und 7.2 keine fehlgeschlagene Anwendung aufweisen.
+Eine weitere Ausnahme bildet der \gls{Test} 9.2, bei dem eine \gls{Anwendung} mehr fehlgeschlagen ist als im \gls{Test} 10.3, die restlichen \glspl{Test} der Konfigurationen 9 und 10 verhalten sich jedoch wie andere korrespondierende Testkonfigurationen.
 
-Bei der Betrachtung der Constraints, welche die in \cref{subsec:functionalRequirements} definierte Anforderung umsetzen, dass \glspl{Anwendung} vollständig ausgeführt werden, solange sie nicht manuell bzw. durch das Testsystem vorzeitig abgebrochen werden, fällt auf, dass die Anzahl der ungültigen Validierungen durch das Oracle mit kumuliert 343 ungültigen Constraints mehr als die Hälfte aller ungültigen Constraints ausmacht (59,9 \% ).
-Im Schnitt ergibt das somit rund 8 ungültige Constraints pro \gls{Test} bzw. ca. 1,8 ungültige Constraints pro durch das Oracle überprüften Testfall.
-Die auf den ersten Blick sehr hohe Anzahl an ungültigen Constraints resultiert daraus, dass eine gefailte \gls{Anwendung} bei jedem nachfolgenden \gls{Testfall} bei einer Testausführung erneut durch das Oracle entsprechend validiert wurde.
-Dadurch sind ein Großteil der als ungültig validierten Constraints ein falscher Alarm, da die entsprechende Anforderung pro \gls{Anwendung} nur einmal nicht erfüllt werden kann.
+Bei der Betrachtung der Constraints, welche die in \cref{subsec:functionalRequirements} definierte Anforderung umsetzen, dass \glspl{Anwendung} vollständig ausgeführt werden, solange sie nicht manuell bzw. durch das Testsystem vorzeitig abgebrochen werden, fällt auf, dass die Anzahl der verletzten Constraints mit 343 mehr als die Hälfte aller verletzten Constraints ausmacht (59,9 \%).
+Im Schnitt ergibt das somit rund 8 ungültige Constraints pro \gls{Test} bzw. ca. 1,8 verletzte Constraints pro durch das Oracle überprüften Testfall.
+Die auf den ersten Blick sehr hohe Anzahl an verletzten Constraints resultiert daraus, dass eine fehlgeschlagene \gls{Anwendung} bei jedem nachfolgenden \gls{Testfall} bei einer Testausführung erneut durch das Oracle entsprechend validiert wurde.
+Dadurch sind ein Großteil der verletzten Constraints ein falscher Alarm, da die entsprechende Anforderung pro \gls{Anwendung} logischerweise nur einmal nicht erfüllt werden kann.
 Aussagekräftiger ist daher die Anzahl von 110 nicht vollständig abgeschlossenen bzw. aufgrund eines Fehlers abgebrochenen Anwendungen.
 
-Anhand der Datenbasis lassen sich vier Ursachen für nicht vollständig ausgeführte \glspl{Anwendung} ausmachen:
+Anhand der Datenbasis lassen sich vier Ursachen für nicht vollständig ausgeführte \glspl{Anwendung} bzw. Attempts ausmachen:
 
 \begin{itemize}
     \item
-        Der \gls{AppMstr} ist nicht mehr erreichbar, da der auszuführende Node aufgrund eines Komponentenfehlers nicht mehr erreichbar ist.
-        Dadurch wird der \gls{AppMstr} nach einiger Zeit mit dem Fehler \emph{\gls{AppMstr}"=Timeout} als abgebrochen markiert.
+        Der \gls{AppMstr} ist nicht mehr erreichbar, da der auszuführende Node aufgrund eines injizierten Komponentenfehlers nicht mehr erreichbar ist.
+        Dadurch wird der \gls{AppMstr} nach einiger Zeit mit einem \emph{\gls{AppMstr} Timeout} als fehlgeschlagen markiert.
     \item
         Die den \gls{AppMstr} zugewiesenen Nodes sind vollständig ausgelastet, wodurch dem \gls{AppMstr} selbst die benötigten Ressourcen nicht allokiert bzw. der \gls{AppMstr} nicht ausgeführt werden kann.
-        Nach einiger Zeit wird der \gls{AppMstr} daher mit dem Fehler \emph{\gls{AppMstr}"=Timeout} abgebrochen.
-        Das beinhaltet auch Timeouts, wenn einem \gls{AppMstr} nicht einmal ein ausführender Node zugewiesen werden kann.
+        Nach einiger Zeit wird der \gls{AppMstr} daher ebenfalls aufgrund eines \emph{\gls{AppMstr} Timeout}s abgebrochen.
+        Das beinhaltet auch Timeouts, wenn einem \gls{AppMstr} kein ausführender Node zugewiesen werden kann.
     \item
-        Während der Ausführung einer \gls{MR}\gls{Anwendung} wird ein Fehler im Map"=Task festgestellt, der dazu führt, dass der Task abgebrochen wird.
-        Dieser Fehler kam bei den hier ausgeführten \glspl{Test} bei der \gls{Anwendung} \acrlong{dfr} vor, wenn die zuvor generierten Eingabedaten für diesen Benchmark aufgrund aktivierter Komponentenfehler nicht mehr im Cluster vorhanden waren.
-        Zwar werden Dateien im \gls{HDFS} immer auf mehr als einem Node gespeichert (vgl. \cref{sec:hadoop}), jedoch ist es möglich, dass die für die \gls{Anwendung} benötigten Daten auf Nodes repliziert wurden, die alle beendet wurden.
-        Dies führte dazu, dass die benötigten Daten nicht gefunden werden können bzw. bereits im \gls{HDFS} als fehlerhaft markiert sind.
+        Während der Ausführung einer \gls{MR}"=Anwendung wird ein Fehler im Map"=Task festgestellt, der dazu führt, dass der Task abgebrochen wird.
+        Dieser Fehler trat bei den hier ausgeführten \glspl{Test} mehrmals bei der \gls{Anwendung} \acrlong{dfr} auf, wenn die zuvor generierten Eingabedaten für diesen Benchmark aufgrund injizierter Komponentenfehler nicht mehr im Cluster vorhanden waren.
+        Zwar werden Dateien im \gls{HDFS} immer auf mehr als einem Node gespeichert (vgl. \cref{sec:hadoop}), jedoch ist es möglich, dass die für die \gls{Anwendung} benötigten Daten auf Nodes repliziert wurden, bei denen ein Komponentenfehler injiziert wurde.
+        Dies führte dazu, dass die benötigten Daten nicht gefunden werden können bzw. im \gls{HDFS} als fehlerhaft markiert sind.
         Dadurch wird im Map"=Task ein Fehler ausgelöst, der die gesamte \gls{Anwendung} vorzeitig beendet.
-        Aufgrund eines Fehlers im Map"=Task wird auch die \acrlong{fl}\gls{Anwendung} beendet, jedoch ist das in diesem Fall das gewünschte Verhalten der \gls{Anwendung} und zählt daher nicht als Fehler.
+        Aufgrund eines Fehlers im Map"=Task wird auch die \acrlong{fl}"=Anwendung beendet, jedoch ist das in diesem Fall das gewünschte Verhalten der \gls{Anwendung} und zählt daher nicht als Fehler.
     \item
         Der \gls{AppMstr} eines \glspl{Attempt} wird mit dem Exitcode -100 beendet.
-        Dieser Fehler kommt dann vor, wenn versucht wird, einen Task eines Anwendungs"=Containers der jeweiligen \gls{Anwendung} bzw. \gls{Attempt} auf einem defekten Node auszuführen und widerspricht somit zusätzlich der in \cref{subsec:functionalRequirements} Anforderung, dass kein Task oder \gls{Anwendung} an defekte Nodes gesendet wird.
+        Dieser Fehler tritt dann auf, wenn versucht wird, einen Task eines Anwendungs"=Containers der jeweiligen \gls{Anwendung} bzw. Attempts auf einem defekten Node auszuführen und widerspricht somit zusätzlich der in \cref{subsec:functionalRequirements} Anforderung, dass kein Task oder \gls{Anwendung} an defekte Nodes gesendet wird.
         Dieser Fehler trat nur dann auf, wenn im ausführende Node des betroffenen \gls{AppMstr} im gleichen \gls{Testfall} ein Komponentenfehler injiziert wurde und der Node dadurch ausfiel.
-        Aufgrund der mit dem Fehler verbundene Fehlermeldung \textit{\enquote{Container released on a *lost* node}} liegt die Vermutung nahe, dass Anwendungs"=Container, hier wahrscheinlich der \gls{AppMstr}, zum Zeitpunkt der Fehlerinjizierung bereits abgeschlossen waren und das Cluster die benötigten Ressourcen zu dem Zeitpunkt freigegeben hat.
+        Aufgrund der mit dem Fehler verbundene Fehlermeldung \emph{\enquote{Container released on a *lost* node}} liegt die Vermutung nahe, dass Anwendungs"=Container, hier wahrscheinlich der \gls{AppMstr}, zum Zeitpunkt der Fehlerinjizierung bereits abgeschlossen waren und das Cluster die benötigten Ressourcen zu dem Zeitpunkt freigegeben hat.
         Da dies jedoch nicht möglich war, wurde der \gls{AppMstr} mit dem entsprechenden Fehler beendet.
 \end{itemize}
 
 Hierbei werden aufgrund eines \gls{AppMstr}"=Timeouts zunächst nur die \glspl{Attempt} mit dem entsprechenden Fehler abgebrochen, nicht jedoch die \gls{Anwendung} selbst.
-Die \gls{Anwendung} selbst wird in so einem Fall erst dann als gefailt abgebrochen, sobald zwei \glspl{Attempt} aufgrund eines Timeouts abgebrochen werden mussten.
-Wenn ein \gls{Attempt} mit dem Exitcode -100 terminiert, wird unabhängig von zuvor ausgeführten \glspl{Attempt} ein erneuter \gls{Attempt} mit entsprechendem \gls{AppMstr} gestartet, wodurch hier die Anforderung, dass ein Task vollständig ausgeführt werden muss, teilweise erfüllt werden kann.
+Die \gls{Anwendung} selbst wird in so einem Fall erst dann als fehlgeschlagen abgebrochen, sobald zwei \glspl{Attempt} aufgrund eines Timeouts abgebrochen wurden.
+Wenn ein \gls{Attempt} mit dem Exitcode -100 terminiert, wird unabhängig von zuvor ausgeführten \glspl{Attempt} ein erneuter \gls{Attempt} mit entsprechendem \gls{AppMstr} ausgeführt, wodurch hier die Anforderung, dass ein Task vollständig ausgeführt werden muss, teilweise erfüllt werden kann.
 
-Bei einigen der \gls{AppMstr}"=Timeouts aufgrund der Aktivierung von Komponentenfehler lässt sich zudem ein spezielles Muster erkennen.
+Bei einigen der \gls{AppMstr}"=Timeouts aufgrund der Injizierung von Komponentenfehler lässt sich zudem ein spezielles Muster erkennen.
 Hierbei wurde in einem zuvor ausgeführten \gls{Testfall} auf einem Node ein \gls{AppMstr} einer \gls{Anwendung} ohne Fehler allokiert.
-Nun kann es passieren, dass für diesen Node ein Komponentenfehler injiziert wird, was dazu führt, dass der Node nicht mehr erreichbar ist und der \gls{AppMstr} aufgrund eines Timeouts als beendet markiert wird.
+Nun kann es passieren, dass für diesen Node ein Komponentenfehler injiziert wird, was dazu führt, dass der Node nicht mehr erreichbar ist und der \gls{AppMstr} aufgrund eines Timeouts abgebrochen wird.
 Hierbei wird direkt im Anschluss ein neuer \gls{AppMstr} allokiert, was auch dazu führt, dass die \gls{Anwendung} nun einen zweiten \gls{Attempt} besitzt, nachdem der erste aufgrund des Timeouts abgebrochen wurde.
-Dabei ist es nun möglich, dass dies noch während der Aktivierung von Komponentenfehlern innerhalb des Testfalls geschieht (vgl. \cref{subsec:simulationStep}), wodurch es möglich ist, dass der auszuführende Node des zweiten \gls{AppMstr} ebenfalls aufgrund eines im gleichen \gls{Testfall} injizierten Komponentenfehlers nicht mehr erreichbar ist.
-Dadurch wird der zweite \gls{AppMstr} bzw. \gls{Attempt} aufgrund des Timeouts vorzeitig als abgebrochen markiert und die gesamte \gls{Anwendung} dadurch abgebrochen.
+Dabei ist es nun möglich, dass noch während der Aktivierung von Komponentenfehlern innerhalb des Testfalls auf dem ausführenden Node des neuen \gls{AppMstr} ein Komponentenfehler injiziert wird.
+Dadurch wird der zweite \gls{AppMstr} ebenfalls aufgrund eines Timeouts abgebrochen, wodurch die gesamte Anwendung als fehlgeschlagen gilt.
 
 \subsection{Nicht gestartete Anwendungen}
 \label{subsec:notStartedApps}
 
-Bei den \glspl{Test} 19, 25 und 27 bis 32 kam es vor, dass insgesamt 29 \glspl{Anwendung} nicht gestartet werden konnten.
-Meistens war die \gls{Anwendung} \acrlong{tsr} davon betroffen, einige male die \gls{Anwendung} \acrlong{tvl}.
-Ursächlich dafür ist die jeweils hohe Auslastung des Clusters in den Testfällen zuvor, bei denen den benötigten \gls{AppMstr} der \acrlong{tg}\gls{Anwendung}en keine Ressourcen auf den ausführenden Nodes allokiert werden konnte und diese daher mit einem \gls{AppMstr}"=Timeout beendet wurden (vgl. \cref{subsec:failedApps}).
-Da in \cref{sec:selectTestcases} definiert wurde, dass benötigte Eingabedaten für \glspl{Anwendung} während der Ausführung der \glspl{Test} generiert werden, konnten so die benötigten Eingabedaten für die \gls{Anwendung} \acrlong{tsr} nicht generiert werden (vgl. \cref{subsec:appSelection}).
+Bei den \glspl{Test} 19, 25 und 27 bis 32  (vgl. \cref{app:overviewExecutedTestCases}) konnten insgesamt 29 \glspl{Anwendung} nicht gestartet werden.
+Meistens war hiervon die \gls{Anwendung} \acrlong{tsr} davon betroffen, einige male die \gls{Anwendung} \acrlong{tvl}.
+Ursächlich dafür ist die jeweils hohe Auslastung des Clusters in den Testfällen zuvor, bei denen den \gls{AppMstr}"=Container der \acrlong{tg}"=Anwendungen keine Ressourcen auf den ausführenden Nodes allokiert werden konnten und diese daher aufgrund eines \gls{AppMstr}"=Timeouts beendet wurden (vgl. \cref{subsec:failedApps}).
+Da für die ausgeführten Tests definiert wurde, dass benötigte Eingabedaten für \glspl{Anwendung} während der Ausführung der \glspl{Test} generiert werden, konnten so die benötigten Eingabedaten für die \gls{Anwendung} \acrlong{tsr} nicht generiert werden (vgl. \cref{subsec:appSelection,sec:selectTestcases}).
 Aufgrund der fehlenden Daten wurde daher die \gls{Anwendung} direkt wieder abgebrochen, wodurch in 42 Testfällen nicht jeder Client eine \gls{Anwendung} ausgeführt hat.
-In diesen Fällen wurde als Resultat zudem das Constraint der Anforderung aus \cref{subsec:testRequirements}, wonach mehrere Benchmark\gls{Anwendung}en gleichzeitig gestartet und ausgeführt werden können, aufgrund der Implementation (vgl. \cref{subsec:yarnComponentFaults} durch das Oracle als ungültig validiert.
+In diesen Fällen wurde als Resultat zudem das Constraint der Anforderung, wonach mehrere Benchmark"=Anwendungen gleichzeitig gestartet und ausgeführt werden können, entsprechend verletzt, da hier geprüft wurde, ob alle Clients eine derzeit ausgeführte Anwendung aufweisen (vgl. \cref{subsec:testRequirements,subsec:yarnComponentFaults}).
 Analog dazu verhält es sich bei der \gls{Anwendung} \acrlong{tvl}, welche wiederum die \acrlong{tsr}"=Ausgabedaten als Eingabedaten benötigt (vgl. \cref{subsec:appSelection}).
 
 \subsection{Nicht ausreichend Submitter}
 \label{subsec:notEnoughSubmitter}
 
 Ein unerwarteter Fehler trat bei der Ausführung des Testfalls 31.1 auf.
-Hierbei kam es vor, dass die für die anderen \glspl{Test} genutzten acht Submitter des Connectors zum Starten von \glspl{Anwendung} nicht ausreichend waren.
-Der \gls{Test} wurde hierbei im achten \gls{Testfall} abgebrochen, weil keine weiteren freien Submitter zur Verfügung standen (vgl. \cref{subsubsec:implCmdConnector}).
-Daher wurde der \gls{Test} zur Konfiguration 31 mit zehn Submittern erneut ausgeführt, wodurch dieser wie in \cref{subsec:noReconf3132} erläutert im achten \gls{Testfall} aufgrund fehlender Rekonfigurierbarkeit abgebrochen wurde.
+Hierbei waren die für die anderen Tests genutzten acht Submitter des Connectors zum Starten von \glspl{Anwendung} nicht ausreichend, wodurch der Test im achten Testfall abgebrochen wurde, da keine freien Submitter mehr verfügbar waren (vgl. \cref{subsubsec:implCmdConnector}).
+Daher wurde der \gls{Test} zur Konfiguration 31 mit zehn Submittern erneut ausgeführt, wodurch dieser aufgrund fehlender Möglichkeiten zur weiteren Rekonfiguration abgebrochen wurde (vgl. \cref{subsec:noReconf3132}).
 Die Gründe für den Abbruch des \glspl{Test} 31.1 liegen darin, dass die Docker"=Container der Benchmarks (vgl. \cref{sec:realCluster}) nicht korrekt beendet wurden und die Submitter daher auf weitere Ausgaben der gestarteten \glspl{Anwendung} gewartet haben.

@@ -7,14 +7,14 @@ Dies liegt vor allem aufgrund der hohen Anzahl an fehlgeschlagenen Anwendungen, 
 \begin{itemize}
     \item Der Node ist nicht erreichbar, was zu einem \gls{AppMstr}"=Timeout führt
     \item Der den \gls{AppMstr} ausführende Node ist zur sehr ausgelastet, was ebenfalls zu einem \gls{AppMstr}"=Timeout führt
-    \item Benötigte Dateien im \gls{HDFS} werden nicht gefunden, was in einem Map"=Task"=Fehler resultiert
-    \item Es wird versucht, den \gls{AppMstr} auf einem defekten Node auszuführen, was sich im Exitcode -100 zeigt
+    \item Benötigte Dateien sind nicht im \gls{HDFS} verfügbar, was in einem Map"=Task"=Fehler resultiert
+    \item Es wird versucht, Tasks von Anwendungs"=Containern auf einem defekten Node auszuführen, was im Exitcode -100 resultiert
 \end{itemize}
 
-Es ist erkennbar, dass drei der vier Ursachen im direkten oder indirekten Zusammenhang mit der Injizierung von Komponentenfehlern im realen Cluster zusammen hängen.
+Es ist erkennbar, dass drei der vier Ursachen im direkten oder indirekten Zusammenhang mit der Injizierung von Komponentenfehlern im realen Cluster zusammenhängen.
 Dies zeigt sich vor allem an der häufigen Zahl an \gls{AppMstr}"=Timeouts, welche bei einem injiziertem Komponentenfehler die direkte Folge davon ist, wenn auf dem Node ein \gls{AppMstr} ausgeführt wurde.
-Es ist daher anzunehmen, dass die in \cref{sec:selectTestcases} ausgewählte generelle Wahrscheinlichkeit zur Aktivierung und Deaktivierung der Komponentenfehler von 0,3 vor allem für hohe Auslastungsgrade eine nicht sehr ausgewogene Mischung ergibt.
-Während bei niedrigen Auslastungsgraden kaum Komponentenfehler aktiviert wurden, war die bei hohen Auslastungsgraden häufig der Fall, was sich auch in der Anzahl der 14 abgebrochenen Tests zeigt (vgl. \cref{sec:noReconfig}).
+Es hat sich daher gezeigt, dass die in \cref{sec:selectTestcases} ausgewählte generelle Wahrscheinlichkeit zur Aktivierung und Deaktivierung der Komponentenfehler von 0,3 vor allem für hohe Auslastungsgrade bei konkreten Testausführungen eine nicht sehr ausgewogene Mischung ergibt.
+Während bei niedrigen Auslastungsgraden nur wenige Komponentenfehler injiziert wurden, wurden bei hohen Auslastungsgraden häufig welche injiziert, was sich auch in der Anzahl der 14 abgebrochenen Tests zeigt (vgl. \cref{sec:noReconfig}).
 
 Mit 14 Prozent aller möglichen Komponentenfehler wurden zwar nicht viele Fehler aktiviert.
 Jedoch muss man bei diesem Wert beachten, dass für jeden Node pro Testfall bis zu zwei Komponentenfehler aktivierbar sind.
@@ -33,9 +33,10 @@ Das von Spotify genutzte Cluster zur Analyse der Hörgewohnheiten und für Musik
     \item mehr als 20.000 täglich auf dem Cluster ausgeführte Jobs
 \end{itemize}
 
-Es stellt damit auch eines der größten in \cite{PoweredByHadoop} genannten Hadoop"=Cluster dar.
-Es ist schnell ersichtlich, dass beim Ausfall von über 400 Nodes wohl ein Großteil der über 20.000 ausgeführten Anwendungen nicht mehr ausgeführt werden könnten und einzelne Blöcke von möglicherweise benötigten Daten im \gls{HDFS} nicht mehr verfügbar wären (vgl. \cref{sec:hadoop}).
+Es stellt damit auch eines der größten Hadoop"=Cluster dar \cite{PoweredByHadoop}.
+Es ist schnell ersichtlich, dass beim Ausfall von über 400 Nodes wohl ein Großteil der über 20.000 ausgeführten Anwendungen nicht mehr ausgeführt werden könnten und zahlreiche Blöcke von möglicherweise benötigten Daten im \gls{HDFS} nicht mehr verfügbar wären (vgl. \cref{sec:hadoop}).
 Entsprechende Auswirkungen hätte das auch auf die Kunden von Spotify, da das Cluster \uA zur Ermittlung von Musikempfehlungen genutzt wird, welche dann nur noch eingeschränkt verfügbar wären.
+Es lässt sich daher auch sagen, dass der Ausfall eines Viertels aller Nodes lediglich bei sehr kleinen Clustern mit Nodes im ein- bzw niedrigen zweistelligen realitätsnah sein dürfte.
 
 Daher lässt sich die hohe Anzahl an fehlgeschlagenen Anwendungen wohl vor allem an der generellen Wahrscheinlichkeit zur Aktivierung der Komponentenfehlern festmachen.
 Es wäre daher durchaus sinnvoll gewesen, einige der ausgeführten Tests auch ohne Aktivierung der Komponentenfehler durchzuführen.
@@ -44,22 +45,24 @@ Da diese Tests im Rahmen dieser Fallstudie nicht durchgeführt wurden, wären hi
 
 Jedoch hätten selbst dadurch \uU nicht alle fehlerhaften Anwendungen unterbunden werden können.
 Unabhängig von der Anzahl der Nodes gab es zahlreiche Testfälle, bei denen das Cluster vollständig ausgelastet war und daher keine weiteren \gls{AppMstr} ausgeführt werden konnten.
-In solchen Fällen kam es oftmals vor, dass einzelne \gls{AppMstr} mit einem Timeout beendet wurden, da die benötigten Ressourcen nicht allokiert werden konnten.
-Da es mit \acrlong{dfw}, \acrlong{dfr} und \acrlong{pt} einige Benchmarks gab, welche bereits bei den ausgefühten Tests unabhängig von der Anzahl der aktiven Nodes das komplette Cluster ausgelastet hatten, hätte es hier sehr wahrscheinlich dennoch entsprechende Timeouts gegeben.
+In solchen Fällen wurden einzelne \gls{AppMstr} häufig mit einem Timeout beendet, da die benötigten Ressourcen nicht allokiert werden konnten.
+Da es mit \acrlong{dfw}, \acrlong{dfr} und \acrlong{pt} zudem einige Benchmarks gab, welche bereits bei den ausgeführten Tests unabhängig von der Anzahl der aktiven Nodes das komplette Cluster auslasteten, hätte es hier wahrscheinlich dennoch entsprechende Timeouts gegeben.
 Jedoch hätten sich die \gls{AppMstr}"=Timeouts darauf beschränkt, dass keine Ressourcen allokiert werden konnten, was eine deutlich geringere Zahl gewesen wäre.
 
 Durch eine Testausführung ohne Aktivierung der Komponentenfehler hätten vermutlich auch viele der 29 nicht gestarteten Anwendungen (vgl. \cref{subsec:notStartedApps}) gestartet werden können.
-Mit 7 Prozent ist der Anteil der nicht gestarteten Anwendungen im Verhältnis zu allen gestarteten Anwendungen zwar kein signifikanter Anteil, aber auch keinen komplett zu vernachlässigender Anteil.
+Mit 7 Prozent ist der Anteil der nicht gestarteten Anwendungen im Verhältnis zu allen gestarteten Anwendungen zwar kein signifikanter Anteil, ist aber auch nicht zu vernachlässigen.
 Zwar hätten die nicht gestarteten Anwendungen keine signifikant höhere Auslastung des Clusters bedeutet, aber dennoch wurde hiermit auch eine in \cref{sec:requirements} nicht erwähnte Anforderung verletzt, wonach alle Anwendungen der ausgewählten Benchmarks auch gestartet werden müssten.
 Da hierbei immer Anwendungen der Terasort"=Suite betroffen waren, gab es hierfür auch zwei Gründe.
-Der erste Grund war eine zu hohe Auslastung des Clusters, wodurch die benötigten Daten von der \acrlong{tg} nicht generiert werden konnten, da die Anwendung keine Ressourcen zur Ausführung des \gls{AppMstr} erhalten hat oder die Anwendung auch deshalb vorab abgebrochen wurde.
+Der erste Grund war eine zu hohe Auslastung des Clusters, wodurch die benötigten Daten von der \acrlong{tg}"=Anwendung nicht generiert werden konnten, da die Anwendung keine Ressourcen zur Ausführung des \gls{AppMstr} erhalten hat oder die Anwendung auch deshalb vorab abgebrochen wurde.
 Der zweite Grund liegt in der Injizierung der Komponentenfehler, wodurch erfolgreich generierte Daten für die nachfolgenden Anwendungen nicht mehr verfügbar waren.
 Es ist daher stark davon auszugehen, dass sich die Anzahl der nicht gestarteten Anwendungen bei einer Testausführung ohne Aktivierungen von Komponentenfehlern signifikant reduzieren würde.
 
-Was auch nicht zu vernachlässigen ist, ist die Ausführungsdauer der einzelnen Tests.
+Die Ausführungsdauer der einzelnen Tests ist zudem ebenfalls nicht zu vernachlässigen.
 Aufgrund der Ergebnisse lässt sich sagen, dass mehr injizierte Komponentenfehler auch die Ausführungsdauer erhöht haben.
-Da die Ursache für mehr injizierte Komponentenfehler eine höhere Clusterauslastung ist, lässt sich auch ein Zusammenhang mit der Selfbalancing"=Komponente von \citeauthor{Zhang2016} herstellen.
+Da die Ursache für mehr injizierte Komponentenfehler eine höhere Clusterauslastung ist, lässt sich auch ein Zusammenhang mit der Selfbalancing"=Komponente \cite{Zhang2016} herstellen.
 Dies liegt daran, dass Mutationstests im Vergleich meist die Tests waren, bei denen weniger Komponentenfehler aktiviert wurden (vgl.\cref{subsec:actDeactFaults}).
-Die Ursache hierfür liegt in der geringeren Auslastung der Clusters, die Auswirkung hiervon ist durch mehr aktive Nodes jedoch auch eine schnellere Ausführung der Tests gewesen.
-Daraus lässt sich schlussfolgern, dass mithilfe der Selfbalancing"=Komponente das Cluster besser ausgelastet werden kann als mit den Standardeinstellungen.
-Dadurch bestätigt diese Fallstudie auch die Evaluation von \citeauthor{Zhang2016} \cite{Zhang2016} zur Performance eines Clusters mit der Komponente.
+Die Ursache hierfür liegt in der geringeren Auslastung der Clusters, die Auswirkung hiervon ist durch weniger injizierte Komponentenfehler jedoch auch eine schnellere Ausführung der Tests gewesen.
+Zudem reduziert sich auf für das Cluster selbst bei der Injizierung von wenigen Komponentenfehlern der Verwaltungsaufwand durch ausfallende Nodes.
+Um diese Vermutung zu bestätigen, wären jedoch noch weitere Tests nötig.
+Dennoch lässt sich auch schlussfolgern, dass mithilfe der Selfbalancing"=Komponente das Cluster besser ausgelastet werden kann als mit den Standardeinstellungen.
+Dadurch bestätigt diese Fallstudie auch die Evaluation \cite{Zhang2016} zur Performance eines Clusters, bei dem die Selfbalancing"=Komponente genutzt wird.

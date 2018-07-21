@@ -11,16 +11,16 @@ Bei \gls{Test} 2 kann daher nicht eindeutig festgestellt werden, ob der Mutant e
 
 Anders ist dies im Vergleich der Ausführungen der \glspl{Testkonfiguration} 7 und 8.
 Durch die massive Veränderung des \gls{MARP}"=Wertes im \gls{Test} 7.2 auf den finalen Wert von 1 kann davon ausgegangen werden, dass die Mutanten der Konfiguration 8 erkannt wurden.
-Dies wird dadurch gestützt, dass bei Konfiguration 8 im Gegensatz zur korrespondieren \gls{Testkonfiguration} 3 der 4 gestarteten \glspl{Anwendung} gefailt sind.
-Zudem stellt das ein Indiz dafür dar, dass der Mutant in Konfiguration 2 erkannt worden sein könnte.
+Dies wird dadurch gestützt, dass bei Konfiguration 8 im Gegensatz zur korrespondieren \gls{Testkonfiguration} drei der vier Anwendungen fehlgeschlagen sind.
+Zudem stellt das ein Indiz dafür dar, dass der Mutant im Test 2 erkannt worden sein könnte.
 
 Während bei jeder Konfiguration ein Mutationsszenario mit jeweils allen vier Mutanten genutzt wurde, wurde die \gls{Testkonfiguration} 10 zusätzlich mit jeweils einem Mutanten ausgeführt.
 Ziel hierbei war es zu validieren, ob einzelne Mutanten ebenfalls vom Testsystem erkannt werden oder zur Erkennung der Mutanten vom Testsystem eine Kombination aus mehreren Mutaten nötig ist.
-Hierzu wurde die \gls{Testkonfiguration} 10 mit unterschiedlichen Mutationsszenarien der Plattform Hadoop"=Benchmark ausgeführt, bei denen jeweils einer der in \cref{sec:implMutationTests} definierten Mutanten aktiv ist.
+Hierzu wurde die \gls{Testkonfiguration} 10 mit den unterschiedlichen Mutationsszenarien der Plattform Hadoop"=Benchmark ausgeführt, bei denen jeweils einer der in \cref{sec:implMutationTests} definierten Mutanten aktiv ist (vgl. \cref{subsec:clusterBasics}).
 Die Auswahl dieser \gls{Testkonfiguration} hierfür liegt darin begründet, dass hier das Cluster auf beiden Hosts mit zusammen sechs Nodes gestartet wird, auf denen bis zu vier \glspl{Anwendung} gleichzeitig gestartet werden.
-Zudem wurde bei den \glspl{Test} 9.1 und 9.2 festgestellt, dass sich der \gls{MARP}"=Wert nicht direkt im ersten, sondern auch in später ausgeführten Testfällen ändern kann, er aber während der Ausführung wirklich geändert wird (vgl. \cref{sec:marpValueResults}).
+Zudem wurde bei den \glspl{Test} 9.1 und 9.2 festgestellt, dass sich der \gls{MARP}"=Wert nicht direkt im ersten, sondern auch in später ausgeführten Testfällen ändern kann, er aber während der Ausführung auf jeden Fall geändert wird (vgl. \cref{sec:marpValueResults}).
 
 Einige Ergebnisse der hierfür 5 ausgeführten \glspl{Test} sind sehr unterschiedlich.
-So variiert die Anzahl der aktivierten und deaktivierten Komponentenfehler zwischen 7 und 11 bzw. 5 und 9, sowie die Anzahl der gefailten \glspl{Anwendung} zwischen 1 und 3.
+So variiert die Anzahl der aktivierten und deaktivierten Komponentenfehler zwischen 7 und 11 bzw. 5 und 9, sowie die Anzahl der fehlgeschlagenen \glspl{Anwendung} zwischen 1 und 3.
 Gemein haben alle \glspl{Test} jedoch, dass der \gls{MARP}"=Wert bei allen 5 \glspl{Test} nicht verändert wurde, womit alle Mutationen erkannt wurden.
-Damit kann festgestellt werden, dass jeder der vier in \cref{sec:implMutationTests} beschriebenen Mutanten durch das entwickelte Testsystem erkannt wird.
+Damit kann festgestellt werden, dass jeder der vier in \cref{sec:implMutationTests} implementierten Mutanten durch das entwickelte Testsystem erkannt wird.

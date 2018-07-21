@@ -2,19 +2,19 @@
 \label{sec:noReconfig}
 
 Insgesamt 13 der 42 ausgeführten \glspl{Test} wurden vorzeitig abgebrochen, da eine Rekonfiguration des Clusters nicht möglich war.
-Dies entspricht dem in \cref{subsec:testRequirements} gefordertem und in \cref{subsec:oracleImpl} implementierten Verhalten, wenn alle Node im Cluster defekt sind.
-Im Folgenden wird für die betroffenen \glspl{Testkonfiguration} und \glspl{Test} (vgl. \cref{app:overviewExecutedTestCases}) betrachtet, weshalb es dazu kam.
+Dies entspricht dem in \cref{subsec:testRequirements} gefordertem und in \cref{subsec:oracleImpl} implementierten Verhalten, wenn alle Nodes im Cluster aufgrund eines Komponentenfehlers defekt sind.
+Im Folgenden wird für die betroffenen Konfigurationen und Tests (vgl. \cref{app:overviewExecutedTestCases}) betrachtet, weshalb es dazu kam.
 
 \subsection{Testkonfigurationen 3 bis 6}
 \label{subsec:noReconf36}
 
 Erstmalig ist ein Abbruch im \gls{Test} 4 aufgetreten, auch die weiteren korrespondierende \glspl{Test} der Konfigurationen 5 und 6 wurden abgebrochen.
-Hier waren bereits beim 3. \gls{Testfall} alle verfügbaren Nodes beendet, was auffällig ist, vor allem da damit die Hälfte der \glspl{Test} mit dem ersten Seed und dem Cluster auf einem Host vorzeitig abgebrochen wurden.
-Das liegt einerseits daran, dass im Gegensatz zu den beiden Konfigurationen mit nur zwei Clients hier bis zu vier \glspl{Anwendung} gleichzeitig gestartet werden, was die Last auf den Nodes deutlich erhöht.
+Hier waren bereits beim dritten ausgeführten \gls{Testfall} alle verfügbaren Nodes beendet, was auffällig ist, vor allem da somit auch die Hälfte aller \glspl{Test} mit dem ersten Seed und dem Cluster auf einem Host vorzeitig abgebrochen wurden.
+Das liegt primär darin begründet, dass im Gegensatz zu den beiden Konfigurationen mit nur zwei Clients hier bis zu vier \glspl{Anwendung} gleichzeitig gestartet werden, was die Last auf den Nodes deutlich erhöht.
 In \gls{Test} 3, welcher somit theoretisch ebenfalls abgebrochen werden hätte müssen, wurden 11 \glspl{Anwendung} im Cluster gestartet.
 Dies liegt an der geringeren Auslastung eines einzelnen Nodes im Gegensatz zu den anderen Tests.
 In den abgebrochenen \glspl{Test} hatte Node 4 im ersten \gls{Testfall} eine hohe bzw. sehr hohe Auslastung, im \gls{Test} 3 jedoch nur eine mittlere.
-Diese mittlere Auslastung reichte jedoch aus, um den Node im ausgeführten 3. \gls{Testfall} gemäß \cref{subsec:faultActivation} wieder zu aktivieren, während die anderen noch aktiven Nodes spätestens in diesem \gls{Testfall} aufgrund der hohen Last einen Komponentenfehler injiziert bekamen.
+Diese mittlere Auslastung reichte jedoch aus, um den Node im dritten ausgeführten \gls{Testfall} wieder zu aktivieren, während bei den anderen noch aktiven Nodes spätestens in diesem \gls{Testfall} aufgrund der hohen Last ein Komponentenfehler injiziert wurde (vgl. \cref{subsec:faultActivation}).
 Durch diesen einen nun weiterhin ausgeführten Node ist es dem Cluster daher möglich gewesen, sich im \gls{Test} 3 zu rekonfigurieren.
 
 \subsection{Testkonfigurationen 15 und 16}
@@ -37,7 +37,7 @@ Die Nodes hatten im fünften \gls{Testfall} der vier \glspl{Test} folgende Ausla
     \label{tab:loadTests1316}
 \end{table}
 
-Bei den beiden betroffenen \glspl{Test} 15 und 16 sehr hohe Auslastung der noch aktven Nodes im fünften \gls{Testfall} führte im darauf folgenden \gls{Testfall} dazu, dass bei allen noch aktiven Nodes ein Komponentenfehler aktiviert wurde.
+Bei den beiden betroffenen \glspl{Test} 15 und 16 führte die sehr hohe Auslastung der noch aktven Nodes im fünften \gls{Testfall} daher im darauf folgenden \gls{Testfall} dazu, dass bei allen noch aktiven Nodes ein Komponentenfehler injiziert wurde.
 Daher wurden die beiden \glspl{Test} im jeweils sechsten ausgeführten \gls{Testfall} abgebrochen.
 Es ist auch davon auszugehen, dass der \gls{Test} 14 aufgrund der ebenfalls sehr hohen Auslastung im sechsten \gls{Testfall} wahrscheinlich ebenfalls abgebrochen worden wäre.
 
@@ -59,30 +59,30 @@ Dies liegt in der Historie des Nodes innerhalb des \glspl{Test} begründet:
     	Testfall 3 &                       -                        & \makecell{Injiziert:\\Node\\beendet} &                      -                      & \makecell{Injiziert:\\Node\\beendet} \\ \hline
     	Testfall 4 & \makecell{Repariert:\\Verbunden\\Ausl.: 93 \%} &                  -                   &   \emph{\makecell{Repariert:\\Verbunden}}   &                  -
     \end{tabu} 
-    \caption[Auslastungen und Komponentenfehler in Node 1 der Tests 19 bis 22]
-    {Auslastungen und Komponentenfehler in Node 1 der Tests 19 bis 22.
+    \caption[Auslastung und Komponentenfehler in Node 1 der Tests 19 bis 22]
+    {Auslastung und Komponentenfehler in Node 1 der Tests 19 bis 22.
     Eine Übersicht aller Tests findet sich in \cref{app:overviewExecutedTestCases}.}
     \label{tab:loadNode1Tests1922}
 \end{table}
 
-Die Aktivierung und Deaktivierung der Komponentenfehler in den anderen Nodes ist in allen \glspl{Test} gleich und daher zur Ermittlung der Gründe des Abbruchs der Testausführung nicht relevant.
-Durch die unterschiedliche Auslastungen im ersten \gls{Testfall} der \glspl{Test} zwischen \glspl{Test} ohne Mutationen (19 und 21) und mit Mutationen (20 und 22) wurden unterschiedliche Komponentenfehler aktiviert.
+Die Aktivierung und Deaktivierung der Komponentenfehler bei den anderen Nodes ist in allen \glspl{Test} gleich und daher zur Ermittlung der Gründe des Abbruchs der Testausführung nicht relevant.
+Durch die unterschiedliche Auslastung im ersten \gls{Testfall} der \glspl{Test} zwischen \glspl{Test} ohne Mutationen (19 und 21) und mit Mutationen (20 und 22) wurden unterschiedliche Komponentenfehler aktiviert.
 Dies führte dazu, dass der relevante Node 1 bei den Mutationsstests nicht gestartet wurde, während die anderen Nodes beendet wurden wie in den \glspl{Test} 19 und 21.
 
 Eine Besonderheit bildet hier zudem \gls{Test} 21, bei dem der Komponentenfehler vom Testsystem deaktiviert wurde, jedoch nicht repariert werden konnte.
 Dies liegt darin, dass der Docker"=Container nicht mit dem Docker"=Netzwerk verbunden werden konnte.
 Aus diesem Grund wurde vom Oracle bei der Prüfung der Rekonfigurierbarkeit des Clusters der \gls{Test} entsprechend beendet, da der Node nicht verbunden war.
-Zwar wurde der Fehler von Docker nicht absichtlich oder durch das Testsystem herbeigeführt, hat jedoch eine positive, als auch eine negative Seite.
-So wurde auch ein externer, nicht direkt durch die Anforderungen in \cref{subsec:testRequirements} abgedeckter Fehler erkannt, jedoch auf Kosten der Anforderung, dass im Modell implementierte Komponentenfehler im realen Cluster repariert werden.
+Zwar wurde der Fehler von Docker nicht absichtlich bzw. durch das Testsystem herbeigeführt, hat jedoch eine positive, als auch eine negative Seite.
+So wurde auch ein externer, nicht spezifizierter Fehler erkannt, jedoch auf Kosten der Anforderung, dass im Modell implementierte Komponentenfehler im realen Cluster repariert werden (vgl. \cref{sec:requirements}).
 
 \subsection{Testkonfigurationen 27 und 28}
 \label{subsec:noReconf2728}
 
 In den beiden \glspl{Test} 28.1 und 28.2 wird der \gls{Test} im 8. \gls{Testfall} abgebrochen, während \gls{Test} 27 nach allen 10 Testfällen regulär beendet wird.
-Das liegt daran, dass im 8. \gls{Testfall} bei den beiden Mutationstests in fünf der sechs Nodes ein Komponentenfehler injiziert wird, von Node 1 wird die Verbindung getrennt, die Nodes 3 bis 6 komplett beendet.
+Das liegt daran, dass im achten \gls{Testfall} bei den beiden Mutationstests in fünf der sechs Nodes ein Komponentenfehler injiziert wird: von Node 1 wird die Verbindung getrennt, die Nodes 3 bis 6 werden komplett beendet.
 Im \gls{Test} 27 ohne Mutationsszenario wird dagegen zwar auch die Verbindung von Node 1 getrennt, aber zusätzlich nur Node 3 beendet, sodass die Nodes 4 bis 6 weiterhin aktiv sind.
 Node 2 wird in allen drei \glspl{Test} bereits im dritten \gls{Testfall} beendet, da die Auslastung des Nodes im zweiten \gls{Testfall} bei jeweils über 90 Prozent liegt.
-Die übrigen der 19 bzw. 20 aktivierten und zwischen 10 und 13 wieder deaktivierten Komponentenfehlern unterschieden sich in den drei \glspl{Test} bis auf einzelne, hier nicht relevante, Ausnahmen nicht.
+Die übrigen der 19 bzw. 20 aktivierten und zwischen 10 und 13 wieder deaktivierten Komponentenfehler unterschieden sich in den drei \glspl{Test} bis auf einzelne, hier nicht relevante, Ausnahmen nicht.
 
 Der Grund für die Injizierung von Komponentenfehlern bei noch allen aktiven Nodes im achten \gls{Testfall} liegt in der Auslastung der Nodes im siebten Testfall.
 Diese beträgt im \gls{Test} 27 ohne Mutationen bei den beiden betroffenen Nodes jeweils 100 Prozent, bei den übrigen Nodes ist jedoch keine bzw. eine geringe Auslastung vorhanden.
@@ -97,8 +97,8 @@ Die hohe Anzahl der 19 bzw. 20 aktivierten Komponentenfehler reichten bei jeweil
 Der \gls{Test} 31.1 verlief zwar ebenfalls ähnlich zu den beiden anderen Tests, wurde jedoch aufgrund fehlender, verfügbaren Submitter des Connectors beendet.
 Die Gründe dafür sind in \cref{subsec:notStartedApps} erläutert, weshalb der \gls{Test} 31.1 hier nicht genauer betrachtet wird.
 
-Bei den beiden \glspl{Test} 31.2 und 32 fällt auf, dass es bei jeweils mehreren Testfällen vorgekommen ist, dass mehr als 3 Komponentenfehler aktiviert bzw. deaktiviert wurden.
-So kam es vor, dass \zB in dritten ausgeführten \gls{Testfall} bereits eine Rekonfiguration nur deshalb möglich war, weil der zuvor vom Cluster getrennte Node 1 wieder mit dem Cluster verbunden wurde, während die Nodes 2 und 4 bis 6 anderen Nodes getrennt oder beendet wurden, während Node 3 bereits im \gls{Testfall} zuvor beendet wurde.
+Bei den beiden \glspl{Test} 31.2 und 32 fällt auf, dass bei jeweils mehreren Testfällen mehr als 3 Komponentenfehler aktiviert bzw. deaktiviert wurden.
+So kam es vor, dass \zB in dritten ausgeführten \gls{Testfall} bereits eine Rekonfiguration nur deshalb möglich war, weil der zuvor vom Cluster getrennte Node 1 wieder mit dem Cluster verbunden wurde, während die Nodes 2 und 4 bis 6 getrennt oder beendet wurden, während Node 3 bereits im \gls{Testfall} zuvor beendet wurde.
 Ebenso verlief der dritte \gls{Testfall} auch in den beiden \glspl{Test} der Konfigurationen 29 und 30, bei denen nur fünf \glspl{Testfall} ausgeführt wurden.
 
 Bis auf den beendeten Node 2 wurden spätestens im sechsten ausgeführten \gls{Testfall} die im dritten \gls{Testfall} injizierten Komponentenfehler wieder repariert.

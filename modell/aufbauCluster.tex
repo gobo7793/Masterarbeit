@@ -51,6 +51,7 @@ Um das Cluster auf beiden für diese Fallstudie genutzten Hosts auszuführen, wu
 Die genaue Anzahl der zu nutzenden Hosts und der Hadoop"=Nodes ist in beiden \texttt{HostMode}s variabel, wodurch es auch möglich ist, das Cluster nur auf Host1 zu starten.
 Damit das Cluster jedoch auf beiden Hosts gestartet werden kann, ist es nötig, zuvor beide Hosts als Docker"=Swarm miteinander zu verbinden.
 Außerdem können mithilfe des \texttt{Multihost}"=Modes dem Hadoop"=Cluster weitere, sonst für die Ausführung der VMs benötigte Ressourcen, zur Verfügung gestellt werden, weshalb in dieser Fallstudie der \texttt{Multihost}"=Mode genutzt wurde.
+Beim \texttt{Mutihost}"=Mode werden zudem nur auf Host1 die volle Anzahl an definierten Nodes pro Host gestartet, auf allen anderen Hosts wird jeweils die Hälfte gestartet und ausgeführt.
 
 Je nach \texttt{HostMode} unterscheiden sich einzelne Pfade oder Adressen, \zB die der \gls{REST}"=API.
 Auch aus diesem Grund wurde die bereits in \cref{subsec:modelClass} erläuterte Klasse \texttt{ModelSettings} entwickelt, welche die Verwaltung der entsprechenden Pfade und Adressen übernimmt.
