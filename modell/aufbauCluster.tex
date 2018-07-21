@@ -6,7 +6,7 @@
     {./resources/hadoopBenchDockerInherits.pdf}
     \caption[Vererbungshierarchie der Docker"=Images in Hadoop"=Benchmark]
     {Vererbungshierarchie der Docker"=Images in Hadoop"=Benchmark.
-    Die kursiv markierten Images können nicht mithilfe von Hadoop"=Benchmark gestartet werden, die grau unterlegten Images sind in Hadoop"=Benchmark enthalten bzw. benötigt.}
+    Die kursiv markierten Images können nicht mithilfe von Hadoop"=Benchmark gestartet werden, die grau unterlegten Images sind bereits in Hadoop"=Benchmark enthalten bzw. benötigt.}
     \label{fig:hadoopBenchDockerInherits}
 \end{wrapfigure}
 
@@ -19,7 +19,7 @@ Um die Verwaltung des Clusters zu vereinfachen wurden zudem entsprechende Setup-
 
 Da Docker (genutzt wird hier Version 18.03 CE) und Hadoop vor allem zum Einsatz in Linux"=Umgebungen entwickelt wurden, werden für das reale Cluster bis zu zwei physische Linux"=Hosts genutzt.
 Auf einem dieser beiden Hosts wird mithilfe von VirtualBox 5.2 eine VM mit Windows 10 Education Version 1803 ausgeführt, um die \glspl{Test} mithilfe von \gls{ss} auszuführen.
-Dies ist nötig, da \gls{ss} mithilfe des .NET"=Frameworks entwickelt wurde (vgl. \cref{sec:ssharp}), welches auf Linux zudem nur in einem verringertem Funktionsumfang verfügbar ist \cite{Schwichtenberg2017}.
+Dies ist nötig, da \gls{ss} mithilfe des .NET"=Frameworks entwickelt wurde (vgl. \cref{sec:ssharp}), welches auf Linux in Form von .NET Core zudem nur in einem verringertem Funktionsumfang verfügbar ist \cite{Schwichtenberg2017}.
 
 Die beiden Hosts sind jeweils mit einem Intel Core i5"=4570 @ 3,2 GHz x 4, 16 GB Arbeitsspeicher sowie einer SSD ausgestattet, auf der Ubuntu 16.04 LTS als Betriebssystem installiert ist.
 
@@ -50,7 +50,7 @@ Um das Cluster auf beiden für diese Fallstudie genutzten Hosts auszuführen, wu
 
 Die genaue Anzahl der zu nutzenden Hosts und der Hadoop"=Nodes ist in beiden \texttt{HostMode}s variabel, wodurch es auch möglich ist, das Cluster nur auf Host1 zu starten.
 Damit das Cluster jedoch auf beiden Hosts gestartet werden kann, ist es nötig, zuvor beide Hosts als Docker"=Swarm miteinander zu verbinden.
-Außerdem können mithilfe des \texttt{Multihost}"=Modes dem Hadoop"=Cluster weitere, sonst für die Ausführung der VMs benötigte Ressourcen, zur Verfügung gestellt werden.
+Außerdem können mithilfe des \texttt{Multihost}"=Modes dem Hadoop"=Cluster weitere, sonst für die Ausführung der VMs benötigte Ressourcen, zur Verfügung gestellt werden, weshalb in dieser Fallstudie der \texttt{Multihost}"=Mode genutzt wurde.
 
 Je nach \texttt{HostMode} unterscheiden sich einzelne Pfade oder Adressen, \zB die der \gls{REST}"=API.
 Auch aus diesem Grund wurde die bereits in \cref{subsec:modelClass} erläuterte Klasse \texttt{ModelSettings} entwickelt, welche die Verwaltung der entsprechenden Pfade und Adressen übernimmt.
@@ -58,8 +58,8 @@ Auch aus diesem Grund wurde die bereits in \cref{subsec:modelClass} erläuterte 
 \subsection{Setup- und Startscripte}
 \label{subsec:scripts}
 
-Die Plattform Hadoop"=Benchmark enthält bereits zum Starten des Clusters ein Setup"=Script und zum Ausführen der Benchmarks entsprechende Start"=Scripte.
-Um die Interaktion aufgrund der beiden unterschiedlichen \texttt{HostMode}s zu vereinfachen, wurde dennoch für jeden \texttt{HostMode} ein Setup"=Script entwickelt, um die jeweils gleiche Befehlssyntax bereitstellen zu können.
+Die Plattform Hadoop"=Benchmark enthält bereits zum Starten des Clusters ein Setup"=Script und zum Ausführen der Benchmarks entsprechende Start"=Scripte (vgl. \cref{sec:hadoopBenchmark}).
+Um die Interaktion aufgrund der beiden unterschiedlichen \texttt{HostMode}s zu vereinfachen, wurde für jeden \texttt{HostMode} ein Setup"=Script entwickelt, um eine einheitliche und vereinfachte Befehlssyntax bereitzustellen.
 Die beiden entwickelten Setup"=Scripte werden vom \texttt{CmdConnector} genutzt um die benötigten Aktionen auf dem Cluster auszuführen (vgl. \cref{subsubsec:implCmdConnector}).
 Die beiden Setup"=Scripte abstrahieren somit die vom \texttt{HostMode} abhängigen, benötigten Befehle und sorgen dafür, dass der genutzte \texttt{HostMode} transparent ist, benötigen hierfür jedoch die gleiche, in \cref{app:setupScriptCmds} gezeigte, Befehlssyntax.
 Sie beinhalten entsprechende Befehle für folgende Aktionen:

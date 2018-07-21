@@ -5,16 +5,15 @@ Zur Überprüfung des Clusters und des Testssystems selbst werden hierfür jewei
 Unterschieden wird hierbei zwischen funktionalen Anforderungen an das \gls{SuT} und Anforderungen an das Testsystem.
 Während die funktionalen Anforderungen ausschließlich vom Hadoop"=Cluster als \gls{SuT} erfüllt werden müssen, müssen die Test"=Anforderungen vom gesamten Testsystem erfüllt werden.
 
-Mithilfe der im Folgenden definierten Anforderungen soll bereits automatisiert geprüft werden können, inwieweit eine Testautomatisierung möglich ist.
-Hierfür werden die Anforderungen, sofern möglich, in Form  Form von Constraints ebenfalls im Modell implementiert.
-Mithilfe dieser Constraints können die Anforderungen somit ebenfalls automatisiert und bereits während der Testausführung durch das Oracle validiert werden.
+Mithilfe der im Folgenden definierten Anforderungen soll bereits automatisiert geprüft werden, inwieweit eine Testautomatisierung möglich ist.
+Hierfür werden die Anforderungen, sofern möglich, in Form von Constraints ebenfalls im Modell implementiert und während der Ausführung durch das Oracle validiert.
 
 \subsection{Funktionale Anforderungen an das Cluster}
 \label{subsec:functionalRequirements}
 
 Obwohl in dieser Masterarbeit der Fokus auf Testautomatisierung und Validieren eines Testsystems liegt, müssen auch die funktionalen Anforderungen an das \gls{SuT}, also das Hadoop"=Cluster selbst, berücksichtigt werden.
 Da im Rahmen der Publikation \cite{Eberhardinger2018} ebenfalls der in \cref{sec:clusterSetup} beschriebene und in dieser Fallstudie genutzte Versuchsaufbau genutzt wurde, wurden im Rahmen dieser Fallstudie auch funktionale Anforderungen an das Cluster selbst durch das Oracle geprüft.
-Dies betrifft konkret folgende, bereits in \cite{Eberhardinger2018} definierte, Anforderungen an das \gls{SuT}:
+Dies betrifft konkret folgende Anforderungen an das \gls{SuT} \cite{Eberhardinger2018}:
 
 \begin{enumerate}
     \item Ein Task wird vollständig ausgeführt, sofern er nicht abgebrochen wird
@@ -44,5 +43,5 @@ Konkret sind dies folgende Anforderungen an das Testsystem:
 
 Die funktionalen Anforderungen dienen zudem ebenfalls als Anforderungen an das Testsystem und erweitern somit die hier genannten Anforderungen.
 
-Eine Besonderheit bildet zudem die fünfte Anforderung, wonach erkannt werden muss, dass im Cluster keine weitere Rekonfiguration möglich ist.
-Wird diese Anforderung verletzt soll der ausgeführte \gls{Test} abgebrochen werden, während bei den anderen, auch den funktionalen, Anforderungen dies nur durch das Oracle vermerkt werden soll, die Ausführung aber nicht weiter durch das Oracle beeinträchtigt werden soll.
+Eine Besonderheit bildet die fünfte Anforderung, wonach erkannt werden muss, dass im Cluster keine weitere Rekonfiguration möglich ist.
+Wird diese Anforderung verletzt soll der ausgeführte \gls{Test} abgebrochen werden, während bei den anderen, auch den funktionalen, Anforderungen dies nur durch das Oracle vermerkt werden soll, die Ausführung aber nicht weiter beeinträchtigt werden soll.

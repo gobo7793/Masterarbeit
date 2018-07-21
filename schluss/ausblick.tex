@@ -24,6 +24,13 @@ Hierfür müsste daher geprüft werden, an welcher Stelle entsprechende Optimier
 Ebenso könnte die SSH"=Verbindung selbst analog zu den Parsern und Connectoren (vgl. \cref{subsec:driverModelIntegration}) besser gekapselt werden, \zB in Form eines hierfür definierten Interfaces.
 Auch könnte die Initialisierung des Treibers anstatt über den erstmaligen Aufruf der jeweiligen Singletons möglicherweise mithilfe des Factory"=Patterns durchgeführt werden.
 
+Was ein wichtiger Punkt für Optimierungen im Testsystem darstellt ist das Starten von Anwendungen.
+Hierfür werden im entwickelten Testsystem vom Connector mehrere gemeinsam genutzte SSH"=Verbindungen bereit gestellt (vgl. \cref{subsubsec:implCmdConnector}).
+Da es hierbei jedoch bei der Ausführung eines Tests zu Problemen aufgrund nicht korrekt beendeter Anwendungen kam und daher nicht ausreichend Submitter verfügbar waren (vgl. \cref{subsec:notEnoughSubmitter}).
+Eine Möglichkeit hierfür wäre, jedem Client einen eigenen Submitter bereitzustellen.
+Damit einhergehend müsste jeder Client auch selbst dafür sorgen, dass Anwendungen definitiv beendet werden, wenn eine andere Anwendung gestartet werden soll (vgl. \cref{subsec:yarnClient}).
+Jedoch hätte das auch den Nachteil, dass ein Client durch eine nicht zu beendende Anwendung keine weiteren Anwendungen ausführen könnte, was mit der derzeitigen Architektur des Modells möglich ist.
+
 Ein spezieller Fall bildet das Fehlen der Diagnostik"=Daten von ausgeführten Anwendungen.
 Hierfür hat sich nach einer Analyse herausgestellt, dass nicht fehlerhafte Daten des Clusters ursächlich waren, sondern ein falsch gesetztes Attribut im Parser (vgl. \cref{subsec:notSavedAppDiagnostics}).
 Dies hätte bereits bei Vorabtests wie den durchgeführten Komponententests der beiden implementierten Parser bereits festgestellt und entsprechend korrigiert werden müssen.
@@ -31,6 +38,7 @@ Dies hätte bereits bei Vorabtests wie den durchgeführten Komponententests der 
 Erwähnenswert ist zudem, dass bei der Recherche für diese Masterarbeit mehrmals aufgefallen ist, dass Hadoop oftmals für unpassende Aufgaben genutzt wird \cite{Ren2013,Vavilapalli2013}.
 Das bestätigt auch die Studie \cite{HadoopDataTypes}, wonach viele der mithilfe von Hadoop durchgeführten Aufgaben auch von \enquote{traditionellen Plattformen} durchgeführt werden könnten.
 Dadurch sei auch unklar, weshalb Hadoop in vielen Fällen überhaupt genutzt werde.
+Als logische Folge erwähnt Apache selbst ebenfalls, dass Hadoop nicht \enquote{die Silberkugel [ist,] um alle Anwendungs- oder Datencenter"=Progleme zu lösen}, sondern entwickelt wurde, um einige spezifische Probleme einiger Firmen und Organisationen zu lösen \cite{HadoopIsNot}.
 
 Abschließend lässt sich sagen, dass das entwickelte Testsystem für weitere Tests mit Hadoop als geeignet erscheint.
 Das ist nicht nur auf weiterführende Tests für diese Fallstudie bezogen (vgl. \cref{sec:discussionResults,subsec:actDeactFaults}), sondern auch auf weitere Tests mit Bezug auf Hadoop, die unabhängig von der durchgeführten Fallstudie sind.

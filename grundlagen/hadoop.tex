@@ -1,8 +1,8 @@
 \section{Apache Hadoop}
 \label{sec:hadoop}
 
-\textbf{Apache\texttrademark Hadoop\textregistered} ist ein Open"=Source"=Software"=Projekt, welches die Verarbeitung von großen Datenmengen auf einem verteilten System ermöglicht.
-Hadoop wird von der \emph{Apache Foundation} entwickelt und stellt und enthält verschiedene vollständig skalierbare Komponenten.
+Apache\texttrademark Hadoop\textregistered ist ein in Java entwickeltes Open"=Source"=Software"=Projekt, welches die Verarbeitung von großen Datenmengen auf einem verteilten System ermöglicht.
+Hadoop wird federführend von der \emph{Apache Foundation} entwickelt und enthält verschiedene vollständig skalierbare Komponenten \cite{HadoopHomePage}.
 Es ist daher möglich, ein Hadoop"=Cluster auf nur einem einzelnen PC, aber auch verteilt auf zahlreichen Servern auszuführen.
 Hadoop ermöglicht es dadurch, sehr einfach \glspl{Anwendung} auszuführen, um große Datenmengen zu verarbeiten.
 Die für das Cluster, und damit den Anwendungen, verfügbaren Ressourcen beschränken sich lediglich auf die Summe der verfügbaren Ressourcen aller Hosts, auf denen das Cluster ausgeführt wird.
@@ -14,10 +14,10 @@ Hadoop besteht aus folgenden Kernmodulen \cite{HadoopHomePage}:
         Gemeinsam genutzte Kernkomponenten
 	\item[Hadoop \acrshort{YARN} (\acrlong{YARN}\glsunset{YARN})] \hfill \\
         Framework zur Verteilung und Ausführung von \glspl{Anwendung} und das dazugehörige Ressourcen"=Management
-	\item[\acrlong{HDFS}] \hfill \\
-        Kurz \acrshort{HDFS}\glsunset{HDFS}, verteiltes Dateisystem
-	\item[Hadoop \acrlong{MR}] \hfill \\
-        Kurz \acrshort{MR}\glsunset{MR}, Implementierung des \gls{MR}"=Ansatzes zum Verarbeiten von großen Datenmengen, nutzt \gls{YARN} zur Ausführung der Anwendungen
+	\item[\acrlong{HDFS} (\acrshort{HDFS}\glsunset{HDFS})] \hfill \\
+        Verteiltes Dateisystem zun Speichern von Daten auf dem Cluster
+	\item[Hadoop \gls{MR}] \hfill \\
+        Implementierung des \gls{MR}"=Ansatzes zum Verarbeiten von großen Datenmengen, nutzt \gls{YARN} zur Ausführung der Anwendungen
 \end{description}
 
 Aufgrund seiner Verbreitung stellt Hadoop eine der wichtigsten Implementierungen des \gls{MR}"=Ansatzes dar \cite{PoweredByHadoop}.
@@ -27,9 +27,9 @@ Die geteilten Daten werden dann in mehreren, parallel ausgeführten Map"=Tasks v
 Die zwischengespeicherten Daten werden anschließend von einem oder mehreren Reduce"=Tasks zusammengeführt und in die Ausgabedateien geschrieben.
 Das Framework ist hierbei sehr Fehlertolerant, da ein fehlerhafter Task jederzeit neu gestartet werden kann \cite{Dean2004,Dean2010}.
 Zur Speicherung der Ein-, Zwischen- und Ausgabedaten wird im Falle von Hadoop das \gls{HDFS} genutzt \cite{HadoopMapRedTutorial271}.
-Für weitere Details zum \gls{MR}"=Framework sei hier auf \cite{Dean2004} und \cite{Dean2010} verwiesen, eine ausführliche Betrachtung des \gls{MR}"=Frameworks mit Vorteilen und Problemen lässt sich in \cite{Lee2012} finden.
+Für eine ausführliche Beschreibung des \gls{MR}"=Frameworks sei hier auf \cite{Dean2004} und \cite{Dean2010} verwiesen, eine generelle Betrachtung des \gls{MR}"=Frameworks mit Vorteilen und möglichen Problemen lässt sich in \cite{Lee2012} finden.
 
-Da das \gls{MR}"=Framework bzw. seine Implementierung in Hadoop nicht immer optimal ist und in der Praxis zum Teil auch zweckentfremdet wurde, wurde in \cite{Vavilapalli2013} das \gls{YARN}"=Framework vorgestellt.
+Da das \gls{MR}"=Framework bzw. seine Implementierung in Hadoop nicht immer optimal genutzt werden kann und in der Praxis daher zum Teil auch zweckentfremdet wurde, wurde in \cite{Vavilapalli2013} das \gls{YARN}"=Framework vorgestellt.
 Die Kernidee ist hierbei die Trennung von Ressourcenmanagement und Scheduling vom eigentlichen Programm.
 In diesem Kontext bildet der \gls{MR}"=Ansatz eine mögliche Anwendung, die mithilfe des \gls{YARN}"=Frameworks ausgeführt wird \cite{Vavilapalli2013}.
 
@@ -46,22 +46,23 @@ Der \gls{RM} dient hierbei als \emph{Load"=Balancer} für das gesamte Cluster un
 Der \gls{AM} ist für die Annahme und Ausführung von einzelnen \glspl{Anwendung} zuständig, denen der Scheduler die dafür notwendigen Ressourcen im Cluster zuteilt.
 Jeder Node besitzt einen \gls{NM}, der für die Überwachung der Ressourcen auf dem jeweiligen Node sowie der auf dem Node ausgeführten Anwendungs"=Container zuständig ist und diese Daten dem \gls{RM} übermittelt.
 
-Jede \gls{YARN}\gls{Anwendung} bzw. Job besteht aus einer oder mehreren Ausführungsinstanzen, genannt Attempts.
+Jede \gls{YARN}"=Anwendungen bzw. Job besteht aus einer oder mehreren Ausführungsinstanzen, genannt \emph{Attempts}.
 Jeder \gls{Attempt} besitzt einen eigenen \gls{AppMstr}, welcher das Monitoring der \gls{Anwendung} und die Kommunikation mit dem \gls{RM} und \gls{NM} übernimmt und die dafür benötigten Informationen bereitstellt \cite{HadoopYarnArch271}.
 Die eigentliche Ausführung einer \gls{Anwendung} findet in den bereits erwähnten \emph{Containern} statt, die jeweils einem \gls{Attempt} zugeordnet sind.
 Container können auf einem beliebigen Node ausgeführt werden und repräsentieren die Ausführung eines Tasks innerhalb der Anwendung.
+Der \gls{AppMstr} wird hierbei ebenfalls in einem Anwendungs"=Contaier ausgeführt.
 
 Zu erwähnen ist hier zudem, dass die Kommunikation zwischen den einzelnen Komponenten nicht in allen Fällen in Echtzeit statt findet.
 Vor allem das Prüfen des generellen Node"=Zustandes durch den \gls{RM} wird bei einer Standard"=Konfiguration in periodischen Abständen von jeweils mehreren Minuten durchgeführt.
-Sollte der \gls{NM} bei solchen Status"=Abfragen zunächst nicht reagieren, wird mehrere Minuten gewartet, bis der Node als defekt erkannt wird.
-Ähnlich verhält es sich bei Zustandsabfragen an den \gls{AppMstr} \cite{HadoopYarnConfig271}.
+Erst nachdem ein \gls{NM} nach mehreren Minuten keine Rückmeldung an den \gls{RM} sendet, wird der Node als defekt markiert.
+Ähnlich verhält es sich bei Zustandsabfragen an die \gls{AppMstr} der Anwendungen \cite{HadoopYarnConfig271}.
 
 Ein weiterer Bestandteil von Hadoop bzw. \gls{YARN} ist der \gls{TLS}.
-Er ist speziell dafür entwickelt, die Metadaten und Logs der \gls{YARN}\gls{Anwendung}en zu speichern und jederzeit, also als Anwendungshistorie, auszugeben \cite{HadoopYarnTlServer271}.
+Er ist speziell dafür entwickelt, die Metadaten und Logs der \gls{YARN}"=Anwendungen zu speichern und als Anwendungshistorie bereitzustellen \cite{HadoopYarnTlServer271}.
 
 Zum Steuern des Clusters bzw. dem Monitoring der mithilfe von \gls{YARN} ausgeführten \glspl{Anwendung} stellt Hadoop drei Schnittstellen zur Verfügung.
 Dies sind eine graphische Weboberfläche, was zugleich auch die wichtigste Schnittstelle darstellt, entsprechende Befehle für die \acrlong{CLI} (engl. \emph{Command-line interface}, kurz \acrshort{CLI})\glsunset{CLI}, sowie eine \gls{REST}"=API.
-Während sich die Weboberfläche zur menschlichen Interaktion oder zum Finden von Fehlern eignet, dienen die \gls{CLI}"=Befehle vor allem zum Steuern des Clusters und die \gls{REST}"=API zur automatisierten Rückgabe der Daten des Clusters zur Nutzung in anderen Programmen \cite{HadoopClusterSetup271,HadoopYarnCmds271,HadoopRmApi271,HadoopNmApi271}.
+Während sich die Weboberfläche zur menschlichen Interaktion oder zur Fehlersuche eignet, dienen die \gls{CLI}"=Befehle vor allem zum Steuern des Clusters und die \gls{REST}"=API zur automatisierten Rückgabe der Daten des Clusters zur Nutzung in anderen Programmen \cite{HadoopClusterSetup271,HadoopYarnCmds271,HadoopRmApi271,HadoopNmApi271}.
 
 Das \textbf{\gls{HDFS}} basiert auf einer ähnlichen Architektur wie \gls{YARN} und besitzt ebenfalls einen Controller und mehrere Nodes:
 
@@ -80,4 +81,4 @@ Dateioperationen (wie Öffnen oder Schließen) werden direkt auf den DataNodes a
 Sie sind darüber hinaus auch dafür verantwortlich, dass die gespeicherten Daten gelesen und beschrieben werden können \cite{Shvachko2010,HadoopHdfsDesc271}.
 
 Das Überprüfen der DataNodes durch den NameNode erfolgt genauso wie bei den entsprechenden \gls{YARN}"=Komponenten periodisch im Abstand von mehreren Minuten.
-Auch hier dauert es bei einer Standard"=Konfiguration daher mehrere Minuten, bis erkannt wird, wenn ein DataNode nicht mehr verfügbar ist \cite{HadoopHdfsConfig271}.
+Auch hier dauert es bei einer Standard"=Konfiguration daher mehrere Minuten, bis ein DataNode als defekt markiert wird \cite{HadoopHdfsConfig271}.

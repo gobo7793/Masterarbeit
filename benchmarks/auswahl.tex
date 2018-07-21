@@ -1,27 +1,27 @@
 \section{Entwicklung des Transitionssystems}
 \label{sec:transitionsystem}
 
-Damit die Fallstudie die Realität abbilden kann, wurden von allen verfügbaren \glspl{Anwendung} einige ausgewählt und in ein Transitionssystem in Form einer Markow"=Kette überführt.
+Damit die Fallstudie die Realität abbilden kann, wurden von den verfügbaren \glspl{Anwendung} einige ausgewählt und in ein Transitionssystem in Form einer Markow"=Kette überführt.
 Diese Kette definiert die Ausführungsreihenfolge zwischen den einzelnen Anwendungen.
-Eine zufallsbasierte Markow"=Kette wurde aus dem Grund verwendet, dass auch in der Realität \glspl{Anwendung} nicht immer in der gleichen Reihenfolge ausgeführt werden und daher auch in der Fallstudie eine unterschiedliche Ausführungsreihenfolge der \glspl{Anwendung} gewährleistet werden soll.
+Eine zufallsbasierte Markow"=Kette wurde aus dem Grund verwendet, dass auch in der Praxis \glspl{Anwendung} nicht immer in der gleichen Reihenfolge ausgeführt werden und daher auch in der Fallstudie eine unterschiedliche Ausführungsreihenfolge der \glspl{Anwendung} ermöglicht werden soll.
 Mithilfe der Festlegung eines bestimmten Seeds für den in der Fallstudie benötigten Pseudo"=Zufallsgenerator besteht bei Bedarf dennoch die Möglichkeit, einen \gls{Test} mit den gleichen \glspl{Anwendung} wiederholen zu können.
 
 \subsection{Auswahl der Benchmarks}
 \label{subsec:appSelection}
 
-Einige der in \cref{sec:appOverview} erwähnten Mapreduce Examples werden häufig als Benchmark verwendet.
-Einige Beispiele dafür sind die \glspl{Anwendung} \acrlong{so} und \texttt{grep}, die bereits im Referenzpapier des \gls{MR}"=Frameworks zum Testen genutzt wurden \cite{Dean2004}.
+Einige der in \cref{subsec:mapreduceExamples} erwähnten Mapreduce"=Examples werden häufig als Benchmark verwendet.
+Einige Beispiele dafür sind die \glspl{Anwendung} \acrlong{so} und \texttt{grep}, die bereits im Referenzpapier \cite{Dean2004} des \gls{MR}"=Frameworks zum Testen genutzt wurden.
 Zum Testen des \gls{HDFS} dient in \cite{Shvachko2010} der DFSIO"=Benchmark, um den Durchsatz beim Lesen und Schreiben einer großen Datenmenge auf dem \gls{HDFS} zu messen.
-\acrlong{tsr} ist ebenfalls ein weit verbreiteter Benchmark, der die Hadoop"=Implementierung der standardisierten \emph{Sort Benchmarks}\footnote{\url{https://sortbenchmark.org/}} darstellt \cite{Graves2013}.
+\acrlong{tsr} und die beiden dazugehörigen Anwendungen \acrlong{tg} und \acrlong{tvl} bilden ebenfalls einen weit verbreiteten Benchmark, der die Hadoop"=Implementierung der standardisierten \emph{Sort Benchmarks}\footnote{\url{https://sortbenchmark.org/}} darstellt \cite{Graves2013}.
 Ebenfalls als guter Benchmark dient die \gls{Anwendung} \acrlong{wc}, mit der ein großer Datensatz stark verkleinert bzw. zusammengefasst wird und dient daher als gute Repräsentation für Anwendungsarten, bei denen Daten extrahiert werden \cite{Huang2010,Chen2012}.
 
 Da in dieser Fallstudie ein realistisches Abbild der ausgeführten \glspl{Anwendung} ausgeführt werden soll, ist es nicht sehr hilfreich, die einzelnen Übergangswahrscheinlichkeiten im Transitionssystem anzugleichen oder rein zufällig zu verteilen.
-Einen realistischen Einblick, welche Anwendungs- und Datentypen in produktiv genutzten Hadoop"=Clustern genutzt werden, geben \uA \cite{Chen2012} und \cite{HadoopDataTypes}.
-Auffällig ist hierbei, dass die meisten \glspl{Anwendung} in einem Hadoop"=Cluster innerhalb weniger Sekunden oder Minuten abgeschlossen sind und/oder Datensätze im Größenbereich von wenigen Kilobyte bis hin zu wenigen Megabyte verarbeiten.
-Zu einem ähnlichen Ergebnis kamen auch \citeauthor{Ren2013} in \cite{Ren2013} und folgerten daher, dass für kleine Jobs evtl. einfachere Frameworks abseits von Hadoop besser geeignet wären.
-Die Autoren der Studie in \cite{HadoopDataTypes} bezeichneten Hadoop aufgrund ihrer Ergebnisse als \enquote{potentielle Technologie zum Verarbeiten aller Arten von Daten}, stellten aber eine ähnliche Vermutung an wie \citeauthor{Ren2013}, dass Hadoop primär Daten nutze, die auch mit \enquote{traditionellen Plattformen} verarbeiten werden könnten.
+Einen realistischen Einblick, welche Anwendungs- und Datentypen in produktiv genutzten Hadoop"=Clustern genutzt werden, geben \uA die Studien \cite{Chen2012} und \cite{HadoopDataTypes}.
+Auffällig ist hierbei, dass die meisten \glspl{Anwendung} in einem Hadoop"=Cluster innerhalb weniger Sekunden oder Minuten abgeschlossen sind und bzw. oder Datensätze im Größenbereich von wenigen Kilobyte bis hin zu wenigen Megabyte verarbeiten.
+Zu einem ähnlichen Ergebnis kam auch die Studie \cite{Ren2013}, in der gefolgert wird, dass für kleinere Jobs einfachere Frameworks abseits von Hadoop besser geeignet wären.
+Die Autoren der Studie \cite{HadoopDataTypes} bezeichneten Hadoop aufgrund ihrer Ergebnisse als \enquote{potentielle Technologie zum Verarbeiten aller Arten von Daten}, folgerten aber ähnlich wie in \citeauthor{Ren2013} in \cite{Ren2013}, dass mit Hadoop vor allem Daten verarbeitet werden, die auch mit \enquote{traditionellen Plattformen} verarbeitet werden könnten.
 
-Basierend auf den Ergebnissen der Studien in \cite{Huang2010,Chen2012,HadoopDataTypes,Ren2013} und der in den Publikationen \cite{Shvachko2010,Dean2004,Graves2013} verwendeten Benchmark\gls{Anwendung}en, wurden folgende \glspl{Anwendung} der Mapreduce Examples und Jobclient"=Tests in das Transitionssystem übernommen:
+Basierend auf den Ergebnissen der Studien in \cite{Huang2010,Chen2012,HadoopDataTypes,Ren2013} und der in den Publikationen \cite{Shvachko2010,Dean2004,Graves2013} verwendeten Benchmarks, wurden folgende \glspl{Anwendung} der Mapreduce"=Examples und Jobclient"=Tests in das Transitionssystem übernommen:
 
 \begin{itemize}
     \item Generieren von Eingabedaten für andere Anwendungen:
@@ -29,7 +29,7 @@ Basierend auf den Ergebnissen der Studien in \cite{Huang2010,Chen2012,HadoopData
         \item Textdateien:
         \begin{itemize}
             \item \gls{rtw}: Generierung von zufälligen Zeichenfolgen
-            \item \gls{dfw}: Schreiben einer großen Datenmenge auf dem \gls{HDFS}
+            \item \gls{dfw}: Schreiben einer großen Datenmenge auf das \gls{HDFS}
         \end{itemize}
         \item Binärdateien:
         \begin{itemize}
@@ -74,16 +74,16 @@ Basierend auf den Ergebnissen der Studien in \cite{Huang2010,Chen2012,HadoopData
     \end{itemize}
 \end{itemize}
 
-Der Grund für die Berücksichtigung von mehreren gleichen bzw. ähnlichen \glspl{Anwendung} für einige Kategorien liegt darin, dass die unterschiedlichen \glspl{Anwendung} eine unterschiedliche Ausführungsdauer bzw. Datenrepräsentation (Text und Binär) repräsentieren.
+Der Grund für die Berücksichtigung von mehreren gleichen bzw. ähnlichen \glspl{Anwendung} für einige Kategorien liegt darin, dass die unterschiedlichen \glspl{Anwendung} einen unterschiedliche Umfang bzw. Datenrepräsentation (Text- und Binärdaten) repräsentieren.
 So stehen die beiden \texttt{TestDFSIO}"=Varianten für eine umfangreichere Datennutzung, während die jeweils anderen \glspl{Anwendung} einen kleineren Umfang repräsentieren.
-Ähnlich verhält es sich bei den beiden Berechnungs\gls{Anwendung}en, bei denen die \acrlong{pt}\gls{Anwendung} die deutlich umfangreicheren Berechnungen durchführt.
+Ähnlich verhält es sich bei den beiden Berechnungs"=Anwendungen, bei denen die \acrlong{pt}"=Anwendung die deutlich umfangreicheren Berechnungen durchführt.
 \texttt{TestDFSIO} enthält zudem die Möglichkeit, Daten zu generieren und zu lesen, weshalb dieser Benchmark in zwei Kategorien als \gls{Anwendung} genutzt wird.
 
-Eine Besonderheit bilden die beiden Dummy\gls{Anwendung}en.
+Eine Besonderheit bilden die beiden Dummy"=Anwendnugen.
 Beide werden bei der Ausführung dieser Fallstudie dafür genutzt, um zu simulieren, wenn nichts ausgeführt werden soll oder bei der Ausführung der \glspl{Anwendung} ein Fehler auftritt.
 
 Auf die Implementierung einer \gls{Anwendung} der HiBench"=Suite wurde verzichtet.
-Da beim Starten einer \gls{Anwendung} durch den Client die vom Cluster zugewiesene ID benötigt wird, um die \gls{Anwendung} in späteren Testfällen beenden zu können, kann der HiBench nicht sinnvoll im Testmodell genutzt werden.
+Da beim Starten einer \gls{Anwendung} durch den Client die vom Cluster zugewiesene Anwendungs"=ID benötigt wird, um die \gls{Anwendung} in späteren Testfällen beenden zu können, kann der HiBench nicht sinnvoll im Testmodell genutzt werden.
 Der Grund hierfür ist, dass beim Starten einer \gls{Anwendung} der HiBench"=Suite die ID erst nach Abschluss der gesamten \gls{Anwendung} zurückgegeben wird, womit eine asynchrone Ausführung der \gls{Anwendung} nicht mehr möglich wäre.
 
 \subsection{Entwicklung der Markow"=Kette}
@@ -91,11 +91,11 @@ Der Grund hierfür ist, dass beim Starten einer \gls{Anwendung} der HiBench"=Sui
 
 Basierend auf den ausgewählten \glspl{Anwendung} und der in den Studien genannten Anwendungstypen wurde das Transitionssystem in Form einer Markov"=Kette entwickelt.
 Die Markov"=Kette definiert die Wahrscheinlichkeiten, mit denen die ausführenden \glspl{Anwendung} bei der Ausführung eines Testfalls gewechselt werden.
-Damit die Übergänge nicht bei jedem \gls{Testfall} stattfinden, sondern \glspl{Anwendung} auch mehrere \glspl{Testfall} lang ausgeführt werden können, wurden Selbst"=Transitionen auf 60 Prozent definiert.
+Damit die Übergänge nicht bei jedem \gls{Testfall} stattfinden, sondern \glspl{Anwendung} auch mehrere \glspl{Testfall} lang ausgeführt werden können, wurden Selbst"=Transitionen mit einer Wahrscheinlichkeit von 60 Prozent definiert.
 
-Für die beiden Dummy\gls{Anwendung}en gelten einige Besonderheiten.
-Zum einen können beide \glspl{Anwendung} unabhängig von der derzeit ausgeführten \gls{Anwendung} mit einer sehr geringen Wahrscheinlichkeit als nachfolgende \gls{Anwendung} ausgewählt werden.
-Für die Übergänge zu den Dummy\gls{Anwendung}en nachfolgende \glspl{Anwendung} wurden nur \glspl{Anwendung} definiert, die ihrerseits keine Eingabedaten benötigten bzw. diese für andere \glspl{Anwendung} generieren:
+Für die beiden Dummy"=Anwendungen gelten einige Besonderheiten.
+Sie können beide unabhängig von der derzeit ausgeführten \gls{Anwendung} mit einer sehr geringen Wahrscheinlichkeit als nachfolgende \gls{Anwendung} ausgewählt werden.
+Zudem wurden als den Dummy"=Anwendungen nachfolgende Anwendungen nur solche definiert, die ihrerseits keine Eingabedaten benötigten bzw. diese für andere \glspl{Anwendung} bereitstellen:
 
 \begin{itemize}
     \item \acrlong{dfw}
@@ -106,8 +106,8 @@ Für die Übergänge zu den Dummy\gls{Anwendung}en nachfolgende \glspl{Anwendung
     \item \acrlong{pt}
 \end{itemize}
 
-Bei der Entwicklung der Markow"=Kette des Transitionssystems wurde zudem berücksichtigt, welche Anwendungsdaten welche Art von Eingabedaten benötigen.
-Dadurch wird sichergestellt, dass benötigte Eingabedaten immer vorhanden sind, da diese ebenfalls im Rahmen der Ausführung der Benchmarks generiert werden.
+Bei der Entwicklung der Markow"=Kette des Transitionssystems wurde zudem berücksichtigt, welche Anwendungen welche Art von Eingabedaten benötigen.
+Dadurch wird sichergestellt, dass benötigte Eingabedaten immer vorhanden sind, da diese ebenfalls im Rahmen der Ausführung der Benchmarks generiert werden können (vgl. \cref{sec:clusterSetup,subsec:testcaseGeneration}).
 Anwendungen ohne Eingabedaten können dagegen fast jederzeit ausgeführt werden, wie die entwickelte Markov"=Kette zeigt:
 
 \begin{table}[h]

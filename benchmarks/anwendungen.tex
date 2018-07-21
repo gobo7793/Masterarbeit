@@ -2,23 +2,23 @@
 \label{sec:appOverview}
 
 Hadoop-Benchmark enthält bereits die Möglichkeit, unterschiedliche Benchmarks zu starten.
-Wie in \cref{sec:hadoopBenchmark} erwähnt, sind folgende Benchmarks in der Plattform bereits integriert:
+Folgende Benchmarks sind bereits in der Plattform integriert (vgl. \cref{sec:hadoopBenchmark}):
 
 \begin{itemize}
-    \item Hadoop Mapreduce Examples
+    \item Hadoop"=Mapreduce"=Examples
     \item Intel HiBench
     \item \gls{SWIM}
 \end{itemize}
 
-Jeder Benchmark enthält ein spezielles Start"=Script, um die jeweiligen Benchmarks in einem Docker"=Container zu starten.
-Dieser \gls{Container} wird abhängig vom \texttt{HostMode} (vgl. \cref{subsec:hostMode}) auf der VM des \gls{RM} oder direkt auf dem Host gestartet.
+Jeder Benchmark enthält ein spezifisches Start"=Script, um die jeweiligen Benchmarks in einem Docker"=Container zu starten.
+Dieser \gls{Container} wird abhängig vom \texttt{HostMode} (vgl. \cref{subsec:hostMode}) auf der Docker"=Machine des \gls{RM} oder direkt auf dem Host gestartet.
 Da es in Docker"=Umgebungen \emph{best practice} ist, für jeden Einsatzzweck ein eigenes Image zu erstellen bzw. \gls{Container} zu starten, werden für jede der drei Benchmark"=Suites eigene \gls{Container} ausgeführt.
 Um mehrere Benchmarks gleichzeitig starten und ausführen zu können, wurden die Startscripte der Benchmarks entsprechend angepasst.
 
-\subsection{Mapreduce Examples}
+\subsection{Mapreduce"=Examples}
 \label{subsec:mapreduceExamples}
 
-Die Hadoop Mapreduce Examples sind unterschiedliche und meist voneinander unabhängige Anwendungen, die beispielhaft für die meisten Anwendungsfälle in einem produktiv genutzten Cluster sind.
+Die Hadoop"=Mapreduce"=Examples sind unterschiedliche und meist voneinander unabhängige Anwendungen, die beispielhaft für die meisten Anwendungsfälle in einem produktiv genutzten Cluster sind.
 Die Examples sind Teil der Hadoop"=Installation und daher standardmäßig in jedem Hadoop"=Cluster verfügbar.
 Einige der \glspl{Anwendung} der Examples sind:
 
@@ -26,20 +26,20 @@ Einige der \glspl{Anwendung} der Examples sind:
     \item Generatoren für Text und Binärdaten, \zB \acrlong{rtw}
     \item Analysieren von Daten, \zB \acrlong{wc}
     \item Sortieren von Daten, \zB \acrlong{so}
-    \item Ausführen von komplexen Berechnungen, \zB die Ausführung der \emph{Bailey-Borwein-Plouffe-Formel} zur Berechnung einzelner Stellen von $\pi$
+    \item Ausführen von komplexen Berechnungen, \zB die Ausführung der \emph{Bailey-Borwein-Plouffe-Formel} \cite{Bailey1997} zur Berechnung einzelner Stellen von $\pi$
 \end{itemize}
 
 \subsection{Intel HiBench}
 \label{subsec:hibench}
 
 Intel HiBench\footnote{\url{https://github.com/intel-hadoop/HiBench}} ist eine von Intel entwickelte Benchmark"=Suite mit \emph{Workloads} zu verschiedenen Anwendungszwecken mit jeweils unterschiedlichen einzelnen Anwendungen.
-Die in \cite{Huang2010} entwickelte Suite enthielt anfangs nur wenige Anwendungen, wurde im Laufe der Zeit jedoch stetig um neue \glspl{Anwendung} und auch Workloads erweitert.
+Die Suite enthielt anfangs nur wenige Anwendungen \cite{Huang2010}, wurde im Laufe der Zeit jedoch stetig um neue \glspl{Anwendung} und auch Workloads erweitert.
 Das zeigt sich auch darin, dass in Hadoop"=Benchmark die HiBench"=Version \mbox{2.2} integriert ist, die einen noch deutlich geringeren Umfang an Workloads und \glspl{Anwendung} besitzt, wie \zB die aktuellere Version 7.
 Aus diesem Grund wurde vor der Analyse der \glspl{Anwendung} der HiBench"=Suite das Docker"=Image entsprechend auf Version 7 aktualisiert, um hier entsprechend alle in der Zwischenzeit hinzugefügten Workloads und \glspl{Anwendung} der Suite nutzen zu können.
 HiBench enthält damit folgende Workloads mit einer unterschiedlichen Anzahl an möglichen Anwendungen:
 
 \begin{itemize}
-    \item Micro"=Benchmarks (basierend auf den Mapreduce Examples und den Jobclient"=Tests)
+    \item Micro"=Benchmarks (basierend auf den Mapreduce"=Examples und den Jobclient"=Tests)
     \item Maschinelles Lernen
     \item SQL/Datenbanken
     \item Websuche
@@ -50,9 +50,9 @@ HiBench enthält damit folgende Workloads mit einer unterschiedlichen Anzahl an 
 \subsection{\glsentryshort{SWIM}}
 \label{subsec:swim}
 
-\textbf{\gls{SWIM}}\footnote{\url{https://github.com/SWIMProjectUCB/SWIM}} ist eine Benchmark"=Suite, die aus 50 verschiedenen Workloads besteht.
+\gls{SWIM}\footnote{\url{https://github.com/SWIMProjectUCB/SWIM}} ist eine aus 50 einzelnen Workloads bestehende Benchmark"=Suite.
 Das besondere an \gls{SWIM} ist, dass die Suite im Rahmen der Studie \cite{Chen2012} entwickelt wurde, und dadurch anhand mehrerer tausend real ausgeführten \gls{MR}"=Jobs entwickelt wurde.
-Die dabei enthaltenen Workloads stellen damit eine größere Vielfalt an ausgeführten \glspl{Anwendung} und damit einen größeren Testumfang dar als vergleichbare Benchmarks\cite{SwimWikiHome}.
+Die dabei enthaltenen Workloads stellen damit eine größere Vielfalt an ausgeführten \glspl{Anwendung} und damit einen größeren Testumfang dar als vergleichbare Benchmarks \cite{SwimWikiHome}.
 
 Bei der Ausführung auf dem in dieser Fallstudie verwendetem Cluster wurden jedoch nicht alle Workloads fehlerfrei ausgeführt.
 Zudem wird in \cite{InriaTutorial} explizit erwähnt, dass die Ausführung auf einem Cluster auf einem Host sehr zeitintensiv ist, sofern die Workloads überhaupt ausgeführt werden können.
@@ -63,9 +63,9 @@ Daher wurde die Nutzung des \gls{SWIM}"=Benchmarks nicht weiter verfolgt.
 \label{subsec:jobclient}
 
 Ebenfalls im Installationsumfang von Hadoop enthalten sind die hier aufgrund ihres Dateinamens als Jobclient"=Tests bezeichneten Anwendungen.
-Hauptbestandteil dieser \glspl{Test} sind vor allem weitere, den Mapreduce Examples ergänzende, Benchmarks, welche das gesamte Cluster oder einzelne Nodes testen.
+Hauptbestandteil dieser \glspl{Test} sind vor allem weitere, den Mapreduce"=Examples ergänzende, Benchmarks, welche das gesamte Cluster oder einzelne Nodes testen.
 Der Fokus der Jobclient"=Tests liegt im Gegensatz zu den Examples nicht auf dem \gls{MR}- bzw. \gls{YARN}"=Framework, sondern beim \gls{HDFS}.
-Da die Jobclient-Tests kein Teil von Hadoop"=Benchmark sind, wurde zur Ausführung der Jobclient"=Test zunächst ein eigenes Start"=Script analog zur Ausführung der Mapreduce Examples erstellt, damit diese ebenfalls im Rahmen der Plattform Hadoop"=Benchmark gestartet werden können.
+Da die Jobclient-Tests kein Teil von Hadoop"=Benchmark sind, wurde zur Ausführung der Jobclient"=Test zunächst ein eigenes Start"=Script analog zur Ausführung der Mapreduce"=Examples erstellt, damit diese ebenfalls im Rahmen der Plattform Hadoop"=Benchmark gestartet werden können.
 Die Jobclient"=Tests enthalten \uA folgende Arten an Anwendungen:
 
 \begin{itemize}

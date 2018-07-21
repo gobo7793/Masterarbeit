@@ -1,4 +1,4 @@
-\section{Planung der \glsentryshort{Test} und der Evaluation}
+\section{Planung der Tests und der Evaluation}
 \label{sec:evaluationPlan}
 
 Um das Testsystem zu validieren, wurde zunächst ein Evaluationsplan aufgestellt.
@@ -23,7 +23,7 @@ Basierend auf den unabhängigen Variablen wurden \uA folgende abhängigen Variab
 
 \begin{itemize}
     \item Anzahl der tatsächlich ausgeführten Testfälle
-    \item Aktivierten und deaktivierte Komponentenfehler
+    \item Aktivierte und deaktivierte Komponentenfehler
     \item Anzahl ausgeführter Anwendungen
     \item Anzahl und Gründe für evtl. nicht vollständig ausgeführte Anwendungen
 \end{itemize}
@@ -40,7 +40,7 @@ Als Basis zur Definition einer \gls{Testkonfiguration} dienen die in \cref{subse
     \item Anzahl genutzter Hosts
     \item Basisanzahl der Nodes
     \item Anzahl simulierter Clients
-    \item Verwendeter Basisseed für Zufallsgeneratoren
+    \item Basisseed für Zufallsgeneratoren
     \item Anzahl auszuführender Testfälle
     \item Mindestdauer für einen Testfall
     \item Nutzung einer oder mehreren Mutationen
@@ -50,13 +50,13 @@ Als Basis zur Definition einer \gls{Testkonfiguration} dienen die in \cref{subse
 \end{itemize}
 
 Die Auswahl der ausgeführten \glspl{Anwendung} erfolgt während der Testausführung anhand des Basisseeds der Testkonfiguration.
-Zwar werden durch das Transitionssystem wahrscheinlichkeitsbasierend zufällig \glspl{Anwendung} ausgewählt, jedoch kann dies durch den Charakter des im .NET"=Framework vorhandenen Zufallsgenerators gesteuert werden.
-Der in .NET implementierte Zufallsgenerator ist nämlich kein \emph{echter}, sondern ein Pseudo"=Zufallsgenerator, der mithilfe eines mathematischen Algorithmus' Zufallszahlen berechnet \cite{RandomClassDoc}.
-Zwar wird standardmäßig ein zeitbasierter Seed als Startwert für den Algorithmus genutzt, durch die Angabe eines spezifischen Seeds kann jedoch die Wiederausführbarkeit der \glspl{Test} sichergestellt werden.
+Zwar werden durch das Transitionssystem basierend auf den dort definierten Wahrscheinlichkeiten zufällig \glspl{Anwendung} ausgewählt, jedoch kann dies durch den Charakter des im .NET"=Framework vorhandenen Zufallsgenerators gesteuert werden.
+Der in .NET implementierte Zufallsgenerator ist nämlich kein \emph{echter}, sondern ein Pseudo"=Zufallsgenerator, der mithilfe eines mathematischen Algorithmus Zufallszahlen berechnet \cite{RandomClassDoc}.
+Zwar wird standardmäßig ein zeitbasierter Seed als Startwert für den Algorithmus genutzt \cite{RandomClassDoc}, durch die Angabe eines spezifischen Seeds kann jedoch die Wiederausführbarkeit der \glspl{Test} sichergestellt werden.
 
 Auch die Aktivierung und Deaktivierung von Komponentenfehlern selbst soll während der Ausführung eines Testfalls festgelegt werden, wodurch die Wahrscheinlichkeit für deren Aktivierung bzw. Deaktivierung einen maßgeblichen Einfluss besitzt.
-Da Anwendungen, die Eingabedaten für andere \glspl{Anwendung} generieren, \uU nicht erfolgreich beendet werden können, kann eine \gls{Testkonfiguration} mit vorab generierten und im \gls{HDFS} gespeicherten Daten durchgeführt werden.
-Dadurch wird es ermöglicht, dass in solchen \glspl{Test} spätere \glspl{Anwendung} nicht vom Erfolg der zuvor ausgeführten \glspl{Anwendung} zur Generierung der Eingabedaten abhängig sind.
+Da Anwendungen, die Eingabedaten für andere \glspl{Anwendung} generieren (vgl. \cref{secsec:clusterSetup}), \uU fehlschlagen können, kann eine \gls{Testkonfiguration} mit vorab generierten und im \gls{HDFS} gespeicherten Daten durchgeführt werden.
+Dadurch wird es ermöglicht, dass in solchen \glspl{Test} spätere \glspl{Anwendung} nicht von zuvor ausgeführten \glspl{Anwendung} zur Generierung der Eingabedaten abhängig sind.
 Da einige \glspl{Test} zudem als Mutationstests durchgeführt werden sollen, muss für eine \gls{Testkonfiguration} dies entsprechend definiert werden.
 
 Die Auswahl der konkreten \glspl{Testkonfiguration} in \cref{sec:selectTestcases} erfolgte im Rahmen der in \cref{sec:implTestcases} beschriebenen Implementierung der Tests.
@@ -64,15 +64,15 @@ Die Auswahl der konkreten \glspl{Testkonfiguration} in \cref{sec:selectTestcases
 \subsection{Organisation und Ausgabe der Daten}
 \label{subsec:dataOrganisation}
 
-Damit die bei der Ausführung gewonnenen Daten auch zur Evaluation genutzt werden können, wurde hierzu festgelegt, welche Daten während der Ausführung ausgegeben werden.
-Alle relevante Daten werden hierzu während der Ausführung der \glspl{Testfall} in eine Log"=Datei ausgegeben und gespeichert.
+Damit die bei der Ausführung gewonnenen Daten auch zur Evaluation genutzt werden können, wurde hierzu festgelegt, welche Daten während der Ausführung gespeichert werden.
+Alle relevante Daten werden hierzu während der Ausführung der \glspl{Testfall} in einer Log"=Datei gespeichert.
 Zur Unterscheidung von einzelnen Ausführungen werden die Daten klar strukturiert.
 
 Beim Start eines Testfalls sollen daher zunächst einige generelle Daten ausgegeben werden:
 
 \begin{itemize}
     \item Basis"=Seed für die Zufallsgeneratoren
-    \item Wahrscheinlichkeit für Aktivierung und Deaktivierung der Komponentenfehler
+    \item Wahrscheinlichkeiten für Aktivierung und Deaktivierung der Komponentenfehler
     \item Anzahl genutzter Hosts, Nodes und Clients
     \item Anzahl der ausgeführten Simulations"=Schritte
     \item Angabe, ob ein normaler \gls{Test} oder ein Mutationstest ausgeführt wird
@@ -81,8 +81,8 @@ Beim Start eines Testfalls sollen daher zunächst einige generelle Daten ausgege
 Im Rahmen der Simulation können weitere Daten ausgegeben werden, wie \zB:
 
 \begin{itemize}
-    \item Angabe, ob vorab generierte Eingabedaten genutzt werden oder diese während der Ausführung eines Testfalls generiert werden
-    \item Mindestdauer für einen Simulations"=Schritt
+    \item Angabe, ob vorab generierte Eingabedaten genutzt werden oder diese während der Ausführung eines Tests generiert werden
+    \item Mindestdauer für einen Testfall
     \item Auszuführende Benchmarks pro Client
 \end{itemize}
 
@@ -104,7 +104,7 @@ Es können hierbei alle Daten ausgegeben werden, welche erkannt werden können, 
     
     \item Für jeden Client:
     \begin{itemize}
-        \item ID bzw. Name des Clints
+        \item ID bzw. Name des Clients
         \item Aktuell ausgeführter Benchmark
         \item ID der aktuell ausgeführten \gls{Anwendung} auf dem Cluster
     \end{itemize}
@@ -127,4 +127,4 @@ Es können hierbei alle Daten ausgegeben werden, welche erkannt werden können, 
     \end{itemize}
 \end{itemize}
 
-Die Details zur Implementierung und dem Ausgabeformat während der Ausführung der Simulation sind in \cref{subsec:simulationStep} erläutert, die zur Ausgabe der generellen Testfalldaten in \cref{sec:implTestcases}. Ein Beispiel einer möglichen Ausgabe für einen \gls{Testfall} findet sich in \cref{app:outputFormat}.
+Die Details zur Implementierung der Ausgaben sind in \cref{subsec:simulationStep} erläutert, die zur Ausgabe der generellen Testdaten in \cref{sec:implTestcases}. Ein Beispiel für den Inhalt einer Logdatei eines Tests findet sich in \cref{app:outputFormat}.
