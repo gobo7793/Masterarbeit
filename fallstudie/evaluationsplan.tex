@@ -55,7 +55,7 @@ Der in .NET implementierte Zufallsgenerator ist nämlich kein \emph{echter}, son
 Zwar wird standardmäßig ein zeitbasierter Seed als Startwert für den Algorithmus genutzt \cite{RandomClassDoc}, durch die Angabe eines spezifischen Seeds kann jedoch die Wiederausführbarkeit der Tests sichergestellt werden.
 
 Auch die Aktivierung und Deaktivierung von Komponentenfehlern selbst soll während der Ausführung eines Testfalls festgelegt werden, wodurch die Wahrscheinlichkeit für deren Aktivierung bzw. Deaktivierung einen maßgeblichen Einfluss besitzt.
-Da Anwendungen, die Eingabedaten für andere Anwendungen generieren (vgl. \cref{secsec:clusterSetup}), \uU fehlschlagen können, kann eine Testkonfiguration mit vorab generierten und im HDFS gespeicherten Daten durchgeführt werden.
+Da Anwendungen, die Eingabedaten für andere Anwendungen generieren (vgl. \cref{sec:clusterSetup}), \uU fehlschlagen können, kann eine Testkonfiguration mit vorab generierten und im HDFS gespeicherten Daten durchgeführt werden.
 Dadurch wird es ermöglicht, dass in solchen Tests spätere Anwendungen nicht von zuvor ausgeführten Anwendungen zur Generierung der Eingabedaten abhängig sind.
 Da einige Tests zudem als Mutationstests durchgeführt werden sollen, muss für eine Testkonfiguration dies entsprechend definiert werden.
 

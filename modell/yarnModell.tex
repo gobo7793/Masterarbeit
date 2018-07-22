@@ -1,4 +1,4 @@
-\section{Implementierung des \glsentryshort{YARN}"=Modells}
+\section{Implementierung des YARN"=Modells}
 \label{sec:yarnModel}
 
 Das implementierte YARN"=Modell besteht, wie bereits in \cref{sec:modelArchitecture} gezeigt, aus fünf Komponenten und den Komponentenfehlern der hier relevanten YARN"=Komponenten.
@@ -8,9 +8,9 @@ Einen Überblick über den Aufbau des implementierten YARN"=Modells gibt folgend
 
 \begin{figure}[h]
     \includegraphics{./resources/yarnModel_ls_MA.pdf}
-    \caption[Grundlegender Aufbau des \glsentryshort{YARN}"=Modells]
+    \caption[Grundlegender Aufbau des YARN"=Modells]
         {Grundlegender Aufbau des YARN"=Modells.
-        Assoziationen und weitere Verbindungen zum Treiber und \glsentryshort{ss} sind hier aus Gründen der Übersichtlichkeit nicht dargestellt.}
+        Assoziationen und weitere Verbindungen zum Treiber und \acrshort{ss} sind hier aus Gründen der Übersichtlichkeit nicht dargestellt.}
     \label{fig:yarnModelClassDiagram}
 \end{figure}
 
@@ -42,7 +42,7 @@ Die \texttt{ModelSettings}"=Klasse ist dabei zur Verwaltung des \texttt{HostMode
 Dies betrifft \zB den Pfad zum benötigten Setupscript (vgl. \cref{subsec:scripts}) oder die zur Nutzung der REST"=API benötigten Adressen.
 Eine Besonderheit bildet hierbei die Eigenschaft \texttt{HttpUrl} der \texttt{YarnNode}s, welche beim Initialisieren des Modells durch die \texttt{ModelSettings} die zum \texttt{HostMode} passende Adresse erhält (vgl. \cref{subsec:yarnComponents,subsec:hostMode}).
 
-\subsection{Relevante \glsentryshort{YARN}"=Komponenten}
+\subsection{Relevante YARN"=Komponenten}
 \label{subsec:yarnComponents}
 
 Die vier implementierten, relevanten YARN"=Komponenten sind die Anwendungen, ihre Attempts und Container sowie die Nodes des Clusters.
@@ -53,8 +53,8 @@ Eine Übersicht über die Implementierung der YARN"=Komponenten gibt folgendes K
 
 \begin{figure}[h]
     \includegraphics[width=\columnwidth]{./resources/yarnComponents.pdf}
-    \caption[Für die Fallstudie relevante, implementierte \glsentryshort{YARN}"=Komponenten]
-        {Für die Fallstudie relevante, implementierte \glsentryshort{YARN}"=Komponenten, hier dargestellt mit den wichtigsten Eigenschaften und Methoden.
+    \caption[Für die Fallstudie relevante, implementierte YARN"=Komponenten]
+        {Für die Fallstudie relevante, implementierte YARN"=Komponenten, hier dargestellt mit den wichtigsten Eigenschaften und Methoden.
         Dies sind alle für die spätere Durchführung und zur Ausgabe des Zustandes (vgl. \cref{subsec:dataOrganisation}) wichtigen Eigenschaften und Methoden.
         Aus Gründen der Übersichtlichkeit sind die implementierten Komponentenfehler, einige der \texttt{IYarnReadable} bereitgestellten, relevanten Eigenschaften und Methoden, sowie die Klasse \texttt{YarnAppContainer} nicht aufgeführt.}
     \label{fig:yarnComponentsClassDiagram}
@@ -87,7 +87,7 @@ Strings sind im YARN"=Modell daher zur Speicherung immer als  \texttt{char}"=Arr
 caption={[Implementierung der Eigenschaft AppId]
     Implementierung der Eigenschaft \texttt{AppId}.
     Die beiden Methoden \texttt{GetCharArrayAsString} und \texttt{SetCharArrayOnString} führen die Konvertierung in den \texttt{char}"=Array bzw. des \texttt{char}"=Arrays in einen String durch.
-    Das Attribut \texttt{NonSerializable} definiert, dass die Eigenschaft bei der Ausführung der Simulation von \gls{ss} ignoriert wird.}]
+    Das Attribut \texttt{NonSerializable} definiert, dass die Eigenschaft bei der Ausführung der Simulation von \acrshort{ss} ignoriert wird.}]
 public char[] AppIdActual { get; }
 
 [NonSerializable]
@@ -284,7 +284,7 @@ Bei Anwendungen und Attempts werden dagegen auch die Daten von bereits beendeten
 Die vier restlichen Eigenschaften und Methoden des Interfaces dienen zur Auswertung der Komponente durch \gls{ss}.
 Die beiden Eigenschaften \texttt{SutConstraints} und \texttt{TestConstraints} dienen zur Implementierung der in \cref{sec:requirements} definierten Anforderungen in Form von Constraints.
 
-\subsection{Constraints der \glsentryshort{YARN}"=Komponenten}
+\subsection{Constraints der YARN"=Komponenten}
 \label{subsec:yarnComponentConstraints}
 
 Einige der in \cref{sec:requirements} definierten Anforderungen an das \gls{SuT} und gesamte Testsystem sind auch für die YARN"=Komponenten relevant und werden in Form von Constraints im Modell implementiert (vgl. \cref{subsec:ssharpModel,sec:clusterSetup,sec:requirements}).

@@ -190,7 +190,6 @@
 
 % Glossar/Abkürzungen
 \usepackage[nonumberlist,nopostdot]{glossaries}
-%\setglossarystyle{altlist}
 \renewcommand{\glossarysection}[2][]{}
 \usepackage{xparse}
 \DeclareDocumentCommand{\newdualentry}{ O{} O{} m m m m } {
@@ -228,7 +227,10 @@
     \pagenumbering{Roman}
     \include{./settings/abstract}
     
-    % Verzeichnisse
+    % Sprachbedingte fixes
+    \crefname{subsection}{Unterabschnitt}{Unterabschnitte}
+    
+    % Verzeichnisse    
     \clearpage
     \begin{singlespace}
         \pdfbookmark[chapter]{\contentsname}{toc}

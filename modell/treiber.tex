@@ -6,7 +6,7 @@ Der Treiber ist im YARN"=Modell mithilfe verschiedener Interfaces zur Nutzung de
 Da YARN mithilfe von Befehlen für die \gls{CLI} und einer REST"=API zwei unterschiedliche Schnittstellen zum Auslesen der Daten der YARN"=Komponenten für das Monitoring bereitstellt, wurden jeweils zwei entsprechende Parser und Connectoren hierfür entwickelt.
 Andere Befehle wie \zB HDFS"=Befehle können ebenfalls mithilfe des entwickelten \gls{CLI}"=Connectors ausgeführt werden, da Connectoren mithilfe von SSH"=Verbindungen mit den Cluster"=Hosts verbunden sind.
 
-\subsection{Grundlegender Aufbau und Integration im \glsentryshort{YARN}"=Modell}
+\subsection{Grundlegender Aufbau und Integration im YARN"=Modell}
 \label{subsec:driverModelIntegration}
 
 Zur Integration des Treibers im YARN"=Modell stellt dieser mehrere Interfaces bereit.
@@ -150,7 +150,7 @@ Die REST"=API besitzt, auch im Vergleich zur \gls{CLI}"=Schnittstelle, einige Be
 Da die REST"=API die Rückgabe der Daten in zwei Formaten ermöglicht, wurde der \texttt{RestParser} aufgrund der kleineren Datenmengen und übersichtlicheren Datenformats zur Nutzung des JSON"=Formats entwickelt.
 Einige Beispiele für die entsprechenden Pfade der REST"=API sowie deren Ausgaben im JSON"=Format sind in \cref{app:hadoopRestApi} zu finden.
 
-Die Auswertung der Daten geschieht beim \texttt{RestParser} zudem nicht mit Regex, sondern mithilfe des \emph{Json.NET}"=Frameworks\footnote{\url{https://www.newtonsoft.com/json}} (Version 11.0.2).
+Die Auswertung der Daten geschieht beim \texttt{RestParser} zudem nicht mit Regex, sondern mithilfe des \emph{Json.NET}"=Frameworks\footnote{\url{https://www.newtonsoft.com/json}}.
 Hierfür wurden neben den bestehenden Datenhaltungsklassen noch weitere Hilfsklassen entwickelt, welche das Ausgabeformat der REST"=API nachbilden.
 Mit deren Hilfe ist es möglich, alle Daten automatisch mithilfe von Json.NET konvertieren zu können.
 
@@ -256,7 +256,7 @@ Der zweite implementierte Connector, der \texttt{RestConnector}, dient vor allem
 Aus diesem Grund lösen alle Methoden, die nicht dem Monitoring durch die REST"=API dienen, eine entsprechende \texttt{PlatformNotSupported""Exception} aus.
 
 Zum Abrufen der Daten dienen ebenfalls SSH"=Verbindungen, jedoch ist hier eine pro Host, auf dem das Cluster ausgeführt wird, ausreichend.
-Auf dem Host wird zum Abrufen der Daten das Tool curl\footnote{\url{https://curl.haxx.se/}} (Version 7.47) genutzt, wobei die Daten immer explizit im JSON"=Format angefragt werden.
+Auf dem Host wird zum Abrufen der Daten das Tool curl\footnote{\url{https://curl.haxx.se/}} genutzt, wobei die Daten immer explizit im JSON"=Format angefragt werden.
 
 Da die Daten von Anwendungs"=Containern immer durch die \gls{NM} der ausführenden Nodes zurückgegeben werden, kann es hier passieren, dass der entsprechende Node aufgrund eines Komponentenfehlers beendet oder nicht erreichbar ist.
 Wenn daher statt den Container"=Daten eine Fehlermeldung zurückgegeben wird, werden in so einem Fall keine Rohdaten vom Connector zurückgegeben, sondern \texttt{String.Empty}.
@@ -270,7 +270,7 @@ Daher wird die vom \texttt{HostMode} abhängige Adresse der Nodes beim Initialis
 \subsection{Implementierung der SSH"=Verbindung}
 \label{subsec:sshConnection}
 
-Die SSH"=Verbindung zum Host des realen Clusters wird mithilfe des Frameworks SSH.NET\footnote{\url{https://github.com/sshnet/SSH.NET}} (Version 2016.1.0) aufgebaut.
+Die SSH"=Verbindung zum Host des realen Clusters wird mithilfe des Frameworks SSH.NET\footnote{\url{https://github.com/sshnet/SSH.NET}} aufgebaut.
 Verwaltet wird die Verbindung mithilfe der Verbindungsklasse \texttt{SshConnection}.
 Die Verbindung ist zudem der einzige Bestandteil des Treibers, welcher kein entsprechendes Interface bereitstellt, da die SSH"=Verbindungen ausschließlich durch die implementierten Connectoren genutzt werden.
 

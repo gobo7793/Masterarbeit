@@ -17,11 +17,11 @@ Um die Verwaltung des Clusters zu vereinfachen wurden zudem entsprechende Setup-
 \subsection{Grundlegender Aufbau}
 \label{subsec:clusterBasics}
 
-Da Docker (genutzt wird hier Version 18.03 CE) und Hadoop vor allem zum Einsatz in Linux"=Umgebungen entwickelt wurden, werden für das reale Cluster bis zu zwei physische Linux"=Hosts genutzt.
-Auf einem dieser beiden Hosts wird mithilfe von VirtualBox 5.2 eine VM mit Windows 10 Education Version 1803 ausgeführt, um die Tests mithilfe von \gls{ss} auszuführen.
+Da Docker und Hadoop vor allem zum Einsatz in Linux"=Umgebungen entwickelt wurden, werden für das reale Cluster bis zu zwei physische Linux"=Hosts genutzt.
+Auf einem dieser beiden Hosts wird mithilfe von VirtualBox eine VM mit Windows 10 ausgeführt, um die Tests mithilfe von \gls{ss} auszuführen.
 Dies ist nötig, da \gls{ss} mithilfe des .NET"=Frameworks entwickelt wurde (vgl. \cref{sec:ssharp}), welches auf Linux in Form von .NET Core zudem nur in einem verringertem Funktionsumfang verfügbar ist \cite{Schwichtenberg2017}.
 
-Die beiden Hosts sind jeweils mit einem Intel Core i5"=4570 @ 3,2 GHz x 4, 16 GB Arbeitsspeicher sowie einer SSD ausgestattet, auf der Ubuntu 16.04 LTS als Betriebssystem installiert ist.
+Die beiden Hosts sind jeweils mit einem Intel Core i5"=4570 @ 3,2 GHz x 4, 16 GB Arbeitsspeicher sowie einer SSD ausgestattet, auf der Ubuntu als Betriebssystem installiert ist.
 
 Insgesamt wurden für diese Fallstudie die 6 in \cref{fig:hadoopBenchDockerInherits} gelb bzw. orange hinterlegten Szenarien mit den entsprechenden Docker"=Images entwickelt.
 Das zentrale Image in dieser Fallstudie ist das gelb hinterlegte \texttt{self-balancing-mt}, in dem alle benötigten angepassten Einstellungen enthalten sind.

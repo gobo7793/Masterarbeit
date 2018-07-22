@@ -25,7 +25,7 @@ Jeder Hadoop"=Container enthält dazu das Tool \emph{collectd}\footnote{\url{htt
 Da mithilfe der Plattform auch unterschiedliche Hadoop"=Konfigurationen ausgeführt werden können, ist die Plattform in mehrere Szenarien unterteilt.
 Jedes Szenario stellt eine vollständig anpassbare Hadoop"=Konfiguration dar.
 Ein Szenario enthält dafür eine \emph{Dockerfile}, aus der die Docker"=Images und -Container erstellt werden, weitere für Hadoop benötigte Daten und Einstellungen, sowie dazugehörige generelle Einstellungen des Szenarios.
-Die Plattform enthält bereits mehrere Szenarien, \uA Hadoop in der Version 2.7.1 ohne Anpassungen sowie ein darauf basierendes Szenario mit der Selfbalancing"=Komponente.
+Die Plattform enthält bereits mehrere Szenarien, \uA Hadoop in einer Standardinstallation und ein darauf basierendes Szenario mit der Selfbalancing"=Komponente.
 Aufgrund eines der Kernkonzepte von Docker, wonach Docker"=Images auf einem passenden, bereits vorhandenen Images aufbauen können bzw. sollten \cite{DockerdevBestPractice}, ist es möglich, neue Szenarien basierend auf bereits vorhandenen zu entwickeln.
 
 Zum Starten des Clusters ist zudem ein Script enthalten, welches basierend auf dem zu nutzenden Szenario das Cluster in der entsprechenden Konfiguration startet.

@@ -7,9 +7,9 @@ Dazu gibt es \uA verschiedene Scheduler, den \emph{Fair Scheduler}, welcher alle
 Letzterer sorgt dafür, dass nur eine bestimmte Anzahl an Anwendungen pro Benutzter gleichzeitig ausgeführt wird und teilt ihnen so viele Ressourcen zu, wie benötigt werden bzw. dem Benutzer zur Verfügung stehen.
 Entwickelt wurde der Capacity Scheduler vor allem für Cluster, die von mehreren Organisationen gemeinsam verwendet werden.
 Er soll sicherstellen, dass jede Organisation eine Mindestmenge an Ressourcen zur Verfügung hat \cite{HadoopCapScheduler271}.
-Für diesen Scheduler wurde in \cite{Zhang2016} ein selbstadaptiver Ansatz vorgestellt (in dieser Arbeit auch als Selfbalancing"=Komponente bezeichnet), welcher im Folgenden genauer erläutert wird.
+Für diesen Scheduler wurde in \cite{Zhang2016} ein selbstadaptiver Ansatz vorgestellt (in dieser Arbeit auch als \textbf{Selfbalancing"=Komponente} bezeichnet), welcher im Folgenden genauer erläutert wird.
 
-\subsection{\glsentryshort{MARP}"=Wert}
+\subsection{MARP"=Wert}
 \label{subsec:selfbalancingMarp}
 
 Der Capacity Scheduler besitzt verschiedene Einstellungen, um ihn für das konkrete Cluster anzupassen.
@@ -32,7 +32,7 @@ Dadurch ist der Anteil des Speichers für Anwendungs"=Container entsprechend kle
 
 Damit bestimmt der \gls{MARP}"=Wert indirekt auch die maximale Anzahl an Anwendungen, die gleichzeitig ausgeführt werden können.
 Da der \gls{MARP}"=Wert jedoch nicht während der Laufzeit dynamisch angepasst werden kann, haben \citeauthor{Zhang2016} in \cite{Zhang2016} einen Ansatz zur dynamischen Anpassung des \gls{MARP}"=Wertes zur Laufzeit von Hadoop vorgestellt.
-Die entwickelte \textbf{Selfbalancing"=Komponente} passt den \gls{MARP}"=Wert abhängig von der Speicherauslastung der ausgeführten Anwendungen dynamisch zur Laufzeit an.
+Die entwickelte Selfbalancing"=Komponente passt den \gls{MARP}"=Wert abhängig von der Speicherauslastung der ausgeführten Anwendungen dynamisch zur Laufzeit an.
 So wird der \gls{MARP}"=Wert, und damit auch die Anzahl der ausführbaren \gls{AppMstr}, verringert, wenn die Speicherauslastung sehr hoch ist, und erhöht, wenn die Speicherauslastung sehr niedrig ist.
 Die Selfbalancing"=Komponente ermöglicht daher, dass immer die maximal mögliche Anzahl an Anwendungen ausgeführt werden kann.
 Die Evaluation von \citeauthor{Zhang2016} ergab zudem, dass Anwendungen dadurch im Schnitt um bis zu 40 Prozent schneller ausgeführt werden können.

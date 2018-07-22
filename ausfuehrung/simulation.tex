@@ -1,7 +1,7 @@
 \section{Implementierung der Simulation}
 \label{sec:implSimulation}
 
-Alle zur Ausführung der Simulation relevanten Methoden sind in der Klasse \texttt{SimulationTests} zusammengefasst.
+Alle zur Ausführung der Simulation relevanten Methoden sind in der Klasse \texttt{Simulation""Tests} zusammengefasst.
 Hierbei gibt es neben der Simulation mit Aktivierung der Komponentenfehler auch eine Möglichkeit zur Simulation ohne die Aktivierung von Komponentenfehlern sowie weitere, mit der Simulation zusammenhängende Methoden.
 
 \subsection{Grundlegender Aufbau}
@@ -17,8 +17,8 @@ Dadurch erhält jeder Testfall eine gewisse Mindestdauer, die erreicht sein muss
 Der grundlegende Ablauf einer Simulation sieht wie folgt aus:
 
 \begin{lstlisting}[label=lst:hadoopSimulation,style=cs,
-caption={[Durchführung der Simulation]
-    Durchführung der Simulation (gekürzt).}]
+caption={[Ausführung der Simulation]
+    Ausführung der Simulation (gekürzt).}]
 private bool ExecuteSimulation()
 {
   var model = InitModel();
