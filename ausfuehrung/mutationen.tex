@@ -21,7 +21,7 @@ Da in dieser Fallstudie nicht nur Hadoop bzw. die Selfbalancing"=Komponente gete
 Hierbei wurden mithilfe des Universalmutators insgesamt 431 valide Mutationen aus dem Quellcode der Selfbalancing"=Komponente generiert.
 Von allen validen Mutationen wurden anschließend für jede der vier Klassen der Selfbalancing"=Komponente jeweils ein Mutant zufällig ausgewählt, welche als Basis für die in dieser Fallstudie verwendeten Mutationstests dienen (vgl. \cref{subsec:selfbalancingAnalysis}):
 
-\begin{enumerate}
+\begin{enumerate}[itemsep=5pt]
     \item
     Zur Ermittlung der Veränderung des \gls{MARP}"=Wertes muss zunächst der jeweils aktuelle Arbeitsspeicher"=Bedarf des Clusters eingelesen werden.
     Dies geschieht im \texttt{Controller} mithilfe einer \texttt{for}"=Schleife, mit deren Hilfe der Speicherverbrauch im Cluster nahezu sekündlich aus der \texttt{memLog}"=Datei eingelesen wird.
