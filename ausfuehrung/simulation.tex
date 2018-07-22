@@ -7,14 +7,14 @@ Hierbei gibt es neben der Simulation mit Aktivierung der Komponentenfehler auch 
 \subsection{Grundlegender Aufbau}
 \label{subsec:simulationBasics}
 
-Da im realen Cluster Hadoop kontinuierlich Anpassungen durchführt und Tests in \gls{ss} mit diskreten Schritten durchgeführt werden, muss beachtet werden, dass die Werte, die beim Test ermittelt werden, immer nur Momentaufnahmen darstellen.
+Da im realen Cluster Hadoop kontinuierlich Anpassungen durchführt und Tests mithilfe von \gls{ss} mit diskreten Schritten durchgeführt werden, muss beachtet werden, dass die bei den Tests ermittelten Werte immer nur Momentaufnahmen darstellen.
 Ebenso muss beachtet werden, dass bei der Deaktivierung von einzelnen Nodes bzw. deren Netzwerkverbindungen diese nicht in Echtzeit, sondern um einige Zeit verzögert erkannt werden und erst nach einer gewissen Zeit aus der Konfiguration des Clusters entfernt werden (vgl. \cref{sec:hadoop}).
-Genauso verhält es sich, wenn ein Node bzw. seine Verbindung wieder aktiviert wird, da dieser zunächst gestartet und die Verbindung mit den YARN"=Controller wiederhergestellt werden muss.
-Außerdem werden die für die auf dem Cluster ausgeführten Anwendungen benötigten \gls{AppMstr} und YARN"=Container aufgrund der komplexen internen Prozesse von Hadoop nicht innerhalb weniger Millisekunden allokiert, sondern benötigen ebenfalls eine gewisse Zeit.
-Aus diesen Gründen muss ein vom Simulator ausgeführter Testfall um eine gewisse Zeit verzögert werden, sodass alle Aktivitäten innerhalb von Hadoop genügend Zeit zur Ausführung erhalten.
-Dadurch erhält jeder Testfall eine gewisse Mindestdauer, die erreicht sein muss, bevor der nachfolgende Testfall ausgeführt wird.
+Genauso verhält es sich, wenn ein Node bzw. seine Verbindung wieder aktiviert wird, da dieser zunächst gestartet und anschließend die Verbindung mit den \gls{RM} wiederhergestellt werden muss.
+Außerdem werden die für die auf dem Cluster ausgeführten Anwendungen benötigten \gls{AppMstr} und Anwendungs"=Container aufgrund der komplexen internen Prozesse von Hadoop nicht innerhalb weniger Millisekunden allokiert, sondern benötigen ebenfalls eine gewisse Zeit.
+Aus diesen Gründen muss ein vom Simulator ausgeführter Testfall um eine gewisse Zeit verzögert werden, sodass alle Aktivitäten zur Verwaltung des Hadoop"=Clusters genügend Zeit zur Ausführung erhalten.
+Dadurch erhält jeder Testfall eine gewisse Mindestdauer, die erreicht sein muss, bevor der nachfolgende Testfall ausgeführt werden kann.
 
-Der grundlegende Ablauf einer Simulation sieht wie folgt aus:
+Beim grundlegenden Ablauf der Simulation wird dieser Umstand daher bereits berücksichtigt:
 
 \begin{lstlisting}[label=lst:hadoopSimulation,style=cs,
 caption={[Ausführung der Simulation]
@@ -43,7 +43,7 @@ private bool ExecuteSimulation()
       
       if(isWithFaults)
       HandleFaults(faults);
-      simulator.SimulateStep();
+      simulator.SimulateStep(); // execute test c§§ase
       
       var stepTime = DateTime.Now - stepStartTime;
       OutputUtilities.PrintDuration(stepTime);
@@ -52,7 +52,6 @@ private bool ExecuteSimulation()
       
       OutputUtilities.PrintFullTrace(simModel.Controller);
     }
-    
     // collect fault counts and check constraint
   }
   // cat§§ch/fin§§ally
@@ -61,7 +60,7 @@ private bool ExecuteSimulation()
 }
 \end{lstlisting}
 
-Hierbei gibt es zwei Varianten zum Ausführen der Simulation, welche abhängig von der Aktivierung der Komponentenfehler ist.
+Hierbei gibt es zwei Variationen zum Ausführen der Simulation, welche abhängig von der Aktivierung der Komponentenfehler ist.
 Sollen keine Komponentenfehler aktiviert bzw. deaktiviert werden, werden die entsprechenden Variablen zur Festlegung der generellen Wahrscheinlichkeiten (vgl. \cref{subsec:simulationModelInit} entsprechend gesetzt und die Simulation ausgeführt.
 Nach Abschluss eines Testfalls durch \texttt{SimulateStep()} wird geprüft, ob die Ausführung des Testfalls die Mindestdauer unterschritten hat und die weitere Ausführung in dem Fall entsprechend verzögert.
 
@@ -95,11 +94,7 @@ public int ClientCount { get; set; } = 2;
 private Model InitModel()
 {
   ModelSettings.HostMode = ModelSettings.EHostMode.Multihost;
-  ModelSettings.HostsCount = HostsCount;
-  ModelSettings.NodeBaseCount = NodeBaseCount;
-  ModelSettings.IsPrecreateBenchInputsRecreate = RecreatePreInputs;
-  ModelSettings.IsPrecreateBenchInputs = PrecreatedInputs;
-  ModelSettings.RandomBaseSeed = BenchmarkSeed;
+  // save fields i§§n ModelSettings
   
   var model = Model.Instance;
   model.InitModel(appCount: StepCount, clientCount: ClientCount);
@@ -157,7 +152,7 @@ Wenn keine Eingabedaten vorab generiert werden, werden als Eingabeverzeichnisse 
 Die Eigenschaft \texttt{RecreatePreInputs} definiert hierfür, ob bereits bestehende Eingabedaten neu generiert werden, was standardmäßig nicht der Fall ist bzw. dieses Feld auf \texttt{false} gesetzt ist (vgl. \cref{subsec:precreateInputData}).
 Die Werte der beiden Eigenschaften werden daher entsprechend in ihren korrespondierenden Eigenschaften in \texttt{ModelSettings} gespeichert.
 
-Die direkt im Anschluss an die Initialisierung des Simulators aufgerufene Methode \texttt{CollectYarnNodeFaults()} ermittelt alle im initialisierten Modell enthaltenen Komponentenfehler, die mit dem \texttt{NodeFaultAttribute} markiert sind (vgl. \cref{subsec:yarnComponentFaults}):
+Die direkt im Anschluss an die Initialisierung des Simulators aufgerufene Methode \texttt{CollectYarnNodeFaults()} ermittelt alle im initialisierten Modell enthaltenen, mit \texttt{NodeFaultAttribute} markierten Komponentenfehler (vgl. \cref{subsec:yarnComponentFaults}):
 
 \begin{lstlisting}[label=lst:hadoopSimulationCollectFaults,style=cs,
 caption={[Ermitteln der Komponentenfehler mit dem NodeFaultAttribute]
@@ -229,7 +224,7 @@ Daneben werden aber auch noch weitere, auch den \texttt{HostMode} (vgl. \cref{su
 Im Anschluss werden das auszuführende YARN"=Modell und der zur Ausführung des Tests genutzte Simulator initialisiert, bevor die Testfälle selbst ausgeführt werden.
 
 Der Ablauf eines Testfalls lässt sich mehrere Abschnitte einteilen.
-Zunächst wird vom Simulator selbst mithilfe der den Komponentenfehlern zugewiesenen Attribute geprüft bzw. entschieden, ob ein Komponentenfehler aktiviert und im Cluster injiziert wird (vgl. \cref{subsec:yarnComponentFaults,subsec:faultActivation}).
+Zunächst wird vom Simulator mithilfe der Attribute der Komponentenfehler entschieden, ob ein Komponentenfehler aktiviert und im Cluster injiziert wird (vgl. \cref{subsec:yarnComponentFaults,subsec:faultActivation}).
 Anschließend führt der Simulator den Testfall aus, indem für alle Komponenten des Modells die \texttt{Update()}"=Methoden ausgeführt werden.
 Hierdurch werden deaktivierte Komponentenfehler auch im Cluster wieder repariert, da \texttt{YarnNode.Update()} die entsprechenden Start"=Methoden aufruft (vgl. \cref{subsec:yarnComponentFaults}).
 
@@ -257,8 +252,8 @@ Daneben werden bei der Ausführung eines Testfalls aber auch weitere Daten im Pr
 
 Zum Abschluss der Simulation werden zudem die für die Simulation als gesamtes betreffenden Constraints validiert, welche nicht im YARN"=Modell selbst implementiert wurden (vgl. \cref{subsec:simulationBasics}).
 
-Nach Abschluss der Simulation wird ein erneutes Monitoring des gesamten Clusters durchgeführt und der hierbei ermittelte Status als finaler Clusterstatus im Programmlog gespeichert.
-Zudem werden einige statistische Kenndaten zum Test im Programmlog gespeichert:
+Nach Abschluss der Simulation wird ein erneutes Monitoring des gesamten Clusters durchgeführt.
+Der hierbei ermittelte Status wird im Programmlog als finaler Clusterstatus und gemeinsam mit einigen statistischen Kenndaten gespeichert:
 
 \begin{itemize}
     \item Gesamtdauer der Simulation

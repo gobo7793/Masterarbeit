@@ -1,9 +1,10 @@
 \section{Umsetzung des realen Clusters}
 \label{sec:realCluster}
 
-\begin{wrapfigure}{r}{0.4\columnwidth}
-    \includegraphics[width=0.4\columnwidth]
-    {./resources/hadoopBenchDockerInherits.pdf}
+\begin{wrapfigure}[23]{r}{0.4\columnwidth}
+    \raisebox{0pt}[\dimexpr\height-0.6\baselineskip\relax]
+    {\includegraphics[width=0.4\columnwidth]
+    {./resources/hadoopBenchDockerInherits.pdf}}
     \caption[Vererbungshierarchie der Docker"=Images in Hadoop"=Benchmark]
     {Vererbungshierarchie der Docker"=Images in Hadoop"=Benchmark.
     Die kursiv markierten Images können nicht mithilfe von Hadoop"=Benchmark gestartet werden, die grau unterlegten Images sind bereits in Hadoop"=Benchmark enthalten bzw. benötigt.}
@@ -11,15 +12,15 @@
 \end{wrapfigure}
 
 Das reale Cluster wurde mithilfe der Plattform Hadoop"=Benchmark umgesetzt.
-Hierzu wurden speziell für diese Fallstudie verschiedene Szenarien entwickelt, mithilfe denen das Cluster mit den benötigten Einstellungen bzw. den zu testenden Mutanten gestartet wurde.
-Um die Verwaltung des Clusters zu vereinfachen wurden zudem entsprechende Setup- und Startscripte entwickelt, die auch von den implementierten Connectoren genutzt wurden.
+Hierzu wurden speziell für diese Fallstudie verschiedene Szenarien entwickelt, mit denen das Cluster mit den benötigten Einstellungen bzw. den zu testenden Mutanten gestartet wird.
+Um die Verwaltung des Clusters zu vereinfachen, wurden zudem entsprechende Setup- und Startscripte entwickelt, die auch von den implementierten Connectoren genutzt werden.
 
 \subsection{Grundlegender Aufbau}
 \label{subsec:clusterBasics}
 
 Da Docker und Hadoop vor allem zum Einsatz in Linux"=Umgebungen entwickelt wurden, werden für das reale Cluster bis zu zwei physische Linux"=Hosts genutzt.
 Auf einem dieser beiden Hosts wird mithilfe von VirtualBox eine VM mit Windows 10 ausgeführt, um die Tests mithilfe von \gls{ss} auszuführen.
-Dies ist nötig, da \gls{ss} mithilfe des .NET"=Frameworks entwickelt wurde (vgl. \cref{sec:ssharp}), welches auf Linux in Form von .NET Core zudem nur in einem verringertem Funktionsumfang verfügbar ist \cite{Schwichtenberg2017}.
+Dies ist nötig, da \gls{ss} mithilfe des .NET"=Frameworks entwickelt wurde (vgl. \cref{sec:ssharp}), welches für Linux in Form von .NET Core zudem nur mit einem verringertem Funktionsumfang verfügbar ist \cite{Schwichtenberg2017}.
 
 Die beiden Hosts sind jeweils mit einem Intel Core i5"=4570 @ 3,2 GHz x 4, 16 GB Arbeitsspeicher sowie einer SSD ausgestattet, auf der Ubuntu als Betriebssystem installiert ist.
 

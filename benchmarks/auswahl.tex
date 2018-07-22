@@ -3,8 +3,8 @@
 
 Damit die Fallstudie die Realität abbilden kann, wurden von den verfügbaren Anwendungen einige ausgewählt und in ein Transitionssystem in Form einer Markow"=Kette überführt.
 Diese Kette definiert die Ausführungsreihenfolge zwischen den einzelnen Anwendungen.
-Eine zufallsbasierte Markow"=Kette wurde aus dem Grund verwendet, dass auch in der Praxis Anwendungen nicht immer in der gleichen Reihenfolge ausgeführt werden und daher auch in der Fallstudie eine unterschiedliche Ausführungsreihenfolge der Anwendungen ermöglicht werden soll.
-Mithilfe der Festlegung eines bestimmten Seeds für den in der Fallstudie benötigten Pseudo"=Zufallsgenerator besteht bei Bedarf dennoch die Möglichkeit, einen Test mit den gleichen Anwendungen wiederholen zu können.
+Eine zufallsbasierte Markow"=Kette wurde aus dem Grund verwendet, dass auch in der Praxis Anwendungen nicht immer in der gleichen Reihenfolge ausgeführt werden und daher auch in dieser Fallstudie eine unterschiedliche Ausführungsreihenfolge der Anwendungen ermöglicht werden soll.
+Mithilfe der Festlegung eines bestimmten Seeds für den hierfür benötigten Pseudo"=Zufallsgenerator besteht dennoch die Möglichkeit, einen Test mit den gleichen Anwendungen wiederholen zu können.
 
 \subsection{Auswahl der Benchmarks}
 \label{subsec:appSelection}
@@ -16,10 +16,10 @@ Zum Testen des HDFS dient in \cite{Shvachko2010} der DFSIO"=Benchmark, um den Du
 Ebenfalls als guter Benchmark dient die Anwendung \acrlong{wc}, mit der ein großer Datensatz stark verkleinert bzw. zusammengefasst wird und dient daher als gute Repräsentation für Anwendungsarten, bei denen Daten extrahiert werden \cite{Huang2010,Chen2012}.
 
 Da in dieser Fallstudie ein realistisches Abbild der ausgeführten Anwendungen ausgeführt werden soll, ist es nicht sehr hilfreich, die einzelnen Übergangswahrscheinlichkeiten im Transitionssystem anzugleichen oder rein zufällig zu verteilen.
-Einen realistischen Einblick, welche Anwendungs- und Datentypen in produktiv genutzten Hadoop"=Clustern genutzt werden, geben \uA die Studien \cite{Chen2012} und \cite{HadoopDataTypes}.
+Einen realistischen Einblick in genutzte Anwendungs- und Datentypen in produktiv genutzten Hadoop"=Clustern geben \uA die Studien \cite{Chen2012,HadoopDataTypes}.
 Auffällig ist hierbei, dass die meisten Anwendungen in einem Hadoop"=Cluster innerhalb weniger Sekunden oder Minuten abgeschlossen sind und bzw. oder Datensätze im Größenbereich von wenigen Kilobyte bis hin zu wenigen Megabyte verarbeiten.
 Zu einem ähnlichen Ergebnis kam auch die Studie \cite{Ren2013}, in der gefolgert wird, dass für kleinere Jobs einfachere Frameworks abseits von Hadoop besser geeignet wären.
-Die Autoren der Studie \cite{HadoopDataTypes} bezeichneten Hadoop aufgrund ihrer Ergebnisse als \enquote{potentielle Technologie zum Verarbeiten aller Arten von Daten}, folgerten aber ähnlich wie in \citeauthor{Ren2013} in \cite{Ren2013}, dass mit Hadoop vor allem Daten verarbeitet werden, die auch mit \enquote{traditionellen Plattformen} verarbeitet werden könnten.
+Die Autoren der Studie \cite{HadoopDataTypes} bezeichneten Hadoop aufgrund ihrer Ergebnisse als \enquote{potentielle Technologie zum Verarbeiten aller Arten von Daten}, folgerten aber ähnlich wie \citeauthor{Ren2013} in \cite{Ren2013}, dass mit Hadoop meist Daten verarbeitet werden, die auch mit \enquote{traditionellen Plattformen} verarbeitet werden könnten.
 
 Basierend auf den Ergebnissen der Studien in \cite{Huang2010,Chen2012,HadoopDataTypes,Ren2013} und der in den Publikationen \cite{Shvachko2010,Dean2004,Graves2013} verwendeten Benchmarks, wurden folgende Anwendungen der Mapreduce"=Examples und Jobclient"=Tests in das Transitionssystem übernommen:
 
@@ -106,11 +106,7 @@ Zudem wurden als den Dummy"=Anwendungen nachfolgende Anwendungen nur solche defi
     \item \acrlong{pt}
 \end{itemize}
 
-Bei der Entwicklung der Markow"=Kette des Transitionssystems wurde zudem berücksichtigt, welche Anwendungen welche Art von Eingabedaten benötigen.
-Dadurch wird sichergestellt, dass benötigte Eingabedaten immer vorhanden sind, da diese ebenfalls im Rahmen der Ausführung der Benchmarks generiert werden können (vgl. \cref{sec:clusterSetup,subsec:testcaseGeneration}).
-Anwendungen ohne Eingabedaten können dagegen fast jederzeit ausgeführt werden, wie die entwickelte Markov"=Kette zeigt:
-
-\begin{table}[h]
+\begin{table}
     \resizebox{\linewidth}{!}{
     \begin{tabu}{l|[1.5pt]c|c|c|c|c|c|c|c|c|c|c|c|c|c}
             & \textit{\acrshort{dfw}} & \textit{\acrshort{rtw}} & \textit{\acrshort{tg}} & \textit{\acrshort{dfr}} & \textit{\acrshort{wc}} & \textit{\acrshort{rw}} & \textit{\acrshort{so}} & \textit{\acrshort{tsr}} & \textit{\acrshort{pi}} & \textit{\acrshort{pt}} & \textit{\acrshort{tms}} & \textit{\acrshort{tvl}} & \textit{\acrshort{sl}} & \textit{\acrshort{fl}} \\ \tabucline[1.5pt]{-}
@@ -132,3 +128,7 @@ Anwendungen ohne Eingabedaten können dagegen fast jederzeit ausgeführt werden,
     \caption{Entwickelte Markov"=Kette für die Anwendungs"=Übergänge in Tabellenform}
     \label{tab:transMatrix}
 \end{table}
+
+Bei der Entwicklung der Markow"=Kette des Transitionssystems wurde zudem berücksichtigt, welche Anwendungen welche Art von Eingabedaten benötigen.
+Dadurch wird sichergestellt, dass benötigte Eingabedaten immer vorhanden sind, da diese ebenfalls im Rahmen der Ausführung der Benchmarks generiert werden können (vgl. \cref{sec:clusterSetup,subsec:testcaseGeneration}).
+Anwendungen ohne Eingabedaten können dagegen fast jederzeit ausgeführt werden, wie die entwickelte Markov"=Kette in \cref{tab:transMatrix} zeigt.

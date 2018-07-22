@@ -4,9 +4,9 @@
 Das implementierte YARN"=Modell besteht, wie bereits in \cref{sec:modelArchitecture} gezeigt, aus fünf Komponenten und den Komponentenfehlern der hier relevanten YARN"=Komponenten.
 Die vier implementierten YARN"=Komponenten sind die Anwendungen, ihre Attempts und Container, sowie die Nodes.
 Zudem wurde eine Klasse implementiert, die zur Repräsentation des \gls{RM} und als Controller im Rahmen des Testens mit \gls{ss} dient.
-Einen Überblick über den Aufbau des implementierten YARN"=Modells gibt folgendes Klassendiagramm:
+Einen Überblick über den Aufbau des implementierten YARN"=Modells gibt das in \cref{fig:yarnModelClassDiagram} dargestellte Klassendiagramm.
 
-\begin{figure}[h]
+\begin{figure}
     \includegraphics{./resources/yarnModel_ls_MA.pdf}
     \caption[Grundlegender Aufbau des YARN"=Modells]
         {Grundlegender Aufbau des YARN"=Modells.
@@ -49,7 +49,7 @@ Die vier implementierten, relevanten YARN"=Komponenten sind die Anwendungen, ihr
 Diese vier implementierten YARN"=Komponenten stellen das zum Testen mit \gls{ss} benötigte Modell des \gls{SuT} dar (vgl. \cref{subsec:ssharpModel}).
 Obwohl die die Anwendungs"=Container in dieser Fallstudie nicht benötigt werden, waren sie für die Fallstudie \cite{Eberhardinger2018} notwendig, welche ebenfalls mit dem hier beschriebenen Modell durchgeführt wurde.
 
-Eine Übersicht über die Implementierung der YARN"=Komponenten gibt folgendes Klassendiagramm:
+Eine Übersicht über die Implementierung der für diese Fallstudie relevanten YARN"=Komponenten gibt folgendes Klassendiagramm:
 
 \begin{figure}[h]
     \includegraphics[width=\columnwidth]{./resources/yarnComponents.pdf}
@@ -112,7 +112,7 @@ Während durch \texttt{NodeDeadFault} der komplette Node beendet wird, trennt \t
 Die dazugehörigen Effekt"=Klassen der Komponentenfehler sind jeweils als innere Klassen in \texttt{YarnNode} implementiert.
 
 Die Injizierung und das Reparieren der beiden Fehler geschieht mithilfe der vier Stop- bzw. Start"=Methoden wie \zB \texttt{StopNode()}, die bereits im Klassendiagramm in \cref{fig:yarnComponentsClassDiagram} zu sehen sind.
-Wenn ein Komponentenfehler durch das Framework aktiviert wird, wird durch die Effekt"=Klasse die jeweilige Stop"=Methode aufgerufen und so der Fehler injiziert:
+Wenn ein Komponentenfehler aktiviert wird, wird durch die Effekt"=Klasse die jeweilige Stop"=Methode ausgeführt und so der Fehler injiziert:
 
 \begin{lstlisting}[label=lst:faultInjection,,style=cs,
 caption={[Injizierung des Komponentenfehlers NodeDeadFault]
@@ -155,7 +155,8 @@ public class CmdConnector : IHadoopConnector
   public bool StopNode(string nodeName)
   {
     var id = DriverUtilities.ParseInt(nodeName);
-    Faulting.Run($"{Model.HadoopSetupScript} hadoop stop {id}", IsConsoleOut);
+    Faulting.Run($"{Model.HadoopSetupScript} hadoop stop {id}",
+       IsConsoleOut);
     return !CheckNodeRunning(id);
   }
 }
@@ -175,7 +176,7 @@ Sie dienen aber auch zur Validierung der Constraints, bei denen mithilfe der bei
 \subsection{Aktivierung von Komponentenfehler}
 \label{subsec:faultActivation}
 
-Ob ein Komponentenfehler in einem Testfall aktiviert wird, ist abhängig von folgenden Parametern:
+Die Aktivierung von Komponentenfehlern ist von folgenden Parametern abhängig:
 
 \begin{itemize}
     \item Auslastung des Nodes im vorhergehenden Testfall
@@ -187,8 +188,8 @@ Der hierfür benötigte Zufallsgenerator wird mithilfe des in \cref{subsec:testc
 Da der Zufallsgenerator ein statischer Generator ist, werden über einen Test bei der gleichen Anzahl an möglichen Komponentenfehler immer die gleichen Werte zurückgegeben, nicht jedoch zwingend für einen bestimmten Komponentenfehler eines Nodes.
 Die Komponentenfehler werden damit nicht automatisiert durch \gls{ss} aktiviert (vgl. \cref{subsec:ssharpExecution}), sondern werden mithilfe von speziell hierfür entwickelten Klassen und Methoden aktiviert und im realen Cluster injiziert.
 
-Um zu bestimmen, ob ein Komponentenfehler aktiviert wird, sind alle Komponentenfehler mit dem Attribut \texttt{NodeFault} markiert.
-Mithilfe dieses Attributes wird bei der Ausführung eines Testfalls folgendermaßen berechnet, ob der Komponentenfehler aktiviert wird:
+Um bei der Ausführung eines Testfalls bestimmen zu können, ob ein Komponentenfehler aktiviert wird, sind alle Komponentenfehler mit dem Attribut \texttt{NodeFault} markiert.
+Dieses Attribut enthält die für den Komponentenfehler benötigten Berechnungen, um über die Aktivierung des Komponentenfehlers zu entscheiden:
 
 \begin{lstlisting}[label=lst:faultActivationCalc,style=cs,
 caption={[Berechnung der Aktivierung von Komponentenfehlern]
@@ -374,10 +375,9 @@ Wenn keine leere \texttt{YarnApp}"=Instanz mehr verfügbar ist, wird analog zum 
 \subsection{Implementierung des Controllers}
 \label{subsec:yarnController}
 
-Der Controller repräsentiert zum einen den \gls{RM} des Hadoop"=Clusters, weshalb er auch von \texttt{YarnHost} erbt, genauso wie die Klasse der Nodes des YARN"=Modells.
-Seine Hauptaufgabe besteht jedoch darin, als Controller zum Testen mit \gls{ss} zu dienen (vgl. \cref{subsec:ssharpModel}).
-
-Der Controller steuert einen Großteil der Ausführung eines einzelnen Testfalls und ist die einzige Komponente des YARN"=Modells, welche direkt mit dem Oracle interagiert:
+Der Controller repräsentiert zum einen den \gls{RM} des Hadoop"=Clusters, weshalb er genauso wie die modellierten Nodes von \texttt{YarnHost} erbt.
+Er dient jedoch primär als Controller zum Testen mit \gls{ss} (vgl. \cref{subsec:ssharpModel}).
+Er steuert daher den wesentlichen Ablauf eines Testfalls und ist die einzige Komponente des YARN"=Modells, die direkt mit dem Oracle interagiert:
 
 \begin{lstlisting}[label=lst:controllerUpdate,style=cs,
 caption={[Update()"=Methode des Controllers]

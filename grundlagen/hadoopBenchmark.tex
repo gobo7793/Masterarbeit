@@ -5,19 +5,17 @@
 Sie dient zur einfachen und schnellen Ausführung eines Hadoop"=Clusters und wurde speziell zum Einsatz in der Forschung erstellt.
 Dadurch kann sie auch mit geringem Aufwand an eigene Bedürfnisse angepasst werden.
 
-Zur Ausführung des Clusters wird die Virtualisierungs"=Software Docker und das dazugehörige Tool \emph{Docker Machine} genutzt.
-Durch die Virtualisierung wird für jeden Hadoop"=Node eine Docker"=Machine gestartet, auf der der Hadoop"=Node wiederum in einem Docker"=Container ausgeführt wird.
-Verbunden werden die Nodes dabei mithilfe eines \emph{Docker  Swarm}s\footnote{\url{https://docs.docker.com/engine/swarm/}}.
+Zur Ausführung des Clusters werden die Virtualisierungs"=Software Docker und \emph{Docker Machine} genutzt.
+Docker"=Machine startet hierbei mithilfe von VirtualBox\footnote{\url{https://www.virtualbox.org/}} eine VM, auf der mit \emph{Boot2Docker} eine einfache Linux"=Distribution zum Ausführen von Docker"=Containern installiert ist \cite{DockerMachineGettingStartedVm}.
+Auf dieser VM wird wiederum der der Hadoop"=Node in einem Docker"=Container ausgeführt.
+\cref{fig:hadoopBenchmarkArchitecture} zeigt den grundlegenden Aufbau der Plattform, bei der die einzelnen Nodes mithilfe eines \emph{Docker  Swarm}s\footnote{\url{https://docs.docker.com/engine/swarm/}} verbunden werden.
 
-\begin{figure}[h]
+\begin{figure}
     \includegraphics{./resources/hadoopBenchmarkArch.png}
     \caption[High"=Level"=Architektur von Hadoop"=Benchmark]
     {High"=Level"=Architektur von Hadoop"=Benchmark (entnommen aus \cite{abb:hadoopBenchmarkArch})}
     \label{fig:hadoopBenchmarkArchitecture}
 \end{figure}
-
-Docker"=Machine nutzt hierbei VirtualBox\footnote{\url{https://www.virtualbox.org/}}, um virtuelle Maschinen zu starten, die mit dem Betriebssystem \emph{Boot2Docker} ausgestattet sind.
-Boot2Docker selbst ist eine einfache Linux"=Distribution, die zum Ausführen von Docker"=Containern auf dem System \cite{DockerMachineGettingStartedVm}.
 
 Mit \emph{Graphite}\footnote{\url{https://graphiteapp.org/}} ist zudem ein Monitoring"=Tool enthalten, mit dem die Systemwerte wie CPU- oder Speicher"=Auslastung des Clusters überwacht und analysiert werden kann.
 Jeder Hadoop"=Container enthält dazu das Tool \emph{collectd}\footnote{\url{https://collectd.org/}}, was das Monitoring des Containers auf Systemebene übernimmt und die Daten an Graphite übermittelt.

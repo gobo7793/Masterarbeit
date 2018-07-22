@@ -16,12 +16,13 @@ Während bei allen Testkonfigurationen, bei denen Mutationen aktiv waren, der \g
     	Wert  & 0,335 & 0,498 & 0,521 & ,0819 & 0,273 & 0,488 & 0,333
     \end{tabular}
     \caption[Finale \glsentryshort{MARP}"=Werte der Testkonfigurationen ohne Mutanten.]
-    {Finale \acrshort{MARP}"=Werte der Testkonfigurationen ohne Mutanten.
+    {Finale \acrshort{MARP}"=Werte der Testkonfigurationen ohne Mutanten (auf drei Nachkommastellen gerundet).
     Eine Übersicht aller Tests findet sich in \cref{app:overviewExecutedTestCases}.}
     \label{tab:finalMarpValues}
 \end{table}
 
-Da er in den Konfigurationen 1 und 7 bei der jeweils ersten Ausführung nicht verändert wurde, wurden beide Konfigurationen erneut ausgeführt, wobei der \gls{MARP}"=Wert bei letzterem mehrmals erhöht wurde, bevor er im finalen Clusterstatus auf 1 gesetzt wurde.
+Da der \gls{MARP}"=Wert in den Konfigurationen 1 und 7 bei der jeweils ersten Testausführung nicht verändert wurde, wurden beide Konfigurationen erneut ausgeführt.
+Hierbei wurde der \gls{MARP}"=Wert beim Test 7.2 mehrmals erhöht, bevor er im finalen Clusterstatus auf 1 gesetzt war.
 Bei der Konfiguration 1 wurde der Wert dagegen bei keiner der beiden Ausführungen verändert.
 
 Die nicht durchgeführte Änderung des \gls{MARP}"=Wertes in Konfiguration 1 liegt sehr wahrscheinlich daran, dass in hier nur im ersten der fünf Testfälle zwei Anwendungen gleichzeitig gestartet werden.

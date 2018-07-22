@@ -31,8 +31,8 @@ Zudem soll auch mithilfe von Mutationstests, bei denen ein oder mehrere Mutanten
 Dieser Versuchsaufbau soll mithilfe eines dafür entwickelten \emph{Oracles} bereits während der Ausführung automatisiert geprüft werden.
 Das Oracle dient zur Validierung der in \cref{sec:requirements} definierten Anforderungen an das Cluster und das Testsystem.
 Hierfür werden, sofern möglich, die Anforderungen als \emph{Constraints} im Modell implementiert und bei jedem Test automatisch geprüft.
-Die Implementierung der Constraints erfolgt hierbei nicht zentral mithilfe des Oracles, sondern dezentral in den jeweiligen Komponenten des Modells.
+Die Implementierung der Constraints erfolgt dezentral in den jeweils betroffenen Komponenten des Modells.
 Für jede implementierte Komponente werden somit nur die jeweils relevanten Bestandteile der Anforderungen als Constraints implementiert und durch das Oracle validiert.
 
-Die Implementierung des eben beschriebenen Modells und Oracles ist im \cref{ch:model} beschrieben.
-Die Auswahl der verwendeten Benchmarks und deren Implementierung mit dem Transitionssystem findet sich in \cref{ch:benchmarks}.
+Die Implementierung des Testmodells mit seinen Komponenten ist im \cref{ch:model} beschrieben.
+Die Auswahl der im Testsystem verwendeten Benchmarks und deren Implementierung findet sich in \cref{ch:benchmarks}.

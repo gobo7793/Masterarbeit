@@ -3,7 +3,7 @@
 
 Insgesamt 13 der 42 ausgeführten Tests wurden vorzeitig abgebrochen, da eine Rekonfiguration des Clusters nicht möglich war.
 Dies entspricht dem in \cref{subsec:testRequirements} gefordertem und in \cref{subsec:oracleImpl} implementierten Verhalten, wenn alle Nodes im Cluster aufgrund eines Komponentenfehlers defekt sind.
-Im Folgenden wird für die betroffenen Konfigurationen und Tests (vgl. \cref{app:overviewExecutedTestCases}) betrachtet, weshalb es dazu kam.
+Im Folgenden werden daher die Ursachen für die abgebrochenen Tests betrachtet (vgl. \cref{app:overviewExecutedTestCases}).
 
 \subsection{Testkonfigurationen 3 bis 6}
 \label{subsec:noReconf36}
@@ -49,9 +49,9 @@ Analog dazu wurde auch Test 19 nicht vorzeitig abgebrochen, die Tests 20 bis 22 
 
 Alle vier Tests haben gemeinsam, dass im jeweils dritten Testfall lediglich Node 1 inaktiv ist.
 Bei den beiden Tests ohne Mutationsszenario wurde hierbei jeweils die Verbindung zum Node im Testfall zuvor getrennt, bei den Mutationstests wurde der Node durch einen Komponentenfehler beendet.
-Dies liegt in der Historie des Nodes innerhalb des Tests begründet:
+Dies liegt in der Historie des Nodes innerhalb des Tests begründet, die in \cref{tab:loadNode1Tests1922} gezeigt wird.
 
-\begin{table}[h]
+\begin{table}
     \begin{tabu}{c|[1.5pt]cccc}
     	   Test    &                       19                       &                  20                  &                     21                      &                  22                  \\ \tabucline[1.5pt]{-}
     	Testfall 1 &                  Ausl.: 93 \%                  &             Ausl.: 0 \%              &                Ausl.: 100 \%                &             Ausl.: 0 \%              \\ \hline

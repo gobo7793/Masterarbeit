@@ -29,9 +29,9 @@ public class Benchmark
   
   public string GetStartCmd(string clientDir = "")
   {
-    var result = _StartCmd.Replace(OutDirHolder,
-       GetOutputDir(clientDir)).Replace(InDirHolder,
-       GetInputDir(clientDir));
+    var result = _StartCmd
+       .Replace(OutDirHolder, GetOutputDir(clientDir))
+       .Replace(InDirHolder, GetInputDir(clientDir));
     if(result.Contains(BaseDirHolder))
       result = ReplaceClientDir(result, clientDir);
     return result;
@@ -39,8 +39,8 @@ public class Benchmark
 }
 \end{lstlisting}
 
-Alle im Modell enthaltenen Benchmarks sind als Array im \texttt{BenchmarkController} gespeichert.
-Hier werden auch die benötigten Befehle zum Starten der Anwendungen der Benchmarks definiert:
+Die im Modell enthaltenen Benchmarks sind als Array in \texttt{BenchmarkController} gespeichert.
+Hierbei werden mithilfe der Holder"=Variablen, die in \texttt{GetStartCmd()} ersetzt werden, die Startbefehle der Anwendungen definiert:
 
 \begin{lstlisting}[label=lst:benchmarkDefinition,style=cs,
 caption={[Definition der verfügbaren Benchmarks im BenchmarkController]

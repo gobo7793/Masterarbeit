@@ -52,12 +52,13 @@ Als Basis zur Definition einer Testkonfiguration dienen die in \cref{subsec:thes
 Die Auswahl der ausgeführten Anwendungen erfolgt während der Testausführung anhand des Basisseeds der Testkonfiguration.
 Zwar werden durch das Transitionssystem basierend auf den dort definierten Wahrscheinlichkeiten zufällig Anwendungen ausgewählt, jedoch kann dies durch den Charakter des im .NET"=Framework vorhandenen Zufallsgenerators gesteuert werden.
 Der in .NET implementierte Zufallsgenerator ist nämlich kein \emph{echter}, sondern ein Pseudo"=Zufallsgenerator, der mithilfe eines mathematischen Algorithmus Zufallszahlen berechnet \cite{RandomClassDoc}.
-Zwar wird standardmäßig ein zeitbasierter Seed als Startwert für den Algorithmus genutzt \cite{RandomClassDoc}, durch die Angabe eines spezifischen Seeds kann jedoch die Wiederausführbarkeit der Tests sichergestellt werden.
+Obwohl standardmäßig ein zeitbasierter Seed als Startwert für den Algorithmus genutzt wird \cite{RandomClassDoc}, kann durch die Angabe eines spezifischen Seeds die Wiederausführbarkeit der Tests sichergestellt werden.
 
 Auch die Aktivierung und Deaktivierung von Komponentenfehlern selbst soll während der Ausführung eines Testfalls festgelegt werden, wodurch die Wahrscheinlichkeit für deren Aktivierung bzw. Deaktivierung einen maßgeblichen Einfluss besitzt.
-Da Anwendungen, die Eingabedaten für andere Anwendungen generieren (vgl. \cref{sec:clusterSetup}), \uU fehlschlagen können, kann eine Testkonfiguration mit vorab generierten und im HDFS gespeicherten Daten durchgeführt werden.
+Da Anwendungen, die Eingabedaten für andere Anwendungen generieren, \uU fehlschlagen können, kann eine Testkonfiguration mit vorab generierten und im HDFS gespeicherten Daten durchgeführt werden.
 Dadurch wird es ermöglicht, dass in solchen Tests spätere Anwendungen nicht von zuvor ausgeführten Anwendungen zur Generierung der Eingabedaten abhängig sind.
-Da einige Tests zudem als Mutationstests durchgeführt werden sollen, muss für eine Testkonfiguration dies entsprechend definiert werden.
+Ebenfalls definiert werden müssen sind die Tests, die als Mutationstests durchgeführt werden sollen.
+Hierbei müssen auch die Mutationen selbst definiert werden, die vom Testsystem erkannt werden sollen.
 
 Die Auswahl der konkreten Testkonfigurationen in \cref{sec:selectTestcases} erfolgte im Rahmen der in \cref{sec:implTestcases} beschriebenen Implementierung der Tests.
 
@@ -67,7 +68,6 @@ Die Auswahl der konkreten Testkonfigurationen in \cref{sec:selectTestcases} erfo
 Damit die bei der Ausführung gewonnenen Daten auch zur Evaluation genutzt werden können, wurde hierzu festgelegt, welche Daten während der Ausführung gespeichert werden.
 Alle relevante Daten werden hierzu während der Ausführung der Testfälle in einer Log"=Datei gespeichert.
 Zur Unterscheidung von einzelnen Ausführungen werden die Daten klar strukturiert.
-
 Beim Start eines Tests sollen daher zunächst einige generelle Daten ausgegeben werden:
 
 \begin{itemize}

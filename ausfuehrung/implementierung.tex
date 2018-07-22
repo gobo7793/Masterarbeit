@@ -10,7 +10,9 @@ caption={[Methode zur Ausführung der Tests der Fallstudie]
     Methode zur Ausführung der der Tests der Fallstudie (gekürzt)}]
 [Test]
 [TestCaseSource(nameof(GetTestCases))]
-public void ExecuteCaseStudy(int benchmarkSeed, double faultProbability, int hostsCount, int clientCount, int stepCount, bool isMutated)
+public void ExecuteCaseStudy(int benchmarkSeed,
+   double faultProbability, int hostsCount, int clientCount,
+   int stepCount, bool isMutated)
 {
   // write test c§§ase parameter to log
   
@@ -66,7 +68,8 @@ public IEnumerable GetTestCases()
          
          where !(hosts == 1 && clients >= 6)
          where !(clients <= 2 && steps >= 10)
-         select new TestCaseData(seed, prob, hosts, clients, steps, isMut);
+         select new TestCaseData(
+            seed, prob, hosts, clients, steps, isMut);
 }
 
 private IEnumerable<int> GetSeeds()
@@ -84,7 +87,8 @@ Damit die bei der Ausführung der Tests generierten Logs einfacher zur Evaluatio
 caption={Bestimmung des Dateinamens zur Umbenennung der Logdateien}]
 var todayStrShort = DateTime.Today.ToString("yyMMdd");
 var mutated = isMutated ? "MT" : "MF";
-var faultProbStr = faultProbability.ToString(CultureInfo.InvariantCulture);
+var faultProbStr =
+   faultProbability.ToString(CultureInfo.InvariantCulture);
 var baseFileName = $"0x{benchmarkSeed:X8}-{faultProbStr}F-{hostsCount:D1}H-{clientCount:D1}C-{stepCount:D2}S-{mutated}-{todayStrShort}";
 \end{lstlisting}
 

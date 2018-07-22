@@ -67,7 +67,7 @@ Beim Abrufen und Konvertieren der Daten werden zunächst die je nach Komponente 
 Die Rohdaten werden anschließend konvertiert und in der entsprechenden Datenhaltungs"=Klasse gespeichert, welche mithilfe der entsprechenden von \texttt{IParsedComponent} abgeleiteten Interfaces an das Modell zurückgegeben werden.
 
 Obwohl in dieser Fallstudie das Monitoring ausschließlich mithilfe der wesentlich schnelleren REST"=API durchgeführt wird, wurde auch ein Parser zur Nutzung der \gls{CLI}"=Schnittstelle entwickelt.
-Dies liegt darin begründet, dass Hadoop diese beiden Schnittstellen zur Verfügung stellt, uns somit auch zum Monitoring genutzt werden können.
+Dies liegt darin begründet, dass Hadoop diese beiden Schnittstellen zum Monitoring der Anwendungen zur Verfügung stellt.
 
 \subsubsection{Implementierung des CmdParsers}
 \label{subsubsec:implCmdParser}
@@ -85,10 +85,12 @@ Da das Ausgabeformat jeweils in Listenform oder als ausführlicher Report immer 
 caption={[Implementierte \glsentryshort{Regex}"=Pattern des CmdParsers]
     Implementierte \acrshort{Regex}"=Pattern des \texttt{CmdParser}s}]
 Regex _GenericListRegex = new Regex(@"\s*([^\t]+)");
-Regex _GenericDetailsRegex = new Regex(@"\t(.+)\s:\s([^\t]*)[\n\r]", RegexOptions.Multiline);
+Regex _GenericDetailsRegex =
+   new Regex(@"\t(.+)\s:\s([^\t]*)[\n\r]", RegexOptions.Multiline);
 \end{lstlisting}
 
-Bei zurückgegebenen Listen müssen diese zur Auswertung zunächst zeilenweise getrennt werden, bevor das Regex"=Pattern genutzt werden kann.
+Bei zurückgegebenen Listen müssen diese zur Auswertung zunächst zeilenweise getrennt werden, was bei einzelnen Reports nicht nötig ist.
+Dies wurde aus dem Grund so umgesetzt, da in Listen jede zurückgegebene Zeile eine eigene Komponente darstellt, wogegen ein Report aus mehreren Zeilen besteht.
 Danach können durch die Reihenfolge der jeweiligen Regex"=Matchgruppen die jeweiligen Daten der Komponente den entsprechenden Eigenschaften der Datenhaltungsklassen zugeordnet werden.
 
 Eine Besonderheit bildet das Konvertieren der Zeitstempel.
@@ -132,7 +134,7 @@ Hierfür wird die ID bzw. die URL des Nodes genutzt, um die korrespondierende In
 \label{subsubsec:implRestParser}
 
 Der zweite entwickelte Parser ist der \texttt{RestParser}.
-Er dient dazu, die mithilfe der REST"=API ermittelten Daten auszuwerten und an das YARN"=Modell zu übergeben.
+Er dient dazu, um die mithilfe der REST"=API zurückgegebenen Daten auszuwerten und an das YARN"=Modell zu übergeben.
 Zum Auslesen der Daten aus dem Cluster wurde hierfür der \texttt{RestConnector} entwickelt (vgl. \cref{subsubsec:implRestConnector}).
 Die REST"=API besitzt, auch im Vergleich zur \gls{CLI}"=Schnittstelle, einige Besonderheiten, auf die bei der Implementierung geachtet werden musste \cite{HadoopYarnCmds271,HadoopRmApi271,HadoopNmApi271,HadoopYarnTlServer271}:
 
@@ -147,12 +149,12 @@ Die REST"=API besitzt, auch im Vergleich zur \gls{CLI}"=Schnittstelle, einige Be
     \item Es werden bei Listen und Reports immer die gleichen Objekte der YARN"=Komponenten zurückgegebenen
 \end{itemize}
 
-Da die REST"=API die Rückgabe der Daten in zwei Formaten ermöglicht, wurde der \texttt{RestParser} aufgrund der kleineren Datenmengen und übersichtlicheren Datenformats zur Nutzung des JSON"=Formats entwickelt.
+Da die REST"=API zwei Ausgabeformate unterstützt, wurde der \texttt{RestParser} aufgrund der kleineren Datenmengen und übersichtlicheren Datenformats zur Nutzung des JSON"=Formats entwickelt.
 Einige Beispiele für die entsprechenden Pfade der REST"=API sowie deren Ausgaben im JSON"=Format sind in \cref{app:hadoopRestApi} zu finden.
 
-Die Auswertung der Daten geschieht beim \texttt{RestParser} zudem nicht mit Regex, sondern mithilfe des \emph{Json.NET}"=Frameworks\footnote{\url{https://www.newtonsoft.com/json}}.
+Die Auswertung der Daten wird beim \texttt{RestParser} nicht mit Regex, sondern mithilfe des \emph{Json.NET}"=Frameworks\footnote{\url{https://www.newtonsoft.com/json}} durchgeführt.
 Hierfür wurden neben den bestehenden Datenhaltungsklassen noch weitere Hilfsklassen entwickelt, welche das Ausgabeformat der REST"=API nachbilden.
-Mit deren Hilfe ist es möglich, alle Daten automatisch mithilfe von Json.NET konvertieren zu können.
+Mit deren Hilfe ist es möglich, die Daten mithilfe von Json.NET konvertieren zu können.
 
 Analog zum \texttt{CmdParser} müssen auch bei der Nutzung der REST"=API die Zeitstempel gesondert betrachtet werden.
 Damit die Konvertierung der Java"=Zeitstempel in Millisekunden seit dem 1. Januar 1970 00:00:00 Uhr gemeinsam mit den anderen Daten durch das Json.NET"=Framework durchgeführt werden kann, musste hierfür ein gesonderter Konverter entwickelt werden.
@@ -164,21 +166,25 @@ caption={[Entwickelter Konverter für Java"=Zeitstempel zur Nutzung mit Json.NET
     Dieser erbt dafür von \texttt{DateTimeConverterBase} des Json.NET"=Frameworks, damit der \texttt{JsonJavaEpochConverter} auch zur Konvertierung genutzt werden kann.}]
 public class JsonJavaEpochConverter : DateTimeConverterBase
 {
-  private static readonly DateTime _Epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+  private static readonly DateTime _Epoch =
+     new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 
-  public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+  public override void WriteJson(JsonWriter writer,
+     object value, JsonSerializer serializer)
   {
-    writer.WriteRawValue(((DateTime)value - _Epoch).TotalMilliseconds.ToString());
+    writer.WriteRawValue(
+       ((DateTime)value - _Epoch).TotalMilliseconds.ToString());
   }
   
-  public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+  public override object ReadJson(JsonReader reader, Type objectType,
+     object existingValue, JsonSerializer serializer)
   {
     return DriverUtilities.ParseJavaTimestamp((long)reader.Value);
   }
 }
 \end{lstlisting}
 
-Da der \gls{TLS} bei der Ausgabe der Daten zu Attempts und Containern zusätzliche Informationen enthält, werden hier nicht nur die Daten mithilfe des \gls{RM} bzw. der \gls{NM} der ausführenden Nodes, sondern auch mithilfe des \gls{TLS} ermittelt.
+Da der \gls{TLS} zusätzliche Informationen zu Attempts und Containern enthält, werden hier nicht nur die Daten mithilfe des \gls{RM} bzw. der \gls{NM} der ausführenden Nodes, sondern auch mithilfe des \gls{TLS} ermittelt.
 Hierzu werden zunächst die Daten des \gls{RM} bzw. der \gls{NM} ermittelt und mit die zusätzlichen Informationen des \gls{TLS} ergänzt, sofern hier Daten verfügbar sind.
 Aufgrund der Besonderheiten der REST"=API im Bezug auf Attempts und Container, werden bei diesen beiden YARN"=Komponenten zunächst immer die Daten aller Attempts einer Anwendung bzw. aller Container eines Attempts ermittelt und konvertiert.
 Sollten jedoch nur die Daten jeweils eines Attempts bzw. Containers benötigt werden, werden diese Listen entsprechend gefiltert:
@@ -213,18 +219,18 @@ Dazu beinhaltet der Connector die jeweiligen Befehle, die auf dem Cluster"=Host 
     \item Monitoring des \gls{MARP}"=Wertes
 \end{itemize}
 
-Die implementierten Connectoren selbst stellen hierzu eine oder mehrere SSH"=Verbindungen her, von denen jede Verbindung nur für einen bestimmten Typ an Befehlen genutzt wird.
-Je nach Fähigkeiten des Connectors und Bedarf werden dadurch einzelne Verbindungen zum Monitoring, zum Injizieren und Reparieren von Komponentenfehlern oder zum Starten von Anwendungen aufgebaut.
+Die implementierten Connectoren stellen hierzu eine oder mehrere SSH"=Verbindungen her, von denen jede Verbindung nur für einen bestimmten Typ an Befehlen genutzt wird.
+Je nach Fähigkeiten des Connectors werden dadurch einzelne Verbindungen zum Monitoring, zum Injizieren und Reparieren von Komponentenfehlern oder zum Starten von Anwendungen aufgebaut.
 Wenn das Cluster auf mehreren Hosts ausgeführt wird, werden zu jedem Host die entsprechend benötigten Verbindungen aufgebaut.
 
 Das Initialisieren und Ausführen von Befehlen auf dem Cluster"=Host erfolgt ähnlich wie bei den Parsern immer nach dem gleichen Schema.
 Zunächst werden beim Initialisieren des Connectors alle für seine Aufgaben benötigten SSH"=Verbindungen initialisiert und aufgebaut.
 Die hierfür notwendigen Zugangsdaten werden durch den Connector aus den \texttt{ModelSettings} den Verbindungen zur Verfügung gestellt (vgl. \cref{subsec:modelClass,subsec:sshConnection}).
-Wenn anschließend ein Befehl auf dem Cluster"=Host ausgeführt werden soll, wird zunächst geprüft, ob der Connector diesen Befehl unterstützt bzw. die dafür benötigte Verbindungen initialisiert wurden.
-Wenn der Connector den Befehl nicht unterstützt, wird stattdessen eine \texttt{PlatformNotSupportedException} ausgelös, wenn die benötigten Verbindungen nicht initialisiert wurden eine \texttt{InvalidOperationException}.
+Bevor ein Befehl auf dem Cluster"=Host ausgeführt wird, wird zunächst geprüft, ob der Connector diesen Befehl unterstützt bzw. die dafür benötigte Verbindungen initialisiert wurden.
+Wenn der Connector den Befehl nicht unterstützt, wird stattdessen eine \texttt{PlatformNotSupportedException} ausgelöst, wenn die benötigten Verbindungen nicht initialisiert wurden eine \texttt{InvalidOperationException}.
 Anschließend werden die benötigten Parameter des auszuführenden Befehls ermittelt, zu denen auch die Auswahl des Hosts dazu gehört, auf dem der Befehl ausgeführt werden soll.
-Nach der im Anschluss folgenden Ausführung des Befehls auf dem Host des Clusters werden die zurückgegebenen Daten bei Monitoring"=Befehlen im Rohformat an die anfragende Komponente weitergeleitet, und bei anderen Befehlen zunächst einer einfachen Auswertung unterzogen, damit das Ergebnis des Befehls durch die anfragende Komponente verarbeitet werden kann.
-Aus diesem Grund werden die Befehle synchron ausgeführt, was bedeutet, dass bei der Ausführung eines Befehls immer bis zu seinem Ende gewartet wird.
+Nach der im Anschluss folgenden Ausführung des Befehls auf dem Host des Clusters werden die zurückgegebenen Daten bei Monitoring"=Befehlen im Rohformat an die anfragende Komponente weitergeleitet, bzw. bei anderen Befehlen zunächst einer einfachen Auswertung unterzogen, damit das Ergebnis des Befehls durch die anfragende Komponente verarbeitet werden kann.
+Aus diesem Grund werden die meisten Befehle synchron ausgeführt, wodurch die weitere Ausführung eines Testfalls solange unterbrochen wird, solange der Befehl auf dem Host ausgeführt wird.
 Eine Ausnahme bildet hierbei das Starten von Anwendungen, was auch teilweise asynchron und vollständig asynchron durchgeführt werden kann.
 Teilweise Asynchron bedeutet hier, dass die auf dem Cluster zu startende Anwendung nur solange synchron ausgeführt wird, bis der Anwendung eine ID zugewiesen wurde, welche vom Connector zurückgegeben wird.
 Diese Funktion wird daher zum Starten der Anwendungen durch den Client genutzt, da dieser die Anwendungs"=ID abspeichert (vgl. \cref{subsec:yarnClient}).
@@ -261,26 +267,26 @@ Auf dem Host wird zum Abrufen der Daten das Tool curl\footnote{\url{https://curl
 Da die Daten von Anwendungs"=Containern immer durch die \gls{NM} der ausführenden Nodes zurückgegeben werden, kann es hier passieren, dass der entsprechende Node aufgrund eines Komponentenfehlers beendet oder nicht erreichbar ist.
 Wenn daher statt den Container"=Daten eine Fehlermeldung zurückgegeben wird, werden in so einem Fall keine Rohdaten vom Connector zurückgegeben, sondern \texttt{String.Empty}.
 
-Auch die Funktionen des \texttt{RestConnector}s können unabhängig vom genutzten \texttt{Host""Mode} genutzt werden (vgl. \cref{subsec:hostMode}).
-Die Verwaltung der korrekten Adressen von \gls{RM} und \gls{TLS} erfolgt analog zum benötigten Setupscript beim \texttt{CmdConnector} durch die \texttt{ModelSettings}"=Klasse.
+Auch die grundlegenden Funktionen des \texttt{RestConnector}s sind unabhängig vom genutzten \texttt{HostMode} (vgl. \cref{subsec:hostMode}).
+Die Verwaltung der Adressen von \gls{RM} und \gls{TLS} erfolgt analog zu der des Setupscripts beim \texttt{CmdConnector} durch die \texttt{ModelSettings}"=Klasse.
 Ein Unterschied besteht jedoch bei den Adressen der \gls{NM} zum Monitoring der Container.
-Da die Adressen der jeweiligen Nodes in der von \texttt{YarnHost} vererbten Eigenschaft \texttt{HttpUrl} gespeichert sind, werden die Adressen auch vom Connector genutzt, um mithilfe der REST"=API die Daten der auf einem Node ausgeführten Container zu abzurufen.
-Daher wird die vom \texttt{HostMode} abhängige Adresse der Nodes beim Initialisieren des Modells entsprechend im Modell gespeichert (vgl. \cref{subsec:modelClass}).
+Da die Adressen der jeweiligen Nodes in \texttt{YarnNode.HttpUrl} gespeichert sind, werden diese Adressen auch vom Connector genutzt, um mithilfe der REST"=API die Daten der auf einem Node ausgeführten Container zu abzurufen.
+Daher wird die vom \texttt{HostMode} abhängige Adresse der Nodes bereits beim Initialisieren des Modells entsprechend im Modell gespeichert (vgl. \cref{subsec:modelClass,subsec:yarnComponents}).
 
 \subsection{Implementierung der SSH"=Verbindung}
 \label{subsec:sshConnection}
 
-Die SSH"=Verbindung zum Host des realen Clusters wird mithilfe des Frameworks SSH.NET\footnote{\url{https://github.com/sshnet/SSH.NET}} aufgebaut.
-Verwaltet wird die Verbindung mithilfe der Verbindungsklasse \texttt{SshConnection}.
-Die Verbindung ist zudem der einzige Bestandteil des Treibers, welcher kein entsprechendes Interface bereitstellt, da die SSH"=Verbindungen ausschließlich durch die implementierten Connectoren genutzt werden.
+Die SSH"=Verbindung zum Host des realen Clusters wird mithilfe des Frameworks SSH.NET\footnote{\url{https://github.com/sshnet/SSH.NET}} hergestellt.
+Verwaltet werden die Verbindungen mithilfe der Klasse \texttt{SshConnection}.
+Die Verbindung ist zudem der einzige Bestandteil des Treibers, zu dem kein entsprechendes Interface existiert, da die SSH"=Verbindungen ausschließlich durch die implementierten Connectoren genutzt werden.
 
-Die zum Aufbau der Verbindung benötigten Zugangsdaten, die in \texttt{ModelSettings} gespeichert sind (vgl. \cref{subsec:modelClass}), müssen mithilfe des Connectors beim Initialisieren übergeben werden.
-Hierbei stellt die Verbindungsklasse selbst zwar die Möglichkeit bereit, ein Passwort zu nutzen, jedoch besteht in \texttt{ModelSettings} nur die Angabe eines SSH"=Schlüssels (ohne Passwort) zur Verfügung.
+Die in \texttt{ModelSettings} gespeicherten Zugangsdaten zum Aufbau der Verbindung benötigten Zugangsdaten müssen beim Initialisieren vom Connector übergeben werden \cref{subsec:modelClass}).
+Zwar kann hierzu mithilfe der Verbindungsklasse auch ein Passwort genutzt werden, jedoch werden in \texttt{ModelSettings} nur die SSH"=Schlüssel gespeichert.
 Zudem bietet die implementierte \texttt{SshConnection}"=Klasse bei der Nutzung eines SSH"=Schlüssels die Möglichkeit, die Verbindung jederzeit zu trennen und erneut aufzubauen, was im implementierten Modell jedoch nicht durchgeführt wird.
 
-Die Verbindungsklasse ist auch dafür zuständig, die vom Connector erhaltenen auszuführenden Befehle an den Host zur Ausführung zu senden und auf die Rückgabe der Befehlsausgabe zu warten.
-Hierbei wird zudem jede Kommunikation zwischen dem Treiber und dem Cluster"=Host in einer eigenen, von den Tests unabhängigen, Logdatei gespeichert, dem SSH"=Log.
-Die Verbindungsklasse ist auch dafür zuständig, dass beim teilsynchronen Starten einer Anwendung die Anwendungs"=ID ermittelt und die Anwendung anschließend asynchron ausgeführt wird (vgl. \cref{subsubsec:implCmdConnector,subsec:yarnClient}).
+Die Verbindungsklasse ist auch dafür zuständig, die vom Connector erhaltenen auszuführenden Befehle synchron an den Host zur Ausführung zu senden.
+Hierbei wird zudem jede Kommunikation zwischen dem Treiber und dem Cluster"=Host in einer eigenen, vom Testsystem unabhängigen, Logdatei gespeichert, dem SSH"=Log.
+Die Verbindungsklasse ist auch dafür zuständig, dass beim teilsynchronen Starten einer Anwendung zunächst die Anwendungs"=ID ermittelt wird, bevor die Anwendung asynchron ausgeführt wird (vgl. \cref{subsubsec:implCmdConnector,subsec:yarnClient}).
 
 Pro SSH"=Verbindung kann nur jeweils ein Befehl gleichzeitig auf dem Host ausgeführt werden.
 Daher muss die Verbindungsklasse sicherstellen, dass die Verbindung auch bei asynchron ausgeführten Befehlen solange als belegt markiert ist, solange der Befehl nicht beendet ist.

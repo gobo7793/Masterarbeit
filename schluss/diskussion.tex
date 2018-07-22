@@ -11,7 +11,7 @@ Dies liegt vor allem aufgrund der hohen Anzahl an fehlgeschlagenen Anwendungen, 
     \item Es wird versucht, Tasks von Anwendungs"=Containern auf einem defekten Node auszuführen, was im Exitcode -100 resultiert
 \end{itemize}
 
-Es ist erkennbar, dass drei der vier Ursachen im direkten oder indirekten Zusammenhang mit der Injizierung von Komponentenfehlern im realen Cluster zusammenhängen.
+Es ist erkennbar, dass drei der vier Ursachen im Zusammenhang mit der Injizierung von Komponentenfehlern im realen Cluster zu finden sind.
 Dies zeigt sich vor allem an der häufigen Zahl an \gls{AppMstr}"=Timeouts, welche bei einem injiziertem Komponentenfehler die direkte Folge davon ist, wenn auf dem Node ein \gls{AppMstr} ausgeführt wurde.
 Es hat sich daher gezeigt, dass die in \cref{sec:selectTestcases} ausgewählte generelle Wahrscheinlichkeit zur Aktivierung und Deaktivierung der Komponentenfehler von 0,3 vor allem für hohe Auslastungsgrade bei konkreten Testausführungen eine nicht sehr ausgewogene Mischung ergibt.
 Während bei niedrigen Auslastungsgraden nur wenige Komponentenfehler injiziert wurden, wurden bei hohen Auslastungsgraden häufig welche injiziert, was sich auch in der Anzahl der 14 abgebrochenen Tests zeigt (vgl. \cref{sec:noReconfig}).
@@ -43,8 +43,8 @@ Es wäre daher durchaus sinnvoll gewesen, einige der ausgeführten Tests auch oh
 So hätte besser festgestellt werden können, ob die hohe Anzahl an fehlgeschlagenen Anwendungen an zu vielen injizierten Komponentenfehlern liegt oder ob der Grund im Testsystem selbst liegt.
 Da diese Tests im Rahmen dieser Fallstudie nicht durchgeführt wurden, wären hierfür entsprechend weitere Tests nötig.
 
-Jedoch hätten selbst dadurch \uU nicht alle fehlerhaften Anwendungen unterbunden werden können.
-Unabhängig von der Anzahl der Nodes gab es zahlreiche Testfälle, bei denen das Cluster vollständig ausgelastet war und daher keine weiteren \gls{AppMstr} ausgeführt werden konnten.
+Jedoch hätten selbst dadurch \uU nicht alle fehlgeschlagenen Anwendungen unterbunden werden können.
+Unabhängig von der Anzahl der Nodes gab es zahlreiche Testfälle, bei denen das Cluster vollständig ausgelastet war und keine weiteren \gls{AppMstr} ausgeführt werden konnten.
 In solchen Fällen wurden einzelne \gls{AppMstr} häufig mit einem Timeout beendet, da die benötigten Ressourcen nicht allokiert werden konnten.
 Da es mit \acrlong{dfw}, \acrlong{dfr} und \acrlong{pt} zudem einige Benchmarks gab, welche bereits bei den ausgeführten Tests unabhängig von der Anzahl der aktiven Nodes das komplette Cluster auslasteten, hätte es hier wahrscheinlich dennoch entsprechende Timeouts gegeben.
 Jedoch hätten sich die \gls{AppMstr}"=Timeouts darauf beschränkt, dass keine Ressourcen allokiert werden konnten, was eine deutlich geringere Zahl gewesen wäre.
