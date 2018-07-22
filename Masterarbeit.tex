@@ -1,6 +1,7 @@
 \documentclass[12pt,a4paper,notitlepage,abstract=on,english,ngerman,bibliography=totoc]{scrreprt}
 % prevent warning \float@addtolists detected
 \usepackage{scrhack} 
+\input{./settings/variablen}
 
 % Textkodierung Deutsch
 \usepackage{babel}
@@ -9,12 +10,6 @@
 \usepackage{lmodern}
 \usepackage{xspace}
 \usepackage{microtype}
-
-% Basisinfos
-\title{Modellbasierte Testautomatisierung eines verteilen, adaptiven Load-Balancing-Systems}
-\author{Gerald Siegert}
-\date{\today}
-\input{./settings/variablen}
 
 % Seitenränder
 \usepackage{geometry}
@@ -73,6 +68,7 @@
 % Zeilenumbrüche bei URLs
 \setcounter{biburllcpenalty}{7000}
 \setcounter{biburlucpenalty}{8000}
+\setcounter{biburlnumpenalty}{7000}
 
 % Listings
 \usepackage{listings}
@@ -184,8 +180,14 @@
 
 % Referenzen/Lesezeichen
 \PassOptionsToPackage{hyphens}{url}
-\usepackage{varioref}
-\usepackage[bookmarksnumbered,pdfpagemode=UseNone]{hyperref}
+\usepackage{hyperref}
+\hypersetup{
+    pdfsubject={Masterarbeit},
+    pdftitle={Modellbasierte Testautomatisierung eines verteilen, adaptiven Load-Balancing-Systems},
+    pdfauthor={Gerald Siegert},
+    pdfproducer={Gerald Siegert},
+    pdfkeywords={test automation, adaptive systems, distributed systems, Hadoop, mutation testing},
+}
 \usepackage{bookmark}
 
 % Glossar/Abkürzungen
@@ -255,7 +257,7 @@
         \printnoidxglossary[sort=word,title={Glossar und Abkürzungen}]
         \subsubsection*{Abkürzungen der Benchmarks (vgl. \cref{subsec:appSelection})}
         \begin{multicols}{2}
-            \printnoidxglossary[sort=def,type=apps]
+            \printnoidxglossary[sort=def,type=apps,title={Abkürzungen der Benchmarks}]
         \end{multicols}        
     \end{singlespace}
     

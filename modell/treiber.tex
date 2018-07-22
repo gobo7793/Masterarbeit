@@ -277,7 +277,7 @@ Daher wird die vom \texttt{HostMode} abhängige Adresse der Nodes bereits beim I
 \label{subsec:sshConnection}
 
 Die SSH"=Verbindung zum Host des realen Clusters wird mithilfe des Frameworks SSH.NET\footnote{\url{https://github.com/sshnet/SSH.NET}} hergestellt.
-Verwaltet werden die Verbindungen mithilfe der Klasse \texttt{SshConnection}.
+Verwaltet werden die Verbindungen mithilfe der Klasse \texttt{SshCon""nection}.
 Die Verbindung ist zudem der einzige Bestandteil des Treibers, zu dem kein entsprechendes Interface existiert, da die SSH"=Verbindungen ausschließlich durch die implementierten Connectoren genutzt werden.
 
 Die in \texttt{ModelSettings} gespeicherten Zugangsdaten zum Aufbau der Verbindung benötigten Zugangsdaten müssen beim Initialisieren vom Connector übergeben werden \cref{subsec:modelClass}).
