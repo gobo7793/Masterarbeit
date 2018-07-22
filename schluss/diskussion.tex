@@ -7,7 +7,7 @@ Dies liegt vor allem aufgrund der hohen Anzahl an fehlgeschlagenen Anwendungen, 
 \begin{itemize}
     \item Der Node ist nicht erreichbar, was zu einem \gls{AppMstr}"=Timeout führt
     \item Der den \gls{AppMstr} ausführende Node ist zur sehr ausgelastet, was ebenfalls zu einem \gls{AppMstr}"=Timeout führt
-    \item Benötigte Dateien sind nicht im \gls{HDFS} verfügbar, was in einem Map"=Task"=Fehler resultiert
+    \item Benötigte Dateien sind nicht im HDFS verfügbar, was in einem Map"=Task"=Fehler resultiert
     \item Es wird versucht, Tasks von Anwendungs"=Containern auf einem defekten Node auszuführen, was im Exitcode -100 resultiert
 \end{itemize}
 
@@ -34,7 +34,7 @@ Das von Spotify genutzte Cluster zur Analyse der Hörgewohnheiten und für Musik
 \end{itemize}
 
 Es stellt damit auch eines der größten Hadoop"=Cluster dar \cite{PoweredByHadoop}.
-Es ist schnell ersichtlich, dass beim Ausfall von über 400 Nodes wohl ein Großteil der über 20.000 ausgeführten Anwendungen nicht mehr ausgeführt werden könnten und zahlreiche Blöcke von möglicherweise benötigten Daten im \gls{HDFS} nicht mehr verfügbar wären (vgl. \cref{sec:hadoop}).
+Es ist schnell ersichtlich, dass beim Ausfall von über 400 Nodes wohl ein Großteil der über 20.000 ausgeführten Anwendungen nicht mehr ausgeführt werden könnten und zahlreiche Blöcke von möglicherweise benötigten Daten im HDFS nicht mehr verfügbar wären (vgl. \cref{sec:hadoop}).
 Entsprechende Auswirkungen hätte das auch auf die Kunden von Spotify, da das Cluster \uA zur Ermittlung von Musikempfehlungen genutzt wird, welche dann nur noch eingeschränkt verfügbar wären.
 Es lässt sich daher auch sagen, dass der Ausfall eines Viertels aller Nodes lediglich bei sehr kleinen Clustern mit Nodes im ein- bzw niedrigen zweistelligen realitätsnah sein dürfte.
 

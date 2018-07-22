@@ -9,18 +9,18 @@ Anhand dieses Verhaltens und dem des kompletten Testsystems soll schließlich er
 Es ist hierbei der gleiche Versuchsaufbau wie in \cite{Eberhardinger2018}, da dafür das gleiche Testsystem genutzt wurde wie für diese Fallstudie, in deren Rahmen es entwickelt wurde.
 Zur Ausführung der Tests soll der von \gls{ss} bereitgestellte Simulator genutzt werden, da hierbei nur ein Ausführungspfad mit der Berücksichtigung von zeitlichen Abfolgen ausgeführt werden kann und Komponentenfehler gemäß im Modell implementierten Definitionen aktiviert und deaktiviert werden können.
 
-Bei der Entwicklung des Modells liegt der Fokus auf dem grundlegenden Aufbau von \gls{YARN}.
-Dazu gehören die \glspl{Anwendung} und ihre Attempts, sowie zum Teil auch ihre Container.
+Bei der Entwicklung des Modells liegt der Fokus auf dem grundlegenden Aufbau von YARN.
+Dazu gehören die Anwendungen und ihre Attempts, sowie zum Teil auch ihre Container.
 Daneben muss das Modell auch die Nodes des Clusters und zum Ausführen der Benchmarks auch simulierte Clients enthalten.
-Da bei den \glspl{Test} auch Ausfälle von Nodes eine Rolle spielen, müssen hierfür entsprechende Komponentenfehler implementiert werden, die mithilfe von \gls{ss} aktiviert und deaktiviert werden können.
+Da bei den Tests auch Ausfälle von Nodes eine Rolle spielen, müssen hierfür entsprechende Komponentenfehler implementiert werden, die mithilfe von \gls{ss} aktiviert und deaktiviert werden können.
 Das Modell soll dabei immer den aktuellen Status des realen Clusters repräsentieren, weshalb regelmäßig alle benötigten Daten des realen Clusters ausgelesen und im Modell gespeichert werden müssen.
 
-Da die Auswahl der ausgeführten Benchmarks eines jeden Clients nicht bei jedem \gls{Test} manuell bestimmt werden soll, wird hierfür ein Transitionssystem verwendet.
-Mithilfe dieses Transitionssystems, in dem die Wahrscheinlichkeiten der Anwendungswechsel definiert sind, soll während der Ausführung eines Testfalls zufällig eine nachfolgende \gls{Anwendung} ausgewählt werden.
+Da die Auswahl der ausgeführten Benchmarks eines jeden Clients nicht bei jedem Test manuell bestimmt werden soll, wird hierfür ein Transitionssystem verwendet.
+Mithilfe dieses Transitionssystems, in dem die Wahrscheinlichkeiten der Anwendungswechsel definiert sind, soll während der Ausführung eines Testfalls zufällig eine nachfolgende Anwendung ausgewählt werden.
 Hierbei soll berücksichtigt werden, dass einige Anwendungen die Eingabedaten für andere Anwendungen generieren können.
 
 Die Verbindung zwischen dem Modell und dem realen Hadoop"=Cluster wird mithilfe eines dafür entwickelten Treibers durchgeführt.
-Der Treiber ist dafür verantwortlich, Komponentenfehler und \glspl{Anwendung} an das reale Cluster zu senden.
+Der Treiber ist dafür verantwortlich, Komponentenfehler und Anwendungen an das reale Cluster zu senden.
 Zudem dient er dazu, um den Status des Clusters jederzeit ermitteln und an das Modell zur dortigen Speicherung übergeben zu können.
 Er kann daher nicht nur aus der Verbindung zum Cluster selbst bestehen, sondern muss auch die Kommunikation zwischen Modell und Cluster sicherstellen und übermittelte Daten entsprechend konvertieren.
 
@@ -30,7 +30,7 @@ Zudem soll auch mithilfe von Mutationstests, bei denen ein oder mehrere Mutanten
 
 Dieser Versuchsaufbau soll mithilfe eines dafür entwickelten \emph{Oracles} bereits während der Ausführung automatisiert geprüft werden.
 Das Oracle dient zur Validierung der in \cref{sec:requirements} definierten Anforderungen an das Cluster und das Testsystem.
-Hierfür werden, sofern möglich, die Anforderungen als \emph{Constraints} im Modell implementiert und bei jedem \gls{Test} automatisch geprüft.
+Hierfür werden, sofern möglich, die Anforderungen als \emph{Constraints} im Modell implementiert und bei jedem Test automatisch geprüft.
 Die Implementierung der Constraints erfolgt hierbei nicht zentral mithilfe des Oracles, sondern dezentral in den jeweiligen Komponenten des Modells.
 Für jede implementierte Komponente werden somit nur die jeweils relevanten Bestandteile der Anforderungen als Constraints implementiert und durch das Oracle validiert.
 

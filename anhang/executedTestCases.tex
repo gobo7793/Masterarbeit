@@ -2,19 +2,19 @@
 \label{app:overviewExecutedTestCases}
 
 Die folgende Tabelle gibt eine Übersicht über die für diese Fallstudie ausgeführten Tests.
-Die Auswahl der Konfigurationen der \glspl{Test} ist in \cref{sec:selectTestcases} beschrieben.
+Die Auswahl der Konfigurationen der Tests ist in \cref{sec:selectTestcases} beschrieben.
 
 Die Spalte \emph{Mutanten} gibt an, welche der in \cref{sec:implMutationTests} definierten Mutanten der Selfbalancing"=Komponente genutzt wurden.
-In den Spalten \emph{Ausgeführte Testfälle} und \emph{Dauer} ist angegeben, wie viele \glspl{Testfall} bzw. Simulations"=Schritte vollständig und erfolgreich ausgeführt wurden, bzw. wie viel Zeit die jeweiligen Simulationen in Minuten und Sekunden benötigten.
-Wenn nicht alle möglichen \glspl{Testfall} ausgeführt wurden, war im darauf folgenden \gls{Testfall} eine Rekonfiguration des Clusters nicht mehr möglich und die Simulation wurde abgebrochen (vgl. \cref{subsec:oracleImpl}).
+In den Spalten \emph{Ausgeführte Testfälle} und \emph{Dauer} ist angegeben, wie viele Testfälle bzw. Simulations"=Schritte vollständig und erfolgreich ausgeführt wurden, bzw. wie viel Zeit die jeweiligen Simulationen in Minuten und Sekunden benötigten.
+Wenn nicht alle möglichen Testfälle ausgeführt wurden, war im darauf folgenden Testfall eine Rekonfiguration des Clusters nicht mehr möglich und die Simulation wurde abgebrochen (vgl. \cref{subsec:oracleImpl}).
 
-Die Nummerierung der Konfigurationen bzw. Ausführungen erfolgte basierend auf den grundlegenden \glspl{Testkonfiguration} bestehend aus Seed, Anzahl der Hosts, Clients und ausgeführten Testfällen sowie der Angabe, ob ein Mutationsszenario verwendet wurde.
-Bei mehrmals ausgeführten \glspl{Testkonfiguration} ist der Konfiguration eine entsprechende Ziffer angehängt, um die jeweilige Ausführung zu Kennzeichnen.
-Eine Besonderheit bildet hierbei die \gls{Testkonfiguration} 10 mit insgesamt 6 Ausführungen, da diese Konfiguration mit verschiedenen Mutanten durchgeführt wurde.
+Die Nummerierung der Konfigurationen bzw. Ausführungen erfolgte basierend auf den grundlegenden Testkonfigurationen bestehend aus Seed, Anzahl der Hosts, Clients und ausgeführten Testfällen sowie der Angabe, ob ein Mutationsszenario verwendet wurde.
+Bei mehrmals ausgeführten Testkonfigurationen ist der Konfiguration eine entsprechende Ziffer angehängt, um die jeweilige Ausführung zu Kennzeichnen.
+Eine Besonderheit bildet hierbei die Testkonfiguration 10 mit insgesamt 6 Ausführungen, da diese Konfiguration mit verschiedenen Mutanten durchgeführt wurde.
 
 \begin{table}
     \begin{tabu}{c|[1.5pt]c|c|c|c|c|[1.5pt]c|c}
-    	\# & Seed      & Hosts & Clients & \glspl{Testfall} & Mutanten & \makecell{Ausgeführte\\Testfälle} & Dauer \\ \tabucline[1.5pt]{-}
+    	\# & Seed      & Hosts & Clients & Testfälle & Mutanten & \makecell{Ausgeführte\\Testfälle} & Dauer \\ \tabucline[1.5pt]{-}
         \makecell{1.1\\1.2}
            & 0xAB4FEDD &   1   &    2    &    5      &  keine   &
                         \makecell{5\\5} &

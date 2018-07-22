@@ -1,7 +1,7 @@
 \section{Entwicklung des Benchmark"=Controllers}
 \label{sec:benchmarkController}
 
-Die im \gls{YARN}"=Modell (vgl. \cref{sec:yarnModel}) implementierten Benchmarks und das zur Auswahl der Benchmarks entwickelte Transitionssystem bilden zusammen den Benchmark"=Controller.
+Die im YARN"=Modell (vgl. \cref{sec:yarnModel}) implementierten Benchmarks und das zur Auswahl der Benchmarks entwickelte Transitionssystem bilden zusammen den Benchmark"=Controller.
 Der Benchmark"=Controller wurde als eigene Klasse \texttt{BenchmarkController} im Modell implementiert und wird von den Clients genutzt, um die Auswahl der Benchmarks vorzunehmen.
 Der Benchmark"=Controller verwaltet die implementierten Benchmarks und stellt diese den Clients zum Starten zur Verfügung.
 Damit die Clients unabhängig voneinander sind, wird für jeden Client ein eigener Benchmark"=Controller instanziiert (vgl. \cref{subsec:yarnClient}).
@@ -10,9 +10,9 @@ Damit die Clients unabhängig voneinander sind, wird für jeden Client ein eigen
 \label{subsec:appImplementation}
 
 Die Benchmarks sind mithilfe der Klasse \texttt{Benchmark} implementiert.
-Sie enthält alle zur Ausführung der Benchmarks benötigten Informationen und stellt diese der \texttt{BenchmarkController}"=Klasse bzw. dem Client bereit, um die \gls{Anwendung} des Benchmarks zu starten.
-Da mehrere Clients unabhängig voneinander agieren können müssen, erhält jeder Client ein spezifisches Unterverzeichnis im \gls{HDFS}, in dem sich die Ein- und Ausgabeverzeichnisse für die von ihm gestarteten \glspl{Anwendung} befinden.
-Das muss auch bei der Definition der Startbefehle der \glspl{Anwendung} berücksichtigt werden, weshalb hierfür entsprechende Platzhalter ersetzt werden müssen, wenn mithilfe der Methode \texttt{GetStartCmd()} der Start"=Befehl des Benchmarks zurückgegeben wird:
+Sie enthält alle zur Ausführung der Benchmarks benötigten Informationen und stellt diese der \texttt{BenchmarkController}"=Klasse bzw. dem Client bereit, um die Anwendung des Benchmarks zu starten.
+Da mehrere Clients unabhängig voneinander agieren können müssen, erhält jeder Client ein spezifisches Unterverzeichnis im HDFS, in dem sich die Ein- und Ausgabeverzeichnisse für die von ihm gestarteten Anwendungen befinden.
+Das muss auch bei der Definition der Startbefehle der Anwendungen berücksichtigt werden, weshalb hierfür entsprechende Platzhalter ersetzt werden müssen, wenn mithilfe der Methode \texttt{GetStartCmd()} der Start"=Befehl des Benchmarks zurückgegeben wird:
 
 \begin{lstlisting}[label=lst:benchmarkClass,style=cs,
 caption={[Wesentliche Methoden der Klasse Benchmark]
@@ -40,7 +40,7 @@ public class Benchmark
 \end{lstlisting}
 
 Alle im Modell enthaltenen Benchmarks sind als Array im \texttt{BenchmarkController} gespeichert.
-Hier werden auch die benötigten Befehle zum Starten der \glspl{Anwendung} der Benchmarks definiert:
+Hier werden auch die benötigten Befehle zum Starten der Anwendungen der Benchmarks definiert:
 
 \begin{lstlisting}[label=lst:benchmarkDefinition,style=cs,
 caption={[Definition der verfügbaren Benchmarks im BenchmarkController]
@@ -53,8 +53,8 @@ public Benchmark[] Benchmarks => new[]
 };
 \end{lstlisting}
 
-Der hierbei definierte und durch \texttt{GetStartCmd()} zurückgegebene vollständige Startbefehl wird beim Starten der \glspl{Anwendung} vom Connector als Befehlsparameter des Benchmark"=Script genutzt (vgl. \cref{subsubsec:implCmdConnector}).
-Damit kann durch das Benchmark"=Script die zu startende \gls{Anwendung} identifiziert und das jeweilige Start"=Script ausgeführt werden (vgl. \cref{subsec:scripts}).
+Der hierbei definierte und durch \texttt{GetStartCmd()} zurückgegebene vollständige Startbefehl wird beim Starten der Anwendungen vom Connector als Befehlsparameter des Benchmark"=Script genutzt (vgl. \cref{subsubsec:implCmdConnector}).
+Damit kann durch das Benchmark"=Script die zu startende Anwendung identifiziert und das jeweilige Start"=Script ausgeführt werden (vgl. \cref{subsec:scripts}).
 
 Das Transitionssystem selbst wurde im \texttt{BenchmarkController} als zweidimensionaler Array implementiert, auf das mithilfe von \texttt{Benchmark.ID} zugegriffen werden kann.
 Entsprechend wichtig ist hierbei die Reihenfolge der jeweiligen Werte innerhalb des Arrays, welche immer gleich sein muss mit den jeweiligen IDs:
@@ -75,7 +75,7 @@ public double[][] BenchTransitions => new[]
 \subsection{Auswahl der nachfolgenden Benchmarks}
 \label{subsec:selectionNextBenchmark}
 
-Zur Auswahl der Nachfolgenden \gls{Anwendung} dient die Methode \texttt{ChangeBenchmark()} des \texttt{BenchmarkController}s.
+Zur Auswahl der Nachfolgenden Anwendung dient die Methode \texttt{ChangeBenchmark()} des \texttt{BenchmarkController}s.
 Hier wird mithilfe des Transitionssystems und unabhängig von anderen Clients bestimmt, welcher Benchmark ausgeführt werden soll und dieser in \texttt{CurrentBenchmark} gespeichert:
 
 \begin{lstlisting}[label=lst:benchmarkChanging,style=cs,
@@ -111,16 +111,16 @@ Wenn die Auswahl des Benchmarks dagegen erfolgreich war, wird an den aufrufenden
 
 Der zur Auswahl des nachfolgenden Benchmarks benötigte Zufallsgenerator \texttt{Random""Gen} wird bei der Initialisierung des Benchmark"=Controllers basierend auf dem in \cref{subsec:testcaseGeneration} spezifizierten Basisseed initialisiert.
 Damit die Benchmark"=Controller aller Clients nicht die gleichen Benchmarks auswählen, wird zum Basisseed die numerische ID des zum Benchmark"=Controler zugehörigen Clients addiert und der Zufallsgenerator mit diesem Wert initialisiert.
-Als initiale \gls{Anwendung} wird immer der \acrlong{sl}"=Benchmark genutzt, sodass als erste \gls{Anwendung} immer eine \gls{Anwendung} ohne benötigte Eingabedaten gestartet wird (vgl. \cref{subsec:markovChain}).
+Als initiale Anwendung wird immer der \acrlong{sl}"=Benchmark genutzt, sodass als erste Anwendung immer eine Anwendung ohne benötigte Eingabedaten gestartet wird (vgl. \cref{subsec:markovChain}).
 
 \subsection{Vorabgenerierung von Eingabedaten}
 \label{subsec:precreateInputData}
 
-Neben der Generierung der für einige \glspl{Anwendung} benötigten Eingabedaten während der Testausführung gibt es auch die Möglichkeit, die Eingabedaten vorab zu generieren und anschließend diese zu nutzen (vgl. \cref{sec:clusterSetup,subsec:testcaseGeneration,subsec:simulationModelInit}).
-Um die vorab generierten Daten in einem \gls{Test} zu nutzen, muss die entsprechende Eigenschaft \texttt{ModelSettings.IsPrecreateBenchInputs} auf \texttt{true} gesetzt werden.
+Neben der Generierung der für einige Anwendungen benötigten Eingabedaten während der Testausführung gibt es auch die Möglichkeit, die Eingabedaten vorab zu generieren und anschließend diese zu nutzen (vgl. \cref{sec:clusterSetup,subsec:testcaseGeneration,subsec:simulationModelInit}).
+Um die vorab generierten Daten in einem Test zu nutzen, muss die entsprechende Eigenschaft \texttt{ModelSettings.IsPrecreateBenchInputs} auf \texttt{true} gesetzt werden.
 Dadurch werden auch direkt die Eingabedaten generiert.
 
-Die Vorabgenerierung der Daten startet folgende Anwendungen, die Eingabedaten für andere \glspl{Anwendung} generieren und speichert diese in einem nur hierfür genutzten Verzeichnis im \gls{HDFS}:
+Die Vorabgenerierung der Daten startet folgende Anwendungen, die Eingabedaten für andere Anwendungen generieren und speichert diese in einem nur hierfür genutzten Verzeichnis im HDFS:
 
 \begin{itemize}
     \item \acrlong{dfw}
@@ -131,12 +131,12 @@ Die Vorabgenerierung der Daten startet folgende Anwendungen, die Eingabedaten f�
 \end{itemize}
 
 Gestartet werden kann die Vorabgenerierung mithilfe des Benchmark"=Controllers.
-Hierbei werden die Anwendungen, sofern möglich, gleichzeitig ausgeführt und anschließend gewartet, bis alle fünf \glspl{Anwendung} beendet sind.
-Hierbei wird standardmäßig die Generierung der Eingabedaten einer \gls{Anwendung} übersprungen, wenn das entsprechende Ausgabeverzeichnis der \gls{Anwendung} bereits existiert.
+Hierbei werden die Anwendungen, sofern möglich, gleichzeitig ausgeführt und anschließend gewartet, bis alle fünf Anwendungen beendet sind.
+Hierbei wird standardmäßig die Generierung der Eingabedaten einer Anwendung übersprungen, wenn das entsprechende Ausgabeverzeichnis der Anwendung bereits existiert.
 
 Es ist jedoch auch möglich, vorhandene Verzeichnisse zu löschen, um somit die Daten vollständig neu zu generieren.
-Hierbei wird zudem ein \gls{HDFS}"=Filecheck ausgeführt, um fehlerhafte Daten zu finden und zu löschen.
-Fehlerhafte Daten können im \gls{HDFS} \zB dadurch entstehen, dass alle Nodes defekt sind, auf denen ein Block repliziert wurde, sich die Datei jedoch noch im Index des \gls{HDFS} befindet (vgl. \cref{sec:hadoop}.
+Hierbei wird zudem ein HDFS"=Filecheck ausgeführt, um fehlerhafte Daten zu finden und zu löschen.
+Fehlerhafte Daten können im HDFS \zB dadurch entstehen, dass alle Nodes defekt sind, auf denen ein Block repliziert wurde, sich die Datei jedoch noch im Index des HDFS befindet (vgl. \cref{sec:hadoop}.
 Die vollständige Neugenerierung der Eingabedaten kann mithilfe der Eigenschaft \texttt{ModelSettings.IsPrecreateBenchInputsRecreate} gesteuert werden (vgl. \cref{subsec:simulationModelInit}).
 
-Um beim Starten der \glspl{Anwendung} die vorab generierten Eingabedaten zu nutzen, wird beim Starten der \glspl{Anwendung} das Verzeichnis der vorab generierten Daten als entsprechendes Client"=Verzeichnis genutzt (vgl. \cref{subsec:yarnClient,subsec:appImplementation}).
+Um beim Starten der Anwendungen die vorab generierten Eingabedaten zu nutzen, wird beim Starten der Anwendungen das Verzeichnis der vorab generierten Daten als entsprechendes Client"=Verzeichnis genutzt (vgl. \cref{subsec:yarnClient,subsec:appImplementation}).

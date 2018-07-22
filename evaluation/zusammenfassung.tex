@@ -1,30 +1,30 @@
 \section{Zusammenfassung der Ergebnisse}
 \label{sec:evaluationResults}
 
-Zusammenfassend lässt sich basierend auf der vorhandenen Datenbasis der 43 ausgeführten \glspl{Test} sagen, dass sich das entwickelte Testsystem und das Hadoop"=Cluster im Großen und Ganzen so verhält, wie es erwartet werden konnte.
+Zusammenfassend lässt sich basierend auf der vorhandenen Datenbasis der 43 ausgeführten Tests sagen, dass sich das entwickelte Testsystem und das Hadoop"=Cluster im Großen und Ganzen so verhält, wie es erwartet werden konnte.
 Dennoch wurden nicht alle der in \cref{subsec:functionalRequirements} definierten funktionalen Anforderungen an das Cluster selbst und der in \cref{subsec:testRequirements} definierten Anforderungen an das gesamte Testsystem vollständig erfüllt.
-Die meisten dieser Anforderungen wurden mithilfe der definierten Constraints implementiert (vgl. \cref{subsec:yarnComponentConstraints,subsec:yarnController,subsec:simulationBasics}), wodurch diese Anforderungen bei jedem \gls{Testfall} automatisch validiert werden konnten.
+Die meisten dieser Anforderungen wurden mithilfe der definierten Constraints implementiert (vgl. \cref{subsec:yarnComponentConstraints,subsec:yarnController,subsec:simulationBasics}), wodurch diese Anforderungen bei jedem Testfall automatisch validiert werden konnten.
 
-Vor allem die funktionale Anforderung, wonach alle Tasks vollständig ausgeführt werden, sofern sie nicht abgebrochen werden, wurde bei den 110 nicht erfolgreichen \glspl{Anwendung} nicht erfüllt.
-Aber auch bei einigen vollständig ausgeführten \glspl{Anwendung} wurde diese nicht komplett erfüllt, was die mit dem Exitcode -100 beendeten \glspl{Attempt} zeigen.
-Bei \glspl{Attempt} mit dem Exitcode -100 wird zudem die Anforderung, dass kein Task an defekte Nodes gesendet wird, verletzt (vgl. \cref{subsec:failedApps}).
+Vor allem die funktionale Anforderung, wonach alle Tasks vollständig ausgeführt werden, sofern sie nicht abgebrochen werden, wurde bei den 110 nicht erfolgreichen Anwendungen nicht erfüllt.
+Aber auch bei einigen vollständig ausgeführten Anwendungen wurde diese nicht komplett erfüllt, was die mit dem Exitcode -100 beendeten Attempts zeigen.
+Bei Attempts mit dem Exitcode -100 wird zudem die Anforderung, dass kein Task an defekte Nodes gesendet wird, verletzt (vgl. \cref{subsec:failedApps}).
 
 Bei der Validierung der Constraints ist es zudem vorgekommen, dass diejenigen für die Anforderungen, dass die Konfiguration aktualisiert sowie der Status des Clusters vom Testsystem erkannt und im Testmodell gespeichert wird, als ungültig validiert wurden.
 Dies waren nach einer genaueren Betrachtung der Gründe hierfür zum Teil jedoch falscher Alarm, wodurch diese Anforderungen zu großen Teilen als erfüllt angesehen werden können (vgl. \cref{subsec:notDetectedHost2}).
-Genauso verhält es sich bei den nicht erkannten, injizierten und reparierten Komponentenfehlern, wonach die Anforderungen, dass defekte Nodes und Verbindungsabbrüche erkannt werden, bei der Betrachtung eines einzelnen Testfalls in 19 Fällen zwar nicht erfüllt, bei der Betrachtung der gesamten \glspl{Test} jedoch als erfüllt angesehen werden können (vgl. \cref{subsec:notDetectedFaults}).
+Genauso verhält es sich bei den nicht erkannten, injizierten und reparierten Komponentenfehlern, wonach die Anforderungen, dass defekte Nodes und Verbindungsabbrüche erkannt werden, bei der Betrachtung eines einzelnen Testfalls in 19 Fällen zwar nicht erfüllt, bei der Betrachtung der gesamten Tests jedoch als erfüllt angesehen werden können (vgl. \cref{subsec:notDetectedFaults}).
 
-Auch die Anforderung, dass sich der MARP"=Wert anhand der ausgeführten \glspl{Anwendung} verändert, wurde nicht immer erfüllt.
-Die Betrachtung der Werte bei den einzelnen \glspl{Test} ergab, dass es durchaus möglich ist, dass die bei einem \gls{Test} ausgeführten \glspl{Anwendung} nicht ausreichen, damit sich der Wert verändert (vgl. \cref{sec:marpValueResults}).
-Dennoch war es anhand dieser Anforderung möglich, die in \cref{sec:implMutationTests} implementierten Mutanten der Selfbalancing"=Komponente, bis auf einige Besonderheiten, in den ausgeführten \glspl{Test} zu erkennen (vgl. \cref{sec:killingMutants}).
+Auch die Anforderung, dass sich der MARP"=Wert anhand der ausgeführten Anwendungen verändert, wurde nicht immer erfüllt.
+Die Betrachtung der Werte bei den einzelnen Tests ergab, dass es durchaus möglich ist, dass die bei einem Test ausgeführten Anwendungen nicht ausreichen, damit sich der Wert verändert (vgl. \cref{sec:marpValueResults}).
+Dennoch war es anhand dieser Anforderung möglich, die in \cref{sec:implMutationTests} implementierten Mutanten der Selfbalancing"=Komponente, bis auf einige Besonderheiten, in den ausgeführten Tests zu erkennen (vgl. \cref{sec:killingMutants}).
 Auch die Anforderung, dass die in \cref{subsec:yarnComponentFaults} implementierten Komponentenfehler im realen Cluster injiziert und repariert werden, konnte nicht immer erfüllt werden (vgl. \cref{subsec:noReconf1922}).
 In diesem Kontext zeigte sich aber, dass immer erkannt werden konnte, wenn keine weitere Rekonfiguration des Clusters möglich ist, womit diese Anforderung vollständig erfüllt wird (vgl. \cref{sec:noReconfig}).
 Zudem konnte in einigen Fällen die Anforderung, dass mehrere Benchmark"=Anwendungen gleichzeitig gestartet und ausgeführt werden können, nicht erfüllt werden (vgl. \cref{subsec:notStartedApps}).
 
-Zu einem großen Teil erfüllt werden konnte jedoch die Anforderung, dass ein \gls{Test} vollautomatisch ausgeführt werden kann.
-Lediglich bei der Ausführung von mehreren Testfällen direkt hintereinander mithilfe der in \cref{sec:implTestcases} implementierten \texttt{CaseStudyTests}"=Klasse kam es vor, dass die vom Connector bereitgestellten Submitter zum Starten von \glspl{Anwendung} nicht ausgereicht haben (vgl. \cref{subsec:notEnoughSubmitter}).
+Zu einem großen Teil erfüllt werden konnte jedoch die Anforderung, dass ein Test vollautomatisch ausgeführt werden kann.
+Lediglich bei der Ausführung von mehreren Testfällen direkt hintereinander mithilfe der in \cref{sec:implTestcases} implementierten \texttt{CaseStudyTests}"=Klasse kam es vor, dass die vom Connector bereitgestellten Submitter zum Starten von Anwendungen nicht ausgereicht haben (vgl. \cref{subsec:notEnoughSubmitter}).
 
 Die genauen Gründe für die verletzten Anforderungen und Constraints sind in den bereits verwiesenen, nachfolgenden Abschnitten erläutert.
 
-Die 43 ausgeführten \glspl{Test} haben aber auch gezeigt, dass das Cluster ohne Auswirkung auf seine Funktionsweise auf einem oder mehreren Hosts ausgeführt werden kann.
-Auch zeigte sich bei den 7 \glspl{Testkonfiguration} mit mehrmaligen Ausführungen, dass die \glspl{Test} und seine \glspl{Testfall} im Grunde mehrmals ausgeführt werden können.
-Die einzigen Unterschiede bei den jeweiligen Ausführungen waren ausschließlich durch die Verteilung der Last innerhalb des Clusters bedingt, was sich vor allem in direkten Vergleichen zwischen korrespondierenden \glspl{Test} zeigt.
+Die 43 ausgeführten Tests haben aber auch gezeigt, dass das Cluster ohne Auswirkung auf seine Funktionsweise auf einem oder mehreren Hosts ausgeführt werden kann.
+Auch zeigte sich bei den 7 Testkonfigurationen mit mehrmaligen Ausführungen, dass die Tests und seine Testfälle im Grunde mehrmals ausgeführt werden können.
+Die einzigen Unterschiede bei den jeweiligen Ausführungen waren ausschließlich durch die Verteilung der Last innerhalb des Clusters bedingt, was sich vor allem in direkten Vergleichen zwischen korrespondierenden Tests zeigt.

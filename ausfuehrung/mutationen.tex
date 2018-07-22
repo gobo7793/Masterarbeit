@@ -1,15 +1,15 @@
 \section{Generierung der Mutanten}
 \label{sec:implMutationTests}
 
-Um das entwickelte Testsystem selbst zu validieren, wurden einige \glspl{Mutationstest} entwickelt.
+Um das entwickelte Testsystem selbst zu validieren, wurden einige Mutationstests entwickelt.
 Mutationstests werden vor allem in der Forschung eingesetzt, um Fehler im \gls{SuT} oder dem Testsystem selbst zu finden, in dem das \gls{SuT} verändert wird.
 Ziel ist es, die im \gls{SuT} implementierten Mutanten zu finden, und dabei möglichst weitere Fehlerquellen zu ermitteln \cite{DeMillo1978,Hamlet1977,Jia2011,Groce2018}.
 
-Da sich \glspl{Mutationstest} zu einem großen Forschungszweig entwickelt haben, gibt es hierfür entsprechend viele Tools, um solche Tests zu entwickeln \cite{Jia2011,Groce2018}.
+Da sich Mutationstests zu einem großen Forschungszweig entwickelt haben, gibt es hierfür entsprechend viele Tools, um solche Tests zu entwickeln \cite{Jia2011,Groce2018}.
 Einige Beispiele hierfür sind PIT\footnote{\url{http://pitest.org/}} und Judy\footnote{\url{http://mutationtesting.org/}} für Java"=Programme \cite{Coles2016,Madeyski2010}, und Milu\footnote{\url{https://github.com/yuejia/Milu}} für in C entwickelte Programme \cite{Jia2008}.
 
-Ein weiteres, sehr einfach zu nutzendes Tool zum Entwickeln von \glspl{Mutationstest} ist der Universalmutator\footnote{\url{https://github.com/agroce/universalmutator}} \cite{Groce2018}.
-Er kann zum Entwickeln von \glspl{Mutationstest} nicht nur innerhalb einer bestimmten Umgebung bzw. Programmiersprache, sondern prinzipiell für alle Programmiersprachen eingesetzt werden.
+Ein weiteres, sehr einfach zu nutzendes Tool zum Entwickeln von Mutationstests ist der Universalmutator\footnote{\url{https://github.com/agroce/universalmutator}} \cite{Groce2018}.
+Er kann zum Entwickeln von Mutationstests nicht nur innerhalb einer bestimmten Umgebung bzw. Programmiersprache, sondern prinzipiell für alle Programmiersprachen eingesetzt werden.
 Dies wird dadurch ermöglicht, dass die vom Universalmutator generierten Mutanten basierend auf einem oder mehreren \gls{Regex}"=basierten Regelsätzen durchgeführt werden und somit der Quellcode der Programme verändert wird.
 So kann vom Universalmutator Quellcode \uA in den Sprachen Python, Java, C/C++, oder Swift mutiert werden \cite{Groce2018}.
 
@@ -17,9 +17,9 @@ Da bei der Ausführung des Universalmutators auch zahlreiche Mutanten erzeugt we
 Ein validierter Mutant zeichnet sich hierbei dadurch aus, dass dieser durch den Original"=Compiler der jeweiligen Sprache kompiliert werden kann und die generierten Objektdateien bzw. Bytecode nicht dem nicht-mutierten Original oder anderen bereits generierten Mutationen entsprechen \cite{Groce2018}.
 Diese Validierung kann mithilfe von entsprechenden Startparametern durch ein benutzerdefiniertes Programm durchgeführt werden oder alternativ nicht durchgeführt werden \cite{Groce2018,UniversalmutatorSourceGenmutants}.
 
-Da in dieser Fallstudie nicht nur Hadoop bzw. die Selfbalancing"=Komponente getestet werden soll, sondern vor allem das in den vorherigen Abschnitten und Kapiteln beschriebene Testsystem, wurden auch \glspl{Mutationstest} erstellt (vgl. \cref{sec:clusterSetup}).
+Da in dieser Fallstudie nicht nur Hadoop bzw. die Selfbalancing"=Komponente getestet werden soll, sondern vor allem das in den vorherigen Abschnitten und Kapiteln beschriebene Testsystem, wurden auch Mutationstests erstellt (vgl. \cref{sec:clusterSetup}).
 Hierbei wurden mithilfe des Universalmutators insgesamt 431 valide Mutationen aus dem Quellcode der Selfbalancing"=Komponente generiert.
-Von allen validen Mutationen wurden anschließend für jede der vier Klassen der Selfbalancing"=Komponente jeweils ein Mutant zufällig ausgewählt, welche als Basis für die in dieser Fallstudie verwendeten \glspl{Mutationstest} dienen (vgl. \cref{subsec:selfbalancingAnalysis}):
+Von allen validen Mutationen wurden anschließend für jede der vier Klassen der Selfbalancing"=Komponente jeweils ein Mutant zufällig ausgewählt, welche als Basis für die in dieser Fallstudie verwendeten Mutationstests dienen (vgl. \cref{subsec:selfbalancingAnalysis}):
 
 \begin{enumerate}
     \item
@@ -35,14 +35,14 @@ Von allen validen Mutationen wurden anschließend für jede der vier Klassen der
     Der Mutant 2 sorgt dafür, dass anstatt des korrekten Dateipfades der Bash (\texttt{/bin/bash}) ein ungültiger Dateipfad (hier \texttt{\%bin/bash}) aufgerufen wird und somit der neue \gls{MARP}"=Wert nicht in das Cluster übertragen werden kann.
     
     \item
-    Mithilfe des \texttt{ControlNodeMonitor} wird das Schell"=Script zum Ermitteln der Anzahl der aktiven \gls{YARN}"=Jobs ausgeführt.
+    Mithilfe des \texttt{ControlNodeMonitor} wird das Schell"=Script zum Ermitteln der Anzahl der aktiven YARN"=Jobs ausgeführt.
     Dies geschieht in einem eigenen Thread, der mithilfe einer \texttt{while}"=Schleife, die solange aktiv ist, solange der Thread aktiv ist.
     Hierbei wird das Script rund einmal pro Sekunde aufgerufen und danach ermittelt, ob bei der Ausführung des Shell"=Scriptes Fehler aufgetreten sind.
     Dazu wird ein entsprechender \texttt{BufferedReader} geöffnet und der Error"=Stream des Scriptes eingelesen und anschließend von der Selfbalancing"=Komponente ausgegeben.
     Umgesetzt wird das mithilfe einer \texttt{while}"=Schleife, die solange den Fehler ausgibt, solange die mithilfe von \texttt{BufferedReader.readLine()} ausgelesene Fehlermeldung nicht \texttt{null} ist, also noch weiteren Text enthält.
     Der Mutant 3 ändert die Schleifenbedingung nun so ab, dass die Schleife durchlaufen wird, solange die Fehlermeldung keinen Text enthält, \texttt{readLine()} also \texttt{null} zurück gibt.
-    Dadurch wird der \texttt{ControlNodeMonitor} in einer Dauerschleife gefangen und die Anzahl der aktiven \gls{YARN}"=Jobs wird einmalig direkt nach dem Start der Selfbalancing"=Komponente ermittelt.
-    Dadurch steht die Anzahl der \gls{YARN}"=Jobs nicht zur Berechnung des \gls{MARP}"=Wertes zur Verfügung und kann nicht korrekt berechnet werden.
+    Dadurch wird der \texttt{ControlNodeMonitor} in einer Dauerschleife gefangen und die Anzahl der aktiven YARN"=Jobs wird einmalig direkt nach dem Start der Selfbalancing"=Komponente ermittelt.
+    Dadurch steht die Anzahl der YARN"=Jobs nicht zur Berechnung des \gls{MARP}"=Wertes zur Verfügung und kann nicht korrekt berechnet werden.
             
     \item
     Die Klasse \texttt{MemUtilization} funktioniert analog wie die \texttt{ControlNodeMonitor}"=Klasse, führt jedoch das Script zum Auslesen des Arbeitsspeicher"=Bedarfs des Clusters aus.

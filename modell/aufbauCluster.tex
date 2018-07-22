@@ -18,7 +18,7 @@ Um die Verwaltung des Clusters zu vereinfachen wurden zudem entsprechende Setup-
 \label{subsec:clusterBasics}
 
 Da Docker (genutzt wird hier Version 18.03 CE) und Hadoop vor allem zum Einsatz in Linux"=Umgebungen entwickelt wurden, werden für das reale Cluster bis zu zwei physische Linux"=Hosts genutzt.
-Auf einem dieser beiden Hosts wird mithilfe von VirtualBox 5.2 eine VM mit Windows 10 Education Version 1803 ausgeführt, um die \glspl{Test} mithilfe von \gls{ss} auszuführen.
+Auf einem dieser beiden Hosts wird mithilfe von VirtualBox 5.2 eine VM mit Windows 10 Education Version 1803 ausgeführt, um die Tests mithilfe von \gls{ss} auszuführen.
 Dies ist nötig, da \gls{ss} mithilfe des .NET"=Frameworks entwickelt wurde (vgl. \cref{sec:ssharp}), welches auf Linux in Form von .NET Core zudem nur in einem verringertem Funktionsumfang verfügbar ist \cite{Schwichtenberg2017}.
 
 Die beiden Hosts sind jeweils mit einem Intel Core i5"=4570 @ 3,2 GHz x 4, 16 GB Arbeitsspeicher sowie einer SSD ausgestattet, auf der Ubuntu 16.04 LTS als Betriebssystem installiert ist.
@@ -44,7 +44,7 @@ Um das Cluster auf beiden für diese Fallstudie genutzten Hosts auszuführen, wu
     \caption[Cluster"=Setup bei der Nutzung des Multihost"=Modes]
     {Cluster"=Setup bei der Nutzung des \texttt{Multihost}"=Modes.
     Hier ist das konkrete, in dieser Fallstudie genutzte Setup gezeigt.
-    Grün: \gls{HDFS}, Blau: \gls{YARN}, Rot: Graphite.}
+    Grün: HDFS, Blau: YARN, Rot: Graphite.}
     \label{fig:caseStudyHadoopSetup}
 \end{figure}
 
@@ -53,7 +53,7 @@ Damit das Cluster jedoch auf beiden Hosts gestartet werden kann, ist es nötig, 
 Außerdem können mithilfe des \texttt{Multihost}"=Modes dem Hadoop"=Cluster weitere, sonst für die Ausführung der VMs benötigte Ressourcen, zur Verfügung gestellt werden, weshalb in dieser Fallstudie der \texttt{Multihost}"=Mode genutzt wurde.
 Beim \texttt{Mutihost}"=Mode werden zudem nur auf Host1 die volle Anzahl an definierten Nodes pro Host gestartet, auf allen anderen Hosts wird jeweils die Hälfte gestartet und ausgeführt.
 
-Je nach \texttt{HostMode} unterscheiden sich einzelne Pfade oder Adressen, \zB die der \gls{REST}"=API.
+Je nach \texttt{HostMode} unterscheiden sich einzelne Pfade oder Adressen, \zB die der REST"=API.
 Auch aus diesem Grund wurde die bereits in \cref{subsec:modelClass} erläuterte Klasse \texttt{ModelSettings} entwickelt, welche die Verwaltung der entsprechenden Pfade und Adressen übernimmt.
 
 \subsection{Setup- und Startscripte}
@@ -78,4 +78,4 @@ Zum zentralen Starten der Benchmarks wurde ebenfalls ein zentrales Benchmark"=St
 Dadurch kann analog zum Setup"=Script unabhängig vom zu startenden Benchmark vom \texttt{CmdConnector} immer der gleiche Syntax genutzt werden.
 Das zentrale Benchmark"=Startscript ermittelt basierend auf dem zu startenden Benchmark das jeweils benötigte Start"=Script und übergibt die jeweils benötigten Parameter.
 Die vom \texttt{HostMode} abhängigen Parameter zum Starten der Benchmark"=Container werden von den hierfür angepassten Start"=Scripten der Benchmarks selbst ermittelt.
-Die jeweiligen Startparameter der \glspl{Anwendung} selbst werden vom Benchmark"=Controller (vgl. \cref{subsec:appImplementation}) bereitgestellt.
+Die jeweiligen Startparameter der Anwendungen selbst werden vom Benchmark"=Controller (vgl. \cref{subsec:appImplementation}) bereitgestellt.

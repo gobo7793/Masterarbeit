@@ -189,7 +189,7 @@
 \usepackage{bookmark}
 
 % Glossar/Abkürzungen
-\usepackage[toc,nonumberlist,nopostdot]{glossaries}
+\usepackage[nonumberlist,nopostdot]{glossaries}
 %\setglossarystyle{altlist}
 \renewcommand{\glossarysection}[2][]{}
 \usepackage{xparse}
@@ -249,6 +249,7 @@
         \clearpage
         \pagestyle{scrheadings}
         \addchap{Glossar und Abkürzungen}
+        \glsaddall
         \printnoidxglossary[sort=word,title={Glossar und Abkürzungen}]
         \subsubsection*{Abkürzungen der Benchmarks (vgl. \cref{subsec:appSelection})}
         \begin{multicols}{2}

@@ -15,8 +15,8 @@ Während bei allen Testkonfigurationen, bei denen Mutationen aktiv waren, der \g
     	Konf. &  21   &  23   &  25   &  27   &  29   & 31.1  & 31.2  \\ \hline
     	Wert  & 0,335 & 0,498 & 0,521 & ,0819 & 0,273 & 0,488 & 0,333
     \end{tabular}
-    \caption[Finale \acrshort{MARP}"=Werte der \glspl{Testkonfiguration} ohne Mutanten.]
-    {Finale \acrshort{MARP}"=Werte der \glspl{Testkonfiguration} ohne Mutanten.
+    \caption[Finale \acrshort{MARP}"=Werte der Testkonfigurationen ohne Mutanten.]
+    {Finale \acrshort{MARP}"=Werte der Testkonfigurationen ohne Mutanten.
     Eine Übersicht aller Tests findet sich in \cref{app:overviewExecutedTestCases}.}
     \label{tab:finalMarpValues}
 \end{table}
@@ -24,15 +24,15 @@ Während bei allen Testkonfigurationen, bei denen Mutationen aktiv waren, der \g
 Da er in den Konfigurationen 1 und 7 bei der jeweils ersten Ausführung nicht verändert wurde, wurden beide Konfigurationen erneut ausgeführt, wobei der \gls{MARP}"=Wert bei letzterem mehrmals erhöht wurde, bevor er im finalen Clusterstatus auf 1 gesetzt wurde.
 Bei der Konfiguration 1 wurde der Wert dagegen bei keiner der beiden Ausführungen verändert.
 
-Die nicht durchgeführte Änderung des \gls{MARP}"=Wertes in Konfiguration 1 liegt sehr wahrscheinlich daran, dass in hier nur im ersten der fünf \glspl{Testfall} zwei \glspl{Anwendung} gleichzeitig gestartet werden.
-Dadurch wurden in allen zehn ausgeführten Testfällen zusammen nur acht \glspl{Anwendung} gestartet, die Hälfte davon jeweils beim ersten Testfall.
-Da zudem vier der acht \glspl{Anwendung} nur kleine \glspl{Anwendung} (\acrlong{rtw} und \acrlong{pi}) sind, und diese entsprechend schnell abgeschlossen werden können, steht den wesentlich umfangreicheren \glspl{Anwendung} \acrlong{dfw} und \acrlong{dfr} das gesamte Cluster nahezu exklusiv zur Verfügung.
-Daher stehen in diesen \glspl{Test} allen \glspl{Anwendung} ausreichend Ressourcen zur Verfügung, was eine Anpassung des \gls{MARP}"=Wertes unnötig erscheinen lässt und daher durch die Selfbalancing"=Komponente nicht durchgeführt wird.
+Die nicht durchgeführte Änderung des \gls{MARP}"=Wertes in Konfiguration 1 liegt sehr wahrscheinlich daran, dass in hier nur im ersten der fünf Testfälle zwei Anwendungen gleichzeitig gestartet werden.
+Dadurch wurden in allen zehn ausgeführten Testfällen zusammen nur acht Anwendungen gestartet, die Hälfte davon jeweils beim ersten Testfall.
+Da zudem vier der acht Anwendungen nur kleine Anwendungen (\acrlong{rtw} und \acrlong{pi}) sind, und diese entsprechend schnell abgeschlossen werden können, steht den wesentlich umfangreicheren Anwendungen \acrlong{dfw} und \acrlong{dfr} das gesamte Cluster nahezu exklusiv zur Verfügung.
+Daher stehen in diesen Tests allen Anwendungen ausreichend Ressourcen zur Verfügung, was eine Anpassung des \gls{MARP}"=Wertes unnötig erscheinen lässt und daher durch die Selfbalancing"=Komponente nicht durchgeführt wird.
 
-Bei der \gls{Testkonfiguration} 7 ist dies ähnlich, wobei die gesamte Last auf mehr Nodes verteilt werden kann.
-Der beim \gls{Test} 7.2 deutlich veränderte \gls{MARP}"=Wert im Vergleich zum \gls{Test} 7.1 ohne Anpassung zeigt jedoch auch, dass es stark abhängig davon ist, wie die Last im Cluster verteilt wird.
-Bestätigt wird dies durch die \glspl{Test} 9.1 und 9.2, da bei letzterem weniger Komponentenfehler injiziert wurden und sich die Last entsprechend auf mehr aktive Nodes verteilen konnte.
-Dadurch war im \gls{Test} 9.2 ein um rund 0,1 niedrigerer \gls{MARP}"=Wert als im \gls{Test} 9.1 nötig.
+Bei der Testkonfiguration 7 ist dies ähnlich, wobei die gesamte Last auf mehr Nodes verteilt werden kann.
+Der beim Test 7.2 deutlich veränderte \gls{MARP}"=Wert im Vergleich zum Test 7.1 ohne Anpassung zeigt jedoch auch, dass es stark abhängig davon ist, wie die Last im Cluster verteilt wird.
+Bestätigt wird dies durch die Tests 9.1 und 9.2, da bei letzterem weniger Komponentenfehler injiziert wurden und sich die Last entsprechend auf mehr aktive Nodes verteilen konnte.
+Dadurch war im Test 9.2 ein um rund 0,1 niedrigerer \gls{MARP}"=Wert als im Test 9.1 nötig.
 
-Auffällig war zudem, dass der \gls{MARP}"=Wert in den Testausführungen 7.2, 9.1 und 23 nicht direkt im ersten \gls{Testfall} verändert wurde, sondern erst bei der Ausführung von Testfällen im späteren Verlauf der jeweiligen Tests.
-Als Resultat wurde daher in 9 der 15 \glspl{Testfall} der drei Testausführungen das entsprechende Constraint verletzt.
+Auffällig war zudem, dass der \gls{MARP}"=Wert in den Testausführungen 7.2, 9.1 und 23 nicht direkt im ersten Testfall verändert wurde, sondern erst bei der Ausführung von Testfällen im späteren Verlauf der jeweiligen Tests.
+Als Resultat wurde daher in 9 der 15 Testfälle der drei Testausführungen das entsprechende Constraint verletzt.
