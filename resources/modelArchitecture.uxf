@@ -72,7 +72,7 @@ Reales Cluster</panel_attributes>
 halign=center
 layer=-1
 bg=light_gray
-Windows-PC bzw. VM</panel_attributes>
+Windows-Host bzw. -VM</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -87,7 +87,7 @@ Windows-PC bzw. VM</panel_attributes>
 halign=center
 layer=-1
 bg=light_gray
-Linux-PC</panel_attributes>
+Linux-Hosts</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -330,7 +330,7 @@ Connector</panel_attributes>
 halign=center
 layer=1
 Start- und
-Setupscripte</panel_attributes>
+Setup-Scripte</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
