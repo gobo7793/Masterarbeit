@@ -1,31 +1,31 @@
 \section{Bewertung und Ausblick}
 \label{sec:outlook}
 
-Im Rahmen dieser Masterarbeit sollte vor allem Ermittelt werden, ob eine Testautomatisierung eines selbstadaptiven Load"=Balancing"=Systems mithilfe eines modellbasierten Ansatzes möglich ist (vgl. \cref{ch:caseStudy}).
+Im Rahmen dieser Masterarbeit sollte vor allem ermittelt werden, ob eine Testautomatisierung eines selbstadaptiven Load"=Balancing"=Systems mithilfe eines modellbasierten Ansatzes möglich ist (vgl. \cref{ch:caseStudy}).
 Basierend auf den Ergebnissen dieser Fallstudie lässt sich sagen, dass dies mit dem entwickelten Testsystem und dem Testframework \gls{ss} möglich ist.
-Alle in \cref{sec:requirements} definierten Anforderungen, die automatisiert geprüft werden konnten, wurden entsprechend Implementiert, wodurch auch die Auswertung der Testfälle zu großen Teilen automatisiert verlief.
+Alle in \cref{sec:requirements} definierten Anforderungen, die automatisiert geprüft werden konnten, wurden entsprechend implementiert, wodurch auch die Auswertung der Testfälle zu großen Teilen automatisiert verlief.
 
-Jedoch konnten nicht alle Anforderungen vollständig automatisiert werden wie \zB die Anforderung, dass ein Test vollautomatisiert durchgeführt werden kann.
+Jedoch konnten nicht alle Anforderungen vollständig automatisiert werden, wie \zB die Anforderung, dass ein Test vollautomatisiert durchgeführt werden kann.
 Diese Anforderung musste manuell validiert werden, womit es auch an das Halteproblem \cite{Turing1937,Turing1938} erinnert, wonach durch einen Algorithmus nicht entschieden werden kann, ob ein anderer Algorithmus terminiert.
 Die Anforderung konnte hierbei insofern validiert werden, als dass die Durchführung eines Tests vollautomatisch durchgeführt werden konnte.
-Sollten jedoch mehrere Tests direkt hintereinander ausgeführt werden, kam es bei der Ausführung der Tests in einigen Fällen zu Problem, vor allem wenn der zuvor ausgeführte Test aufgrund der fehlenden Möglichkeit zur weiteren Rekonfiguration regulär abgebrochen wurde, dabei jedoch nicht die noch auf dem Cluster ausgeführten Anwendungen abgebrochen wurden (vgl. \cref{subsec:simulationBasics,sec:evaluationResults}).
+Sollten jedoch mehrere Tests direkt hintereinander ausgeführt werden, traten bei der Ausführung der Tests in einigen Fällen Problemen auf, wenn der zuvor ausgeführte Test aufgrund der fehlenden Möglichkeit zur weiteren Rekonfiguration regulär abgebrochen, dabei jedoch nicht die noch auf dem Cluster ausgeführten Anwendungen abgebrochen wurden (vgl. \cref{subsec:simulationBasics,sec:evaluationResults}).
 Dadurch bestand die Möglichkeit, dass bei nachfolgenden Tests einige Submitter des Connectors aufgrund der noch ausgeführten Anwendungen belegt waren (vgl. \cref{subsubsec:implCmdConnector}), und der Test letztlich aufgrund fehlender, noch freier Submitter abgebrochen wurde (vgl. \cref{sec:evaluationResults,subsec:notEnoughSubmitter}).
 Um dies zu verhindern, mussten die Docker"=Container der noch ausgeführten Benchmark"=Anwendungen manuell beendet werden.
 Dadurch wurde die automatische Ausführung aller Tests ermöglicht, sofern für die Ausführung eines Tests ausreichend Submitter zur Verfügung standen (vgl. \cref{subsec:notEnoughSubmitter}).
 
 Ähnlich verhält es sich mit der Anforderung, dass Tests und Testfälle zeitlich unabhängig und mehrmals ausgeführt werden können.
-Für diese Anforderungen kann aufgrund der Evaluation jedoch entschieden werden, dass diese Anforderungen insofern erfüllt wird, als dass ein Test zeitlich unabhängig unter den gleichen Bedingungen gestartet werden kann, die einzelnen Testfälle jedoch unterschiedlich sein können.
+Für diese Anforderungen kann aufgrund der Evaluation jedoch entschieden werden, dass diese Anforderungen insofern erfüllt werden, als dass ein Test zeitlich unabhängig unter den gleichen Bedingungen gestartet werden kann, die einzelnen Testfälle jedoch unterschiedlich sein können.
 Dies liegt daran, dass die ausgeführten Testfälle während der Testausführung dynamisch und basierend auf der Testkonfiguration, den zuvor ausgeführten Testfällen, sowie dem Verhalten des Clusters generiert werden (vgl. \cref{sec:selectTestcases,sec:evaluationResults}).
 
 Neben den Problemen, dass einige Anwendungen nicht immer beendet wurden, wenn ein Test abgebrochen wurde, gibt es aber auch noch weitere Punkte, bei denen das entwickelte Testsystem nach den Erfahrungen der ausgeführten Tests optimiert werden kann.
-Eine Möglichkeit wäre \zB die vermehrte Nutzung von mehreren Threads für einzelne Abläufe innerhalb der Simulation bzw. des Treibers wie beim Zugriff auf das Clusters.
+Eine Möglichkeit wäre \zB die vermehrte Nutzung von mehreren Threads für einzelne Abläufe innerhalb der Simulation bzw. des Treibers, wie beim Zugriff auf das Cluster.
 Problematisch könnte hierbei jedoch sein, dass Multithreading von \gls{ss} nicht unterstützt wird (vgl. \cref{sec:ssharp}).
 Hierfür müsste daher geprüft werden, an welcher Stelle entsprechende Optimierungen möglich wären.
 
 Ebenso könnte die SSH"=Verbindung selbst analog zu den Parsern und Connectoren (vgl. \cref{subsec:driverModelIntegration}) besser gekapselt werden, \zB in Form eines hierfür definierten Interfaces.
 Auch könnte die Initialisierung des Treibers anstatt über den erstmaligen Aufruf der jeweiligen Singletons möglicherweise mithilfe des Factory"=Patterns durchgeführt werden.
 
-Was ein wichtiger Punkt für mögliche Optimierungen im Testsystem darstellt ist das Starten von Anwendungen.
+Was einen wichtigen, aber diskutablen, Punkt für mögliche Optimierungen im Testsystem darstellt, ist das Starten von Anwendungen.
 Hierfür werden im entwickelten Testsystem vom Connector mehrere gemeinsam genutzte SSH"=Verbindungen bereit gestellt (vgl. \cref{subsubsec:implCmdConnector}).
 Da bei der Ausführung der Tests jedoch Probleme aufgrund einiger nicht korrekt beendeter Anwendungen aufgetreten sind, waren nicht in jedem Test ausreichend Submitter vorhanden bzw. deren Anzahl musste erhöht werden (vgl. \cref{subsec:notEnoughSubmitter}).
 Eine Lösungsmöglichkeit hierfür wäre, jedem Client einen eigenen Submitter bereitzustellen.
@@ -39,7 +39,7 @@ Als problematisch könnte sich hierbei jedoch erweisen, dass dieser Fehler bei w
 
 Ein spezieller Fall bildet das Fehlen der Diagnostik"=Daten von ausgeführten Anwendungen im Programmlog.
 Hierfür hat sich nach einer Analyse herausgestellt, dass nicht fehlerhafte Daten des Clusters ursächlich waren, sondern ein falsch gesetztes Attribut im Parser (vgl. \cref{subsec:notSavedAppDiagnostics}).
-Dies hätte bereits bei Vorabtests wie den durchgeführten Komponententests der beiden implementierten Parser festgestellt und entsprechend korrigiert werden müssen.
+Dies hätte bereits bei Vorabtests, wie den durchgeführten Unit"=Tests der beiden implementierten Parser, festgestellt und entsprechend korrigiert werden müssen.
 
 Erwähnenswert ist zudem, dass bei der Recherche für diese Masterarbeit mehrmals aufgefallen ist, dass Hadoop oftmals für unpassende Aufgaben genutzt wird \cite{Ren2013,Vavilapalli2013}.
 Das bestätigt auch die Studie \cite{HadoopDataTypes}, wonach viele der mithilfe von Hadoop durchgeführten Aufgaben auch von \enquote{traditionellen Plattformen} durchgeführt werden könnten.

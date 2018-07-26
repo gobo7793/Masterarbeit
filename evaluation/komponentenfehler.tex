@@ -2,7 +2,7 @@
 \label{sec:faultEval}
 
 Die Aktivierung und Deaktivierung der Komponentenfehler in einem Testfall hängt neben dem zur Berechnung benötigtem Basisseed vor allem von den zuvor ausgeführten Testfällen bzw. der Lastverteilung bei den zuvor ausgeführten Testfällen eines Tests ab (vgl. \cref{subsec:faultActivation}).
-Daher wurden abhängig von der Lastverteilung im Cluster auch bei einer mehrmaligen Ausführung der gleichen Konfiguration bei einigen Testausführungen unterschiedliche Komponentenfehler aktiviert.
+Daher wurden, abhängig von der Lastverteilung im Cluster, auch bei einer mehrmaligen Ausführung der gleichen Konfiguration bei einigen Testausführungen unterschiedliche Komponentenfehler aktiviert.
 
 Unterschieden werden muss hierbei zudem zwischen aktivierten und injizierten Komponentenfehlern.
 Während beide implementierten Komponentenfehler für einen Node in einem Testfall auch gleichzeitig aktiviert werden konnten, wurde in so einem Fall jedoch nur der \texttt{NodeDead}"=Fehler im Cluster injiziert (vgl. \cref{subsec:yarnComponentFaults}).
@@ -14,7 +14,7 @@ Im Folgenden wird nun ein Überblick über die bei den Tests aktivierten bzw. de
 \label{subsec:actDeactFaults}
 
 Die Aktivierung und Deaktivierung der Komponentenfehler hing manchmal stark von der ausgeführten Testkonfiguration ab (eine Übersicht aller Testkonfigurationen und Tests findet sich in \cref{app:overviewExecutedTestCases}).
-Im Vergleich zwischen korrespondierenden Konfigurationen, die sich nur in der Nutzung des Mutationsszenarios unterschieden, wurde nur bei 5 korrespondierenden Testkonfigurationen die gleiche Anzahl an Komponentenfehler aktiviert, bei der Deaktivierung der Komponentenfehler besitzen nur 4 korrespondierende Konfigurationen die gleiche Anzahl bei allen Tests.
+Im Vergleich zwischen korrespondierenden Konfigurationen, die sich nur in der Nutzung des Mutationsszenarios unterschieden, wurde nur bei 5 korrespondierenden Testkonfigurationen die gleiche Anzahl an Komponentenfehlern aktiviert, bei der Deaktivierung der Komponentenfehler besitzen nur 4 korrespondierende Konfigurationen die gleiche Anzahl bei allen Tests.
 Die Anzahl der aktivierten und deaktivierten Komponentenfehler unterschied sich dagegen in 8 bzw. 7 korrespondierenden Testkonfigurationen um einen Komponentenfehler in allen Testausführungen.
 Bei den anderen korrespondierenden Konfigurationen unterschied sich die Anzahl bei allen jeweiligen Tests um mehr als einen Komponentenfehler.
 Mit jeweils 20 aktivierten Komponentenfehlern wurden bei den Tests 28.1, 31.1 und 32 die meisten aktiviert, die meisten Komponentenfehler deaktiviert wurden bei den Tests der Konfigurationen 11 und 12 mit jeweils 15 Stück.
@@ -23,25 +23,26 @@ In den Tests 4, 5.1, 5.2 und 6 wurden jeweils 6 oder 7 Komponentenfehler aktivie
 
 Im Vergleich zwischen den Tests von korrespondierenden Testkonfigurationen sind die Tests der Konfigurationen 1 und 2 auffällig.
 Während beim Test 1.1 mit 5 Komponentenfehlern bzw. beim Test 1.2 mit 7 Komponentenfehlern jeweils rund jeder achte mögliche Komponentenfehler aktiviert wurde, wurden beim Test 2 lediglich 3 Komponentenfehler für 4 Nodes in 5 Testfällen (insgesamt also 40 mögliche Komponentenfehler) aktiviert.
-Eine geringere Quote weist lediglich Test 9.2 auf, bei dem mit 4 von 60 möglichen Komponentenfehler nur 7 Prozent aktiviert wurden.
+Eine geringere Quote weist lediglich Test 9.2 auf, bei dem mit 4 von 60 möglichen Komponentenfehlern nur 7 Prozent aktiviert wurden.
 Die Testkonfiguration 9 ist darüber hinaus auch deshalb auffällig, da im Test 9.1 fast dreimal so viele Komponentenfehler, also 11 Stück, aktiviert wurden.
 Auch in den korrespondierenden Tests der Konfiguration 10 liegt die Anzahl der aktivierten Komponentenfehler mit 7 bis 11 jeweils mehr als doppelt so hoch wie in Test 9.2.
 
 Auffällig ist zudem, dass bei korrespondierenden Testkonfigurationen mit unterschiedlicher Anzahl an aktivierten Komponentenfehlern die niedrigere Anzahl meist diejenigen mit Mutationen aufweisen.
-Nur bei den Konfigurationen 9 und 10, 13 und 14, 27 und 28 und 31 und 32 weisen einige Tests ohne Mutationen eine geringere Anzahl an aktivierten Komponentenfehler auf als Tests mit Mutationen.
-Dies liegt wohl auch darin begründet, dass durch den veränderten \gls{MARP}"=Wert die verfügbaren Ressourcen besser an die Anwendungen verteilt werden konnten und bestätigt damit die Funktionalität der von \citeauthor{Zhang2016} entwickelten Komponente.
+Nur bei den Konfigurationen 9 und 10, 13 und 14, 27 und 28 und 31 und 32 weisen einige Tests ohne Mutationen eine geringere Anzahl an aktivierten Komponentenfehlern auf als Tests mit Mutationen.
+Dies liegt wohl auch darin begründet, dass durch den veränderten \gls{MARP}"=Wert die verfügbaren Ressourcen besser an die Anwendungen verteilt werden konnten.
+Dadurch wird auch die Funktionalität der Selfbalancing"=Komponente von \citeauthor{Zhang2016} bestätigt.
 
 Weitere Auffälligkeiten ergeben sich zudem beim Vergleich der Ausführungszeiten der Simulationen.
 Die Tests 9.2, 15, 31.1 sowie 31.2 stellen die einzigen Test ohne Mutationen dar, bei denen die Simulation schneller abgeschlossen wurde als in den korrespondierenden Tests mit Mutationsszenario.
 Da sich das mit der generellen Aussage beim Vergleich der aktivierten Komponentenfehler deckt, kann davon ausgegangen werden, dass die geringere Anzahl an Komponentenfehler zudem die Auswirkung hat, dass Anwendungen schneller gestartet werden können.
-Der Grund hierfür könnte darin liegen, dass bei weniger injizierten Komponentenfehler auch entsprechend weniger Verwaltungsaufwand für bereits ausgeführte Anwendungen nötig ist, wodurch neu gestartete Anwendungen ebenfalls schneller durch das Cluster verarbeitet werden können.
+Der Grund hierfür könnte darin liegen, dass bei weniger injizierten Komponentenfehlern auch entsprechend weniger Verwaltungsaufwand für bereits ausgeführte Anwendungen nötig ist, wodurch neu gestartete Anwendungen ebenfalls schneller durch das Cluster verarbeitet werden können.
 Um hier jedoch eine fundierte Aussage treffen zu können, wären weitere vergleichende Tests nötig (vgl. \cref{sec:discussionResults}).
 
 \subsection{Nicht erkannte, injizierte bzw. reparierte Komponentenfehler}
 \label{subsec:notDetectedFaults}
 
 Bei 18 aller ausgeführten Tests ist aufgetreten, dass ein injizierter bzw. reparierter Komponentenfehler zunächst nicht vom Testsystem erkannt wurde.
-Das betraf konkret drei mal das Injizieren eines Komponentenfehlers sowie 16 mal das Reparieren eines Komponentenfehlers:
+Das betraf konkret in drei Testfällen das Injizieren eines Komponentenfehlers sowie in 16 Testfällen das Reparieren eines Komponentenfehlers:
 
 \begin{table}[h]
     \begin{tabular}{c|ccc}
@@ -70,9 +71,9 @@ Beim Starten bzw. Wiederverbinden eines Nodes verhält es sich analog dazu, wobe
 Dies wird auch dadurch bestätigt, dass für die betroffenen Nodes in den jeweils nachfolgenden Testfällen bzw. dem finalen Clusterstatus oder in korrespondierenden Tests der Status korrekt erkannt wurde, den die Nodes gemäß aufgrund der Komponentenfehler besitzen sollten.
 
 Eine Besonderheit bilden hierbei zunächst die beiden Tests zur Konfiguration 7.
-Im Test 7.1 wurde der gleiche Node zunächst nicht als defekt erkannt bevor er im letzten Testfall noch als defekt erkannt wurde, obwohl er bereits wieder gestartet wurde.
+Im Test 7.1 wurde der gleiche Node zunächst nicht als defekt erkannt, bevor er im letzten Testfall noch als defekt erkannt wurde, obwohl er bereits wieder gestartet wurde.
 Dazwischen wurde der betroffene Node 5 zunächst im Testfall 3 wieder gestartet, bevor er im Testfall 4 wieder beendet wurde, von denen beide Aktionen korrekt erkannt wurden.
-Im Unterschied zum ersten Test der Konfiguration wurde im Test 7.2 nur das Starten des Nodes nicht korrekt erkannt, während das beenden des Nodes 5 im 2. Testfall erkannt wurde.
+Im Unterschied zum ersten Test der Konfiguration wurde im Test 7.2 nur das Starten des Nodes nicht korrekt erkannt, während das Beenden des Nodes 5 im 2. Testfall erkannt wurde.
 Im finalen Clusterstatus ist der Node jedoch wie im Test 7.1 korrekt als aktiv markiert.
 
 Die weitere Besonderheit bilden die Tests der Konfigurationen 17 bis 28.

@@ -25,10 +25,10 @@ Da der \gls{MARP}"=Wert in den Konfigurationen 1 und 7 bei der jeweils ersten Te
 Hierbei wurde der \gls{MARP}"=Wert beim Test 7.2 mehrmals erhöht, bevor er im finalen Clusterstatus auf 1 gesetzt war.
 Bei der Konfiguration 1 wurde der Wert dagegen bei keiner der beiden Ausführungen verändert.
 
-Die nicht durchgeführte Änderung des \gls{MARP}"=Wertes in Konfiguration 1 liegt sehr wahrscheinlich daran, dass in hier nur im ersten der fünf Testfälle zwei Anwendungen gleichzeitig gestartet werden.
-Dadurch wurden in allen zehn ausgeführten Testfällen zusammen nur acht Anwendungen gestartet, die Hälfte davon jeweils beim ersten Testfall.
+Die nicht durchgeführte Änderung des \gls{MARP}"=Wertes in Konfiguration 1 rührt sehr wahrscheinlich daher, dass nur im ersten der fünf Testfälle zwei Anwendungen gleichzeitig gestartet werden.
+Dadurch wurden in allen zehn ausgeführten Testfällen zusammengezählt nur acht Anwendungen gestartet, die Hälfte davon jeweils beim ersten Testfall.
 Da zudem vier der acht Anwendungen nur kleine Anwendungen (\acrlong{rtw} und \acrlong{pi}) sind, und diese entsprechend schnell abgeschlossen werden können, steht den wesentlich umfangreicheren Anwendungen \acrlong{dfw} und \acrlong{dfr} das gesamte Cluster nahezu exklusiv zur Verfügung.
-Daher stehen in diesen Tests allen Anwendungen ausreichend Ressourcen zur Verfügung, was eine Anpassung des \gls{MARP}"=Wertes unnötig erscheinen lässt und daher durch die Selfbalancing"=Komponente nicht durchgeführt wird.
+Daher stehen in diesen Tests allen Anwendungen ausreichend Ressourcen zur Verfügung, was eine Anpassung des \gls{MARP}"=Wertes unnötig erscheinen lässt und daher auch nicht durchgeführt wird.
 
 Bei der Testkonfiguration 7 ist dies ähnlich, wobei die gesamte Last auf mehr Nodes verteilt werden kann.
 Der beim Test 7.2 deutlich veränderte \gls{MARP}"=Wert im Vergleich zum Test 7.1 ohne Anpassung zeigt jedoch auch, dass es stark abhängig davon ist, wie die Last im Cluster verteilt wird.

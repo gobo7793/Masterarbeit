@@ -36,7 +36,7 @@ Das von Spotify genutzte Cluster zur Analyse der Hörgewohnheiten und für Musik
 Es stellt damit auch eines der größten Hadoop"=Cluster dar \cite{PoweredByHadoop}.
 Es ist schnell ersichtlich, dass beim Ausfall von über 400 Nodes wohl ein Großteil der über 20.000 ausgeführten Anwendungen nicht mehr ausgeführt werden könnten und zahlreiche Blöcke von möglicherweise benötigten Daten im HDFS nicht mehr verfügbar wären (vgl. \cref{sec:hadoop}).
 Entsprechende Auswirkungen hätte das auch auf die Kunden von Spotify, da das Cluster \uA zur Ermittlung von Musikempfehlungen genutzt wird, welche dann nur noch eingeschränkt verfügbar wären.
-Es lässt sich daher auch sagen, dass der Ausfall eines Viertels aller Nodes lediglich bei sehr kleinen Clustern mit Nodes im ein- bzw niedrigen zweistelligen realitätsnah sein dürfte.
+Es lässt sich daher auch sagen, dass der Ausfall eines Viertels aller Nodes lediglich bei sehr kleinen Clustern im ein- bzw. niedrigen zweistelligen Bereich realitätsnah sein dürfte.
 
 Daher lässt sich die hohe Anzahl an fehlgeschlagenen Anwendungen wohl vor allem an der generellen Wahrscheinlichkeit zur Aktivierung der Komponentenfehlern festmachen.
 Es wäre daher durchaus sinnvoll gewesen, einige der ausgeführten Tests auch ohne Aktivierung der Komponentenfehler durchzuführen.
@@ -50,7 +50,7 @@ Da es mit \acrlong{dfw}, \acrlong{dfr} und \acrlong{pt} zudem einige Benchmarks 
 Jedoch hätten sich die \gls{AppMstr}"=Timeouts darauf beschränkt, dass keine Ressourcen allokiert werden konnten, was eine deutlich geringere Zahl gewesen wäre.
 
 Durch eine Testausführung ohne Aktivierung der Komponentenfehler hätten vermutlich auch viele der 29 nicht gestarteten Anwendungen (vgl. \cref{subsec:notStartedApps}) gestartet werden können.
-Mit 7 Prozent ist der Anteil der nicht gestarteten Anwendungen im Verhältnis zu allen gestarteten Anwendungen zwar kein signifikanter Anteil, ist aber auch nicht zu vernachlässigen.
+Mit 7 Prozent ist der Anteil der nicht gestarteten Anwendungen im Verhältnis zu allen gestarteten Anwendungen zwar kein signifikanter Anteil, wobei dieser aber auch nicht zu vernachlässigen ist.
 Zwar hätten die nicht gestarteten Anwendungen keine signifikant höhere Auslastung des Clusters bedeutet, aber dennoch wurde hiermit auch eine in \cref{sec:requirements} nicht erwähnte Anforderung verletzt, wonach alle Anwendungen der ausgewählten Benchmarks auch gestartet werden müssten.
 Da hierbei immer zu \acrlong{tsr} zugehörige Anwendungen betroffen waren, gab es hierfür auch zwei Ursachen.
 Die erste war eine zu hohe Auslastung des Clusters, wodurch die benötigten Daten von der \acrlong{tg}"=Anwendung nicht generiert werden konnten, da die Anwendung keine Ressourcen zur Ausführung des \gls{AppMstr} erhalten hat oder die Anwendung auch deshalb vorab abgebrochen wurde.
@@ -61,8 +61,8 @@ Die Ausführungsdauer der einzelnen Tests ist zudem ebenfalls nicht zu vernachl�
 Aufgrund der Ergebnisse lässt sich sagen, dass mehr injizierte Komponentenfehler auch die Ausführungsdauer erhöht haben.
 Da die Ursache für mehr injizierte Komponentenfehler eine höhere Clusterauslastung ist, lässt sich auch ein Zusammenhang mit der Selfbalancing"=Komponente \cite{Zhang2016} herstellen.
 Dies liegt daran, dass Mutationstests im Vergleich meist die Tests waren, bei denen weniger Komponentenfehler aktiviert wurden (vgl.\cref{subsec:actDeactFaults}).
-Die Ursache hierfür liegt in der geringeren Auslastung der Clusters, die Auswirkung hiervon ist durch weniger injizierte Komponentenfehler jedoch auch eine schnellere Ausführung der Tests gewesen.
-Zudem reduziert sich auf für das Cluster selbst bei der Injizierung von wenigen Komponentenfehlern der Verwaltungsaufwand durch ausfallende Nodes.
+Die Ursache hierfür liegt in der geringeren Auslastung des Clusters, die Auswirkung hiervon ist durch weniger injizierte Komponentenfehler jedoch auch eine schnellere Ausführung der Tests gewesen.
+Zudem reduziert sich durch weniger injizierte Komponentenfehler der Verwaltungsaufwand durch ausfallende Nodes.
 Um diese Vermutung zu bestätigen, wären jedoch noch weitere Tests nötig.
 Dennoch lässt sich auch schlussfolgern, dass mithilfe der Selfbalancing"=Komponente das Cluster besser ausgelastet werden kann als mit den Standardeinstellungen.
 Dadurch bestätigt diese Fallstudie auch die Evaluation \cite{Zhang2016} zur Performance eines Clusters, bei dem die Selfbalancing"=Komponente genutzt wird.
