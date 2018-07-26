@@ -7,22 +7,22 @@ Von den 290 zur Ausfürhung vorgesehenen Testfällen wurden nur 222 Testfälle (
 Der Grund für den Abbruch von 14 Tests liegt zum Großteil im Abbruch der Simulation, wenn keine Rekonfiguration des Clusters mehr möglich ist, also bei allen Nodes des Clusters ein Komponentenfehler injiziert und dies beim Monitoring erkannt wurde (vgl. \cref{subsec:oracleImpl}).
 Ein Test wurde aufgrund der zu geringen Anzahl an Submittern abgebrochen, was in \cref{subsec:notEnoughSubmitter} genauer erläutert wird.
 
-Insgesamt wurde bei allen Tests 439 Komponentenfehler aktiviert (14 \% von 3100 möglichen), von denen jedoch nicht alle injiziert wurden, da bei einigen Testfällen beide Komponentenfehler der Nodes gleichzeitig aktiviert wurden.
-In diesen Fällen überwog die Aktivierung es Komponentenfehlers, der den Node komplett beendet (vgl.  \cref{subsec:yarnComponentFaults}).
+Insgesamt wurden bei allen Tests 439 Komponentenfehler aktiviert (14 \% von 3100 möglichen), von denen jedoch nicht alle injiziert wurden, da bei einigen Testfällen beide Komponentenfehler der Nodes gleichzeitig aktiviert wurden.
+In diesen Fällen überwog die Aktivierung des Komponentenfehlers, der den Node komplett beendet (vgl.  \cref{subsec:yarnComponentFaults}).
 Von allen aktivierten Komponentenfehlern wurden während der Simulationen 262 Komponentenfehler deaktiviert bzw. repariert, was eine Quote von 60 \% ergibt.
-In 4 der ausgeführten Testfällen wurde jedoch kein einziger Komponentenfehler deaktiviert, weshalb die Tests der Konfigurationen 4, 5.1, 5.2 und 6 entsprechend frühzeitig abgebrochen wurden (vgl. \cref{subsec:actDeactFaults,subsec:noReconf36}).
+In 4 der ausgeführten Tests wurde jedoch kein einziger Komponentenfehler deaktiviert, weshalb die Tests 4, 5.1, 5.2 und 6 entsprechend frühzeitig abgebrochen wurden (vgl. \cref{subsec:actDeactFaults,subsec:noReconf36}).
 
-Bei den 43 ausgeführten Tests wurden 408 Anwendungen im Cluster gestartet, von denen mit 204 rund die Hälfte erfolgreich und damit vollständig ausgeführt wurden, fehlgeschlagen waren mit 110 etwas mehr als ein Viertel der gestarteten Anwendungen.
+Bei den 43 ausgeführten Tests wurden 408 Anwendungen im Cluster gestartet, von denen mit 204 rund die Hälfte erfolgreich, und damit vollständig, ausgeführt wurden, fehlgeschlagen waren mit 110 etwas mehr als ein Viertel der gestarteten Anwendungen.
 Vorzeitig abgebrochen wurden bei den Tests 52 Anwendungen (13 \%), was 42 Anwendungen macht, die zum Ende der Simulationen noch ausgeführt wurden.
-Nicht eingerechnet sind hier 29 nicht gestartete Anwendungen, die Gründe hierfür sind in \cref{subsec:notStartedApps} erläutert.
+Nicht eingerechnet sind hier 29 nicht gestartete Anwendungen; die Gründe hierfür sind in \cref{subsec:notStartedApps} erläutert.
 Für die gestarteten Anwendungen wurden 555 Attempts gestartet, was im Schnitt 1,36 Attempts pro Anwendung ergibt.
-Auffällig ist hierbei, dass mit 214 Attempts 9 Attempts mehr aufgrund eines \gls{AppMstr}"=Timeouts abgebrochen wurde, als während der Simulation erfolgreich beendet wurden (203 Attempts).
+Auffällig ist hierbei, dass mit 214 Attempts 9 Attempts mehr aufgrund eines \gls{AppMstr}"=Timeouts abgebrochen, als während der Simulation erfolgreich beendet wurden (203 Attempts).
 32 weitere Attempts wurden aufgrund eines Fehlers im Map"=Task abgebrochen, 12 weitere terminierten mit dem Exitcode -100, was ebenfalls auf Fehler hindeutet (vgl. \cref{sec:appEval}).
 Das ergibt dadurch eine Quote von 46,5 \% aller gestarteten Attempts, die nicht erfolgreich abgeschlossen werden konnten.
-Beim Monitoring wurden 3150 Anwendungs"=Container erkannt, was im Schnitt 7,72 Container je Anwendung bzw. 5,68 je Attempt ergibt.
+Beim Monitoring wurden 3150 YARN"=Container erkannt, was im Schnitt 7,72 Container je Anwendung bzw. 5,68 je Attempt ergibt.
 Da bei den zu startenden Anwendungen einige kleine und einige sehr ressourcenintensive Anwendungen enthalten sind (vgl. \cref{subsec:appSelection}), kann sich die Anzahl der Container zwischen einzelnen Anwendungen jedoch sehr unterscheiden.
 
 Vom Oracle wurden bei allen Tests 78.825 Constraints validiert, von denen 573 verletzt bzw. als ungültig validiert wurden (0,73 \%).
 Die meisten verletzten Constraints hatten hierbei die Tests 31.2 und 32 mit 40 bzw. 42 Constraints (von jeweils 5140 geprüften), die höchste Quote Konfiguration 8 mit 1,97 \% der Constraints (13 von 661).
-Der Hauptgrund für die teilweise sehr hohe Anzahl an ungültigen Constraints vor allem liegt darin, dass die Constraints für fehlgeschlagene Anwendungen auch in nachfolgenden Testfällen einer Testausführung entsprechend validiert wurden (vgl. \cref{subsec:failedApps}).
+Der Hauptgrund für die teilweise sehr hohe Anzahl an ungültigen Constraints liegt vor allem darin, dass die Constraints für fehlgeschlagene Anwendungen auch in nachfolgenden Testfällen einer Testausführung entsprechend validiert wurden (vgl. \cref{subsec:failedApps}).
 Dies resultiert in bis zu 34 ungültigen Constraints für fehlgeschlagene Anwendungen bei einzelnen Tests.

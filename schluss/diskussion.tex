@@ -8,7 +8,7 @@ Dies liegt vor allem aufgrund der hohen Anzahl an fehlgeschlagenen Anwendungen, 
     \item Der Node ist nicht erreichbar, was zu einem \gls{AppMstr}"=Timeout führt
     \item Der den \gls{AppMstr} ausführende Node ist zur sehr ausgelastet, was ebenfalls zu einem \gls{AppMstr}"=Timeout führt
     \item Benötigte Dateien sind nicht im HDFS verfügbar, was in einem Map"=Task"=Fehler resultiert
-    \item Es wird versucht, Tasks von Anwendungs"=Containern auf einem defekten Node auszuführen, was im Exitcode -100 resultiert
+    \item Es wird versucht, Tasks von YARN"=Containern auf einem defekten Node auszuführen, was im Exitcode -100 resultiert
 \end{itemize}
 
 Es ist erkennbar, dass drei der vier Ursachen im Zusammenhang mit der Injizierung von Komponentenfehlern im realen Cluster zu finden sind.
@@ -52,9 +52,9 @@ Jedoch hätten sich die \gls{AppMstr}"=Timeouts darauf beschränkt, dass keine R
 Durch eine Testausführung ohne Aktivierung der Komponentenfehler hätten vermutlich auch viele der 29 nicht gestarteten Anwendungen (vgl. \cref{subsec:notStartedApps}) gestartet werden können.
 Mit 7 Prozent ist der Anteil der nicht gestarteten Anwendungen im Verhältnis zu allen gestarteten Anwendungen zwar kein signifikanter Anteil, ist aber auch nicht zu vernachlässigen.
 Zwar hätten die nicht gestarteten Anwendungen keine signifikant höhere Auslastung des Clusters bedeutet, aber dennoch wurde hiermit auch eine in \cref{sec:requirements} nicht erwähnte Anforderung verletzt, wonach alle Anwendungen der ausgewählten Benchmarks auch gestartet werden müssten.
-Da hierbei immer Anwendungen der Terasort"=Suite betroffen waren, gab es hierfür auch zwei Gründe.
-Der erste Grund war eine zu hohe Auslastung des Clusters, wodurch die benötigten Daten von der \acrlong{tg}"=Anwendung nicht generiert werden konnten, da die Anwendung keine Ressourcen zur Ausführung des \gls{AppMstr} erhalten hat oder die Anwendung auch deshalb vorab abgebrochen wurde.
-Der zweite Grund liegt in der Injizierung der Komponentenfehler, wodurch erfolgreich generierte Daten für die nachfolgenden Anwendungen nicht mehr verfügbar waren.
+Da hierbei immer zu \acrlong{tsr} zugehörige Anwendungen betroffen waren, gab es hierfür auch zwei Ursachen.
+Die erste war eine zu hohe Auslastung des Clusters, wodurch die benötigten Daten von der \acrlong{tg}"=Anwendung nicht generiert werden konnten, da die Anwendung keine Ressourcen zur Ausführung des \gls{AppMstr} erhalten hat oder die Anwendung auch deshalb vorab abgebrochen wurde.
+Die zweite Ursache liegt in der Injizierung der Komponentenfehler, wodurch erfolgreich generierte Daten für die nachfolgenden Anwendungen nicht mehr verfügbar waren.
 Es ist daher stark davon auszugehen, dass sich die Anzahl der nicht gestarteten Anwendungen bei einer Testausführung ohne Aktivierungen von Komponentenfehlern signifikant reduzieren würde.
 
 Die Ausführungsdauer der einzelnen Tests ist zudem ebenfalls nicht zu vernachlässigen.

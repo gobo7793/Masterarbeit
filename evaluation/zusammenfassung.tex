@@ -1,15 +1,15 @@
 \section{Zusammenfassung der Ergebnisse}
 \label{sec:evaluationResults}
 
-Zusammenfassend lässt sich basierend auf der vorhandenen Datenbasis der 43 ausgeführten Tests sagen, dass sich das entwickelte Testsystem und das Hadoop"=Cluster im Großen und Ganzen so verhält, wie es erwartet werden konnte.
+Zusammenfassend lässt sich, basierend auf der vorhandenen Datenbasis der 43 ausgeführten Tests, sagen, dass sich das entwickelte Testsystem und das Hadoop"=Cluster im Großen und Ganzen so verhält, wie es erwartet werden konnte.
 Dennoch wurden nicht alle der in \cref{subsec:functionalRequirements} definierten funktionalen Anforderungen an das Cluster selbst und der in \cref{subsec:testRequirements} definierten Anforderungen an das gesamte Testsystem vollständig erfüllt.
 Die meisten dieser Anforderungen wurden mithilfe der definierten Constraints implementiert (vgl. \cref{subsec:yarnComponentConstraints,subsec:yarnController,subsec:simulationBasics}), wodurch diese Anforderungen bei jedem Testfall automatisch validiert werden konnten.
 
-Vor allem die funktionale Anforderung, wonach alle Tasks vollständig ausgeführt werden, sofern sie nicht abgebrochen werden, wurde bei den 110 nicht erfolgreichen Anwendungen nicht erfüllt.
+Vor allem die funktionale Anforderung, wonach alle Tasks vollständig ausgeführt, sofern sie nicht abgebrochen werden, wurde bei den 110 nicht erfolgreichen Anwendungen nicht erfüllt.
 Aber auch bei einigen vollständig ausgeführten Anwendungen wurde diese nicht komplett erfüllt, was die mit dem Exitcode -100 beendeten Attempts zeigen.
 Bei Attempts mit dem Exitcode -100 wird zudem die Anforderung, dass kein Task an defekte Nodes gesendet wird, verletzt (vgl. \cref{subsec:failedApps}).
 
-Bei der Validierung der Constraints ist es zudem vorgekommen, dass diejenigen für die Anforderungen, dass die Konfiguration aktualisiert sowie der Status des Clusters vom Testsystem erkannt und im Testmodell gespeichert wird, als ungültig validiert wurden.
+Bei der Validierung der Constraints ist es zudem vorgekommen, dass die Constraints der Anforderungen, dass die Konfiguration aktualisiert sowie der Status des Clusters vom Testsystem erkannt und im Testmodell gespeichert wird, als ungültig validiert wurden.
 Dies waren nach einer genaueren Betrachtung der Gründe hierfür zum Teil jedoch falscher Alarm, wodurch diese Anforderungen zu großen Teilen als erfüllt angesehen werden können (vgl. \cref{subsec:notDetectedHost2}).
 Genauso verhält es sich bei den nicht erkannten, injizierten und reparierten Komponentenfehlern, wonach die Anforderungen, dass defekte Nodes und Verbindungsabbrüche erkannt werden, bei der Betrachtung eines einzelnen Testfalls in 19 Fällen zwar nicht erfüllt, bei der Betrachtung der gesamten Tests jedoch als erfüllt angesehen werden können (vgl. \cref{subsec:notDetectedFaults}).
 

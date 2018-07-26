@@ -12,7 +12,7 @@ Hierfür werden die Anforderungen, sofern möglich, in Form von Constraints eben
 \label{subsec:functionalRequirements}
 
 Obwohl in dieser Masterarbeit der Fokus auf Testautomatisierung und Validieren eines Testsystems liegt, müssen auch die funktionalen Anforderungen an das \gls{SuT}, also das Hadoop"=Cluster selbst, berücksichtigt werden.
-Da im Rahmen der Publikation \cite{Eberhardinger2018} ebenfalls der in \cref{sec:clusterSetup} beschriebene und in dieser Fallstudie genutzte Versuchsaufbau genutzt wurde, wurden im Rahmen dieser Fallstudie auch funktionale Anforderungen an das Cluster selbst durch das Oracle geprüft.
+Da im Rahmen der Publikation \cite{Eberhardinger2018} ebenfalls der in \cref{sec:clusterSetup} beschriebene, und in dieser Fallstudie genutzte Versuchsaufbau genutzt wurde, wurden im Rahmen dieser Fallstudie auch funktionale Anforderungen an das Cluster selbst durch das Oracle geprüft.
 Dies betrifft konkret folgende Anforderungen an das \gls{SuT} \cite{Eberhardinger2018}:
 
 \begin{enumerate}
@@ -26,22 +26,22 @@ Dies betrifft konkret folgende Anforderungen an das \gls{SuT} \cite{Eberhardinge
 \label{subsec:testRequirements}
 
 Neben den funktionalen Anforderungen, gibt es weitere Anforderungen an das gesamte Testsystem.
-Diese Anforderungen betreffen das Hadoop"=Cluster, die Selfbalancing"=Komponente, das entwickelte \gls{ss}"=Modell sowie der Treiber zur Kommunikation zwischen Modell und Cluster.
+Diese Anforderungen betreffen das Hadoop"=Cluster, die Selfbalancing"=Komponente, das entwickelte \gls{ss}"=Modell sowie den Treiber zur Kommunikation zwischen Modell und Cluster.
 Konkret sind dies folgende Anforderungen an das Testsystem:
 
 \begin{enumerate}
-    \item Der \gls{MARP}"=Wert ändert sich basierend auf den derzeit ausgeführten Anwendungen
+    \item Der \gls{MARP}"=Wert ändert sich, basierend auf den derzeit ausgeführten Anwendungen
     \item Der jeweils aktuelle Status des Clusters wird erkannt und im Modell gespeichert
     \item Defekte Nodes und Verbindungsabbrüche werden erkannt
     \item Im Modell implementierte Komponentenfehler werden im realen Cluster injiziert und repariert
     \item Wenn alle Nodes defekt sind, wird erkannt, dass sich das Cluster nicht mehr rekonfigurieren kann
     \item Ein Test kann vollautomatisch ausgeführt werden
     \item Das Cluster kann ohne Auswirkungen auf seine Funktionsweise auf einem oder mehreren Hosts ausgeführt werden
-    \item Es können mehrere BenchmarkAnwendungen gleichzeitig gestartet und ausgeführt werden
+    \item Es können mehrere Benchmark"=Anwendungen gleichzeitig gestartet und ausgeführt werden
     \item Tests und Testfälle können zeitlich unabhängig und mehrmals ausgeführt werden
 \end{enumerate}
 
 Die funktionalen Anforderungen dienen zudem ebenfalls als Anforderungen an das Testsystem und erweitern somit die hier genannten Anforderungen.
 
 Eine Besonderheit bildet die fünfte Anforderung, wonach erkannt werden muss, dass im Cluster keine weitere Rekonfiguration möglich ist.
-Wird diese Anforderung verletzt soll der ausgeführte Test abgebrochen werden, während bei den anderen, auch den funktionalen, Anforderungen dies nur durch das Oracle vermerkt werden soll, die Ausführung aber nicht weiter beeinträchtigt werden soll.
+Wird diese Anforderung verletzt, soll der ausgeführte Test abgebrochen werden, während bei den anderen, auch den funktionalen, Anforderungen dies nur durch das Oracle vermerkt, die Ausführung aber nicht weiter beeinträchtigt werden soll.

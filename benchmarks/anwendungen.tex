@@ -10,10 +10,10 @@ Folgende Benchmarks sind bereits in der Plattform integriert (vgl. \cref{sec:had
     \item \acrfull{SWIM}
 \end{itemize}
 
-Jeder Benchmark enthält ein spezifisches Start"=Script, um die jeweiligen Benchmarks in einem Docker"=Container zu starten.
-Dieser Container wird abhängig vom \texttt{HostMode} (vgl. \cref{subsec:hostMode}) auf der Docker"=Machine des \gls{RM} oder direkt auf dem Host gestartet.
+Jede Benchmark enthält ein spezifisches Start"=Script, um die jeweiligen Benchmarks in einem Docker"=Container zu starten.
+Dieser Container wird, abhängig vom \texttt{HostMode} (vgl. \cref{subsec:hostMode}), auf der Docker"=Machine des \gls{RM} oder direkt auf dem Host gestartet.
 Da es in Docker"=Umgebungen \emph{best practice} ist, für jeden Einsatzzweck ein eigenes Image zu erstellen bzw. Container zu starten, werden für jede der drei Benchmark"=Suites eigene Container ausgeführt.
-Um mehrere Benchmarks gleichzeitig starten und ausführen zu können, wurden die Startscripte der Benchmarks entsprechend angepasst.
+Um mehrere Benchmarks gleichzeitig ausführen zu können, wurden die Startscripte der Benchmarks daher entsprechend angepasst.
 
 \subsection{Mapreduce"=Examples}
 \label{subsec:mapreduceExamples}
@@ -32,7 +32,7 @@ Einige der Anwendungen der Examples sind:
 \subsection{Intel HiBench}
 \label{subsec:hibench}
 
-Intel HiBench\footnote{\url{https://github.com/intel-hadoop/HiBench}} ist eine von Intel entwickelte Benchmark"=Suite mit \emph{Workloads} zu verschiedenen Anwendungszwecken mit jeweils unterschiedlichen einzelnen Anwendungen.
+Intel HiBench\footnote{\url{https://github.com/intel-hadoop/HiBench/}} ist eine von Intel entwickelte Benchmark"=Suite mit \emph{Workloads} zu verschiedenen Anwendungszwecken mit jeweils unterschiedlichen einzelnen Anwendungen.
 Die Suite enthielt anfangs nur wenige Anwendungen \cite{Huang2010}, wurde im Laufe der Zeit jedoch stetig um neue Anwendungen und auch Workloads erweitert.
 Das zeigt sich auch darin, dass in Hadoop"=Benchmark die HiBench"=Version \mbox{2.2} integriert ist, die einen noch deutlich geringeren Umfang an Workloads und Anwendungen besitzt, wie \zB die aktuellere Version 7.
 Aus diesem Grund wurde vor der Analyse der Anwendungen der HiBench"=Suite das Docker"=Image entsprechend auf Version 7 aktualisiert, um hier entsprechend alle in der Zwischenzeit hinzugefügten Workloads und Anwendungen der Suite nutzen zu können.
@@ -50,11 +50,11 @@ HiBench enthält damit folgende Workloads mit einer unterschiedlichen Anzahl an 
 \subsection{\glsentryshort{SWIM}}
 \label{subsec:swim}
 
-\gls{SWIM}\footnote{\url{https://github.com/SWIMProjectUCB/SWIM}} ist eine aus 50 einzelnen Workloads bestehende Benchmark"=Suite.
-Das besondere an \gls{SWIM} ist, dass die Suite im Rahmen der Studie \cite{Chen2012} entwickelt wurde, und dadurch anhand mehrerer tausend real ausgeführten \gls{MR}"=Jobs entwickelt wurde.
+\gls{SWIM}\footnote{\url{https://github.com/SWIMProjectUCB/SWIM/}} ist eine aus 50 einzelnen Workloads bestehende Benchmark"=Suite.
+Das besondere an \gls{SWIM} ist, dass die Suite im Rahmen der Studie \cite{Chen2012} entwickelt wurde, und dadurch anhand mehrerer tausend real ausgeführter \gls{MR}"=Jobs entwickelt wurde.
 Die dabei enthaltenen Workloads stellen damit eine größere Vielfalt an ausgeführten Anwendungen und damit einen größeren Testumfang dar als vergleichbare Benchmarks \cite{SwimWikiHome}.
 
-Bei der Ausführung auf dem in dieser Fallstudie verwendetem Cluster wurden jedoch nicht alle Workloads fehlerfrei ausgeführt.
+Bei der Ausführung auf dem in dieser Fallstudie verwendeten Cluster wurden jedoch nicht alle Workloads fehlerfrei ausgeführt.
 Zudem wird in \cite{InriaTutorial} explizit erwähnt, dass die Ausführung auf einem Cluster auf einem Host sehr zeitintensiv ist, sofern die Workloads überhaupt ausgeführt werden können.
 \gls{SWIM} ist außerdem für Benchmarks eines Clusters mit mehreren physischen Nodes ausgelegt, weshalb die Ausführung in dieser Fallstudie extrem viel Zeit benötigten würde.
 Daher wurde die Nutzung des \gls{SWIM}"=Benchmarks nicht weiter verfolgt.

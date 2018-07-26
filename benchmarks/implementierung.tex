@@ -57,7 +57,7 @@ Der hierbei definierte und durch \texttt{GetStartCmd()} zurückgegebene vollstä
 Damit kann durch das Benchmark"=Script die zu startende Anwendung identifiziert und das jeweilige Start"=Script ausgeführt werden (vgl. \cref{subsec:scripts}).
 
 Das Transitionssystem selbst wurde im \texttt{BenchmarkController} als zweidimensionaler Array implementiert, auf das mithilfe von \texttt{Benchmark.ID} zugegriffen werden kann.
-Entsprechend wichtig ist hierbei die Reihenfolge der jeweiligen Werte innerhalb des Arrays, welche immer gleich sein muss mit den jeweiligen IDs:
+Für die spätere Auswahl der Benchmarks ist es hierbei wichtig, dass die Reihenfolge der Werte im Transitionssystem mit den IDs der Benchmarks übereinstimmt:
 
 \begin{lstlisting}[label=lst:transitionSystemImpl,style=cs,
 caption={[Implementierung des Transitionssystems im BenchmarkController]
@@ -75,8 +75,8 @@ public double[][] BenchTransitions => new[]
 \subsection{Auswahl der nachfolgenden Benchmarks}
 \label{subsec:selectionNextBenchmark}
 
-Zur Auswahl der Nachfolgenden Anwendung dient die Methode \texttt{ChangeBenchmark()} des \texttt{BenchmarkController}s.
-Hier wird mithilfe des Transitionssystems und unabhängig von anderen Clients bestimmt, welcher Benchmark ausgeführt werden soll und dieser in \texttt{CurrentBenchmark} gespeichert:
+Zur Auswahl der nachfolgenden Anwendung dient die Methode \texttt{ChangeBenchmark()} des \texttt{BenchmarkController}s.
+Hier wird mithilfe des Transitionssystems und unabhängig von anderen Clients die nachfolgende Benchmark bestimmt, welche dabei in \texttt{CurrentBenchmark} gespeichert wird:
 
 \begin{lstlisting}[label=lst:benchmarkChanging,style=cs,
 caption={[Auswahl des nachfolgenden Benchmarks]
@@ -109,16 +109,15 @@ Bevor auf die Daten des implementierten Transitionssystems zugegriffen wird, wir
 Ist das nicht der Fall, wird eine \texttt{InvalidOperationException} ausgelöst.
 Wenn die Auswahl des Benchmarks dagegen erfolgreich war, wird an den aufrufenden Client \texttt{true} zurückgegeben und der ausgewählte Benchmark kann gestartet werden (vgl. \cref{subsec:yarnClient}).
 
-Der zur Auswahl des nachfolgenden Benchmarks benötigte Zufallsgenerator \texttt{Random""Gen} wird bei der Initialisierung des Benchmark"=Controllers basierend auf dem in \cref{subsec:testcaseGeneration} spezifizierten Basisseed initialisiert.
+Der zur Auswahl der nachfolgenden Benchmarks benötigte Zufallsgenerator \texttt{Random""Gen} wird bei der Initialisierung des Benchmark"=Controllers, basierend auf dem Basisseed (vgl. \cref{subsec:testcaseGeneration}), initialisiert.
 Damit die Benchmark"=Controller aller Clients nicht die gleichen Benchmarks auswählen, wird zum Basisseed die numerische ID des zum Benchmark"=Controler zugehörigen Clients addiert und der Zufallsgenerator mit diesem Wert initialisiert.
 Als initiale Anwendung wird immer der \acrlong{sl}"=Benchmark genutzt, sodass als erste Anwendung immer eine Anwendung ohne benötigte Eingabedaten gestartet wird (vgl. \cref{subsec:markovChain}).
 
 \subsection{Vorabgenerierung von Eingabedaten}
 \label{subsec:precreateInputData}
 
-Neben der Generierung der für einige Anwendungen benötigten Eingabedaten während der Testausführung gibt es auch die Möglichkeit, die Eingabedaten vorab zu generieren und anschließend diese zu nutzen (vgl. \cref{sec:clusterSetup,subsec:testcaseGeneration,subsec:simulationModelInit}).
-Um die vorab generierten Daten in einem Test zu nutzen, muss die entsprechende Eigenschaft \texttt{ModelSettings.IsPrecreateBenchInputs} auf \texttt{true} gesetzt werden.
-Dadurch werden auch direkt die Eingabedaten generiert.
+Neben der Generierung der für einige Anwendungen benötigten Eingabedaten während der Testausführung, gibt es auch die Möglichkeit, die Eingabedaten vorab zu generieren und diese bei der Testausführung zu nutzen (vgl. \cref{sec:clusterSetup,subsec:testcaseGeneration,subsec:simulationModelInit}).
+Hierfür muss bei der Initialisierung des Tests die entsprechende Eigenschaft \texttt{ModelSettings.IsPrecreateBenchInputs} auf \texttt{true} gesetzt werden, wodurch auch direkt die entsprechenden Eingabedaten auf dem Cluster generiert werden.
 
 Die Vorabgenerierung der Daten startet folgende Anwendungen, die Eingabedaten für andere Anwendungen generieren und speichert diese in einem nur hierfür genutzten Verzeichnis im HDFS:
 
@@ -136,7 +135,7 @@ Hierbei wird standardmäßig die Generierung der Eingabedaten einer Anwendung ü
 
 Es ist jedoch auch möglich, vorhandene Verzeichnisse zu löschen, um somit die Daten vollständig neu zu generieren.
 Hierbei wird zudem ein HDFS"=Filecheck ausgeführt, um fehlerhafte Daten zu finden und zu löschen.
-Fehlerhafte Daten können im HDFS \zB dadurch entstehen, dass alle Nodes defekt sind, auf denen ein Block repliziert wurde, sich die Datei jedoch noch im Index des HDFS befindet (vgl. \cref{sec:hadoop}.
+Fehlerhafte Daten können im HDFS \zB dadurch entstehen, dass alle Nodes defekt sind, auf denen ein Block repliziert wurde, sich die Datei jedoch noch im Index des HDFS befindet (vgl. \cref{sec:hadoop}).
 Die vollständige Neugenerierung der Eingabedaten kann mithilfe der Eigenschaft \texttt{ModelSettings.IsPrecreateBenchInputsRecreate} gesteuert werden (vgl. \cref{subsec:simulationModelInit}).
 
 Um beim Starten der Anwendungen die vorab generierten Eingabedaten zu nutzen, wird beim Starten der Anwendungen das Verzeichnis der vorab generierten Daten als entsprechendes Client"=Verzeichnis genutzt (vgl. \cref{subsec:yarnClient,subsec:appImplementation}).

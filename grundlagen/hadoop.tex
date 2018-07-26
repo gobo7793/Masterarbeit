@@ -13,19 +13,19 @@ Hadoop besitzt hierzu folgende Kernmodule \cite{HadoopHomePage}:
 	\item[Hadoop \acrshort{YARN} (\acrlong{YARN}\glsunset{YARN})] \hfill \\
         Framework zur Verteilung und Ausführung von Anwendungen und das dazugehörige Ressourcen"=Management
 	\item[\acrlong{HDFS} (\acrshort{HDFS}\glsunset{HDFS})] \hfill \\
-        Verteiltes Dateisystem zun Speichern von Daten auf dem Cluster
+        Verteiltes Dateisystem zum Speichern von Daten auf dem Cluster
 	\item[Hadoop \gls{MR}] \hfill \\
         Implementierung des \gls{MR}"=Ansatzes zum Verarbeiten von großen Datenmengen, nutzt YARN zur Ausführung der Anwendungen
 \end{description}
 
 Aufgrund seiner Verbreitung stellt Hadoop eine der wichtigsten Implementierungen des \gls{MR}"=Ansatzes dar \cite{PoweredByHadoop}.
-Die Eingabe"= und Ausgabedaten sind hierbei als \emph{Key"=Value}"=Paare definiert, die mithilfe des \gls{MR}"=Frameworks verarbeitet werden.
+Die Ein"= und Ausgabedaten sind hierbei als \emph{Key"=Value}"=Paare definiert, die mithilfe des \gls{MR}"=Frameworks verarbeitet werden.
 Hierbei werden zunächst die eingelesenen Eingabedaten in kleine und dadurch einfach zu verarbeitende Datenmengen aufgeteilt.
 Die geteilten Daten werden dann in mehreren, parallel ausgeführten Map"=Tasks verarbeitet und zwischengespeichert.
 Die zwischengespeicherten Daten werden anschließend von einem oder mehreren Reduce"=Tasks zusammengeführt und in die Ausgabedateien geschrieben.
-Das Framework ist hierbei sehr Fehlertolerant, da ein fehlerhafter Task jederzeit neu gestartet werden kann \cite{Dean2004,Dean2010}.
+Das Framework besitzt eine hohe Fehlertoleranz, da ein fehlerhafter Task jederzeit neu gestartet werden kann \cite{Dean2004,Dean2010}.
 Zur Speicherung der Ein-, Zwischen- und Ausgabedaten wird im Falle von Hadoop das HDFS genutzt \cite{HadoopMapRedTutorial271}.
-Für eine ausführliche Beschreibung des \gls{MR}"=Frameworks sei hier auf \cite{Dean2004} und \cite{Dean2010} verwiesen, eine generelle Betrachtung des \gls{MR}"=Frameworks mit Vorteilen und möglichen Problemen lässt sich in \cite{Lee2012} finden.
+Für eine ausführliche Beschreibung des \gls{MR}"=Frameworks sei hier auf \cite{Dean2004} und \cite{Dean2010} verwiesen; eine generelle Betrachtung des \gls{MR}"=Frameworks mit Vorteilen und möglichen Problemen lässt sich in \cite{Lee2012} finden.
 
 Da das \gls{MR}"=Framework bzw. seine Implementierung in Hadoop nicht immer optimal genutzt werden kann und in der Praxis daher zum Teil auch zweckentfremdet wurde, wurde in \cite{Vavilapalli2013} das YARN"=Framework vorgestellt.
 Die Kernidee ist hierbei die Trennung von Ressourcenmanagement und Scheduling vom eigentlichen Programm.
@@ -42,13 +42,13 @@ Ein Hadoop"=Cluster mit dem YARN"=Framework besteht aus zwei wesentlichen Kompon
 
 Der \gls{RM} dient hierbei als \emph{Load"=Balancer} für das gesamte Cluster und besteht aus dem \gls{AM} und dem \emph{Scheduler}, die eigentliche Ausführung der Anwendungen findet auf den Nodes statt.
 Der \gls{AM} ist für die Annahme und Ausführung von einzelnen Anwendungen zuständig, denen der Scheduler die dafür notwendigen Ressourcen im Cluster zuteilt.
-Jeder Node besitzt einen \gls{NM}, der für die Überwachung der Ressourcen auf dem jeweiligen Node sowie der auf dem Node ausgeführten Anwendungs"=Container zuständig ist und diese Daten dem \gls{RM} übermittelt.
+Jeder Node besitzt einen \gls{NM}, der für die Überwachung der Ressourcen auf dem jeweiligen Node sowie der auf dem Node ausgeführten YARN"=Container zuständig ist und diese Daten dem \gls{RM} übermittelt.
 
 Jede YARN"=Anwendung bzw. Job besteht aus einer oder mehreren Ausführungsinstanzen, genannt \emph{Attempts}.
 Jeder Attempt besitzt einen eigenen \gls{AppMstr}, der das Monitoring der Anwendung und die Kommunikation mit dem \gls{RM} und \gls{NM} durchführt und die dafür benötigten Daten bereitstellt \cite{HadoopYarnArch271}.
-Die eigentliche Ausführung einer Anwendung findet in den bereits erwähnten \emph{Containern} statt, die jeweils einem Attempt zugeordnet sind.
+Die eigentliche Ausführung eines Tasks einer Anwendung findet in den bereits erwähnten \emph{Containern} statt, die jeweils einem Attempt zugeordnet sind.
 Container können auf einem beliebigen Node ausgeführt werden und dienen der Ausführung eines Tasks der Anwendung.
-Der \gls{AppMstr} wird hierbei ebenfalls in einem Anwendungs"=Contaier ausgeführt.
+Der \gls{AppMstr} wird hierbei ebenfalls in einem YARN"=Container ausgeführt.
 
 Für die Fallstudie in dieser Masterarbeit ist zudem nicht unwesentlich, dass die Kommunikation zwischen den einzelnen Komponenten nicht in allen Fällen in Echtzeit stattfindet.
 Vor allem das Prüfen des generellen Node"=Zustandes durch den \gls{RM} wird bei einer Standard"=Konfiguration in periodischen Abständen von jeweils mehreren Minuten durchgeführt.
@@ -59,7 +59,7 @@ Ein weiterer Bestandteil von Hadoop bzw. YARN ist der \gls{TLS}.
 Er ist speziell dafür entwickelt, die Metadaten und Logs der YARN"=Anwendungen zu speichern und als Anwendungshistorie bereitzustellen \cite{HadoopYarnTlServer271}.
 
 Zum Steuern des Clusters bzw. dem Monitoring der mithilfe von YARN ausgeführten Anwendungen stellt Hadoop drei Schnittstellen zur Verfügung.
-Dies sind eine graphische Weboberfläche, was zugleich auch die wichtigste Schnittstelle darstellt, entsprechende Befehle für die \acrlong{CLI} (engl. \emph{Command-line interface}, kurz \acrshort{CLI})\glsunset{CLI}, sowie eine REST"=API.
+Dies sind eine graphische Weboberfläche, was zugleich auch die wichtigste Schnittstelle darstellt, entsprechende Befehle für die \acrlong{CLI} (engl. \emph{Command-line interface}, kurz \acrshort{CLI})\glsunset{CLI} sowie eine REST"=API.
 Während sich die Weboberfläche zur menschlichen Interaktion oder zur Fehlersuche eignet, dienen die \gls{CLI}"=Befehle vor allem zum Steuern des Clusters und die REST"=API zur automatisierten Rückgabe der Daten des Clusters zur Nutzung in anderen Programmen \cite{HadoopClusterSetup271,HadoopYarnCmds271,HadoopRmApi271,HadoopNmApi271}.
 
 \cref{fig:hdfsarch} zeigt die dem YARN"=Framework sehr ähnliche Architektur des HDFS, welche ebenfalls aus einem Controller und mehreren Nodes besteht.
@@ -72,8 +72,8 @@ Während sich die Weboberfläche zur menschlichen Interaktion oder zur Fehlersuc
 \end{figure}
 
 Der \emph{NameNode} dient als Controller für die Verwaltung des Dateisystems und reguliert den Zugriff auf die darauf gespeicherten Daten.
-Unterstützt er vom \emph{Secondary NameNode}, der Teile der internen Datenverwaltung des HDFS durchführt \cite{HadoopHdfsGuide271}.
-Die Daten selbst werden in mehreren Blöcke aufgeteilt auf den \emph{DataNodes} gespeichert.
+Unterstützt wird er vom \emph{Secondary NameNode}, der Teile der internen Datenverwaltung des HDFS durchführt \cite{HadoopHdfsGuide271}.
+Die Daten selbst werden in mehrere Blöcke aufgeteilt auf den \emph{DataNodes} gespeichert.
 Um den Zugriff auf die Daten im Falle eines Node"=Ausfalls zu gewährleisten, wird jeder Block auf anderen Nodes repliziert.
 Dateioperationen (wie Öffnen oder Schließen) werden direkt auf den DataNodes ausgeführt.
 Sie sind darüber hinaus auch dafür verantwortlich, dass die gespeicherten Daten gelesen und beschrieben werden können \cite{Shvachko2010,HadoopHdfsDesc271}.

@@ -4,13 +4,13 @@
 In \cref{sec:modelArchitecture} wurde bereits aufgezeigt, dass der Treiber zur Verbindung des YARN"=Modells mit dem realen Cluster aus den drei Komponenten Parser, Connector und der SSH"=Verbindung selbst besteht.
 Der Treiber ist im YARN"=Modell mithilfe verschiedener Interfaces zur Nutzung des Parsers und Connectors eingebunden.
 Da YARN mithilfe von Befehlen für die \gls{CLI} und einer REST"=API zwei unterschiedliche Schnittstellen zum Auslesen der Daten der YARN"=Komponenten für das Monitoring bereitstellt, wurden jeweils zwei entsprechende Parser und Connectoren hierfür entwickelt.
-Andere Befehle wie \zB HDFS"=Befehle können ebenfalls mithilfe des entwickelten \gls{CLI}"=Connectors ausgeführt werden, da Connectoren mithilfe von SSH"=Verbindungen mit den Cluster"=Hosts verbunden sind.
+Andere Befehle, wie \zB HDFS"=Befehle, können ebenfalls mithilfe des entwickelten \gls{CLI}"=Connectors ausgeführt werden, da Connectoren mithilfe von SSH"=Verbindungen mit den Cluster"=Hosts verbunden sind.
 
 \subsection{Grundlegender Aufbau und Integration im YARN"=Modell}
 \label{subsec:driverModelIntegration}
 
 Zur Integration des Treibers im YARN"=Modell stellt dieser mehrere Interfaces bereit.
-Dadurch sind einerseits der Treiber und das YARN"=Modell strikt getrennt, andererseits wird es dadurch auch ermöglicht, in Zukunft andere Möglichkeiten als die hier Entwickelten zur Interaktion mit dem realen Cluster zu entwickeln und zu nutzen.
+Dadurch sind einerseits der Treiber und das YARN"=Modell strikt getrennt, andererseits wird es dadurch auch ermöglicht, in Zukunft andere Möglichkeiten als die hier entwickelten zur Interaktion mit dem realen Cluster zu entwickeln und zu nutzen.
 
 Zur Interaktion des YARN"=Modells mit dem Treiber werden dem Modell folgende Interfaces zur Verfügung gestellt:
 
@@ -21,7 +21,7 @@ Zur Interaktion des YARN"=Modells mit dem Treiber werden dem Modell folgende Int
     \begin{itemize}
         \item \texttt{IApplicationResult} für Anwendungen
         \item \texttt{IAppAttemptResult} für Attempts
-        \item \texttt{IContainerResult} für Anwendungs"=Container
+        \item \texttt{IContainerResult} für YARN"=Container
         \item \texttt{INodeResult} für Nodes
     \end{itemize}
 \end{itemize}
@@ -32,14 +32,14 @@ Zudem stellt das Parser"=Interface eine Methode zum Auslesen des aktuellen \gls{
 Beim Monitoring werden immer die entsprechenden von \texttt{IParsedComponent} abgeleiteten Interfaces zur Rückgabe der ermittelten Daten genutzt.
 Hierfür stellen diese Interfaces entsprechende Eigenschaften bereit, um alle mithilfe der \gls{CLI} oder der REST"=API auslesbaren Daten an das YARN"=Modell übergeben zu können.
 
-Das Connector"=Interface \texttt{IHadoopConnector} stellt alle zum Abrufen der Daten oder weiteren Interaktion wie das Injizieren von Komponentenfehlern oder Starten von Anwendungen benötigten Methoden und Befehle bereit.
+Das Connector"=Interface \texttt{IHadoopConnector} stellt alle zum Abrufen der Daten oder weiteren Interaktion, wie das Injizieren von Komponentenfehlern oder Starten von Anwendungen, benötigten Methoden und Befehle bereit.
 Hierbei wird für das Monitoring unterschieden, ob die Daten vom \gls{TLS} oder vom \gls{RM} von Hadoop abgerufen werden.
-Dies ist vor allem bei der Nutzung der REST"=API wichtig, da sich hier die Adressen und Pfade unterscheiden, während bei der Benutzung der \gls{CLI} die Befehle gleich sind .
+Dies ist vor allem bei der Nutzung der REST"=API wichtig, da sich hier die Adressen und Pfade unterscheiden, während bei der Benutzung der \gls{CLI} die Befehle gleich sind.
 Der \gls{TLS} wird zum Abrufen der Daten vor allem aus dem Grund genutzt, da hierbei zusätzliche Daten ermittelt werden können, die bei der reinen Nutzung der Schnittstellen des \gls{RM} nicht ausgegeben werden würden.
 Ausgenommen sind hiervon Anwendungen, bei denen die Nutzung des \gls{TLS} keine weiteren Daten von Hadoop zurückgegeben werden\cite{HadoopYarnTlServer271,HadoopYarnCmds271,HadoopRmApi271,HadoopNmApi271}.
 Aus diesem Grund ist die Nutzung des \gls{TLS} zum Monitoring von Anwendungen mithilfe des Connector"=Interfaces nicht möglich.
 
-Die Implementierten Parser und Connectoren sind jeweils als Singleton realisiert und werden bei der Ausführung des YARN"=Modells durch den \gls{ss}"=Simulator weitestgehend ignoriert.
+Die implementierten Parser und Connectoren sind jeweils als Singleton realisiert und werden bei der Ausführung des YARN"=Modells durch den \gls{ss}"=Simulator weitestgehend ignoriert.
 Dies ist vor allem darin begründet, dass dadurch Speicher eingespart wird, der dadurch für andere YARN"=Komponenten zur Verfügung steht.
 Aber auch weitere Einschränkungen durch \gls{ss} spielten eine Rolle (vgl. \cref{sec:ssharp}).
 Ein weiterer Vorteil liegt zudem darin, dass für unterschiedliche Einsatzzwecke der gleiche Connector genutzt werden kann, und somit auch die einzelnen vom Connector benötigten SSH"=Verbindungen für unterschiedliche Einsatzzwecke wiederverwendet werden können.
@@ -55,13 +55,13 @@ Dennoch werden Befehle auf den Cluster"=Hosts ausschließlich mithilfe des Conne
 \subsection{Entwicklung der Parser}
 \label{subsec:implementedParsers}
 
-Der Parser dient dazu, die von Hadoop zurückgegebenen Daten der YARN"=Komponenten zu konvertieren, sodass sie im Modell gespeichert werden können
+Der Parser dient dazu, die von Hadoop zurückgegebenen Daten der YARN"=Komponenten zu konvertieren, sodass sie im Modell gespeichert werden können.
 Zur Datenhaltung innerhalb der Parser"=Komponente des Treibers wurden hierfür entsprechende Klassen entwickelt, welche die von \texttt{IParsedComponent} abgeleiteten Interfaces implementieren.
 Dadurch sind die Datenhaltungs"=Klassen dafür geeignet, die Daten an das Modell zu übergeben.
 Eine Besonderheit bilden hierbei die ausführenden Nodes der Container bzw. \gls{AppMstr}"=Container.
 Während bei den anderen YARN"=Komponenten lediglich die jeweiligen IDs zurückgegeben werden, werden bei den ausführenden Nodes direkt ihre korrespondierenden Instanzen im Modell zurückgegeben.
 
-Der grundlegende Ablauf der Initialisierung und dem Abrufen und Konvertieren der Daten ist bei beiden implementierten Parser gleich.
+Der grundlegende Ablauf der Initialisierung und dem Abrufen und Konvertieren der Daten ist bei beiden implementierten Parsern gleich.
 Beim Initialisieren des Parsers wird zunächst der benötigte, passende Connector initialisiert, sofern dieser noch nicht initialisiert wurde.
 Beim Abrufen und Konvertieren der Daten werden zunächst die je nach Komponente benötigten IDs von weiteren YARN"=Komponenten ermittelt, bevor die Rohdaten durch den Connector ermittelt werden.
 Die Rohdaten werden anschließend konvertiert und in der entsprechenden Datenhaltungs"=Klasse gespeichert, welche mithilfe der entsprechenden von \texttt{IParsedComponent} abgeleiteten Interfaces an das Modell zurückgegeben werden.
@@ -145,14 +145,14 @@ Die REST"=API besitzt, auch im Vergleich zur \gls{CLI}"=Schnittstelle, einige Be
     \item Daten zu Containern können nur durch die \gls{NM} der ausführenden Nodes ermittelt werden
     \item Die Adressen und Pfade von \gls{RM}, \gls{NM} und \gls{TLS} unterscheiden sich
     \item Die Daten von \gls{RM} und \gls{NM} sind immer umfangreicher als die des \gls{TLS}
-    \item Der \gls{TLS} enthält für Attempts und Anwendungs"=Container jedoch zusätzliche Daten
+    \item Der \gls{TLS} enthält für Attempts und YARN"=Container jedoch zusätzliche Daten
     \item Es werden bei Listen und Reports immer die gleichen Objekte der YARN"=Komponenten zurückgegebenen
 \end{itemize}
 
-Da die REST"=API zwei Ausgabeformate unterstützt, wurde der \texttt{RestParser} aufgrund der kleineren Datenmengen und übersichtlicheren Datenformats zur Nutzung des JSON"=Formats entwickelt.
+Da die REST"=API zwei Ausgabeformate unterstützt, wurde der \texttt{RestParser} aufgrund der kleineren Datenmengen und des übersichtlicheren Datenformats zur Nutzung des JSON"=Formats entwickelt.
 Einige Beispiele für die entsprechenden Pfade der REST"=API sowie deren Ausgaben im JSON"=Format sind in \cref{app:hadoopRestApi} zu finden.
 
-Die Auswertung der Daten wird beim \texttt{RestParser} nicht mit Regex, sondern mithilfe des \emph{Json.NET}"=Frameworks\footnote{\url{https://www.newtonsoft.com/json}} durchgeführt.
+Die Auswertung der Daten wird beim \texttt{RestParser} nicht mit Regex, sondern mithilfe des \emph{Json.NET}"=Frameworks\footnote{\url{https://www.newtonsoft.com/json/}} durchgeführt.
 Hierfür wurden neben den bestehenden Datenhaltungsklassen noch weitere Hilfsklassen entwickelt, welche das Ausgabeformat der REST"=API nachbilden.
 Mit deren Hilfe ist es möglich, die Daten mithilfe von Json.NET konvertieren zu können.
 
@@ -185,8 +185,8 @@ public class JsonJavaEpochConverter : DateTimeConverterBase
 \end{lstlisting}
 
 Da der \gls{TLS} zusätzliche Informationen zu Attempts und Containern enthält, werden hier nicht nur die Daten mithilfe des \gls{RM} bzw. der \gls{NM} der ausführenden Nodes, sondern auch mithilfe des \gls{TLS} ermittelt.
-Hierzu werden zunächst die Daten des \gls{RM} bzw. der \gls{NM} ermittelt und mit die zusätzlichen Informationen des \gls{TLS} ergänzt, sofern hier Daten verfügbar sind.
-Aufgrund der Besonderheiten der REST"=API im Bezug auf Attempts und Container, werden bei diesen beiden YARN"=Komponenten zunächst immer die Daten aller Attempts einer Anwendung bzw. aller Container eines Attempts ermittelt und konvertiert.
+Hierzu werden zunächst die Daten des \gls{RM} bzw. der \gls{NM} ermittelt und mit den zusätzlichen Informationen des \gls{TLS} ergänzt, sofern hier Daten verfügbar sind.
+Aufgrund der Besonderheiten der REST"=API in Bezug auf Attempts und Container, werden bei diesen beiden YARN"=Komponenten zunächst immer die Daten aller Attempts einer Anwendung bzw. aller Container eines Attempts ermittelt und konvertiert.
 Sollten jedoch nur die Daten jeweils eines Attempts bzw. Containers benötigt werden, werden diese Listen entsprechend gefiltert:
 
 \begin{lstlisting}[label=lst:restParseDetails,style=cs,
@@ -226,13 +226,13 @@ Wenn das Cluster auf mehreren Hosts ausgeführt wird, werden zu jedem Host die e
 Das Initialisieren und Ausführen von Befehlen auf dem Cluster"=Host erfolgt ähnlich wie bei den Parsern immer nach dem gleichen Schema.
 Zunächst werden beim Initialisieren des Connectors alle für seine Aufgaben benötigten SSH"=Verbindungen initialisiert und aufgebaut.
 Die hierfür notwendigen Zugangsdaten werden durch den Connector aus den \texttt{ModelSettings} den Verbindungen zur Verfügung gestellt (vgl. \cref{subsec:modelClass,subsec:sshConnection}).
-Bevor ein Befehl auf dem Cluster"=Host ausgeführt wird, wird zunächst geprüft, ob der Connector diesen Befehl unterstützt bzw. die dafür benötigte Verbindungen initialisiert wurden.
+Bevor ein Befehl auf dem Cluster"=Host ausgeführt wird, wird zunächst geprüft, ob der Connector diesen Befehl unterstützt bzw. die dafür benötigten Verbindungen initialisiert wurden.
 Wenn der Connector den Befehl nicht unterstützt, wird stattdessen eine \texttt{PlatformNotSupportedException} ausgelöst, wenn die benötigten Verbindungen nicht initialisiert wurden eine \texttt{InvalidOperationException}.
 Anschließend werden die benötigten Parameter des auszuführenden Befehls ermittelt, zu denen auch die Auswahl des Hosts dazu gehört, auf dem der Befehl ausgeführt werden soll.
-Nach der im Anschluss folgenden Ausführung des Befehls auf dem Host des Clusters werden die zurückgegebenen Daten bei Monitoring"=Befehlen im Rohformat an die anfragende Komponente weitergeleitet, bzw. bei anderen Befehlen zunächst einer einfachen Auswertung unterzogen, damit das Ergebnis des Befehls durch die anfragende Komponente verarbeitet werden kann.
+Nach der im Anschluss folgenden Ausführung des Befehls auf dem Host des Clusters werden die zurückgegebenen Daten bei Monitoring"=Befehlen im Rohformat an die anfragende Komponente weitergeleitet bzw. bei anderen Befehlen zunächst einer einfachen Auswertung unterzogen, damit das Ergebnis des Befehls durch die anfragende Komponente verarbeitet werden kann.
 Aus diesem Grund werden die meisten Befehle synchron ausgeführt, wodurch die weitere Ausführung eines Testfalls solange unterbrochen wird, solange der Befehl auf dem Host ausgeführt wird.
-Eine Ausnahme bildet hierbei das Starten von Anwendungen, was auch teilweise asynchron und vollständig asynchron durchgeführt werden kann.
-Teilweise Asynchron bedeutet hier, dass die auf dem Cluster zu startende Anwendung nur solange synchron ausgeführt wird, bis der Anwendung eine ID zugewiesen wurde, welche vom Connector zurückgegeben wird.
+Eine Ausnahme bildet hierbei das Starten von Anwendungen, was auch \emph{teilsynchron} und vollständig asynchron durchgeführt werden kann.
+Teilsynchron bedeutet hier, dass die auf dem Cluster zu startende Anwendung solange synchron ausgeführt wird, bis der Anwendung eine ID zugewiesen wurde, die vom Connector zurückgegeben wird, bevor sie anschließend asynchron ausgeführt wird.
 Diese Funktion wird daher zum Starten der Anwendungen durch den Client genutzt, da dieser die Anwendungs"=ID abspeichert (vgl. \cref{subsec:yarnClient}).
 
 Da die beiden implementierten Parser unterschiedliche Befehle zum Abrufen der Daten benötigen, wurden hierfür zwei entsprechende Connectoren entwickelt.
@@ -245,7 +245,7 @@ Dies wirkt sich vor allem auf den \texttt{CmdConnector} aus, da dieser in dieser
 Der erste der beiden implementierten Connectoren ist der \texttt{CmdConnector}.
 Er dient zum Ausführen von allen CLI"=Befehlen, die im Rahmen der Fallstudie benötigt werden.
 Dabei wird nicht immer direkt mit Hadoop oder den Anwendungen interagiert, sondern immer mithilfe eines entsprechenden Setup"= oder Startscriptes (vgl. \cref{subsec:scripts}), welches vom Connector hierzu aufgerufen wird.
-Das konkret genutzte Setupscript ist hierbei abhängig vom \texttt{HostMode}.
+Das konkret genutzte Setup"=Script ist hierbei abhängig vom \texttt{HostMode}.
 Da die Verwaltung des genutzten \texttt{HostMode}s vollständig durch die \texttt{ModelSettings} durchgeführt wird, kann der Connector unabhängig hiervon genutzt werden (vgl. \cref{subsec:modelClass}).
 Notwendig ist hierfür jedoch, dass die Scripte immer die in \cref{app:setupScriptCmds} gezeigten Befehle enthalten.
 
@@ -264,11 +264,11 @@ Aus diesem Grund lösen alle Methoden, die nicht dem Monitoring durch die REST"=
 Zum Abrufen der Daten dienen ebenfalls SSH"=Verbindungen, jedoch ist hier eine pro Host, auf dem das Cluster ausgeführt wird, ausreichend.
 Auf dem Host wird zum Abrufen der Daten das Tool curl\footnote{\url{https://curl.haxx.se/}} genutzt, wobei die Daten immer explizit im JSON"=Format angefragt werden.
 
-Da die Daten von Anwendungs"=Containern immer durch die \gls{NM} der ausführenden Nodes zurückgegeben werden, kann es hier passieren, dass der entsprechende Node aufgrund eines Komponentenfehlers beendet oder nicht erreichbar ist.
+Da die Daten von YARN"=Containern immer durch die \gls{NM} der ausführenden Nodes zurückgegeben werden, kann es hier passieren, dass der entsprechende Node aufgrund eines Komponentenfehlers beendet oder nicht erreichbar ist.
 Wenn daher statt den Container"=Daten eine Fehlermeldung zurückgegeben wird, werden in so einem Fall keine Rohdaten vom Connector zurückgegeben, sondern \texttt{String.Empty}.
 
 Auch die grundlegenden Funktionen des \texttt{RestConnector}s sind unabhängig vom genutzten \texttt{HostMode} (vgl. \cref{subsec:hostMode}).
-Die Verwaltung der Adressen von \gls{RM} und \gls{TLS} erfolgt analog zu der des Setupscripts beim \texttt{CmdConnector} durch die \texttt{ModelSettings}"=Klasse.
+Die Verwaltung der Adressen von \gls{RM} und \gls{TLS} erfolgt analog zu der des Setup"=Scripts beim \texttt{CmdConnector} durch die \texttt{ModelSettings}"=Klasse.
 Ein Unterschied besteht jedoch bei den Adressen der \gls{NM} zum Monitoring der Container.
 Da die Adressen der jeweiligen Nodes in \texttt{YarnNode.HttpUrl} gespeichert sind, werden diese Adressen auch vom Connector genutzt, um mithilfe der REST"=API die Daten der auf einem Node ausgeführten Container zu abzurufen.
 Daher wird die vom \texttt{HostMode} abhängige Adresse der Nodes bereits beim Initialisieren des Modells entsprechend im Modell gespeichert (vgl. \cref{subsec:modelClass,subsec:yarnComponents}).
@@ -288,6 +288,6 @@ Die Verbindungsklasse ist auch dafür zuständig, die vom Connector erhaltenen a
 Hierbei wird zudem jede Kommunikation zwischen dem Treiber und dem Cluster"=Host in einer eigenen, vom Testsystem unabhängigen, Logdatei gespeichert, dem SSH"=Log.
 Die Verbindungsklasse ist auch dafür zuständig, dass beim teilsynchronen Starten einer Anwendung zunächst die Anwendungs"=ID ermittelt wird, bevor die Anwendung asynchron ausgeführt wird (vgl. \cref{subsubsec:implCmdConnector,subsec:yarnClient}).
 
-Pro SSH"=Verbindung kann nur jeweils ein Befehl gleichzeitig auf dem Host ausgeführt werden.
+Je SSH"=Verbindung kann nur ein Befehl gleichzeitig auf dem Host ausgeführt werden.
 Daher muss die Verbindungsklasse sicherstellen, dass die Verbindung auch bei asynchron ausgeführten Befehlen solange als belegt markiert ist, solange der Befehl nicht beendet ist.
 Dies geschieht mithilfe einer entsprechenden Eigenschaft \texttt{InUse}, mit der freie und belegte Verbindungen voneinander getrennt werden können.
