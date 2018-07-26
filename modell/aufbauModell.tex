@@ -12,7 +12,7 @@ Daraus resultiert folgende Drei"=Schichten"=Architektur für das gesamte Testmod
 \end{figure}
 
 Das YARN"=Modell stellt die oberste Schicht des Testmodells dar.
-Es bildet das Kernstück dieser Fallstudie, da dieses Modell mit den hierin abgebildeten YARN"=Komponenten und Komponentenfehlern, dem Controller und dem Oracle direkt im Rahmen des modellbasierten Testens mit \gls{ss} interagiert.
+Es bildet das Kernstück dieser Fallstudie, da dieses Modell, mit den hierin abgebildeten YARN"=Komponenten, den Komponentenfehlern, dem Controller und dem Oracle, direkt im Rahmen des modellbasierten Testens mit \gls{ss} interagiert.
 Folgende Komponenten sind im YARN"=Modell enthalten:
 
 \begin{description}
@@ -22,7 +22,7 @@ Folgende Komponenten sind im YARN"=Modell enthalten:
         Bilden die grundlegende Architektur von Hadoop YARN ab.
         Implementiert wurden in dieser Fallstudie die Nodes, Anwendungen, Attempts und Container mit den jeweils relevanten Eigenschaften zur Durchführung der Fallstudie.
     \item [Komponentenfehler der YARN"=Komponenten] \hfill \\
-        Bilden die bei den Tests zu injizierenden Komponentenfehler der jeweiligen YARN"=Komponenten.
+        Stellen die bei den Tests zu injizierenden Komponentenfehler der jeweiligen YARN"=Komponenten dar.
     \item [Oracle] \hfill \\
         Validiert die in Form von Constraints in den jeweiligen YARN"=Komponenten implementierten Anforderungen.
     \item [Client] \hfill \\
@@ -43,12 +43,12 @@ Er besteht aus folgenden Komponenten:
         Stellt die Verbindung zum realen Cluster her.
 \end{description}
 
-Der Parser wird hierbei nur zur Durchführung des Monitoring benötigt und nutzt wiederum den Connector zum abrufen der Daten.
+Der Parser wird hierbei nur zur Durchführung des Monitorings benötigt und nutzt wiederum den Connector zum Abrufen der Daten.
 Andere Befehle und Zugriffe auf das reale Cluster, wie \zB das Injizieren von Komponentenfehlern, werden direkt mithilfe des Connectors durchgeführt.
 
 Alle Informationen des Monitorings, der Validierung der Constraints oder Debug"=Informationen werden während der Ausführung im Programmlog gespeichert (vgl. \cref{subsec:yarnComponentInterface,subsec:oracleImpl}).
 Zu Analysezwecken im Fehlerfall wird zudem jede Kommunikation der SSH"=Verbindungen in einem eigenen Log, dem SSH"=Log, abgespeichert (vgl. \cref{subsec:sshConnection}).
 Durchgeführt wird dies mithilfe des Frameworks log4net\footnote{\url{https://logging.apache.org/log4net/}}, mit denen an den entsprechenden Stellen im Programm das Logging durchgeführt wird.
 
-Die Implementierung des YARN"=Modells wird in \cref{sec:yarnModel,sec:benchmarkController} beschrieben, die Implementierung des Treibers in \cref{sec:sshDriver}.
+Die Implementierung des YARN"=Modells wird in den Abschnitten \labelcref{sec:yarnModel,sec:benchmarkController} beschrieben, die Implementierung des Treibers in \cref{sec:sshDriver}.
 Die Umsetzung des realen Clusters wird in \cref{sec:realCluster} beschrieben.

@@ -1,4 +1,4 @@
-\documentclass[12pt,a4paper,notitlepage,abstract=on,english,ngerman,bibliography=totoc]{scrreprt}
+\documentclass[12pt,a4paper,notitlepage,abstract=on,english,ngerman,bibliography=totoc,numbers=noenddot]{scrreprt}
 % prevent warning \float@addtolists detected
 \usepackage{scrhack} 
 \input{./settings/variablen}
@@ -171,7 +171,7 @@
 }
 
 % Dreistellige Seitenzahlen im TOC
-\renewcommand{\@pnumwidth}{1.85em}
+\renewcommand{\@pnumwidth}{1.9em}
 
 \makeatother
 
@@ -217,7 +217,7 @@
 
 \begin{document}
     % Titelseite
-    \setcounter{page}{-100}
+    \pagenumbering{Roman}
     \begin{titlepage}
         \begin{doublespace}
             \include{./settings/deckblatt}
@@ -226,7 +226,6 @@
     
     % Abstract
     \clearpage
-    \pagenumbering{Roman}
     \include{./settings/abstract}
     
     % Sprachbedingte fixes

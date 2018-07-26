@@ -35,7 +35,7 @@ Das Namenssuffix der Images bzw. Szenarien in Form der Nummern geben an, welche 
 \label{subsec:hostMode}
 
 Der bereits mehrfach erwähnte \texttt{HostMode} beschreibt den prinzipiellen Aufbau des gestarteten Clusters.
-Es ist hierbei möglich, das Cluster wie in \cref{sec:hadoopBenchmark} beschrieben mithilfe von Docker Machine zu starten, wodurch entsprechende VMs gestartet werden, auf denen das Cluster auf Docker"=Containern ausgeführt wird.
+Das Cluster kann hierbei mithilfe von Docker-Machine auf entsprechenden VMs gestartet werden, auf denen das Cluster in Docker"=Containern ausgeführt wird (vgl. \cref{sec:hadoopBenchmark}).
 Der größte Nachteil dieses \texttt{DockerMachine}"=Modes ist, dass das Cluster nicht bzw. nur umständlich auf mehreren Hosts ausgeführt werden kann.
 
 Um das Cluster auf beiden für diese Fallstudie genutzten Hosts auszuführen, wurde daher der \texttt{Multihost}"=Mode entwickelt, bei dem die Docker"=Container des Clusters direkt auf den jeweiligen Hosts ohne Docker Machine gestartet werden:
@@ -62,7 +62,7 @@ Auch aus diesem Grund wurde die bereits in \cref{subsec:modelClass} erläuterte 
 
 Die Plattform Hadoop"=Benchmark enthält bereits zum Starten des Clusters ein Setup"=Script und zum Ausführen der Benchmarks entsprechende Start"=Scripte (vgl. \cref{sec:hadoopBenchmark}).
 Um die Interaktion aufgrund der beiden unterschiedlichen \texttt{HostMode}s zu vereinfachen, wurde für jeden \texttt{HostMode} ein Setup"=Script entwickelt, um eine einheitliche und vereinfachte Befehlssyntax bereitzustellen.
-Die beiden entwickelten Setup"=Scripte werden vom \texttt{CmdConnector} genutzt um die benötigten Aktionen auf dem Cluster auszuführen (vgl. \cref{subsubsec:implCmdConnector}).
+Die beiden entwickelten Setup"=Scripte werden vom \texttt{CmdConnector} genutzt, um die benötigten Aktionen auf dem Cluster auszuführen (vgl. \cref{subsubsec:implCmdConnector}).
 Die beiden Setup"=Scripte abstrahieren somit die vom \texttt{HostMode} abhängigen, benötigten Befehle und sorgen dafür, dass der genutzte \texttt{HostMode} transparent ist, benötigen hierfür jedoch die gleiche, in \cref{app:setupScriptCmds} gezeigte, Befehlssyntax.
 Sie beinhalten entsprechende Befehle für folgende Aktionen:
 
@@ -76,7 +76,7 @@ Zudem wird beim Starten des Clusters immer geprüft, ob sich die Dockerfiles ge�
 Die Setup"=Scripte enthalten außerdem weitere, jeweils spezifische Befehle zum Umgang mit dem Cluster im entsprechenden \texttt{HostMode}.
 
 Zum zentralen Starten der Benchmarks wurde ebenfalls ein zentrales Benchmark"=Startscript entwickelt, welches die jeweiligen Start"=Scripte der einzelnen Benchmarks ausführt.
-Dadurch kann analog zum Setup"=Script unabhängig vom zu startenden Benchmark vom \texttt{CmdConnector} immer der gleiche Syntax genutzt werden.
-Das zentrale Benchmark"=Startscript ermittelt basierend auf dem zu startenden Benchmark das jeweils benötigte Start"=Script und übergibt die jeweils benötigten Parameter.
+Dadurch kann analog zum Setup"=Script unabhängig vom zu startenden Benchmark vom \texttt{CmdConnector} immer die gleiche Syntax genutzt werden.
+Das zentrale Benchmark"=Startscript ermittelt, basierend auf dem zu startenden Benchmark, das jeweils benötigte Start"=Script und übergibt diesem die benötigten Parameter.
 Die vom \texttt{HostMode} abhängigen Parameter zum Starten der Benchmark"=Container werden von den hierfür angepassten Start"=Scripten der Benchmarks selbst ermittelt.
-Die jeweiligen Startparameter der Anwendungen selbst werden vom Benchmark"=Controller (vgl. \cref{subsec:appImplementation}) bereitgestellt.
+Die jeweiligen Startparameter der Anwendungen selbst werden vom Benchmark"=Controller bereitgestellt (vgl. \cref{subsec:appImplementation}).

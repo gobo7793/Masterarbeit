@@ -54,7 +54,7 @@ Das Systemmodell kann nach der Modellierung vom \gls{ss}"=Compiler kompiliert we
     \label{fig:ssharpTestApproach}
 \end{figure}
 
-Zur Ausführung selbst gibt es neben der Simulation und dem \gls{MCr} auch noch die Möglichkeit einer Ausführung mithilfe der \gls{DCCA} (vgl. \cref{subsec:ssharpExecution}).
+Zur Ausführung eines \gls{ss}"=Modells gibt es neben der Simulation und dem \gls{MCr} zusätzlich noch die Möglichkeit der Ausführung mithilfe der \gls{DCCA} (vgl. \cref{subsec:ssharpExecution}).
 Alle drei Ausführungswerkzeuge führen auf jeweils ihre Art das entwickelte Modell aus.
 Dabei werden die Gegenbeispiele dazu genutzt, um mit deren Hilfe die benötigte Fehlermenge im Modell zu ermitteln, bei der das gesamte System ausfällt \cite{Habermaier2016}.
 
@@ -71,15 +71,15 @@ Um solche Tests durchzuführen, benötigt das Modell weitere Komponenten.
 Der \emph{Controller} dient vor allem dazu, um das System zu steuern, während der \emph{Observer} das System überwacht und dem Controller die benötigten Daten bereitstellt.
 Mithilfe eines \emph{Oracle}s wird geprüft, ob sich das System im Verlauf des Tests so verhält, wie es erwartet wird.
 Hierfür werden im Modell \emph{Constraints} definiert, welche die Implementierung der Anforderungen an das \gls{SuT} im Modell darstellen und bei der Ausführung durch das Oracle validiert werden.
-Dadurch kann automatisiert ermittelt werden, ob sich das \gls{SuT} so verhält, wie es erwartet wird \cite{Eberhardinger2016,Habermaier2015}.
+Dadurch kann automatisiert ermittelt werden, ob sich das \gls{SuT} wie erwartet verhält \cite{Eberhardinger2016,Habermaier2015}.
 
-Für weitere Informationen zum Aufbau eines \gls{ss}"=Modells sei an dieser Stelle auf entsprechende Literatur \cite{Eberhardinger2016,Habermaier2015,Habermaier2016} sowie auf die Dokumentation von \gls{ss} \cite{SSWiki} verwiesen.
+Für weitere Informationen zum Aufbau eines \gls{ss}"=Modells sei an dieser Stelle auf entsprechende Literatur \cite{Eberhardinger2016,Habermaier2015,Habermaier2016}, sowie auf die Dokumentation von \gls{ss} \cite{SSWiki} verwiesen.
 
 \subsection{Ausführung eines Modells mit \glsentryshort{ss}}
 \label{subsec:ssharpExecution}
 
 Um die Modelle zu testen, kommen in \gls{ss} verschiedene Werkzeuge zum Einsatz.
-Eines davon ist eine reine Simulation, bei der das Framework nur einen Ausführungspfad ausführt und dabei keine Komponentenfehler aktiviert bzw. die Aktivierung \textit{manuell} durch eigenen Code gesteuert werden kann.
+Eines davon ist eine reine Simulation, bei der das Framework nur einen Ausführungspfad ausführt und dabei keine Komponentenfehler aktiviert bzw. die Aktivierung \emph{manuell} durch \emph{eigenen} Code im entwickelten Modell gesteuert werden kann.
 Ein weiterer Nutzen liegt in der Möglichkeit, im ausgeführten Ausführungspfad zeitliche Abläufe zu berücksichtigen, da hier das Modell schrittweise ausgeführt wird.
 Hierbei wird für jede im Modell genutzte Komponente pro Schritt einmal die jeweilige Methode \texttt{Update()} aufgerufen, in der die jeweiligen Komponenten ihre Aktivitäten durchführen \cite{Habermaier2016}.
 
@@ -94,5 +94,5 @@ Je nach Konfiguration können dazu auch Heuristiken genutzt werden, welche die A
 Dabei werden die verschiedenen aktivierten Komponentenfehler während der Analyse in tolerierbare und nicht"=tolerierbare Fehler unterschieden.
 Tolerierbare Komponentenfehler werden dazu genutzt, die Grenzen der Selbstkonfiguration des Systems zu ermitteln.
 Hierbei wird für jeden Systemzustand nach einer Rekonfiguration durch die \gls{DCCA} eine neue Fehlermenge ermittelt, mit der das System gerade noch lauffähig ist.
-Das Auftreten eines tolerierbaren Komponentenfehler ist also gleichbedeutend mit einem einfachen Fehler im System, welcher die gesamte Funktionsweise des Systems nicht massiv einschränkt und eine Rekonfiguration noch ermöglicht.
+Das Auftreten eines tolerierbaren Komponentenfehlers ist also gleichbedeutend mit einem einfachen Fehler im System, welcher die gesamte Funktionsweise des Systems nicht massiv einschränkt und eine weitere Rekonfiguration noch ermöglicht.
 Sobald jedoch ein Fehler auftritt, durch den eine Rekonfiguration des Systems nicht mehr möglich ist, wurde ein nicht"=tolerierbarer Fehler gefunden, durch den das System nicht mehr funktionsfähig ist \cite{Habermaier2015}.

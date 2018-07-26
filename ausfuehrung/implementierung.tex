@@ -7,7 +7,7 @@ Zur Ausführung der Tests wurde folgende Methode entwickelt, bei der mithilfe vo
 
 \begin{lstlisting}[label=lst:executeTestCases,style=cs,
 caption={[Methode zur Ausführung der Tests der Fallstudie]
-    Methode zur Ausführung der der Tests der Fallstudie (gekürzt)}]
+    Methode zur Ausführung der Tests der Fallstudie (gekürzt)}]
 [Test]
 [TestCaseSource(nameof(GetTestCases))]
 public void ExecuteCaseStudy(int benchmarkSeed,
@@ -41,7 +41,7 @@ public void ExecuteCaseStudy(int benchmarkSeed,
 }
 \end{lstlisting}
 
-Das Starten und Beenden des jeweiligen Cluster dient der automatisierten Ausführung aller Tests inkl. denen mit der mutierten Selfbalancing"=Komponente.
+Das Starten und Beenden des Clusters dient der automatisierten Ausführung aller Tests inkl. denen mit der mutierten Selfbalancing"=Komponente.
 Dadurch ist es möglich, das Cluster neben dem normalen Szenario auch in einem Mutationsszenario zu starten.
 Durch das Beenden des Clusters im Finally"=Block ist es möglich, bei einer abgebrochenen Simulation andere Testfälle regulär auszuführen, da dadurch das Cluster regulär beendet wird und die Daten des abgebrochenen Testfalls wie bei einem erfolgreichen Test gespeichert werden.
 
@@ -53,7 +53,7 @@ Mithilfe der im \texttt{TestCaseSourceAttribute} referenzierten Methode \texttt{
 \begin{lstlisting}[label=lstgetTestCases:,style=cs,
 caption={[Implementierung der Testkonfigurationen]
     Implementierung der Testkonfigurationen (gekürzt).
-    Die hier nicht gezeigten Methoden zur Rückgabe der implementierten Werte wie \texttt{GetFaultProbabilities()} sind nach dem gleichen Schema aufgebaut wie \texttt{GetSeeds()}.
+    Die hier nicht gezeigten Methoden zur Rückgabe der implementierten Werte, wie \texttt{GetFaultProbabilities()}, sind nach dem gleichen Schema aufgebaut wie \texttt{GetSeeds()}.
     Mithilfe der Eigenschaft \texttt{MutationConfig} erfolgt die Auswahl des zu verwendeten Mutationsszenarios bei Mutationstests (vgl. \cref{subsec:clusterBasics,sec:implMutationTests}).}]
 public string MutationConfig { get; set; } = "mut1234";
 
@@ -81,7 +81,7 @@ private IEnumerable<int> GetSeeds()
 
 Hierbei werden nur Konfigurationen generiert, auf denen die in \cref{sec:selectTestcases} genannten Bedingungen zutreffen, womit anstatt den möglichen 48 Testkonfigurationen nur die gewählten 32 generiert werden.
 
-Damit die bei der Ausführung der Tests generierten Logs einfacher zur Evaluation genutzt werden können, werden die angefallenen Logdateien nach jeder Ausführung gemäß der Parameter der Testkonfiguration wie folgt umbenannt:
+Damit die bei der Ausführung der Tests generierten Logs einfacher zur Evaluation genutzt werden können, werden die angefallenen Logdateien nach jeder Testausführung, gemäß der Parameter der Testkonfiguration, wie folgt umbenannt:
 
 \begin{lstlisting}[label=lst:moveTestCaseLogs,style=cs,
 caption={Bestimmung des Dateinamens zur Umbenennung der Logdateien}]

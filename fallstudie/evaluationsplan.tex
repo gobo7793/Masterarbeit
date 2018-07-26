@@ -2,14 +2,14 @@
 \label{sec:evaluationPlan}
 
 Um das Testsystem zu validieren, wurde zunächst ein Evaluationsplan aufgestellt.
-In diesem ist festgehalten, was getestet wird, wie die Testkonfigurationen definiert sind, und wie die bei der Ausführung gewonnen Daten organisiert werden.
+In diesem ist festgehalten, was getestet wird, wie die Testkonfigurationen definiert sind und wie die bei der Ausführung gewonnenen Daten organisiert werden.
 
 \subsection{Behauptungen und Variablen}
 \label{subsec:theses}
 
 Als Basis für die Behauptungen und Variablen dienten die in \cref{sec:requirements} definierten Anforderungen an das Cluster und das Testsystem.
 Sie gehen damit auch einher mit den Behauptungen, welche für die Evaluation aufgestellt werden.
-Basierend auf den Anforderungen wurden daher folgende unabhängigen Variablen zur Evaluation ermittelt:
+Basierend auf den Anforderungen, wurden daher folgende unabhängige Variablen zur Evaluation ermittelt:
 
 \begin{itemize}
     \item Anzahl der Hosts und Nodes
@@ -19,7 +19,7 @@ Basierend auf den Anforderungen wurden daher folgende unabhängigen Variablen zu
     \item Generelle Wahrscheinlichkeit zur Aktivierung und Deaktivierung der Komponentenfehler
 \end{itemize}
 
-Basierend auf den unabhängigen Variablen wurden \uA folgende abhängigen Variablen ermittelt:
+Basierend auf den unabhängigen Variablen, wurden \uA folgende abhängige Variablen ermittelt:
 
 \begin{itemize}
     \item Anzahl der tatsächlich ausgeführten Testfälle
@@ -43,21 +43,21 @@ Als Basis zur Definition einer Testkonfiguration dienen die in \cref{subsec:thes
     \item Basisseed für Zufallsgeneratoren
     \item Anzahl auszuführender Testfälle
     \item Mindestdauer für einen Testfall
-    \item Nutzung einer oder mehreren Mutationen
+    \item Nutzung einer oder mehrerer Mutationen
     \item Generelle Wahrscheinlichkeit zur Aktivierung von Komponentenfehlern
     \item Generelle Wahrscheinlichkeit zur Deaktivierung von Komponentenfehlern
     \item Verwendung von vorab generierten Eingabedaten
 \end{itemize}
 
 Die Auswahl der ausgeführten Anwendungen erfolgt während der Testausführung anhand des Basisseeds der Testkonfiguration.
-Zwar werden durch das Transitionssystem basierend auf den dort definierten Wahrscheinlichkeiten zufällig Anwendungen ausgewählt, jedoch kann dies durch den Charakter des im .NET"=Framework vorhandenen Zufallsgenerators gesteuert werden.
+Zwar werden durch das Transitionssystem, basierend auf den dort definierten Wahrscheinlichkeiten, zufällig Anwendungen ausgewählt, jedoch kann dies durch den Charakter des im .NET"=Framework vorhandenen Zufallsgenerators gesteuert werden.
 Der in .NET implementierte Zufallsgenerator ist nämlich kein \emph{echter}, sondern ein Pseudo"=Zufallsgenerator, der mithilfe eines mathematischen Algorithmus Zufallszahlen berechnet \cite{RandomClassDoc}.
 Obwohl standardmäßig ein zeitbasierter Seed als Startwert für den Algorithmus genutzt wird \cite{RandomClassDoc}, kann durch die Angabe eines spezifischen Seeds die Wiederausführbarkeit der Tests sichergestellt werden.
 
 Auch die Aktivierung und Deaktivierung von Komponentenfehlern selbst soll während der Ausführung eines Testfalls festgelegt werden, wodurch die Wahrscheinlichkeit für deren Aktivierung bzw. Deaktivierung einen maßgeblichen Einfluss besitzt.
 Da Anwendungen, die Eingabedaten für andere Anwendungen generieren, \uU fehlschlagen können, kann eine Testkonfiguration mit vorab generierten und im HDFS gespeicherten Daten durchgeführt werden.
 Dadurch wird es ermöglicht, dass in solchen Tests spätere Anwendungen nicht von zuvor ausgeführten Anwendungen zur Generierung der Eingabedaten abhängig sind.
-Ebenfalls definiert werden müssen sind die Tests, die als Mutationstests durchgeführt werden sollen.
+Ebenfalls definiert werden müssen die Tests, die als Mutationstests durchgeführt werden sollen.
 Hierbei müssen auch die Mutationen selbst definiert werden, die vom Testsystem erkannt werden sollen.
 
 Die Auswahl der konkreten Testkonfigurationen in \cref{sec:selectTestcases} erfolgte im Rahmen der in \cref{sec:implTestcases} beschriebenen Implementierung der Tests.
@@ -66,7 +66,7 @@ Die Auswahl der konkreten Testkonfigurationen in \cref{sec:selectTestcases} erfo
 \label{subsec:dataOrganisation}
 
 Damit die bei der Ausführung gewonnenen Daten auch zur Evaluation genutzt werden können, wurde hierzu festgelegt, welche Daten während der Ausführung gespeichert werden.
-Alle relevante Daten werden hierzu während der Ausführung der Testfälle in einer Log"=Datei gespeichert.
+Alle relevanten Daten werden hierzu während der Ausführung der Testfälle in einer Log"=Datei gespeichert.
 Zur Unterscheidung von einzelnen Ausführungen werden die Daten klar strukturiert.
 Beim Start eines Tests sollen daher zunächst einige generelle Daten ausgegeben werden:
 
@@ -81,7 +81,7 @@ Beim Start eines Tests sollen daher zunächst einige generelle Daten ausgegeben 
 Im Rahmen der Simulation können weitere Daten ausgegeben werden, wie \zB:
 
 \begin{itemize}
-    \item Angabe, ob vorab generierte Eingabedaten genutzt werden oder diese während der Ausführung eines Tests generiert werden
+    \item Angabe, ob vorab generierte Eingabedaten genutzt oder diese während der Ausführung eines Tests generiert werden
     \item Mindestdauer für einen Testfall
     \item Auszuführende Benchmarks pro Client
 \end{itemize}

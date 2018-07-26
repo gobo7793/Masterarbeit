@@ -11,9 +11,9 @@ Mithilfe der Festlegung eines bestimmten Seeds für den hierfür benötigten Pse
 
 Einige der in \cref{subsec:mapreduceExamples} erwähnten Mapreduce"=Examples werden häufig als Benchmark verwendet.
 Einige Beispiele dafür sind die Anwendungen \acrlong{so} und \texttt{grep}, die bereits im Referenzpapier \cite{Dean2004} des \gls{MR}"=Frameworks zum Testen genutzt wurden.
-Zum Testen des HDFS dient in \cite{Shvachko2010} der DFSIO"=Benchmark, um den Durchsatz beim Lesen und Schreiben einer großen Datenmenge auf dem HDFS zu messen.
-\acrlong{tsr} und die beiden dazugehörigen Anwendungen \acrlong{tg} und \acrlong{tvl} bilden ebenfalls einen weit verbreiteten Benchmark, der die Hadoop"=Implementierung der standardisierten \emph{Sort Benchmarks}\footnote{\url{https://sortbenchmark.org/}} darstellt \cite{Graves2013}.
-Ebenfalls als guter Benchmark dient die Anwendung \acrlong{wc}, mit der ein großer Datensatz stark verkleinert bzw. zusammengefasst wird und dient daher als gute Repräsentation für Anwendungsarten, bei denen Daten extrahiert werden \cite{Huang2010,Chen2012}.
+Zum Testen des HDFS dient in \cite{Shvachko2010} die DFSIO"=Benchmark, um den Durchsatz beim Lesen und Schreiben einer großen Datenmenge auf dem HDFS zu messen.
+\acrlong{tsr} und die beiden dazugehörigen Anwendungen \acrlong{tg} und \acrlong{tvl} bilden ebenfalls eine weit verbreitete Benchmark, der die Hadoop"=Implementierung der standardisierten \emph{Sort Benchmarks}\footnote{\url{https://sortbenchmark.org/}} darstellt \cite{Graves2013}.
+Ebenfalls als gute Benchmark dient die Anwendung \acrlong{wc}, mit der ein großer Datensatz stark verkleinert bzw. zusammengefasst wird, und daher als gute Repräsentation für Anwendungsarten dient, bei denen Daten extrahiert werden \cite{Huang2010,Chen2012}.
 
 Da in dieser Fallstudie ein realistisches Abbild der ausgeführten Anwendungen ausgeführt werden soll, ist es nicht sehr hilfreich, die einzelnen Übergangswahrscheinlichkeiten im Transitionssystem anzugleichen oder rein zufällig zu verteilen.
 Einen realistischen Einblick in genutzte Anwendungs- und Datentypen in produktiv genutzten Hadoop"=Clustern geben \uA die Studien \cite{Chen2012,HadoopDataTypes}.
@@ -29,12 +29,12 @@ Basierend auf den Ergebnissen der Studien in \cite{Huang2010,Chen2012,HadoopData
         \item Textdateien:
         \begin{itemize}
             \item \gls{rtw}: Generierung von zufälligen Zeichenfolgen
-            \item \gls{dfw}: Schreiben einer großen Datenmenge auf das HDFS
+            \item \gls{dfw}: Schreiben von großen Datenmengen auf dem HDFS
         \end{itemize}
         \item Binärdateien:
         \begin{itemize}
             \item \gls{rw}: Generierung von zufälligen Binärdaten
-            \item \gls{tg}: Generierung der Eingabedaten für den \acrlong{tsr}"=Benchmark
+            \item \gls{tg}: Generierung von Eingabedaten für \acrlong{tsr}
        \end{itemize}
     \end{itemize}
 
@@ -42,8 +42,8 @@ Basierend auf den Ergebnissen der Studien in \cite{Huang2010,Chen2012,HadoopData
     \begin{itemize}
         \item Auslesen bzw. Zusammenfassen:
         \begin{itemize}
-            \item \gls{wc}: Auslesen einer Textdatei und Ermitteln der Anzahl der darin enthaltenen Wörter
-            \item \gls{dfr}: Auslesen einer großen Datenmenge auf dem HDFS
+            \item \gls{wc}: Auslesen von Textdaten und Ermitteln der Anzahl der darin enthaltenen Wörter
+            \item \gls{dfr}: Auslesen von großen Datenmengen auf dem HDFS
         \end{itemize}
         \item Transformieren:
         \begin{itemize}
@@ -53,7 +53,7 @@ Basierend auf den Ergebnissen der Studien in \cite{Huang2010,Chen2012,HadoopData
         \item Validierung der Transformationen:
         \begin{itemize}
             \item \gls{tms}: Validierung der von \acrlong{so} transformierten Daten
-            \item \gls{tvl}: Validierung der vom \acrlong{tsr} sortierten Binärdaten
+            \item \gls{tvl}: Validierung der von \acrlong{tsr} transformierten Binärdaten
         \end{itemize}
     \end{itemize}
 
@@ -61,20 +61,20 @@ Basierend auf den Ergebnissen der Studien in \cite{Huang2010,Chen2012,HadoopData
     \begin{itemize}
         \item \acrlong{pi}\glsunset{pi}: Einfache Berechnung von $\pi$ mithilfe der Quasi"=Monte"=Carlo"=Methode.
             Die Monte"=Carlo"=Methode und die darauf basierende Quasi"=Monte"=Carlo"=Methode sind stochastische Verfahren, um komplexe Probleme numerisch lösen zu können.
-            Für weitere Informationen hierzu sei auf entsprechende Literatur wie \zB \cite{Korn2010,Lemieux2009} verweisen.
+            Für weitere Informationen hierzu sei auf entsprechende Literatur, wie \zB \cite{Korn2010,Lemieux2009}, verweisen.
         \item \gls{pt}: Berechnung einer Lösung von Pentomino"=Problemen.
             Hierbei soll eine Fläche aus 64 Quadraten mithilfe von zwölf \emph{Bausteinen} bedeckt werden, wobei jeder Baustein aus fünf Quadraten besteht und nur einmal genutzt werden darf.
-            Weitere Informationen hierzu sind in entsprechender Literatur wie \zB in \cite{Golomb1995} zu finden.
+            Weitere Informationen hierzu sind in entsprechender Literatur, wie \zB in \cite{Golomb1995}, zu finden.
     \end{itemize}
 
     \item Dummy"=Anwendungen:
     \begin{itemize}
-        \item  \gls{sl}: Blockieren von Ressourcen
-        \item  \gls{fl}: Fehlschlagen einer Anwendung
+        \item \gls{sl}: Blockieren von Ressourcen
+        \item \gls{fl}: Ausführung eines fehlschlagenden Map"=Tasks
     \end{itemize}
 \end{itemize}
 
-Der Grund für die Berücksichtigung von mehreren gleichen bzw. ähnlichen Anwendungen für einige Kategorien liegt darin, dass die unterschiedlichen Anwendungen einen unterschiedliche Umfang bzw. Datenrepräsentation (Text- und Binärdaten) repräsentieren.
+Der Grund für die Berücksichtigung von mehreren gleichen bzw. ähnlichen Anwendungen für einige Kategorien liegt darin, dass die unterschiedlichen Anwendungen einen unterschiedlichen Umfang bzw. unterschiedliche Datenrepräsentation (Text- und Binärdaten) repräsentieren.
 So stehen die beiden \texttt{TestDFSIO}"=Varianten für eine umfangreichere Datennutzung, während die jeweils anderen Anwendungen einen kleineren Umfang repräsentieren.
 Ähnlich verhält es sich bei den beiden Berechnungs"=Anwendungen, bei denen die \acrlong{pt}"=Anwendung die deutlich umfangreicheren Berechnungen durchführt.
 \texttt{TestDFSIO} enthält zudem die Möglichkeit, Daten zu generieren und zu lesen, weshalb dieser Benchmark in zwei Kategorien als Anwendung genutzt wird.
@@ -89,7 +89,7 @@ Der Grund hierfür ist, dass beim Starten einer Anwendung der HiBench"=Suite die
 \subsection{Entwicklung der Markow"=Kette}
 \label{subsec:markovChain}
 
-Basierend auf den ausgewählten Anwendungen und der in den Studien genannten Anwendungstypen wurde das Transitionssystem in Form einer Markov"=Kette entwickelt.
+Basierend auf den ausgewählten Anwendungen und der in den Studien genannten Anwendungstypen, wurde das Transitionssystem in Form einer Markov"=Kette entwickelt.
 Die Markov"=Kette definiert die Wahrscheinlichkeiten, mit denen die ausführenden Anwendungen bei der Ausführung eines Testfalls gewechselt werden.
 Damit die Übergänge nicht bei jedem Testfall stattfinden, sondern Anwendungen auch mehrere Testfälle lang ausgeführt werden können, wurden Selbst"=Transitionen mit einer Wahrscheinlichkeit von 60 Prozent definiert.
 

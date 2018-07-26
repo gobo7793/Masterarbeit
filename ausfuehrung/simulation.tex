@@ -7,10 +7,10 @@ Hierbei gibt es neben der Simulation mit Aktivierung der Komponentenfehler auch 
 \subsection{Grundlegender Aufbau}
 \label{subsec:simulationBasics}
 
-Da im realen Cluster Hadoop kontinuierlich Anpassungen durchführt und Tests mithilfe von \gls{ss} mit diskreten Schritten durchgeführt werden, muss beachtet werden, dass die bei den Tests ermittelten Werte immer nur Momentaufnahmen darstellen.
-Ebenso muss beachtet werden, dass bei der Deaktivierung von einzelnen Nodes bzw. deren Netzwerkverbindungen diese nicht in Echtzeit, sondern um einige Zeit verzögert erkannt werden und erst nach einer gewissen Zeit aus der Konfiguration des Clusters entfernt werden (vgl. \cref{sec:hadoop}).
-Genauso verhält es sich, wenn ein Node bzw. seine Verbindung wieder aktiviert wird, da dieser zunächst gestartet und anschließend die Verbindung mit den \gls{RM} wiederhergestellt werden muss.
-Außerdem werden die für die auf dem Cluster ausgeführten Anwendungen benötigten \gls{AppMstr} und Anwendungs"=Container aufgrund der komplexen internen Prozesse von Hadoop nicht innerhalb weniger Millisekunden allokiert, sondern benötigen ebenfalls eine gewisse Zeit.
+Da im realen Cluster Hadoop kontinuierlich Anpassungen und Tests mithilfe von \gls{ss} mit diskreten Schritten durchgeführt werden, muss beachtet werden, dass die bei den Tests ermittelten Werte immer nur Momentaufnahmen darstellen.
+Ebenso muss beachtet werden, dass bei der Deaktivierung von einzelnen Nodes bzw. deren Netzwerkverbindungen diese nicht in Echtzeit, sondern um einige Zeit verzögert erkannt und erst nach einer gewissen Zeit aus der Konfiguration des Clusters entfernt werden (vgl. \cref{sec:hadoop}).
+Genauso verhält es sich, wenn ein Node bzw. seine Verbindung wieder aktiviert wird, da dieser zunächst gestartet und anschließend die Verbindung mit den \gls{RM} hergestellt werden muss.
+Außerdem werden die für die auf dem Cluster ausgeführten Anwendungen benötigten \gls{AppMstr} und YARN"=Container aufgrund der komplexen internen Prozesse von Hadoop nicht innerhalb weniger Millisekunden allokiert, sondern benötigen ebenfalls eine gewisse Zeit.
 Aus diesen Gründen muss ein vom Simulator ausgeführter Testfall um eine gewisse Zeit verzögert werden, sodass alle Aktivitäten zur Verwaltung des Hadoop"=Clusters genügend Zeit zur Ausführung erhalten.
 Dadurch erhält jeder Testfall eine gewisse Mindestdauer, die erreicht sein muss, bevor der nachfolgende Testfall ausgeführt werden kann.
 
@@ -61,7 +61,7 @@ private bool ExecuteSimulation()
 \end{lstlisting}
 
 Hierbei gibt es zwei Variationen zum Ausführen der Simulation, welche abhängig von der Aktivierung der Komponentenfehler ist.
-Sollen keine Komponentenfehler aktiviert bzw. deaktiviert werden, werden die entsprechenden Variablen zur Festlegung der generellen Wahrscheinlichkeiten (vgl. \cref{subsec:simulationModelInit} entsprechend gesetzt und die Simulation ausgeführt.
+Sollen keine Komponentenfehler aktiviert bzw. deaktiviert werden, werden die entsprechenden Variablen zur Festlegung der generellen Wahrscheinlichkeiten (vgl. \cref{subsec:simulationModelInit}) entsprechend gesetzt und die Simulation ausgeführt.
 Nach Abschluss eines Testfalls durch \texttt{SimulateStep()} wird geprüft, ob die Ausführung des Testfalls die Mindestdauer unterschritten hat und die weitere Ausführung in dem Fall entsprechend verzögert.
 
 Wenn während der Simulation eine im Modell nicht behandelte \texttt{Exception} auftritt, wird diese außerhalb der Simulation abgefangen und entsprechend geloggt.
@@ -69,7 +69,7 @@ Dadurch wird zudem die Simulation beim aktuellen Stand abgebrochen.
 Nach Abschluss der Simulation werden alle noch ausgeführten Anwendungen beendet und defekte Nodes neu gestartet, sofern nötig.
 
 Für die Simulation selbst sind zudem ebenfalls Constraints definiert.
-Dies ist dadurch nötig, da die in \cref{subsec:testRequirements} definierte Anforderung, dass Komponentenfehler injiziert bzw. repariert werden, nicht immer innerhalb eines Testfalls validiert werden können.
+Dies ist dadurch nötig, da Anforderung, dass Komponentenfehler injiziert bzw. repariert werden (vgl. \cref{subsec:testRequirements}), nicht immer innerhalb eines Testfalls validiert werden kann.
 Aus diesem Grund wird diese Anforderung in Form von Constraints nach Abschluss einer Simulation durch das Oracle geprüft.
 
 \subsection{Initialisierung des Modells}
@@ -149,7 +149,7 @@ Eine Besonderheit bildet die Eigenschaft \texttt{PrecreatedInputs}.
 Es definiert, ob die ausgeführten Anwendungen auf dem Cluster vorab generierte Eingabedaten nutzen oder alle Eingabedaten während der Ausführung selbst generieren.
 Der Unterschied zwischen beiden Varianten liegt darin, dass vorab generierte Eingabedaten in einem anderen Verzeichnis im HDFS gespeichert sind und während der Simulation die Eingabedaten aus diesem Verzeichnis gelesen werden.
 Wenn keine Eingabedaten vorab generiert werden, werden als Eingabeverzeichnisse für die Anwendungen die Ausgabeverzeichnisse der entsprechenden Benchmarks genutzt, die die dafür benötigten Daten generieren (vgl. \cref{sec:clusterSetup,subsec:testcaseGeneration,subsec:precreateInputData}).
-Die Eigenschaft \texttt{RecreatePreInputs} definiert hierfür, ob bereits bestehende Eingabedaten neu generiert werden, was standardmäßig nicht der Fall ist bzw. dieses Feld auf \texttt{false} gesetzt ist (vgl. \cref{subsec:precreateInputData}).
+Die Eigenschaft \texttt{RecreatePreInputs} definiert hierfür, ob bereits bestehende Eingabedaten neu generiert werden, was standardmäßig nicht der Fall ist bzw. die Eigenschaft auf \texttt{false} gesetzt ist (vgl. \cref{subsec:precreateInputData}).
 Die Werte der beiden Eigenschaften werden daher entsprechend in ihren korrespondierenden Eigenschaften in \texttt{ModelSettings} gespeichert.
 
 Die direkt im Anschluss an die Initialisierung des Simulators aufgerufene Methode \texttt{CollectYarnNodeFaults()} ermittelt alle im initialisierten Modell enthaltenen, mit \texttt{NodeFaultAttribute} markierten Komponentenfehler (vgl. \cref{subsec:yarnComponentFaults}):
@@ -178,7 +178,7 @@ Zur Speicherung hierfür dient der Typ \texttt{FaultTuple}, welcher ein Alias f�
 Die jeweiligen Instanzen der Attribute und Nodes werden für die in \cref{subsec:faultActivation} beschriebene Aktivierung der dazugehörigen Komponentenfehler benötigt.
 Die beiden im Tupel gespeicherten Instanzen des \texttt{IntWrapper} dienen zur Speicherung der Anzahl der Aktivierungen bzw. Deaktivierungen der Komponentenfehler.
 Da der Wert einer Struktur wie \texttt{int} nicht direkt in einem Tupel geändert werden kann, dient die Klasse \texttt{IntWrapper} hierfür als Adapter.
-Benötigt werden diese Werte zur Validierung der Constraints der Simulation durch das Oracle (vgl. \cref{subsec:simulationBasics})
+Benötigt werden diese Werte zur Validierung der Constraints der Simulation durch das Oracle (vgl. \cref{subsec:simulationBasics}).
 
 \subsection{Weitere mit der Simulation zusammenhängende Methoden}
 \label{subsec:simulationUtilities}
@@ -218,12 +218,12 @@ Daneben werden aber auch noch weitere, auch den \texttt{HostMode} (vgl. \cref{su
     \item Ausführung der Erstellung von vorab generierten Eingabedaten
     \item Vollständiger Pfad des verwendeten Setup"=Scriptes
     \item Adresse des Controllers zur Nutzung der REST"=API
-    \item Simulation der auszuführenden Benchmarks (vgl. \cref{subsec:simulationUtilities}
+    \item Simulation der auszuführenden Benchmarks (vgl. \cref{subsec:simulationUtilities})
 \end{itemize}
 
 Im Anschluss werden das auszuführende YARN"=Modell und der zur Ausführung des Tests genutzte Simulator initialisiert, bevor die Testfälle selbst ausgeführt werden.
 
-Der Ablauf eines Testfalls lässt sich mehrere Abschnitte einteilen.
+Der Ablauf eines Testfalls lässt sich in mehrere Abschnitte einteilen.
 Zunächst wird vom Simulator mithilfe der Attribute der Komponentenfehler entschieden, ob ein Komponentenfehler aktiviert und im Cluster injiziert wird (vgl. \cref{subsec:yarnComponentFaults,subsec:faultActivation}).
 Anschließend führt der Simulator den Testfall aus, indem für alle Komponenten des Modells die \texttt{Update()}"=Methoden ausgeführt werden.
 Hierdurch werden deaktivierte Komponentenfehler auch im Cluster wieder repariert, da \texttt{YarnNode.Update()} die entsprechenden Start"=Methoden aufruft (vgl. \cref{subsec:yarnComponentFaults}).
@@ -234,14 +234,14 @@ Jeder Client nutzt dafür die in \cref{subsec:yarnClient} beschriebe Routine, um
 Die dabei vom Cluster zugewiesene Anwendungs"=ID wird vom Client gespeichert, um die Anwendung in nachfolgenden Testfällen bei Bedarf abbrechen zu können, wenn eine neue Anwendung gestartet werden soll (vgl. \cref{subsec:yarnClient}).
 
 Sobald alle Anwendungen gestartet sind, wird vom Controller das Monitoring aller Nodes, Anwendungen und ihrer Attempts durchgeführt.
-Dabei wird auch der \gls{MARP}"=Wert ein zweites mal ausgelesen, da er sich durch die zuvor noch aktiven bzw. neu gestarteten Anwendungen unterschiedlich verändert haben könnte (vgl. \cref{subsec:yarnController}).
+Dabei wird der \gls{MARP}"=Wert erneut ausgelesen, da sich der Wert durch die Selfbalancing"=Komponente regelmäßig ändern kann (vgl. \cref{subsec:yarnController,sec:inriaSetting}).
 
 Den Abschluss eines Testfalls bildet die Validierung der Werte des Clusters, die beim Monitoring im YARN"=Modell gespeichert wurden.
 Dazu werden für jede Komponente im Modell die jeweiligen auf den Anforderungen basierenden Constraints durch das Oracle geprüft (vgl. \cref{sec:requirements,subsec:yarnComponentConstraints,subsec:yarnController}).
 Wenn ein Constraint nicht erfolgreich validiert wurde, wird dies jeweils im Programmlog gespeichert bzw. die Ausführung der Simulation abgebrochen, wenn sich das Cluster nicht mehr rekonfigurieren kann (vgl. \cref{subsec:oracleImpl}).
 
 Nach Abschluss eines Testfalls werden durch den Simulator die in \cref{subsec:dataOrganisation} geforderten Daten im Programmlog abgespeichert, die beim Monitoring erkannt wurden.
-Daneben werden bei der Ausführung eines Testfalls aber auch weitere Daten im Programmlog gespeichert wie \zB:
+Daneben werden bei der Ausführung eines Testfalls aber auch weitere Daten im Programmlog gespeichert, wie \zB:
 
 \begin{itemize}
     \item Ausführung von Komponentenfehlern
@@ -261,7 +261,7 @@ Der hierbei ermittelte Status wird im Programmlog als finaler Clusterstatus und 
     \item Anzahl der maximal möglichen, aktivierbaren Komponentenfehler
     \item Anzahl aktivierter und deaktivierter Komponentenfehler
     \item Letzter ermittelter \gls{MARP}"=Wert
-    \item Anzahl aller ausgeführten, erfolgreicher, fehlgeschlagenen sowie abgebrochener Anwendungen
+    \item Anzahl aller ausgeführten, erfolgreichen, fehlgeschlagenen sowie abgebrochenen Anwendungen
     \item Anzahl aller ausgeführten Attempts
     \item Anzahl aller während der Ausführung erkannten Container
     \item Anzahl aller validierten Constraints und verletzten Constraints, getrennt nach \gls{SuT}- und Testsystem"=Constraints
