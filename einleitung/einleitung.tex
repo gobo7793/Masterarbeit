@@ -17,17 +17,17 @@ Mithilfe von \gls{ss} können, meist selbstorganisierende oder sicherheitskritis
 Das Framework \gls{ss} ist jedoch nicht nur auf den Einsatz mit selbstorganisierenden und sicherheitskritischen System beschränkt.
 So wurde bereits in \cite{Eberhardinger2017} mit der von \citeauthor{Cheng2008} entwickelten ZNN.com"=Fallstudie \cite{Cheng2008} ein Load"=Balancing"=System als \gls{ss}"=Modell implementiert und entsprechende Tests durchgeführt.
 
-In dieser Masterarbeit soll daher nun eine ähnliche Fallstudie durchgeführt werden.
+In dieser Masterarbeit soll nun eine ähnliche Fallstudie durchgeführt werden.
 Konkret soll hier mit Apache Hadoop\footnote{\url{https://hadoop.apache.org/}} ein reales, und in der Forschung und Praxis eingesetztes \cite{PoweredByHadoop}, verteiltes Load"=Balancing"=System als zu testendes System (\acrlong{SuT}, kurz \acrshort{SuT}\glsunset{SuT}) dienen.
 Hadoop soll jedoch nicht in seiner Standardversion getestet werden, sondern gemeinsam mit der von \citeauthor{Zhang2016} entwickelten, selbstadaptiven Komponente \cite{Zhang2016}.
 Diese Komponente sorgt dafür, dass einige sonst statische Einstellungen von Hadoop während der Laufzeit, abhängig von der Auslastung des Hadoop"=Clusters, dynamisch verändert werden \cite{Zhang2016}.
 Mithilfe des \gls{ss}"=Frameworks soll hierfür ein modellbasierter Ansatz entwickelt und ausgeführt werden.
 Damit einhergehend soll auch analysiert werden, wie ein reales System in einem zum Testen entwickelten Modell eingebunden werden kann.
-Ziel ist es hierbei nicht Hadoop selbst zu testen, sondern den hierfür entwickelten Testansatz.
+Ziel ist es in dieser Masterarbeit nicht Hadoop selbst, sondern den hierfür entwickelten Testansatz zu testen.
 Aus diesem Grund sollen hierfür auch einige Mutationstests entwickelt werden, bei denen die selbstadaptive Komponente von \citeauthor{Zhang2016} entsprechende Mutationen erhält, welche bei der Testausführung vom Testsystem erkannt werden müssen.
 
-Da der im Rahmen dieser Masterarbeit entwickelte Testansatz auch alle wesentlichen Komponenten von Hadoop beschreibt, wurde er auch zum Testen von Hadoop selbst genutzt.
-Die hierfür durchgeführte Fallstudie wurde bereits in \cite{Eberhardinger2018} publiziert.
+Da der im Rahmen dieser Masterarbeit entwickelte Testansatz auch alle wesentlichen Komponenten von Hadoop beschreibt, konnte er auch zum Testen von Hadoop selbst genutzt werden.
+Die hierfür durchgeführte Fallstudie und ihre Ergebnisse wurden bereits in \cite{Eberhardinger2018} publiziert.
 
 Hadoop wurde für diese Fallstudie vor allem aus dem Grund ausgewählt, da es bereits in der Praxis sehr häufig eingesetzt wird \cite{PoweredByHadoop} und die auf einem Hadoop"=Cluster ausgeführten Anwendungen dynamisch auf dem Cluster allokiert werden.
 Die von \citeauthor{Zhang2016} entwickelte Komponente ergänzt Hadoop, sodass Anwendungen schneller und optimaler ausgeführt werden können \cite{Zhang2016}.

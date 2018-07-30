@@ -39,7 +39,7 @@ public class YarnNode : Component
 \end{lstlisting}
 
 Jede Komponente des Modells muss von \texttt{Component} erben, um als \gls{ss}"=Komponente definiert zu sein.
-Sie kann auch einen oder mehrere Komponentenfehler enthalten, die bei dieser Komponente auftreten können, im Beispiel in \cref{lst:ssExample} ist dies der Ausfall des Nodes.
+Sie kann dabei einen oder mehrere Komponentenfehler enthalten, die bei dieser Komponente auftreten können, im Beispiel in \cref{lst:ssExample} ist dies \texttt{NodeDeadFault}, der den Ausfall eines Nodes herbeiführt.
 Ein Komponentenfehler kann dabei temporär (\texttt{TransientFault}) oder dauerhaft (\texttt{PermanentFault}) sein.
 Der Effekt eines Komponentenfehlers wird in der entsprechenden Effekt"=Klasse definiert, welche von der Hauptklasse (hier \texttt{YarnNode}) erbt und mithilfe des Attributs \texttt{FaultEffectAttribute} dem dazugehörigen Komponentenfehler zugeordnet wird \cite{Habermaier2016,Habermaier2015}.
 Neben den eigentlichen Komponenten enthält jedes Modell zudem eine zentrale \texttt{Model}"=Klasse, die von \texttt{ModelBase} erbt.
