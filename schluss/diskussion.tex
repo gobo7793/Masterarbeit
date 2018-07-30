@@ -8,7 +8,7 @@ Dies liegt vor allem aufgrund der hohen Anzahl an fehlgeschlagenen Anwendungen, 
     \item Der Node ist nicht erreichbar, was zu einem \gls{AppMstr}"=Timeout führt
     \item Der den \gls{AppMstr} ausführende Node ist zur sehr ausgelastet, was ebenfalls zu einem \gls{AppMstr}"=Timeout führt
     \item Benötigte Dateien sind nicht im HDFS verfügbar, was in einem Map"=Task"=Fehler resultiert
-    \item Es wird versucht, Tasks von YARN"=Containern auf einem defekten Node auszuführen, was im Exitcode -100 resultiert
+    \item Es wird versucht, Tasks von YARN"=Containern auf einem defekten Node auszuführen, was im Exitcode -100 ersichtlich wird
 \end{itemize}
 
 Es ist erkennbar, dass drei der vier Ursachen im Zusammenhang mit der Injizierung von Komponentenfehlern im realen Cluster zu finden sind.
@@ -35,8 +35,10 @@ Das von Spotify genutzte Cluster zur Analyse der Hörgewohnheiten und für Musik
 
 Es stellt damit auch eines der größten Hadoop"=Cluster dar \cite{PoweredByHadoop}.
 Es ist schnell ersichtlich, dass beim Ausfall von über 400 Nodes wohl ein Großteil der über 20.000 ausgeführten Anwendungen nicht mehr ausgeführt werden könnten und zahlreiche Blöcke von möglicherweise benötigten Daten im HDFS nicht mehr verfügbar wären (vgl. \cref{sec:hadoop}).
-Entsprechende Auswirkungen hätte das auch auf die Kunden von Spotify, da das Cluster \uA zur Ermittlung von Musikempfehlungen genutzt wird, welche dann nur noch eingeschränkt verfügbar wären.
-Es lässt sich daher auch sagen, dass der Ausfall eines Viertels aller Nodes lediglich bei sehr kleinen Clustern im ein- bzw. niedrigen zweistelligen Bereich realitätsnah sein dürfte.
+Entsprechende Auswirkungen hätte das auch auf die Kunden von Spotify, da das Cluster \uA da Musikempfehlungen nur noch eingeschränkt zur Verfügung stehen würden.
+Es dürfte daher auch sehr unwahrscheinlich sein, dass bei einem Cluster dieser Größe ein Viertel aller Nodes ausfallen würde.
+Bei kleinen Clustern mit Nodes im ein- bzw. niedrigen zweistelligen Bereich dürfte der Ausfall eines Viertel der Nodes dagegen im realistischen Bereich liegen.
+Allerdings wären bei kleinen Clustern die Auswirkungen, natürlich abhängig von den Aufgaben des Clusters, tendenziell eher weniger massiv wie am Beispiel von Spotify.
 
 Daher lässt sich die hohe Anzahl an fehlgeschlagenen Anwendungen wohl vor allem an der generellen Wahrscheinlichkeit zur Aktivierung der Komponentenfehlern festmachen.
 Es wäre daher durchaus sinnvoll gewesen, einige der ausgeführten Tests auch ohne Aktivierung der Komponentenfehler durchzuführen.
