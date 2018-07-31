@@ -15,7 +15,7 @@
    version="1.1"
    id="svg8"
    inkscape:version="0.92.2 (5c3e80d, 2017-08-06)"
-   sodipodi:docname="hadoopBenchmarkArch.svg">
+   sodipodi:docname="caseStudyHadoopSetup.svg">
   <defs
      id="defs2">
     <marker
@@ -436,11 +436,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.4142136"
-     inkscape:cx="229.87981"
-     inkscape:cy="183.63125"
+     inkscape:zoom="2.0000001"
+     inkscape:cx="229.37195"
+     inkscape:cy="213.55119"
      inkscape:document-units="mm"
-     inkscape:current-layer="g8080"
+     inkscape:current-layer="layer1"
      showgrid="true"
      objecttolerance="10"
      guidetolerance="10"
@@ -495,12 +495,12 @@
          height="63.000004"
          width="136"
          id="rect8440"
-         style="opacity:1;fill:none;fill-opacity:0.6;fill-rule:nonzero;stroke:#f1c474;stroke-width:1.76388884;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.99065396;paint-order:markers stroke fill" />
+         style="opacity:1;fill:none;fill-opacity:0.6;fill-rule:nonzero;stroke:#bbbbbb;stroke-width:1.76388884;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers stroke fill" />
       <g
          transform="translate(4.9999997,40.000004)"
          id="g10226">
         <rect
-           style="opacity:1;fill:#f1c474;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.35277778;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers stroke fill"
+           style="opacity:1;fill:#bbbbbb;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.35277778;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers stroke fill"
            id="rect10217"
            width="19"
            height="6.0000005"
@@ -737,6 +737,126 @@
       </g>
     </g>
     <g
+       inkscape:label="compute-1"
+       id="g10522-5"
+       transform="translate(-85,7.9999983)">
+      <rect
+         style="opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.26458332;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
+         id="rect10266-7-4-8"
+         width="36"
+         height="28.999994"
+         x="102"
+         y="224"
+         rx="0"
+         ry="0" />
+      <g
+         id="g10341-6"
+         inkscape:label="DataNode"
+         transform="translate(0,-10.000006)">
+        <rect
+           ry="0"
+           rx="0"
+           y="242"
+           x="104"
+           height="4.9999938"
+           width="32"
+           id="rect10266-7-4-7-0"
+           style="opacity:1;fill:#009900;fill-opacity:0.66666667;fill-rule:nonzero;stroke:#000000;stroke-width:0.35277778;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal" />
+        <text
+           id="text10315-12"
+           y="245.82291"
+           x="119.91966"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:1.25;font-family:'Noto Sans';-inkscape-font-specification:'Noto Sans';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+           xml:space="preserve"><tspan
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;font-family:'Noto Sans';-inkscape-font-specification:'Noto Sans';text-align:center;text-anchor:middle;stroke-width:0.26458332"
+             y="245.82291"
+             x="119.91966"
+             id="tspan10313-4"
+             sodipodi:role="line">DataNode</tspan></text>
+      </g>
+      <g
+         id="g10341-0-6"
+         inkscape:label="NodeManager"
+         transform="translate(0,-3.000006)">
+        <rect
+           ry="0"
+           rx="0"
+           y="242"
+           x="104"
+           height="4.9999938"
+           width="32"
+           id="rect10266-7-4-7-9-8"
+           style="opacity:1;fill:#0055ff;fill-opacity:0.66666667;fill-rule:nonzero;stroke:#000000;stroke-width:0.35277778;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal" />
+        <text
+           id="text10315-6-6"
+           y="245.82291"
+           x="119.91966"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:1.25;font-family:'Noto Sans';-inkscape-font-specification:'Noto Sans';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+           xml:space="preserve"><tspan
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;font-family:'Noto Sans';-inkscape-font-specification:'Noto Sans';text-align:center;text-anchor:middle;stroke-width:0.26458332"
+             y="245.82291"
+             x="119.91966"
+             id="tspan10313-5-6"
+             sodipodi:role="line">NodeManager</tspan></text>
+      </g>
+      <g
+         id="g10341-2-4"
+         inkscape:label="collectd"
+         transform="translate(0.08033791,4.1770875)">
+        <rect
+           ry="0"
+           rx="0"
+           y="242"
+           x="104"
+           height="4.9999938"
+           width="32"
+           id="rect10266-7-4-7-7-0"
+           style="opacity:1;fill:#ff0000;fill-opacity:0.66666667;fill-rule:nonzero;stroke:#000000;stroke-width:0.35277778;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal" />
+        <text
+           id="text10315-2-7"
+           y="245.82291"
+           x="119.91966"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:1.25;font-family:'Noto Sans';-inkscape-font-specification:'Noto Sans';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+           xml:space="preserve"><tspan
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;font-family:'Noto Sans';-inkscape-font-specification:'Noto Sans';text-align:center;text-anchor:middle;stroke-width:0.26458332"
+             y="245.82291"
+             x="119.91966"
+             id="tspan10313-9-9"
+             sodipodi:role="line">collectd</tspan></text>
+      </g>
+      <g
+         id="g10501-5"
+         inkscape:label="Container Name"
+         transform="translate(-0.27794259)">
+        <text
+           xml:space="preserve"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333311px;line-height:1.25;font-family:'Noto Sans';-inkscape-font-specification:'Noto Sans';text-align:start;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+           x="110.38448"
+           y="229.14014"
+           id="text10315-1-0"><tspan
+             sodipodi:role="line"
+             id="tspan10313-0-0"
+             x="110.38448"
+             y="229.14014"
+             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333311px;font-family:'Noto Sans';-inkscape-font-specification:'Noto Sans';text-align:start;text-anchor:start;stroke-width:0.26458332">compute-1</tspan></text>
+        <g
+           transform="matrix(0.88993533,0,0,0.88993533,37.122834,-13.488963)"
+           inkscape:label="Container Symbol"
+           id="g10494-6">
+          <path
+             d="m 75.536788,268.47141 h 5.243383 v 5.24352 h -5.243383 z"
+             id="path24-3-9"
+             style="display:inline;fill:#20c2ef;stroke:#000000;stroke-width:0.37500277;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+             inkscape:connector-curvature="0" />
+          <path
+             inkscape:connector-curvature="0"
+             style="display:inline;stroke:#000000;stroke-width:0.37500277;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+             id="use28-4-9"
+             d="m 76.361589,273.07809 v -3.96982 m 0.71433,3.96982 v -3.96982 m 0.721538,3.96982 v -3.96982 m 0.721918,3.96982 v -3.96982 m 0.721799,3.96982 v -3.96982 m 0.714196,3.96982 v -3.96982" />
+        </g>
+      </g>
+    </g>
+    <g
        id="g16191"
        inkscape:label="Netzwerk"
        transform="translate(0,3)">
@@ -768,7 +888,7 @@
          sodipodi:nodetypes="cc"
          inkscape:connector-curvature="0"
          id="path11627-4-5-9-5"
-         d="m 52,240 11,6"
+         d="M 51.999999,240.99999 63,246"
          style="fill:none;stroke:#009900;stroke-width:0.26458332;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#marker11921-3-0-4-6);marker-end:url(#TriangleOutM-9-7-1-7)" />
       <path
          sodipodi:nodetypes="cc"
@@ -915,126 +1035,6 @@
            y="229.14014"
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333311px;font-family:'Noto Sans';-inkscape-font-specification:'Noto Sans';text-align:start;text-anchor:start;stroke-width:0.26458332">compute-2</tspan></text>
     </g>
-    <g
-       inkscape:label="compute-1"
-       id="g10522-5"
-       transform="translate(-85,7.9999983)">
-      <rect
-         style="opacity:1;fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.26458332;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal"
-         id="rect10266-7-4-8"
-         width="36"
-         height="28.999994"
-         x="102"
-         y="224"
-         rx="0"
-         ry="0" />
-      <g
-         id="g10341-6"
-         inkscape:label="DataNode"
-         transform="translate(0,-10.000006)">
-        <rect
-           ry="0"
-           rx="0"
-           y="242"
-           x="104"
-           height="4.9999938"
-           width="32"
-           id="rect10266-7-4-7-0"
-           style="opacity:1;fill:#009900;fill-opacity:0.66666667;fill-rule:nonzero;stroke:#000000;stroke-width:0.35277778;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal" />
-        <text
-           id="text10315-12"
-           y="245.82291"
-           x="119.91966"
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:1.25;font-family:'Noto Sans';-inkscape-font-specification:'Noto Sans';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-           xml:space="preserve"><tspan
-             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;font-family:'Noto Sans';-inkscape-font-specification:'Noto Sans';text-align:center;text-anchor:middle;stroke-width:0.26458332"
-             y="245.82291"
-             x="119.91966"
-             id="tspan10313-4"
-             sodipodi:role="line">DataNode</tspan></text>
-      </g>
-      <g
-         id="g10341-0-6"
-         inkscape:label="NodeManager"
-         transform="translate(0,-3.000006)">
-        <rect
-           ry="0"
-           rx="0"
-           y="242"
-           x="104"
-           height="4.9999938"
-           width="32"
-           id="rect10266-7-4-7-9-8"
-           style="opacity:1;fill:#0055ff;fill-opacity:0.66666667;fill-rule:nonzero;stroke:#000000;stroke-width:0.35277778;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal" />
-        <text
-           id="text10315-6-6"
-           y="245.82291"
-           x="119.91966"
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:1.25;font-family:'Noto Sans';-inkscape-font-specification:'Noto Sans';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-           xml:space="preserve"><tspan
-             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;font-family:'Noto Sans';-inkscape-font-specification:'Noto Sans';text-align:center;text-anchor:middle;stroke-width:0.26458332"
-             y="245.82291"
-             x="119.91966"
-             id="tspan10313-5-6"
-             sodipodi:role="line">NodeManager</tspan></text>
-      </g>
-      <g
-         id="g10341-2-4"
-         inkscape:label="collectd"
-         transform="translate(0.08033791,4.1770875)">
-        <rect
-           ry="0"
-           rx="0"
-           y="242"
-           x="104"
-           height="4.9999938"
-           width="32"
-           id="rect10266-7-4-7-7-0"
-           style="opacity:1;fill:#ff0000;fill-opacity:0.66666667;fill-rule:nonzero;stroke:#000000;stroke-width:0.35277778;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:normal" />
-        <text
-           id="text10315-2-7"
-           y="245.82291"
-           x="119.91966"
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:1.25;font-family:'Noto Sans';-inkscape-font-specification:'Noto Sans';text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-           xml:space="preserve"><tspan
-             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;font-family:'Noto Sans';-inkscape-font-specification:'Noto Sans';text-align:center;text-anchor:middle;stroke-width:0.26458332"
-             y="245.82291"
-             x="119.91966"
-             id="tspan10313-9-9"
-             sodipodi:role="line">collectd</tspan></text>
-      </g>
-      <g
-         id="g10501-5"
-         inkscape:label="Container Name"
-         transform="translate(-0.27794259)">
-        <text
-           xml:space="preserve"
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333311px;line-height:1.25;font-family:'Noto Sans';-inkscape-font-specification:'Noto Sans';text-align:start;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-           x="110.38448"
-           y="229.14014"
-           id="text10315-1-0"><tspan
-             sodipodi:role="line"
-             id="tspan10313-0-0"
-             x="110.38448"
-             y="229.14014"
-             style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:4.23333311px;font-family:'Noto Sans';-inkscape-font-specification:'Noto Sans';text-align:start;text-anchor:start;stroke-width:0.26458332">compute-1</tspan></text>
-        <g
-           transform="matrix(0.88993533,0,0,0.88993533,37.122834,-13.488963)"
-           inkscape:label="Container Symbol"
-           id="g10494-6">
-          <path
-             d="m 75.536788,268.47141 h 5.243383 v 5.24352 h -5.243383 z"
-             id="path24-3-9"
-             style="display:inline;fill:#20c2ef;stroke:#000000;stroke-width:0.37500277;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-             inkscape:connector-curvature="0" />
-          <path
-             inkscape:connector-curvature="0"
-             style="display:inline;stroke:#000000;stroke-width:0.37500277;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-             id="use28-4-9"
-             d="m 76.361589,273.07809 v -3.96982 m 0.71433,3.96982 v -3.96982 m 0.721538,3.96982 v -3.96982 m 0.721918,3.96982 v -3.96982 m 0.721799,3.96982 v -3.96982 m 0.714196,3.96982 v -3.96982" />
-        </g>
-      </g>
-    </g>
   </g>
   <g
      transform="translate(-156.11806,-149.82361)"
@@ -1046,7 +1046,7 @@
        inkscape:label="Host2"
        id="g7904">
       <rect
-         style="opacity:1;fill:none;fill-opacity:0.6;fill-rule:nonzero;stroke:#f1c474;stroke-width:1.76388884;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:0.99065396;paint-order:markers stroke fill"
+         style="opacity:1;fill:none;fill-opacity:0.6;fill-rule:nonzero;stroke:#bbbbbb;stroke-width:1.76388884;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers stroke fill"
          id="rect7894"
          width="136"
          height="28.000006"
@@ -1065,7 +1065,7 @@
            height="6.0000005"
            width="19"
            id="rect7896"
-           style="opacity:1;fill:#f1c474;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.35277778;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers stroke fill" />
+           style="opacity:1;fill:#bbbbbb;fill-opacity:1;fill-rule:nonzero;stroke:#000000;stroke-width:0.35277778;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:markers stroke fill" />
         <text
            id="text7900"
            y="198.85208"
@@ -1140,7 +1140,7 @@
          sodipodi:nodetypes="ccc" />
       <path
          style="fill:none;stroke:#000000;stroke-width:0.26458332;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-start:url(#marker14581-3);marker-end:url(#marker16100-5)"
-         d="m 50.000004,228 0,-28 c 0,-10 5,-13 11,-13"
+         d="m 50.000004,228 v -28 c 0,-10 5,-13 11,-13"
          id="path7994-2-2"
          inkscape:connector-curvature="0"
          sodipodi:nodetypes="ccc" />
