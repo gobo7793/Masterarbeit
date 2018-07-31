@@ -4,12 +4,11 @@
 Eine normale Hadoop"=Installation besitzt keine Komponente zu dynamischen Anpassungen der Einstellungen des Clusters.
 Um damit Hadoop zu optimieren, müssen die Einstellungen daher immer manuell auf den jeweils benötigten Anwendungstyp angepasst werden.
 Dazu gibt es \uA verschiedene Scheduler, den \emph{Fair Scheduler}, welcher alle Anwendungen ausführt und ihnen gleich viele Ressourcen zuteilt, und den \emph{Capacity Scheduler}.
-Letzterer sorgt dafür, dass nur eine bestimmte Anzahl an Anwendungen pro Benutzer gleichzeitig ausgeführt wird.
-Dieser teilt ihnen so viele Ressourcen zu, wie benötigt werden bzw. dem Benutzer zur Verfügung stehen.
+Er sorgt dafür, dass nur eine bestimmte Anzahl an Anwendungen pro Benutzer gleichzeitig ausgeführt wird und teilt ihnen so viele Ressourcen zu, wie benötigt werden bzw. dem Benutzer zur Verfügung stehen.
 Entwickelt wurde der Capacity Scheduler vor allem für Cluster, die von mehreren Organisationen gemeinsam verwendet werden.
 Er dient in diesem Kontext vor allem dazu, jeder Organisation eine Mindestmenge an Ressourcen zur Verfügung zu stellen \cite{HadoopCapScheduler271}.
 
-Für diesen Scheduler wurde von \citeauthor{Zhang2016} \cite{Zhang2016} ein selbstadaptiver Ansatz vorgestellt, welcher im Folgenden genauer erläutert und im weiteren Verlauf dieser Masterarbeit als \textbf{Selfbalancing"=Komponente} bezeichnet wird.
+Für diesen Scheduler wurde von \citeauthor{Zhang2016} ein selbstadaptiver Ansatz \cite{Zhang2016} vorgestellt, welcher im Folgenden genauer erläutert und im weiteren Verlauf dieser Masterarbeit als \textbf{Selfbalancing"=Komponente} bezeichnet wird.
 
 \subsection{MARP"=Wert}
 \label{subsec:selfbalancingMarp}
@@ -20,7 +19,7 @@ Vor allem letztere Einstellungsmöglichkeit Namens \gls{MARP} ist sehr wichtig, 
 Der in der Konfiguration des Schedulers definierte \gls{MARP}"=Wert gibt an, wie viel Prozent des verfügbaren Speichers durch \gls{AppMstr}"=Container genutzt werden dürfen \cite{HadoopCapScheduler271}.
 Der gesamte, für Anwendungen verfügbare Speicher wird durch den \gls{MARP}"=Wert in zwei Teile aufgeteilt.
 Während ein Teil des Speichers nur durch \gls{AppMstr}"=Container beansprucht werden darf, wird der andere Teil des Speichers durch alle anderen YARN"=Container genutzt.
-Wird durch den \gls{MARP}"=Wert der erste, der für \gls{AppMstr}"=reservierte Teil zu klein gehalten, können daher weniger \gls{AppMstr} allokiert werden und somit auch weniger Anwendungen gestartet werden (\emph{Loss of Jobs Parallelism}, LoJP).
+Wird durch den \gls{MARP}"=Wert der erste, für \gls{AppMstr} reservierte Teil zu klein gehalten, können daher weniger \gls{AppMstr} allokiert werden und somit auch weniger Anwendungen gestartet werden (\emph{Loss of Jobs Parallelism}, LoJP).
 Ist der \gls{MARP}"=Wert dagegen zu groß, wird der verfügbare Speicher zu entsprechend großen Teilen für mögliche \gls{AppMstr} reserviert.
 Dadurch ist der Anteil des Speichers für YARN"=Container entsprechend klein und es können dadurch weniger Container gestartet werden, um eine Anwendung auszuführen, womit sich die Ausführungsgeschwindigkeit der Anwendungen verringert (\emph{Loss of Job Throughput}, LoJT) \cite{Zhang2016}:
 
@@ -71,7 +70,7 @@ Für weitere Informationen zum Kalman"=Filter, wie seinen Aufbau, Funktionsweise
 Die drei Shell-Scripte der Selfbalacing"=Komponente dienen zur Interaktion zwischen der Komponente und dem Cluster.
 Die beiden zuletzt genannten Scripte werden von den beiden Monitor"=Klassen sekündlich gestartet und ermitteln, basierend auf den Logs von Hadoop, die Auslastung des Clusters.
 Mithilfe von \texttt{selfTuning-controlNode.sh}, das von \texttt{ControlNodeMonitor} gestartet wird, wird die Anzahl an aktiven und wartenden YARN"=Jobs ermittelt und anschließend in der \texttt{controlNodeLog}"=Datei gespeichert.
-Durch die Ausführung von \texttt{selfTuning-mem-controlNode.sh} (gestartet durch \texttt{MemUtilization}) wird dagegen die Auslastung des Speichers des Clusters ermittelt und in der \texttt{memLog}"=Datei notiert.
+Durch die Ausführung von \texttt{selfTuning-mem-controlNode.sh} (gestartet durch \texttt{MemUtilization}) wird dagegen die Speicher"=Auslastung des Clusters ermittelt und in der \texttt{memLog}"=Datei notiert.
 
 Die in den beiden Dateien enthaltenen Werte werden im Anschluss wiederum sekündlich vom \texttt{Controller} der Selfbalancing"=Komponente ausgelesen und mithilfe des Kalman"=Filters bereinigt.
 Anschließend werden die Algorithmen \cite{Zhang2016} zum Berechnen des neuen \gls{MARP}"=Wertes ausgeführt.

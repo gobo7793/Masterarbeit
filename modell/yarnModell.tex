@@ -71,13 +71,13 @@ Hierfür enthalten die Klassen \texttt{YarnAppAttempt} und \texttt{YarnAppContai
 Analoge Zuordnungen bestehen auch zu den Clients bzw. den YARN"=Containern, sofern benötigt.
 Die Eigenschaft \texttt{AmContainerId} speichert zudem die Container"=ID des \gls{AppMstr}"=Containers.
 
-Die Eigenschaften mit dem Präfix \texttt{CPU} bzw. \texttt{Memory} in \texttt{YarnNode} dienen zur Speicherung der derzeitigen Auslastung der CPU"=Kerne bzw. des Speichers eines Nodes.
-Benötigt werden diese Werte zur Berechnung, ob ein Komponentenfehler aktiviert oder deaktiviert wird.
+Die Eigenschaften mit den Präfixen \texttt{CPU} bzw. \texttt{Memory} in \texttt{YarnNode} dienen zur Speicherung der derzeitigen Auslastung der CPU"=Kerne bzw. des Speichers eines Nodes.
+Benötigt werden diese Werte zur Berechnung, ob ein Komponentenfehler aktiviert oder deaktiviert wird (vgl. \cref{subsec:faultActivation}).
 Die durch die Basisklasse \texttt{YarnHost} bereitgestellte Eigenschaft \texttt{HttpUrl} beschreibt die für die Nutzung der REST"=API benötigte Adresse des Nodes (vgl. \cref{subsubsec:implRestConnector}).
 Da die Adresse vom \texttt{HostMode} abhängig ist, wird sie mithilfe der \texttt{ModelSettings} beim initialisieren des Modells entsprechend festgelegt (vgl. \cref{subsec:hostMode,subsec:modelClass}).
 
 Die Eigenschaften \texttt{SutConstraints} und \texttt{TestConstraints} sowie die Methoden \texttt{MonitorStatus()} und \texttt{SetStatus()} werden von \texttt{IYarnReadable} bereitgestellt und speichern die Constraints bzw. dienen zur Durchführung des Monitorings der implementierten Komponenten (vgl. \cref{subsec:yarnComponentInterface}).
-Die Start"= und Stop"=Methoden sowie die Eigenschaften \texttt{IsActive} und \texttt{IsConnected} in \texttt{YarnNode} dienen zur Identifikation und Injizierung bzw. Reparieren der Komponentenfehlern (vgl. \cref{subsec:yarnComponentFaults})
+Die Start"= und Stop"=Methoden sowie die Eigenschaften \texttt{IsActive} und \texttt{IsConnected} in \texttt{YarnNode} dienen zur Identifikation und Injektion bzw. Reparatur der Komponentenfehlern (vgl. \cref{subsec:yarnComponentFaults}).
 
 Neben den dargestellten, relevanten Eigenschaften und Methoden wurden zahlreiche weitere implementiert, welche einerseits zur Vollständigkeit der implementierten Komponenten für die Tests \cite{Eberhardinger2018}, andererseits auch zur Ausführung mithilfe des \gls{ss}"=Frameworks benötigt werden.
 Letztere sind \zB zur Speicherung von Strings notwendig, welche aufgrund der Einschränkungen von \gls{ss} (vgl. \cref{sec:ssharp}) \uU nicht jederzeit frei genutzt werden können.
@@ -111,7 +111,7 @@ Implementiert wurden hierbei mit \texttt{NodeDeadFault} und \texttt{NodeConnecti
 Während durch \texttt{NodeDeadFault} der komplette Node beendet wird, trennt \texttt{NodeConnectionErrorFault} nur die Verbindung des Nodes zum Cluster.
 Die dazugehörigen Effekt"=Klassen der Komponentenfehler sind jeweils als innere Klassen in \texttt{YarnNode} implementiert.
 
-Die Injizierung und das Reparieren der beiden Fehler geschieht mithilfe der vier Stop- bzw. Start"=Methoden, wie \zB \texttt{StopNode()}, die bereits im Klassendiagramm in \cref{fig:yarnComponentsClassDiagram} zu sehen sind.
+Die Injizierung und Reparatur der beiden Fehler geschieht mithilfe der vier Stop- bzw. Start"=Methoden, wie \zB \texttt{StopNode()}, die bereits im Klassendiagramm in \cref{fig:yarnComponentsClassDiagram} zu sehen sind.
 Wenn ein Komponentenfehler aktiviert wird, wird durch die Effekt"=Klasse die jeweilige Stop"=Methode ausgeführt und so der Fehler injiziert:
 
 \begin{lstlisting}[label=lst:faultInjection,,style=cs,
@@ -162,7 +162,7 @@ public class CmdConnector : IHadoopConnector
 }
 \end{lstlisting}
 
-Das Reparieren von Komponentenfehlern geschieht analog hierzu.
+Die Reparatur von Komponentenfehlern geschieht analog hierzu.
 Hierfür werden in der \texttt{Update()}"=Methode die beiden Start"=Methoden aufgerufen, um einen defekten Node zu reparieren.
 Eine Besonderheit bildet hierbei die Reparatur des Komponentenfehlers \texttt{NodeConnectionErrorFault}, welche den Node komplett neu startet, da sich der Node ansonsten möglicherweise nicht wieder mit dem \gls{RM} verbinden kann.
 
@@ -189,7 +189,7 @@ Da der Zufallsgenerator ein statischer Generator ist, werden über einen Test be
 Die Komponentenfehler werden damit nicht automatisiert durch \gls{ss} aktiviert bzw. injiziert (vgl. \cref{subsec:ssharpExecution}), sondern mithilfe von speziell hierfür entwickelten Klassen und Methoden.
 
 Um bei der Ausführung eines Testfalls bestimmen zu können, ob ein Komponentenfehler aktiviert wird, sind alle Komponentenfehler mit dem Attribut \texttt{NodeFault} markiert.
-Dieses Attribut enthält die für den Komponentenfehler benötigten Berechnungen, um über die Aktivierung des Komponentenfehlers zu entscheiden:
+Dieses Attribut enthält die notwendigen Berechnungen, um über die Aktivierung des Komponentenfehlers zu entscheiden:
 
 \begin{lstlisting}[label=lst:faultActivationCalc,style=cs,
 caption={[Berechnung der Aktivierung von Komponentenfehlern]
@@ -275,8 +275,8 @@ public void MonitorStatus()
 \end{lstlisting}
 
 Beim Monitoring der untergeordneten Komponenten wird zunächst immer geprüft, ob bereits eine Instanz mit der ID der Komponente vorhanden ist.
-Wenn dies der Fall ist, werden die vom realen Cluster ermittelten Daten weiterhin in der bereits bestehenden Instanz gespeichert, ansonsten wird eine leere Instanz genutzt, um die Daten der Subkomponente zu speichern.
-Wenn keine freie Instanz mehr nötig ist, wird eine entsprechende \texttt{OutOfMemoryException} ausgelöst, damit die Ausführung des Modells abgebrochen werden kann.
+Wenn dies der Fall ist, werden die vom realen Cluster ermittelten Daten weiterhin in der bereits bestehenden Instanz gespeichert, ansonsten wird eine freie Instanz genutzt, um die Daten der Subkomponente zu speichern.
+Wenn keine freie Instanz mehr vorhanden ist, wird eine entsprechende \texttt{OutOfMemoryException} ausgelöst, damit die Ausführung des Modells abgebrochen werden kann.
 
 Eine Besonderheit bildet das Monitoring der YARN"=Container.
 Da eine Anwendung sehr schnell eine sehr hohe Anzahl an Containern allokiert und jede Container"=Instanz im Modell Speicherplatz benötigt, werden nur die Daten der während des Monitoring ausgeführten Container ermittelt.
@@ -356,8 +356,10 @@ public void UpdateBenchmark()
 public void StartBenchmark(Benchmark benchmark)
 {
   if(benchmark.HasOutputDir)
-    SubmittingConnector.RemoveHdfsDir(benchmark.GetOutputDir(ClientDir));
-  var appId = SubmittingConnector.StartApplicationAsyncTillId(benchmark.GetStartCmd(ClientDir));
+    SubmittingConnector.RemoveHdfsDir(
+       benchmark.GetOutputDir(ClientDir));
+  var appId = SubmittingConnector.StartApplicationAsyncTillId
+     (benchmark.GetStartCmd(ClientDir));
   // save application id
 }
 \end{lstlisting}

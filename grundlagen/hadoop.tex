@@ -31,7 +31,7 @@ Da das \gls{MR}"=Framework bzw. seine Implementierung in Hadoop nicht immer opti
 Die Kernidee ist hierbei die Trennung von Ressourcenmanagement und Scheduling vom eigentlichen Programm.
 In diesem Kontext bildet der \gls{MR}"=Ansatz eine mögliche Anwendung, die mithilfe des YARN"=Frameworks ausgeführt wird \cite{Vavilapalli2013}.
 
-Ein Hadoop"=Cluster mit dem YARN"=Framework besteht aus zwei wesentlichen Komponenten, dem \emph{Controller} mit \gls{RM} und den angeschlossenen \emph{Nodes}:
+Ein Hadoop"=Cluster mit dem YARN"=Framework besteht aus zwei wesentlichen Komponenten, dem \emph{Controller} bzw. \gls{RM} und den angeschlossenen \emph{Nodes}:
 
 \begin{figure}[h]
     \includegraphics{./resources/yarn_architecture.png}
@@ -46,8 +46,7 @@ Jeder Node besitzt einen \gls{NM}, der für die Überwachung der Ressourcen auf 
 
 Jede YARN"=Anwendung bzw. Job besteht aus einer oder mehreren Ausführungsinstanzen, genannt \emph{Attempts}.
 Jeder Attempt besitzt einen eigenen \gls{AppMstr}, der das Monitoring der Anwendung und die Kommunikation mit dem \gls{RM} und \gls{NM} durchführt und die dafür benötigten Daten bereitstellt \cite{HadoopYarnArch271}.
-Die eigentliche Ausführung eines Tasks einer Anwendung findet in den bereits erwähnten \emph{Containern} statt, die jeweils einem Attempt zugeordnet sind.
-Container können auf einem beliebigen Node ausgeführt werden und dienen der Ausführung eines Tasks der Anwendung.
+Die eigentliche Ausführung eines Tasks einer Anwendung findet in den bereits erwähnten \emph{Containern} statt, die jeweils einem Attempt zugeordnet sind und auf einem beliebigen Node im Cluster ausgeführt werden können.
 Der \gls{AppMstr} wird hierbei ebenfalls in einem YARN"=Container ausgeführt.
 
 Für die Fallstudie in dieser Masterarbeit ist zudem nicht unwesentlich, dass die Kommunikation zwischen den einzelnen Komponenten nicht in allen Fällen in Echtzeit stattfindet.
@@ -75,7 +74,7 @@ Der \emph{NameNode} dient als Controller für die Verwaltung des Dateisystems un
 Unterstützt wird er vom \emph{Secondary NameNode}, der Teile der internen Datenverwaltung des HDFS durchführt \cite{HadoopHdfsGuide271}.
 Die Daten selbst werden in mehrere Blöcke aufgeteilt auf den \emph{DataNodes} gespeichert.
 Um den Zugriff auf die Daten im Falle eines Node"=Ausfalls zu gewährleisten, wird jeder Block auf anderen Nodes repliziert.
-Dateioperationen (wie Öffnen oder Schließen) werden direkt auf den DataNodes ausgeführt.
+Dateioperationen, wie \zB Öffnen von Dateien, werden direkt auf den DataNodes ausgeführt.
 Sie sind darüber hinaus auch dafür verantwortlich, dass die gespeicherten Daten gelesen und beschrieben werden können \cite{Shvachko2010,HadoopHdfsDesc271}.
 
 Das Überprüfen der DataNodes durch den NameNode erfolgt genauso wie bei den entsprechenden YARN"=Komponenten periodisch im Abstand von mehreren Minuten.

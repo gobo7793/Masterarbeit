@@ -27,7 +27,7 @@ Zur Interaktion des YARN"=Modells mit dem Treiber werden dem Modell folgende Int
 \end{itemize}
 
 Das Monitoring der Daten des realen Clusters wird mithilfe des Parsers durchgeführt.
-Das Interface \texttt{IHadoopParser} stellt hierfür entsprechende Parsing"=Methoden für die vier implementierten YARN"=Komponenten sowie der Übersichtslisten aller einer YARN"=Komponente untergeordneten Subkomponenten.
+Das Interface \texttt{IHadoopParser} stellt hierfür entsprechende Parsing"=Methoden für die vier implementierten YARN"=Komponenten sowie der Übersichtslisten aller einer YARN"=Komponente untergeordneten Subkomponenten bereit.
 Zudem stellt das Parser"=Interface eine Methode zum Auslesen des aktuellen \gls{MARP}"=Wertes des Schedulers bereit.
 Beim Monitoring werden immer die entsprechenden von \texttt{IParsedComponent} abgeleiteten Interfaces zur Rückgabe der ermittelten Daten genutzt.
 Hierfür stellen diese Interfaces entsprechende Eigenschaften bereit, um alle mithilfe der \gls{CLI} oder der REST"=API auslesbaren Daten an das YARN"=Modell übergeben zu können.
@@ -44,7 +44,7 @@ Dies ist vor allem darin begründet, dass dadurch Speicher eingespart wird, der 
 Aber auch weitere Einschränkungen durch \gls{ss} spielten eine Rolle (vgl. \cref{sec:ssharp}).
 Ein weiterer Vorteil liegt zudem darin, dass für unterschiedliche Einsatzzwecke der gleiche Connector genutzt werden kann, und somit auch die einzelnen vom Connector benötigten SSH"=Verbindungen für unterschiedliche Einsatzzwecke wiederverwendet werden können.
 Die Initialisierung der Parser und Connectoren erfolgt jeweils beim ersten Aufruf der Singletons.
-Dies geschieht innerhalb des Testsystems üblicherweise entweder beim Initialisieren des Tests (vgl. \cref{sec:implTestcases}) oder beim Initialisieren des YARN"=Modells selbst durch die Klasse \texttt{Model}.
+Dies geschieht üblicherweise entweder beim Initialisieren des Tests (vgl. \cref{sec:implTestcases}) oder beim Initialisieren des YARN"=Modells selbst durch die Klasse \texttt{Model}.
 Die Initialisierung des Modells stellt zudem den einzigen Zeitpunkt dar, bei dem im YARN"=Modell direkt mit den implementierten Parsern und Connectoren interagiert wird, jede andere Interaktion findet stattdessen gekapselt mithilfe der Interfaces statt.
 
 Die drei Komponenten des Treibers sind zudem untereinander  voneinander gekapselt.
@@ -152,13 +152,13 @@ Die REST"=API besitzt, auch im Vergleich zur \gls{CLI}"=Schnittstelle, einige Be
 Da die REST"=API zwei Ausgabeformate unterstützt, wurde der \texttt{RestParser} aufgrund der kleineren Datenmengen und des übersichtlicheren Datenformats zur Nutzung des JSON"=Formats entwickelt.
 Einige Beispiele für die entsprechenden Pfade der REST"=API sowie deren Ausgaben im JSON"=Format sind in \cref{app:hadoopRestApi} zu finden.
 
-Die Auswertung der Daten wird beim \texttt{RestParser} nicht mit Regex, sondern mithilfe des \emph{Json.NET}"=Frameworks\footnote{\url{https://www.newtonsoft.com/json/}} durchgeführt.
+Die Auswertung der Daten wird beim \texttt{RestParser} nicht mit Regex, sondern mithilfe des Json.NET"=Frameworks\footnote{\url{https://www.newtonsoft.com/json/}} durchgeführt.
 Hierfür wurden neben den bestehenden Datenhaltungsklassen noch weitere Hilfsklassen entwickelt, welche das Ausgabeformat der REST"=API nachbilden.
 Mit deren Hilfe ist es möglich, die Daten mithilfe von Json.NET konvertieren zu können.
 
-Analog zum \texttt{CmdParser} müssen auch bei der Nutzung der REST"=API die Zeitstempel gesondert betrachtet werden.
-Damit die Konvertierung der Java"=Zeitstempel in Millisekunden seit dem 1. Januar 1970 00:00:00 Uhr gemeinsam mit den anderen Daten durch das Json.NET"=Framework durchgeführt werden kann, musste hierfür ein gesonderter Konverter entwickelt werden.
-Der Konverter nutzt ebenfalls die in \cref{lst:parseJavaTimestamp} gezeigte \texttt{ParseJavaTimestamp()} zum Konvertieren der Daten:
+Wie beim \texttt{CmdParser} müssen auch bei der Nutzung der REST"=API die Zeitstempel gesondert betrachtet werden.
+Damit die Konvertierung der Java"=Zeitstempel in der Java"=Epoche gemeinsam mit den anderen Daten durch das Json.NET"=Framework durchgeführt werden kann, wurde hierfür ein gesonderter Konverter entwickelt.
+Dieser Konverter nutzt ebenfalls die in \cref{lst:parseJavaTimestamp} gezeigte \texttt{ParseJavaTimestamp()} zur Konvertierung:
 
 \begin{lstlisting}[label=lst:javaEpochConverter,style=cs,
 caption={[Entwickelter Konverter für Java"=Zeitstempel zur Nutzung mit Json.NET]

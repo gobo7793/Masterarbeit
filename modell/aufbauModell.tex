@@ -1,17 +1,17 @@
-\section{Grundlegende Architektur des Testmodells}
+\section{Grundlegende Architektur von TestingHadoop}
 \label{sec:modelArchitecture}
 
 Um Hadoop mit der Selfbalancing"=Komponente mit den in \cref{sec:requirements} beschriebenen Anforderungen prüfen zu können, wird mithilfe des \gls{ss}"=Frameworks ein vereinfachtes Modell der relevanten YARN"=Komponenten entwickelt.
 Dieses YARN"=Modell wird mithilfe des Treibers mit dem realen Cluster verbunden, was durch hierfür entwickelte Scripte gesteuert wird.
-Daraus resultiert folgende Drei"=Schichten"=Architektur für das gesamte Testmodell:
+Daraus resultiert folgende Drei"=Schichten"=Architektur für das Testsystem TestingHadoop:
 
 \begin{figure}[h]
     \includegraphics[width=0.6\columnwidth]{./resources/modelArchitecture.pdf}
-    \caption{Grundlegende Architektur des Testmodells}
+    \caption{Grundlegende Architektur von TestingHadoop}
     \label{fig:modelArchitecture}
 \end{figure}
 
-Das YARN"=Modell stellt die oberste Schicht des Testmodells dar.
+Das YARN"=Modell stellt die oberste Schicht von TestingHadoop dar.
 Es bildet das Kernstück dieser Fallstudie, da dieses Modell, mit den hierin abgebildeten YARN"=Komponenten, den Komponentenfehlern, dem Controller und dem Oracle, direkt im Rahmen des modellbasierten Testens mit \gls{ss} interagiert.
 Folgende Komponenten sind im YARN"=Modell enthalten:
 

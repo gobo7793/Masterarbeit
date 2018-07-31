@@ -1,7 +1,7 @@
 \section{Planung der Tests und der Evaluation}
 \label{sec:evaluationPlan}
 
-Um das Testsystem zu validieren, wurde zunächst ein Evaluationsplan aufgestellt.
+Um TestingHadoop zu validieren, wurde zunächst ein Evaluationsplan aufgestellt.
 In diesem ist festgehalten, was getestet wird, wie die Testkonfigurationen definiert sind und wie die bei der Ausführung gewonnenen Daten organisiert werden.
 
 \subsection{Behauptungen und Variablen}
@@ -50,7 +50,7 @@ Als Basis zur Definition einer Testkonfiguration dienen die in \cref{subsec:thes
 \end{itemize}
 
 Die Auswahl der ausgeführten Anwendungen erfolgt während der Testausführung anhand des Basisseeds der Testkonfiguration.
-Zwar werden durch das Transitionssystem, basierend auf den dort definierten Wahrscheinlichkeiten, zufällig Anwendungen ausgewählt, jedoch kann dies durch den Charakter des im .NET"=Framework vorhandenen Zufallsgenerators gesteuert werden.
+Zwar werden durch das Transitionssystem, basierend auf den dort definierten Wahrscheinlichkeiten, zufällig Anwendungen ausgewählt, jedoch kann dies durch den Charakter des im .NET"=Framework enthaltenen Zufallsgenerators gesteuert werden.
 Der in .NET implementierte Zufallsgenerator ist nämlich kein \emph{echter}, sondern ein Pseudo"=Zufallsgenerator, der mithilfe eines mathematischen Algorithmus Zufallszahlen berechnet \cite{RandomClassDoc}.
 Obwohl standardmäßig ein zeitbasierter Seed als Startwert für den Algorithmus genutzt wird \cite{RandomClassDoc}, kann durch die Angabe eines spezifischen Seeds die Wiederausführbarkeit der Tests sichergestellt werden.
 
@@ -61,6 +61,7 @@ Ebenfalls definiert werden müssen die Tests, die als Mutationstests durchgefüh
 Hierbei müssen auch die Mutationen selbst definiert werden, die vom Testsystem erkannt werden sollen.
 
 Die Auswahl der konkreten Testkonfigurationen in \cref{sec:selectTestcases} erfolgte im Rahmen der in \cref{sec:implTestcases} beschriebenen Implementierung der Tests.
+Die implementierten und genutzten Mutationen werden bereits in \cref{sec:implMutationTests} erläutert.
 
 \subsection{Organisation und Ausgabe der Daten}
 \label{subsec:dataOrganisation}
@@ -74,7 +75,7 @@ Beim Start eines Tests sollen daher zunächst einige generelle Daten ausgegeben 
     \item Basis"=Seed für die Zufallsgeneratoren
     \item Wahrscheinlichkeiten für Aktivierung und Deaktivierung der Komponentenfehler
     \item Anzahl genutzter Hosts, Nodes und Clients
-    \item Anzahl der ausgeführten Simulations"=Schritte
+    \item Anzahl der auszuführenden Testfälle
     \item Angabe, ob ein normaler Test oder ein Mutationstest ausgeführt wird
 \end{itemize}
 
