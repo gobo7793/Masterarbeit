@@ -2,7 +2,7 @@
 \label{sec:outlook}
 
 Im Rahmen dieser Masterarbeit sollte vor allem ermittelt werden, ob eine Testautomatisierung eines selbstadaptiven Load"=Balancing"=Systems mithilfe eines modellbasierten Ansatzes möglich ist (vgl. \cref{ch:caseStudy}).
-Basierend auf den Ergebnissen dieser Fallstudie lässt sich sagen, dass dies mit dem entwickelten Testsystem und dem Testframework \gls{ss} möglich ist.
+Basierend auf den Ergebnissen dieser Fallstudie lässt sich sagen, dass dies mit dem entwickelten Testsystem TestingHadoop und dem Testframework \gls{ss} möglich ist.
 Alle in \cref{sec:requirements} definierten Anforderungen, die automatisiert geprüft werden konnten, wurden entsprechend implementiert, wodurch auch die Auswertung der Testfälle zu großen Teilen automatisiert verlief.
 
 Jedoch konnten nicht alle Anforderungen vollständig automatisiert werden, wie \zB die Anforderung, dass ein Test vollautomatisiert durchgeführt werden kann.
@@ -17,7 +17,7 @@ Dadurch wurde die automatische Ausführung aller Tests ermöglicht, sofern für 
 Für diese Anforderungen kann aufgrund der Evaluation jedoch entschieden werden, dass diese Anforderungen insofern erfüllt werden, als dass ein Test zeitlich unabhängig unter den gleichen Bedingungen gestartet werden kann, die einzelnen Testfälle jedoch unterschiedlich sein können.
 Dies liegt daran, dass die ausgeführten Testfälle während der Testausführung dynamisch und basierend auf der Testkonfiguration, den zuvor ausgeführten Testfällen, sowie dem Verhalten des Clusters generiert werden (vgl. \cref{sec:selectTestcases,sec:evaluationResults}).
 
-Neben den Problemen, dass einige Anwendungen nicht immer beendet wurden, wenn ein Test abgebrochen wurde, gibt es aber auch noch weitere Punkte, bei denen das entwickelte Testsystem nach den Erfahrungen der ausgeführten Tests optimiert werden kann.
+Neben den Problemen, dass einige Anwendungen nicht immer beendet wurden, wenn ein Test abgebrochen wurde, gibt es aber auch noch weitere Punkte, bei denen TestingHadoop nach den Erfahrungen der ausgeführten Tests optimiert werden kann.
 Eine Möglichkeit wäre \zB die vermehrte Nutzung von mehreren Threads für einzelne Abläufe innerhalb der Simulation bzw. des Treibers, wie beim Zugriff auf das Cluster.
 Problematisch könnte hierbei jedoch sein, dass Multithreading von \gls{ss} nicht unterstützt wird (vgl. \cref{sec:ssharp}).
 Hierfür müsste daher geprüft werden, an welcher Stelle entsprechende Optimierungen möglich wären.
@@ -25,15 +25,15 @@ Hierfür müsste daher geprüft werden, an welcher Stelle entsprechende Optimier
 Ebenso könnte die SSH"=Verbindung selbst analog zu den Parsern und Connectoren (vgl. \cref{subsec:driverModelIntegration}) besser gekapselt werden, \zB in Form eines hierfür definierten Interfaces.
 Auch könnte die Initialisierung des Treibers anstatt über den erstmaligen Aufruf der jeweiligen Singletons möglicherweise mithilfe des Factory"=Patterns durchgeführt werden.
 
-Was einen wichtigen, aber diskutablen, Punkt für mögliche Optimierungen im Testsystem darstellt, ist das Starten von Anwendungen.
-Hierfür werden im entwickelten Testsystem vom Connector mehrere gemeinsam genutzte SSH"=Verbindungen bereit gestellt (vgl. \cref{subsubsec:implCmdConnector}).
+Was einen wichtigen, aber diskutablen, Punkt für mögliche Optimierungen darstellt, ist das Starten von Anwendungen.
+Hierfür werden in TestingHadoop vom Connector mehrere gemeinsam genutzte SSH"=Verbindungen bereit gestellt (vgl. \cref{subsubsec:implCmdConnector}).
 Da bei der Ausführung der Tests jedoch Probleme aufgrund einiger nicht korrekt beendeter Anwendungen aufgetreten sind, waren nicht in jedem Test ausreichend Submitter vorhanden bzw. deren Anzahl musste erhöht werden (vgl. \cref{subsec:notEnoughSubmitter}).
 Eine Lösungsmöglichkeit hierfür wäre, jedem Client einen eigenen Submitter bereitzustellen.
 Damit einhergehend müsste jeder Client auch selbst dafür sorgen, dass Anwendungen beendet werden, wenn eine andere Anwendung gestartet werden soll (vgl. \cref{subsec:yarnClient}).
-Jedoch hätte das auch den Nachteil, dass ein Client durch eine nicht zu beendende Anwendung keine weiteren Anwendungen ausführen könnte, was mit der derzeitigen Architektur des Modells jedoch möglich ist, sofern ausreichend Submitter zur Verfügung stehen.
+Jedoch hätte das auch den Nachteil, dass ein Client durch eine nicht zu beendende Anwendung keine weiteren Anwendungen ausführen könnte, was mit der derzeitigen Architektur des Testsystems jedoch möglich ist, sofern ausreichend Submitter zur Verfügung stehen.
 
 Weitere Tests könnten zudem dazu durchgeführt werden, um die Gründe für die nicht erkannten Nodes auf Host 2 zu ermitteln und die Ursache hierfür zu beheben.
-Dies wäre vor allem dadurch nötig, da das Testsystem bei der Validierung der Constraints auch einen falschen Alarm ausgelöst hat, und dadurch die entsprechenden Constraints verletzt wurden, obwohl die Daten vom Cluster an das Testsystem übertragen wurden.
+Dies wäre vor allem dadurch nötig, da das Testsystem TestingHadoop bei der Validierung der Constraints auch einen falschen Alarm ausgelöst hat, und dadurch die entsprechenden Constraints verletzt wurden, obwohl die Daten vom Cluster an das Testsystem übertragen wurden.
 Daher kann derzeit nur vermutet werden, dass die betroffenen Nodes im Modell aufgrund der Architektur der Konvertierung der Nodes in den Parsern nicht ermittelt werden konnten (vgl. \cref{subsec:implementedParsers}).
 Als problematisch könnte sich hierbei jedoch erweisen, dass dieser Fehler bei weiteren Tests in dieser Fallstudie nicht reproduziert werden konnte (vgl. \cref{subsec:notDetectedHost2}).
 
@@ -46,9 +46,7 @@ Das bestätigt auch die Studie \cite{HadoopDataTypes}, wonach viele der mithilfe
 Dadurch sei auch unklar, weshalb Hadoop in vielen Fällen überhaupt genutzt werde.
 Als logische Folge erwähnt Apache selbst ebenfalls, dass Hadoop nicht \enquote{die Silberkugel [ist,] um alle Anwendungs- oder Datencenter"=Probleme zu lösen}, sondern entwickelt wurde, um einige spezifische Probleme einiger Firmen und Organisationen zu lösen \cite{HadoopIsNot}.
 
-Abschließend lässt sich sagen, dass das entwickelte Testsystem für weitere Tests mit Hadoop als konkretem Load"=Balancing"=System als geeignet erscheint.
-Das ist nicht nur auf weiterführende Tests für diese Fallstudie bezogen (vgl. \cref{sec:discussionResults,subsec:actDeactFaults}), sondern auch auf weitere Tests mit Bezug auf Hadoop, die unabhängig von der durchgeführten Fallstudie sind.
-Abhängig von der Art der Tests müsste das Testsystem  hierfür angepasst werden.
-Dafür gibt es mit den Einstellungsmöglichkeiten für das Modell bzw. die Simulation selbst (vgl. \cref{subsec:simulationModelInit}) oder der Plattform Hadoop"=Benchmark (vgl. \cref{sec:hadoopBenchmark,sec:realCluster}) bereits einige Möglichkeiten, ohne das Testsystem selbst verändern zu müssen, was jedoch auch möglich wäre.
-
-%TODO: Warum überhaupt TestingHadoop?
+Abschließend lässt sich sagen, dass das entwickelte Testsystem für weitere Tests mit Hadoop als konkretem Load"=Balancing"=System als geeignet erscheint, weshalb es auch als TestingHadoop betitelt wird.
+Das ist nicht nur auf weiterführende Tests für diese oder der in \cite{Eberhardinger2018} durchgeführten Fallstudie bezogen (vgl. \cref{sec:discussionResults,subsec:actDeactFaults}), sondern auch auf weitere Tests mit Bezug auf Hadoop, die unabhängig hiervon sind.
+Abhängig von der Art der Tests müsste TestingHadoop  hierfür angepasst werden.
+Dafür gibt es mit den Einstellungsmöglichkeiten für das Modell bzw. die Simulation selbst (vgl. \cref{subsec:simulationModelInit}) oder der Plattform Hadoop"=Benchmark (vgl. \cref{sec:hadoopBenchmark,sec:realCluster}) bereits einige Möglichkeiten, ohne TestingHadoop selbst verändern zu müssen, was jedoch auch möglich wäre.

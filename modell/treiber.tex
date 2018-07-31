@@ -261,7 +261,7 @@ Die Befehlsparameter zum Starten der Anwendungen werden von den jeweiligen Bench
 Der zweite implementierte Connector, der \texttt{RestConnector}, dient vor allem dem Monitoring mithilfe der REST"=API.
 Aus diesem Grund lösen alle Methoden, die nicht dem Monitoring durch die REST"=API dienen, eine entsprechende \texttt{PlatformNotSupported""Exception} aus.
 
-Zum Abrufen der Daten dienen ebenfalls SSH"=Verbindungen, jedoch ist hier eine pro Host, auf dem das Cluster ausgeführt wird, ausreichend.
+Zum Abrufen der Daten dienen ebenfalls SSH"=Verbindungen, jedoch ist hier eine Verbindung je Host, auf dem das Cluster ausgeführt wird, ausreichend.
 Auf dem Host wird zum Abrufen der Daten das Tool curl\footnote{\url{https://curl.haxx.se/}} genutzt, wobei die Daten immer explizit im JSON"=Format angefragt werden.
 
 Da die Daten von YARN"=Containern immer durch die \gls{NM} der ausführenden Nodes zurückgegeben werden, kann es hier passieren, dass der entsprechende Node aufgrund eines Komponentenfehlers beendet oder nicht erreichbar ist.
@@ -270,7 +270,7 @@ Wenn daher statt den Container"=Daten eine Fehlermeldung zurückgegeben wird, we
 Auch die grundlegenden Funktionen des \texttt{RestConnector}s sind unabhängig vom genutzten \texttt{HostMode} (vgl. \cref{subsec:hostMode}).
 Die Verwaltung der Adressen von \gls{RM} und \gls{TLS} erfolgt analog zu der des Setup"=Scripts beim \texttt{CmdConnector} durch die \texttt{ModelSettings}"=Klasse.
 Ein Unterschied besteht jedoch bei den Adressen der \gls{NM} zum Monitoring der Container.
-Da die Adressen der jeweiligen Nodes in \texttt{YarnNode.HttpUrl} gespeichert sind, werden diese Adressen auch vom Connector genutzt, um mithilfe der REST"=API die Daten der auf einem Node ausgeführten Container zu abzurufen.
+Da die Adressen der jeweiligen Nodes in \texttt{YarnNode.HttpUrl} gespeichert sind, werden diese Adressen auch vom Connector genutzt, um mithilfe der REST"=API die Daten ausgeführten Container abzurufen.
 Daher wird die vom \texttt{HostMode} abhängige Adresse der Nodes bereits beim Initialisieren des Modells entsprechend im Modell gespeichert (vgl. \cref{subsec:modelClass,subsec:yarnComponents}).
 
 \subsection{Implementierung der SSH"=Verbindung}
@@ -280,7 +280,7 @@ Die SSH"=Verbindung zum Host des realen Clusters wird mithilfe des Frameworks SS
 Verwaltet werden die Verbindungen mithilfe der Klasse \texttt{SshCon""nection}.
 Die Verbindung ist zudem der einzige Bestandteil des Treibers, zu dem kein entsprechendes Interface existiert, da die SSH"=Verbindungen ausschließlich durch die implementierten Connectoren genutzt werden.
 
-Die in \texttt{ModelSettings} gespeicherten Zugangsdaten zum Aufbau der Verbindung benötigten Zugangsdaten müssen beim Initialisieren vom Connector übergeben werden \cref{subsec:modelClass}).
+Die in \texttt{ModelSettings} gespeicherten Zugangsdaten zum Aufbau der Verbindung benötigten Zugangsdaten müssen beim Initialisieren vom Connector übergeben werden (vgl. \cref{subsec:modelClass}).
 Zwar kann hierzu mithilfe der Verbindungsklasse auch ein Passwort genutzt werden, jedoch werden in \texttt{ModelSettings} nur die SSH"=Schlüssel gespeichert.
 Zudem bietet die implementierte \texttt{SshConnection}"=Klasse bei der Nutzung eines SSH"=Schlüssels die Möglichkeit, die Verbindung jederzeit zu trennen und erneut aufzubauen, was im implementierten Modell jedoch nicht durchgeführt wird.
 

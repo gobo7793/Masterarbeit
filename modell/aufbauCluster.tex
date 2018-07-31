@@ -20,12 +20,12 @@ Um die Verwaltung des Clusters zu vereinfachen, wurden zudem entsprechende Setup
 
 Da Docker und Hadoop vor allem zum Einsatz in Linux"=Umgebungen entwickelt wurden, werden für das reale Cluster bis zu zwei physische Linux"=Hosts genutzt.
 Auf einem dieser beiden Hosts wird mithilfe von VirtualBox eine VM mit Windows 10 ausgeführt, um die Tests mithilfe von \gls{ss} auszuführen.
-Dies ist nötig, da \gls{ss} mithilfe des .NET"=Frameworks entwickelt wurde (vgl. \cref{sec:ssharp}), welches für Linux in Form von .NET Core zudem nur mit einem verringertem Funktionsumfang verfügbar ist \cite{Schwichtenberg2017}.
+Dies ist nötig, da \gls{ss} mithilfe des .NET"=Frameworks entwickelt wurde (vgl. \cref{sec:ssharp}), welches für Linux in Form von .NET Core zudem nur mit einem etwas verringertem Funktionsumfang verfügbar ist \cite{Schwichtenberg2017}.
 
 Die beiden Hosts sind jeweils mit einem Intel Core i5"=4570 @ 3,2 GHz x 4, 16 GB Arbeitsspeicher sowie einer SSD ausgestattet, auf der Ubuntu als Betriebssystem installiert ist.
 
 Insgesamt wurden für diese Fallstudie die 6 in \cref{fig:hadoopBenchDockerInherits} gelb bzw. orange hinterlegten Szenarien mit den entsprechenden Docker"=Images entwickelt.
-Das zentrale Image in dieser Fallstudie ist das gelb hinterlegte \texttt{self-balancing-mt}, in dem alle benötigten angepassten Einstellungen enthalten sind.
+Das zentrale Image in dieser Fallstudie ist das gelb hinterlegte \texttt{self-balancing-mt}, in dem alle benötigten, angepassten Einstellungen enthalten sind.
 Dies betrifft \zB die Anpassung der Zeitabstände zur Erkennung von defekten Nodes oder das Starten des \gls{TLS}, welcher in den Standard"=Szenarien der Plattform nicht gestartet wird.
 Die orange hinterlegten Images dienen zur Ausführung der  Mutationstests.
 Die Images enthalten daher nur die mutierte Selfbalancing"=Komponente, welche dadurch die in \texttt{self-balancing-example} enthaltene überschreiben.
@@ -75,8 +75,8 @@ Sie beinhalten entsprechende Befehle für folgende Aktionen:
 Zudem wird beim Starten des Clusters immer geprüft, ob sich die Dockerfiles geändert haben und entsprechend die Docker"=Images aktualisiert, aus denen das Cluster gestartet wird.
 Die Setup"=Scripte enthalten außerdem weitere, jeweils spezifische Befehle zum Umgang mit dem Cluster im entsprechenden \texttt{HostMode}.
 
-Zum zentralen Starten der Benchmarks wurde ebenfalls ein zentrales Benchmark"=Startscript entwickelt, welches die jeweiligen Start"=Scripte der einzelnen Benchmarks ausführt.
+Zum zentralen Starten der Benchmarks wurde ebenfalls ein zentrales Benchmark"=Script entwickelt, welches die jeweiligen Start"=Scripte der einzelnen Benchmarks ausführt.
 Dadurch kann analog zum Setup"=Script unabhängig vom zu startenden Benchmark vom \texttt{CmdConnector} immer die gleiche Syntax genutzt werden.
-Das zentrale Benchmark"=Startscript ermittelt, basierend auf dem zu startenden Benchmark, das jeweils benötigte Start"=Script und übergibt diesem die benötigten Parameter.
+Das zentrale Benchmark"=Script ermittelt, basierend auf der zu startenden Benchmark, das jeweils benötigte Start"=Script und übergibt diesem die benötigten Parameter.
 Die vom \texttt{HostMode} abhängigen Parameter zum Starten der Benchmark"=Container werden von den hierfür angepassten Start"=Scripten der Benchmarks selbst ermittelt.
 Die jeweiligen Startparameter der Anwendungen selbst werden vom Benchmark"=Controller bereitgestellt (vgl. \cref{subsec:appImplementation}).

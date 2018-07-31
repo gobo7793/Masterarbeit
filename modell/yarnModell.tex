@@ -213,6 +213,7 @@ return probability < randomValue;
 Die Entscheidung zur Deaktivierung eines Komponentenfehlers verhält sich analog.
 Anstatt der generellen Aktivierungswahrscheinlichkeit wird hierbei die generelle Wahrscheinlichkeit zur Deaktivierung der Komponentenfehler genutzt.
 Außerdem spielt bei der Deaktivierung die Auslastung des Nodes zum Zeitpunkt der Aktivierung eine Rolle, welche hierzu in der Eigenschaft \texttt{NodeUsageOnActivation} des Attributs entsprechend gespeichert und zur Deaktivierung genutzt wird.
+Zudem wird ein Komponentenfehler eher deatkviert, wenn der Node eine geringe Auslastung aufweist, während die Aktivierung bevorzugt bei einer hohen Auslastung durchgeführt wird.
 
 \subsection{Interface IYarnReadable und Monitoring}
 \label{subsec:yarnComponentInterface}

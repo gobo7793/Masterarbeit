@@ -2,7 +2,7 @@
 \label{sec:notDetectedData}
 
 Einige Daten des Clusters wurden nicht im Testsystem gespeichert bzw. im Programmlog ausgegeben.
-Dies verstößt damit gegen die in \cref{subsec:testRequirements} definierte Anforderung an das Testsystem, dass der jeweils aktuelle Status des Clusters erkannt und im Modell gespeichert werden muss.
+Dies verstößt damit gegen die in \cref{subsec:testRequirements} definierte Anforderung an TestingHadoop, dass der jeweils aktuelle Status des Clusters erkannt und im Modell gespeichert werden muss.
 Hierbei muss zwischen zwei unterschiedlichen Fällen unterschieden werden, die im Folgenden erläutert werden.
 
 \subsection{Nicht erkannte Nodes auf Host 2}
@@ -28,7 +28,7 @@ Dennoch lässt sich sagen, dass die beiden verletzten Anforderungen nach einer g
 
 Bei allen Tests ist zudem aufgefallen, dass die Diagnostik"=Daten von Anwendungen nicht im Programmlog enthalten sind.
 Genauso wie bei den nicht erkannten Nodes auf Host 2 (vgl. \cref{subsec:notDetectedHost2}) wurden alle Diagnostik"=Daten von Hadoop an das Testsystem übertragen, die der Anwendungen im Gegensatz zu denen der Attempts jedoch nicht gespeichert.
-Zur Auswertung der Daten im Rahmen der Evaluation ist dies zwar irrelevant, da dies auch aufgrund der Daten der Attempts geschehen konnte, allerdings wird dadurch die Anforderung an das Testsystem nur teilweise erfüllt, wonach der jeweils aktuelle Status des Clusters erkannt und gespeichert wird (vgl. \cref{subsec:testRequirements}).
+Zur Auswertung der Daten im Rahmen der Evaluation ist dies zwar irrelevant, da dies auch aufgrund der Daten der Attempts geschehen konnte, allerdings wird dadurch die Anforderung an TestingHadoop nur teilweise erfüllt, wonach der jeweils aktuelle Status des Clusters erkannt und gespeichert wird (vgl. \cref{subsec:testRequirements}).
 
 Eine Analyse ergab, dass die Diagnostik"=Daten der Anwendungen aufgrund eines falsch gesetzten Attributs in der \texttt{ApplicationResult}"=Klasse des Parsers nicht im Testsystem gespeichert werden konnten.
 Dadurch konnten die Daten nicht mithilfe von Json.NET dem korrekten Attribut zugeordnet werden, wodurch die Diagnostik"=Daten entsprechend verworfen wurden (vgl. \cref{subsubsec:implRestParser}).

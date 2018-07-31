@@ -12,8 +12,8 @@ Folgende Benchmarks sind bereits in der Plattform integriert (vgl. \cref{sec:had
 
 Jede Benchmark enthält ein spezifisches Start"=Script, um die jeweiligen Benchmarks in einem Docker"=Container zu starten.
 Dieser Container wird, abhängig vom \texttt{HostMode} (vgl. \cref{subsec:hostMode}), auf der Docker"=Machine des \gls{RM} oder direkt auf dem Host gestartet.
-Da es in Docker"=Umgebungen \emph{best practice} ist, für jeden Einsatzzweck ein eigenes Image zu erstellen bzw. Container zu starten, werden für jede der drei Benchmark"=Suites eigene Container ausgeführt.
-Um mehrere Benchmarks gleichzeitig ausführen zu können, wurden die Startscripte der Benchmarks daher entsprechend angepasst.
+Da es in Docker"=Umgebungen \textit{best practice} ist, für jeden Einsatzzweck ein eigenes Image zu erstellen bzw. Container zu starten, werden für jede der drei Benchmark"=Suites eigene Container ausgeführt.
+Um mehrere Benchmarks gleichzeitig ausführen zu können, wurden die Startscripte der Benchmarks zudem entsprechend angepasst.
 
 \subsection{Mapreduce"=Examples}
 \label{subsec:mapreduceExamples}
@@ -35,7 +35,7 @@ Einige der Anwendungen der Examples sind:
 Intel HiBench\footnote{\url{https://github.com/intel-hadoop/HiBench/}} ist eine von Intel entwickelte Benchmark"=Suite mit \emph{Workloads} zu verschiedenen Anwendungszwecken mit jeweils unterschiedlichen einzelnen Anwendungen.
 Die Suite enthielt anfangs nur wenige Anwendungen \cite{Huang2010}, wurde im Laufe der Zeit jedoch stetig um neue Anwendungen und auch Workloads erweitert.
 Das zeigt sich auch darin, dass in Hadoop"=Benchmark die HiBench"=Version \mbox{2.2} integriert ist, die einen noch deutlich geringeren Umfang an Workloads und Anwendungen besitzt, wie \zB die aktuellere Version 7.
-Aus diesem Grund wurde vor der Analyse der Anwendungen der HiBench"=Suite das Docker"=Image entsprechend auf Version 7 aktualisiert, um hier entsprechend alle in der Zwischenzeit hinzugefügten Workloads und Anwendungen der Suite nutzen zu können.
+Aus diesem Grund wurde vor der Analyse der Anwendungen der HiBench"=Suite das Docker"=Image entsprechend auf Version 7 aktualisiert, um die in der Zwischenzeit hinzugefügten Workloads und Anwendungen der Suite nutzen zu können.
 HiBench enthält damit folgende Workloads mit einer unterschiedlichen Anzahl an möglichen Anwendungen:
 
 \begin{itemize}

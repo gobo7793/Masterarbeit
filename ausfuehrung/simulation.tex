@@ -7,7 +7,7 @@ Hierbei gibt es neben der Simulation mit Aktivierung der Komponentenfehler auch 
 \subsection{Grundlegender Aufbau}
 \label{subsec:simulationBasics}
 
-Da im realen Cluster Hadoop kontinuierlich Anpassungen und Tests mithilfe von \gls{ss} mit diskreten Schritten durchgeführt werden, muss beachtet werden, dass die bei den Tests ermittelten Werte immer nur Momentaufnahmen darstellen.
+Da im realen Hadoop"=Cluster kontinuierlich Anpassungen und \gls{ss}"=Tests dagegen mit diskreten Schritten durchgeführt werden, muss beachtet werden, dass die bei den Tests ermittelten Werte nur Momentaufnahmen darstellen.
 Ebenso muss beachtet werden, dass bei der Deaktivierung von einzelnen Nodes bzw. deren Netzwerkverbindungen diese nicht in Echtzeit, sondern um einige Zeit verzögert erkannt und erst nach einer gewissen Zeit aus der Konfiguration des Clusters entfernt werden (vgl. \cref{sec:hadoop}).
 Genauso verhält es sich, wenn ein Node bzw. seine Verbindung wieder aktiviert wird, da dieser zunächst gestartet und anschließend die Verbindung mit den \gls{RM} hergestellt werden muss.
 Außerdem werden die für die auf dem Cluster ausgeführten Anwendungen benötigten \gls{AppMstr} und YARN"=Container aufgrund der komplexen internen Prozesse von Hadoop nicht innerhalb weniger Millisekunden allokiert, sondern benötigen ebenfalls eine gewisse Zeit.
@@ -119,15 +119,15 @@ Die einfachen Eigenschaften sind:
         Dadurch wird es ermöglicht, einzelne Testfälle erneut ausführen zu können.
         
     \item[StepCount] \hfill \\
-        Definiert die Anzahl der ausgeführten Testfälle der Simulation.
+        Definiert die Anzahl der auszuführenden Testfälle der Simulation.
         
     \item[FaultActivationProbability] \hfill \\
-        Definiert die generelle Häufigkeit zum Aktivieren von Komponentenfehlern.
+        Definiert die generelle Wahrscheinlichkeit zum Aktivieren von Komponentenfehlern.
         Ist dieser Wert 0,0, werden grundsätzlich keine Komponentenfehler aktiviert, bei einem Wert von 1,0 werden Komponentenfehler dagegen immer aktiviert.
         
-    \item[FaultRepariProbability] \hfill \\
-        Definiert die generelle Häufigkeit zum Deaktivieren von Komponentenfehlern.
-        Die hier definierte Wahrscheinlichkeit verhält sich analog zu \texttt{\_FaultActivation""Probability}.
+    \item[FaultRepairProbability] \hfill \\
+        Definiert die generelle Wahrscheinlichkeit zum Deaktivieren von Komponentenfehlern.
+        Die hier definierte Wahrscheinlichkeit verhält sich analog zu \texttt{FaultActivation""Probability}.
         Bei einem Wert von 0,0 werden Komponentenfehler niemals deaktiviert, während sie bei einem Wert von 1,0 im nachfolgenden Schritt immer deaktiviert werden.
         
     \item[HostsCount] \hfill \\
@@ -137,18 +137,18 @@ Die einfachen Eigenschaften sind:
         
     \item[NodeBaseCount] \hfill \\
         Definiert die Anzahl der Nodes auf Host1.
-        Auf einem möglichen Host2 wird die Hälfte der Nodes verwendet (vgl. \cref{subsec:hostMode}).
+        Auf anderen Hosts wird jeweils die Hälfte der Nodes verwendet (vgl. \cref{subsec:hostMode}).
         Benötigt wird dieser Wert, um mithilfe der REST"=API auf die Hadoop"=Nodes zugreifen zu können, um die Daten der YARN"=Container zu ermitteln (vgl. \cref{subsubsec:implRestConnector,subsec:modelClass}).
         
     \item[ClientCount] \hfill \\
         Definiert die Anzahl der zu simulierenden Clients.
-        Da jeder Client gleichzeitig nur eine Anwendung startet, wird dadurch gleichzeitig definiert, wie viele Anwendungen gleichzeitig auf dem Cluster ausgeführt werden sollen.
+        Da jeder Client gleichzeitig nur eine Anwendung startet, wird dadurch gleichzeitig definiert, wie viele Anwendungen gleichzeitig auf dem Cluster ausgeführt werden können.
 \end{description}
 
 Eine Besonderheit bildet die Eigenschaft \texttt{PrecreatedInputs}.
-Es definiert, ob die ausgeführten Anwendungen auf dem Cluster vorab generierte Eingabedaten nutzen oder alle Eingabedaten während der Ausführung selbst generieren.
+Sie definiert, ob die ausgeführten Anwendungen auf dem Cluster vorab generierte Eingabedaten nutzen oder alle Eingabedaten während der Ausführung selbst generieren.
 Der Unterschied zwischen beiden Varianten liegt darin, dass vorab generierte Eingabedaten in einem anderen Verzeichnis im HDFS gespeichert sind und während der Simulation die Eingabedaten aus diesem Verzeichnis gelesen werden.
-Wenn keine Eingabedaten vorab generiert werden, werden als Eingabeverzeichnisse für die Anwendungen die Ausgabeverzeichnisse der entsprechenden Benchmarks genutzt, die die dafür benötigten Daten generieren (vgl. \cref{sec:clusterSetup,subsec:testcaseGeneration,subsec:precreateInputData}).
+Wenn keine Eingabedaten vorab generiert werden, werden als Eingabeverzeichnisse für die Anwendungen die Ausgabeverzeichnisse der entsprechenden Benchmarks genutzt, welche die dafür benötigten Daten generieren (vgl. \cref{sec:clusterSetup,subsec:testcaseGeneration,subsec:precreateInputData}).
 Die Eigenschaft \texttt{RecreatePreInputs} definiert hierfür, ob bereits bestehende Eingabedaten neu generiert werden, was standardmäßig nicht der Fall ist bzw. die Eigenschaft auf \texttt{false} gesetzt ist (vgl. \cref{subsec:precreateInputData}).
 Die Werte der beiden Eigenschaften werden daher entsprechend in ihren korrespondierenden Eigenschaften in \texttt{ModelSettings} gespeichert.
 
@@ -163,12 +163,14 @@ private FaultTuple[] CollectYarnNodeFaults(Model model)
     from faultField in node.GetType().GetFields()
     where typeof(Fault).IsAssignableFrom(faultField.FieldType)
     
-    let attribute = faultField.GetCustomAttribute<NodeFaultAttribute>()
+    let attribute =
+       faultField.GetCustomAttribute<NodeFaultAttribute>()
     where attribute != null
     
     let fault = (Fault)faultField.GetValue(node)
     
-    select Tuple.Create(fault, attribute, node, new IntWrapper(0), new IntWrapper(0))
+    select Tuple.Create(fault, attribute, node,
+       new IntWrapper(0), new IntWrapper(0))
   ).ToArray();
 }
 \end{lstlisting}
@@ -177,7 +179,7 @@ Die gefundenen Komponentenfehler werden als Array aus Tupel, bestehend aus dem K
 Zur Speicherung hierfür dient der Typ \texttt{FaultTuple}, welcher ein Alias für das hierfür genutzte \texttt{Tupel<T>} darstellt.
 Die jeweiligen Instanzen der Attribute und Nodes werden für die in \cref{subsec:faultActivation} beschriebene Aktivierung der dazugehörigen Komponentenfehler benötigt.
 Die beiden im Tupel gespeicherten Instanzen des \texttt{IntWrapper} dienen zur Speicherung der Anzahl der Aktivierungen bzw. Deaktivierungen der Komponentenfehler.
-Da der Wert einer Struktur wie \texttt{int} nicht direkt in einem Tupel geändert werden kann, dient die Klasse \texttt{IntWrapper} hierfür als Adapter.
+Da der Wert eines Structs wie \texttt{int} nicht direkt in einem Tupel geändert werden kann, dient die Klasse \texttt{IntWrapper} hierfür als Adapter.
 Benötigt werden diese Werte zur Validierung der Constraints der Simulation durch das Oracle (vgl. \cref{subsec:simulationBasics}).
 
 \subsection{Weitere mit der Simulation zusammenhängende Methoden}
@@ -197,11 +199,13 @@ public void SimulateBenchmarks()
   {
     var seed = _BenchmarkSeed + i;
     var benchController = new BenchmarkController(seed);
-    Logger.Info($"Simulating Benchmarks for Client {i} with Seed {seed}:");
+    Logger.Info($"Simulating Benchmarks f§§or " +
+       "Client {i} with Seed {seed}:");
     for(int j = 0; j < _StepCount; j++)
     {
       benchController.ChangeBenchmark();
-      Logger.Info($"Step {j}: {benchController.CurrentBenchmark.Name}");
+      Logger.Info($"Step {j}: " +
+         "{benchController.CurrentBenchmark.Name}");
     }
   }
 }
@@ -211,7 +215,7 @@ public void SimulateBenchmarks()
 \label{subsec:simulationStep}
 
 Zu Beginn eines Tests werden zunächst die in \cref{subsec:dataOrganisation} definierten, grundlegenden Daten des Tests im Programmlog gespeichert.
-Daneben werden aber auch noch weitere, auch den \texttt{HostMode} (vgl. \cref{subsec:hostMode}) betreffende Daten im Programmlog abgespeichert:
+Daneben werden aber auch noch weitere, auch den \texttt{HostMode} (vgl. \cref{subsec:hostMode}) betreffende, Daten im Programmlog abgespeichert:
 
 \begin{itemize}
     \item Verbundene SSH"=Verbindungen mit einer ID zur besseren Zuordnung im SSH"=Log
@@ -257,7 +261,7 @@ Der hierbei ermittelte Status wird im Programmlog als finaler Clusterstatus und 
 
 \begin{itemize}
     \item Gesamtdauer der Simulation
-    \item Anzahl erfolgreicher Schritte
+    \item Anzahl erfolgreicher Testfälle
     \item Anzahl der maximal möglichen, aktivierbaren Komponentenfehler
     \item Anzahl aktivierter und deaktivierter Komponentenfehler
     \item Letzter ermittelter \gls{MARP}"=Wert

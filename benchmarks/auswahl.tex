@@ -13,11 +13,11 @@ Einige der in \cref{subsec:mapreduceExamples} erwähnten Mapreduce"=Examples wer
 Einige Beispiele dafür sind die Anwendungen \acrlong{so} und \texttt{grep}, die bereits im Referenzpapier \cite{Dean2004} des \gls{MR}"=Frameworks zum Testen genutzt wurden.
 Zum Testen des HDFS dient in \cite{Shvachko2010} die DFSIO"=Benchmark, um den Durchsatz beim Lesen und Schreiben einer großen Datenmenge auf dem HDFS zu messen.
 \acrlong{tsr} und die beiden dazugehörigen Anwendungen \acrlong{tg} und \acrlong{tvl} bilden ebenfalls eine weit verbreitete Benchmark, der die Hadoop"=Implementierung der standardisierten \emph{Sort Benchmarks}\footnote{\url{https://sortbenchmark.org/}} darstellt \cite{Graves2013}.
-Ebenfalls als gute Benchmark dient die Anwendung \acrlong{wc}, mit der ein großer Datensatz stark verkleinert bzw. zusammengefasst wird, und daher als gute Repräsentation für Anwendungsarten dient, bei denen Daten extrahiert werden \cite{Huang2010,Chen2012}.
+Ebenfalls als gute Benchmark dient die Anwendung \acrlong{wc}, mit der ein großer Datensatz stark verkleinert bzw. zusammengefasst wird und daher als gute Repräsentation für Anwendungsarten dient, bei denen Daten extrahiert werden \cite{Huang2010,Chen2012}.
 
 Da in dieser Fallstudie ein realistisches Abbild der ausgeführten Anwendungen ausgeführt werden soll, ist es nicht sehr hilfreich, die einzelnen Übergangswahrscheinlichkeiten im Transitionssystem anzugleichen oder rein zufällig zu verteilen.
 Einen realistischen Einblick in genutzte Anwendungs- und Datentypen in produktiv genutzten Hadoop"=Clustern geben \uA die Studien \cite{Chen2012,HadoopDataTypes}.
-Auffällig ist hierbei, dass die meisten Anwendungen in einem Hadoop"=Cluster innerhalb weniger Sekunden oder Minuten abgeschlossen sind und bzw. oder Datensätze im Größenbereich von wenigen Kilobyte bis hin zu wenigen Megabyte verarbeiten.
+Auffällig ist hierbei, dass die meisten Anwendungen in einem Hadoop"=Cluster innerhalb weniger Sekunden oder Minuten abgeschlossen sind oder Datensätze im Größenbereich von wenigen Kilobyte bis hin zu wenigen Megabyte verarbeiten.
 Zu einem ähnlichen Ergebnis kam auch die Studie \cite{Ren2013}, in der gefolgert wird, dass für kleinere Jobs einfachere Frameworks abseits von Hadoop besser geeignet wären.
 Die Autoren der Studie \cite{HadoopDataTypes} bezeichneten Hadoop aufgrund ihrer Ergebnisse als \enquote{potentielle Technologie zum Verarbeiten aller Arten von Daten}, folgerten aber ähnlich wie \citeauthor{Ren2013} in \cite{Ren2013}, dass mit Hadoop meist Daten verarbeitet werden, die auch mit \enquote{traditionellen Plattformen} verarbeitet werden könnten.
 
@@ -60,11 +60,11 @@ Basierend auf den Ergebnissen der Studien in \cite{Huang2010,Chen2012,HadoopData
     \item Ausführen von Berechnungen:
     \begin{itemize}
         \item \acrlong{pi}\glsunset{pi}: Einfache Berechnung von $\pi$ mithilfe der Quasi"=Monte"=Carlo"=Methode.
-            Die Monte"=Carlo"=Methode und die darauf basierende Quasi"=Monte"=Carlo"=Methode sind stochastische Verfahren, um komplexe Probleme numerisch lösen zu können.
+            Die Monte"=Carlo"=Methode und die darauf basierende Quasi"=Monte"=Carlo"=Methode sind stochastische Verfahren, um komplexe Probleme numerisch zu lösen.
             Für weitere Informationen hierzu sei auf entsprechende Literatur, wie \zB \cite{Korn2010,Lemieux2009}, verweisen.
         \item \gls{pt}: Berechnung einer Lösung von Pentomino"=Problemen.
-            Hierbei soll eine Fläche aus 64 Quadraten mithilfe von zwölf \emph{Bausteinen} bedeckt werden, wobei jeder Baustein aus fünf Quadraten besteht und nur einmal genutzt werden darf.
-            Weitere Informationen hierzu sind in entsprechender Literatur, wie \zB in \cite{Golomb1995}, zu finden.
+            Bei Pentomino soll eine Fläche aus 64 Quadraten mithilfe von zwölf \emph{Bausteinen} bedeckt werden, wobei jeder Baustein aus fünf Quadraten besteht und nur einmal genutzt werden darf.
+            Weitere Informationen hierzu sind in entsprechender Literatur, wie \zB \cite{Golomb1995}, zu finden.
     \end{itemize}
 
     \item Dummy"=Anwendungen:
@@ -80,10 +80,10 @@ So stehen die beiden \texttt{TestDFSIO}"=Varianten für eine umfangreichere Date
 \texttt{TestDFSIO} enthält zudem die Möglichkeit, Daten zu generieren und zu lesen, weshalb dieser Benchmark in zwei Kategorien als Anwendung genutzt wird.
 
 Eine Besonderheit bilden die beiden Dummy"=Anwendnugen.
-Beide werden bei der Ausführung dieser Fallstudie dafür genutzt, um zu simulieren, wenn nichts ausgeführt werden soll oder bei der Ausführung der Anwendungen ein Fehler auftritt.
+Beide werden dafür genutzt, um zu simulieren, wenn nichts ausgeführt werden soll oder bei der Ausführung der Anwendungen ein Fehler auftritt.
 
 Auf die Implementierung einer Anwendung der HiBench"=Suite wurde verzichtet.
-Da beim Starten einer Anwendung durch den Client die vom Cluster zugewiesene Anwendungs"=ID benötigt wird, um die Anwendung in späteren Testfällen beenden zu können, kann der HiBench nicht sinnvoll im Testmodell genutzt werden.
+Da beim Starten einer Anwendung durch den Client die vom Cluster zugewiesene Anwendungs"=ID benötigt wird, um die Anwendung in späteren Testfällen beenden zu können, kann der HiBench nicht sinnvoll in das Testsystem integriert werden.
 Der Grund hierfür ist, dass beim Starten einer Anwendung der HiBench"=Suite die ID erst nach Abschluss der gesamten Anwendung zurückgegeben wird, womit eine asynchrone Ausführung der Anwendung nicht mehr möglich wäre.
 
 \subsection{Entwicklung der Markow"=Kette}

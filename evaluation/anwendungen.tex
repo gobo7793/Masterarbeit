@@ -21,6 +21,8 @@ Im Schnitt ergibt das somit rund 8 ungültige Constraints pro Test bzw. ca. 1,8 
 Die auf den ersten Blick sehr hohe Anzahl an verletzten Constraints resultiert daraus, dass eine fehlgeschlagene Anwendung bei jedem nachfolgenden Testfall bei einer Testausführung erneut durch das Oracle entsprechend validiert wurde.
 Dadurch sind ein Großteil der verletzten Constraints ein falscher Alarm, da die entsprechende Anforderung pro Anwendung logischerweise nur einmal nicht erfüllt werden kann.
 Aussagekräftiger ist daher die Anzahl von 110 nicht vollständig abgeschlossenen bzw. aufgrund eines Fehlers abgebrochenen Anwendungen.
+Hierbei ist zudem zu beachten, dass es insgesamt einen erfolgreichen Attempt weniger gibt als Anwendungen (vgl. \cref{sec:evaluationResults}).
+Dies liegt darin, dass die \acrlong{fl}"=Anwendung als erfolgreich gewertet wird, dabei jedoch der \gls{AppMstr}, und damit auch der Attempt, gezielt mit einem Fehler beendet wird (vgl. \cref{subsec:appSelection}).
 
 Anhand der Datenbasis lassen sich vier Ursachen für nicht vollständig ausgeführte Anwendungen bzw. Attempts ausmachen:
 
@@ -54,7 +56,7 @@ Dadurch wird hier die Anforderung, dass ein Task vollständig ausgeführt werden
 
 Bei einigen der \gls{AppMstr}"=Timeouts aufgrund der Injizierung von Komponentenfehlern lässt sich zudem ein spezielles Muster erkennen.
 Hierbei wurde in einem zuvor ausgeführten Testfall auf einem Node ein \gls{AppMstr} einer Anwendung ohne Fehler allokiert.
-Nun kann es passieren, dass für diesen Node ein Komponentenfehler injiziert wird, was dazu führt, dass der Node nicht mehr erreichbar ist und der \gls{AppMstr} aufgrund eines Timeouts abgebrochen wird.
+Nun ist es möglich, dass für diesen Node ein Komponentenfehler injiziert wird, was dazu führt, dass der Node nicht mehr erreichbar ist und der \gls{AppMstr} aufgrund eines Timeouts abgebrochen wird.
 Hierbei wird direkt im Anschluss ein neuer \gls{AppMstr} allokiert, was auch dazu führt, dass die Anwendung nun einen zweiten Attempt besitzt, nachdem der erste aufgrund des Timeouts abgebrochen wurde.
 Dabei ist es nun möglich, dass noch während der Aktivierung von Komponentenfehlern innerhalb des Testfalls auf dem ausführenden Node des neuen \gls{AppMstr} ein Komponentenfehler injiziert wird.
 Dadurch wird der zweite \gls{AppMstr} ebenfalls aufgrund eines Timeouts abgebrochen, wodurch die gesamte Anwendung als fehlgeschlagen gilt.

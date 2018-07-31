@@ -35,10 +35,10 @@ Das von Spotify genutzte Cluster zur Analyse der Hörgewohnheiten und für Musik
 
 Es stellt damit auch eines der größten Hadoop"=Cluster dar \cite{PoweredByHadoop}.
 Es ist schnell ersichtlich, dass beim Ausfall von über 400 Nodes wohl ein Großteil der über 20.000 ausgeführten Anwendungen nicht mehr ausgeführt werden könnten und zahlreiche Blöcke von möglicherweise benötigten Daten im HDFS nicht mehr verfügbar wären (vgl. \cref{sec:hadoop}).
-Entsprechende Auswirkungen hätte das auch auf die Kunden von Spotify, da das Cluster \uA da Musikempfehlungen nur noch eingeschränkt zur Verfügung stehen würden.
-Es dürfte daher auch sehr unwahrscheinlich sein, dass bei einem Cluster dieser Größe ein Viertel aller Nodes ausfallen würde.
+Entsprechende Auswirkungen hätte das auch auf die Kunden von Spotify, da \uA die Musikempfehlungen nur noch eingeschränkt zur Verfügung stehen würden.
+Es dürfte aber auch sehr unwahrscheinlich sein, dass bei einem Cluster dieser Größe ein Viertel aller Nodes ausfallen würde.
 Bei kleinen Clustern mit Nodes im ein- bzw. niedrigen zweistelligen Bereich dürfte der Ausfall eines Viertel der Nodes dagegen im realistischen Bereich liegen.
-Allerdings wären bei kleinen Clustern die Auswirkungen, natürlich abhängig von den Aufgaben des Clusters, tendenziell eher weniger massiv wie am Beispiel von Spotify.
+Allerdings wären bei kleinen Clustern die Auswirkungen, natürlich abhängig von den Aufgaben des Clusters, tendenziell weniger massiv wie am Beispiel von Spotify.
 
 Daher lässt sich die hohe Anzahl an fehlgeschlagenen Anwendungen wohl vor allem an der generellen Wahrscheinlichkeit zur Aktivierung der Komponentenfehlern festmachen.
 Es wäre daher durchaus sinnvoll gewesen, einige der ausgeführten Tests auch ohne Aktivierung der Komponentenfehler durchzuführen.
