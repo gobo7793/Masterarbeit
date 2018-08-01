@@ -1,7 +1,7 @@
 \section{Apache Hadoop}
 \label{sec:hadoop}
 
-Apache\texttrademark Hadoop\textregistered ist ein in Java entwickeltes Open"=Source"=Software"=Projekt, welches die Verarbeitung von großen Datenmengen auf einem verteilten System ermöglicht.
+Apache\texttrademark\space Hadoop\textregistered\space ist ein in Java entwickeltes Open"=Source"=Software"=Projekt, welches die Verarbeitung von großen Datenmengen auf einem verteilten System ermöglicht.
 Hadoop wird federführend von der \emph{Apache Foundation} entwickelt und enthält verschiedene vollständig skalierbare Komponenten \cite{HadoopHomePage}.
 Dadurch wird ermöglicht, ein Hadoop"=Cluster auf nur einem einzelnen PC, aber auch verteilt auf zahlreichen Servern auszuführen, auf dem wiederum Anwendungen zum Verarbeiten von großen Datenmengen ausgeführt werden können.
 Die dem Cluster und den Anwendungen verfügbaren Ressourcen beschränken sich lediglich auf die Summe der verfügbaren Ressourcen aller Hosts, auf denen das Cluster ausgeführt wird.
@@ -21,11 +21,11 @@ Hadoop besitzt hierzu folgende Kernmodule \cite{HadoopHomePage}:
 Aufgrund seiner Verbreitung stellt Hadoop eine der wichtigsten Implementierungen des \gls{MR}"=Ansatzes dar \cite{PoweredByHadoop}.
 Die Ein"= und Ausgabedaten sind hierbei als \emph{Key"=Value}"=Paare definiert, die mithilfe des \gls{MR}"=Frameworks verarbeitet werden.
 Hierbei werden zunächst die eingelesenen Eingabedaten in kleine und dadurch einfach zu verarbeitende Datenmengen aufgeteilt.
-Die geteilten Daten werden dann in mehreren, parallel ausgeführten Map"=Tasks verarbeitet und zwischengespeichert.
+Die aufgeteilten Daten werden dann in mehreren, parallel ausgeführten Map"=Tasks verarbeitet und zwischengespeichert.
 Die zwischengespeicherten Daten werden anschließend von einem oder mehreren Reduce"=Tasks zusammengeführt und in die Ausgabedateien geschrieben.
 Das Framework besitzt eine hohe Fehlertoleranz, da ein fehlerhafter Task jederzeit neu gestartet werden kann \cite{Dean2004,Dean2010}.
 Zur Speicherung der Ein-, Zwischen- und Ausgabedaten wird im Falle von Hadoop das HDFS genutzt \cite{HadoopMapRedTutorial271}.
-Für eine ausführliche Beschreibung des \gls{MR}"=Frameworks sei hier auf \cite{Dean2004} und \cite{Dean2010} verwiesen; eine generelle Betrachtung des \gls{MR}"=Frameworks mit Vorteilen und möglichen Problemen lässt sich in \cite{Lee2012} finden.
+Für eine ausführliche Beschreibung des \gls{MR}"=Frameworks sei hier auf entsprechende Literatur, wie \zB \cite{Dean2004,Dean2010}, verwiesen; eine generelle Betrachtung des \gls{MR}"=Frameworks mit Vorteilen und möglichen Problemen lässt sich \zB in \cite{Lee2012} finden.
 
 Da das \gls{MR}"=Framework bzw. seine Implementierung in Hadoop nicht immer optimal genutzt werden kann und in der Praxis daher zum Teil auch zweckentfremdet wurde, wurde in \cite{Vavilapalli2013} das YARN"=Framework vorgestellt.
 Die Kernidee ist hierbei die Trennung von Ressourcenmanagement und Scheduling vom eigentlichen Programm.
@@ -59,7 +59,7 @@ Er ist speziell dafür entwickelt, die Metadaten und Logs der YARN"=Anwendungen 
 
 Zum Steuern des Clusters bzw. dem Monitoring der mithilfe von YARN ausgeführten Anwendungen stellt Hadoop drei Schnittstellen zur Verfügung.
 Dies sind eine graphische Weboberfläche, was zugleich auch die wichtigste Schnittstelle darstellt, entsprechende Befehle für die \acrlong{CLI} (engl. \emph{Command-line interface}, kurz \acrshort{CLI})\glsunset{CLI} sowie eine REST"=API.
-Während sich die Weboberfläche zur menschlichen Interaktion oder zur Fehlersuche eignet, dienen die \gls{CLI}"=Befehle vor allem zum Steuern des Clusters und die REST"=API zur automatisierten Rückgabe der Daten des Clusters zur Nutzung in anderen Programmen \cite{HadoopClusterSetup271,HadoopYarnCmds271,HadoopRmApi271,HadoopNmApi271}.
+Während sich die Weboberfläche zur menschlichen Interaktion oder zur Fehlersuche eignet, dienen die \gls{CLI}"=Befehle vor allem zum Steuern des Clusters und die REST"=API \uA zur automatisierten Rückgabe der Daten des Clusters zur Nutzung in anderen Programmen \cite{HadoopClusterSetup271,HadoopYarnCmds271,HadoopRmApi271,HadoopNmApi271}.
 
 \cref{fig:hdfsarch} zeigt die dem YARN"=Framework sehr ähnliche Architektur des HDFS, welche ebenfalls aus einem Controller und mehreren Nodes besteht.
 
