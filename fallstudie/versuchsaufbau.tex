@@ -7,30 +7,30 @@ In diesem Cluster sollen anhand des Modells unterschiedliche Komponentenfehler i
 Hierbei soll nicht nur das Verhalten von Hadoop selbst analysiert werden, sondern auch das der von \citeauthor{Zhang2016} entwickelten Selfbalancing"=Komponente.
 Anhand dieses Verhaltens und dem des kompletten Testsystems soll schließlich ermittelt werden, ob eine Testautomatisierung in diesem Versuchsaufbau erfolgreich war.
 Es ist hierbei der gleiche Versuchsaufbau wie in \cite{Eberhardinger2018}, da hierfür ebenfalls das Testsystem TestingHadoop genutzt wurde.
-Zur Ausführung der Tests soll der von \gls{ss} bereitgestellte Simulator genutzt werden, da hierbei nur ein Ausführungspfad mit der Berücksichtigung von zeitlichen Abfolgen ausgeführt werden kann und Komponentenfehler gemäß der im Modell implementierten Definitionen aktiviert und deaktiviert werden können.
+Zur Ausführung der Tests soll der von \gls{ss} bereitgestellte Simulator genutzt werden, da hierbei ein Ausführungspfad mit der Berücksichtigung von zeitlichen Abfolgen ausgeführt werden kann und Komponentenfehler gemäß der im Testsystem implementierten Definitionen aktiviert und deaktiviert werden können.
 
-Bei der Entwicklung des Modells liegt der Fokus auf dem grundlegenden Aufbau von YARN.
+Bei der Entwicklung von TestingHadoop liegt der Fokus auf dem grundlegenden Aufbau von YARN.
 Dazu gehören die Anwendungen und ihre Attempts sowie zum Teil auch ihre Container.
-Daneben muss das Modell auch die Nodes des Clusters und zum Ausführen der Benchmarks auch simulierte Clients enthalten.
+Daneben muss das hierfür entwickelte YARN"=Modell auch die Nodes des Clusters und zum Ausführen der Benchmarks auch simulierte Clients enthalten.
 Da bei den Tests auch Ausfälle von Nodes eine Rolle spielen, müssen hierfür entsprechende Komponentenfehler implementiert werden, die mithilfe von \gls{ss} aktiviert und deaktiviert werden können.
-Das Modell soll dabei immer den aktuellen Status des realen Clusters repräsentieren, weshalb regelmäßig alle benötigten Daten des realen Clusters ausgelesen und im Modell gespeichert werden müssen.
+Das YARN"=Modell soll dabei immer den aktuellen Status des realen Clusters repräsentieren, weshalb regelmäßig alle benötigten Daten des realen Clusters ausgelesen und im Modell gespeichert werden müssen.
 
 Da die Auswahl der ausgeführten Benchmarks eines jeden Clients nicht bei jedem Test manuell bestimmt werden soll, wird hierfür ein Transitionssystem verwendet.
 Mithilfe dieses Transitionssystems, in dem die Wahrscheinlichkeiten der Anwendungswechsel definiert sind, soll während der Ausführung eines Testfalls zufällig eine nachfolgende Anwendung ausgewählt werden.
 Hierbei soll auch berücksichtigt werden, dass einige Anwendungen die Eingabedaten für andere Anwendungen generieren können.
 
-Die Verbindung zwischen dem Modell und dem realen Hadoop"=Cluster wird mithilfe eines hierfür entwickelten Treibers durchgeführt.
+Die Verbindung zwischen dem YARN"=Modell und dem realen Hadoop"=Cluster wird mithilfe eines hierfür entwickelten Treibers durchgeführt.
 Der Treiber ist dafür verantwortlich, Komponentenfehler und Anwendungen an das reale Cluster zu senden.
 Zudem dient er dazu, um den Status des Clusters jederzeit ermitteln und an das Modell zur dortigen Speicherung übergeben zu können.
 Er kann daher nicht nur aus der Verbindung zum Cluster selbst bestehen, sondern muss auch die Kommunikation zwischen Modell und Cluster sicherstellen und übermittelte Daten entsprechend konvertieren.
 
 Das \gls{SuT} selbst stellt das reale Hadoop"=Cluster dar, das mithilfe der Plattform Hadoop"=Benchmark umgesetzt werden soll.
 Hierfür sollen, basierend auf dem in der Plattform enthaltenen Szenario mit der Selfbalancing"=Komponente, für diese Fallstudie angepasste Szenarien genutzt werden.
-Zudem soll auch mithilfe von Mutationstests, bei denen ein oder mehrere Mutanten in der Selfbalancing"=Komponente implementiert werden, TestingHadoop selbst geprüft werden.
+Zudem soll auch mithilfe von Mutationstests, bei denen ein oder mehrere Mutanten in der Selfbalancing"=Komponente implementiert werden, das Testsystem TestingHadoop selbst geprüft werden.
 
 Dieser Versuchsaufbau soll mithilfe eines dafür entwickelten \emph{Oracles} bereits während der Ausführung automatisiert geprüft werden.
 Das Oracle dient zur Validierung der in \cref{sec:requirements} definierten Anforderungen an das Cluster und das Testsystem.
-Hierfür werden, sofern möglich, die Anforderungen als \emph{Constraints} im Modell implementiert und bei jedem Test automatisch geprüft.
+Hierfür werden, sofern möglich, die Anforderungen als \emph{Constraints} im Modell implementiert und bei jedem Test automatisiert geprüft.
 Die Implementierung der Constraints erfolgt dezentral in den jeweils betroffenen Komponenten des Modells.
 Für jede implementierte Komponente werden somit nur die jeweils relevanten Bestandteile der Anforderungen als Constraints implementiert und durch das Oracle validiert.
 
