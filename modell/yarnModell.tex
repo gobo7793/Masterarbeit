@@ -3,7 +3,7 @@
 
 Das implementierte YARN"=Modell besteht, wie bereits in \cref{sec:modelArchitecture} gezeigt, aus fünf Komponenten und den Komponentenfehlern der hier relevanten YARN"=Komponenten.
 Die vier implementierten YARN"=Komponenten sind die Anwendungen, ihre Attempts und Container, sowie die Nodes.
-Zudem wurde eine Klasse implementiert, die zur Repräsentation des \gls{RM} und als Controller im Rahmen des Testens mit \gls{ss} dient.
+Zudem wurde eine Klasse implementiert, die zur Repräsentation des \gls{RM} und als Controller zum Testen mit \gls{ss} dient.
 Einen Überblick über den Aufbau des implementierten YARN"=Modells gibt das in \cref{fig:yarnModelClassDiagram} dargestellte Klassendiagramm.
 
 \begin{figure}
@@ -23,7 +23,7 @@ Der Aufbau des Benchmark"=Controllers wird in \cref{sec:benchmarkController} erl
 \subsection{Die Klassen Model und ModelSettings}
 \label{subsec:modelClass}
 
-Die Klasse \texttt{Model} stellt die zentrale Schnittstelle des Testsystems mit \gls{ss} dar (vgl. \cref{subsec:ssharpModel}), während die Klasse \texttt{ModelSettings} alle generellen, variablen Einstellungen und Konstanten des YARN"=Modells bereitstellt.
+Die Klasse \texttt{Model} stellt die zentrale Schnittstelle des Testsystems mit \gls{ss} dar (vgl. \cref{subsec:ssharpModel}), während die Klasse \texttt{ModelSettings} generelle, variable Einstellungen und Konstanten für das Testsystem bereitstellt.
 Da die \texttt{Model}"=Klasse auch das gesamte Modell repräsentiert, wird sie zur Verwaltung des von \gls{ss} auszuführenden Modells genutzt.
 Hierfür werden alle Komponenten, wie Clients oder Anwendungen, zusätzlich zur Struktur innerhalb des Modells auch in \texttt{Model} gespeichert, welche zur Interaktion mit \gls{ss} entsprechenden Attributen versehen sind (vgl. \cref{subsec:ssharpModel}).
 
@@ -77,7 +77,7 @@ Die durch die Basisklasse \texttt{YarnHost} bereitgestellte Eigenschaft \texttt{
 Da die Adresse vom \texttt{HostMode} abhängig ist, wird sie mithilfe der \texttt{ModelSettings} beim initialisieren des Modells entsprechend festgelegt (vgl. \cref{subsec:hostMode,subsec:modelClass}).
 
 Die Eigenschaften \texttt{SutConstraints} und \texttt{TestConstraints} sowie die Methoden \texttt{MonitorStatus()} und \texttt{SetStatus()} werden von \texttt{IYarnReadable} bereitgestellt und speichern die Constraints bzw. dienen zur Durchführung des Monitorings der implementierten Komponenten (vgl. \cref{subsec:yarnComponentInterface}).
-Die Start"= und Stop"=Methoden sowie die Eigenschaften \texttt{IsActive} und \texttt{IsConnected} in \texttt{YarnNode} dienen zur Identifikation und Injektion bzw. Reparatur der Komponentenfehlern (vgl. \cref{subsec:yarnComponentFaults}).
+Die Start"= und Stop"=Methoden sowie die Eigenschaften \texttt{IsActive} und \texttt{IsConnected} in \texttt{YarnNode} dienen zur Identifikation und Injektion bzw. Reparatur der Komponentenfehler (vgl. \cref{subsec:yarnComponentFaults}).
 
 Neben den dargestellten, relevanten Eigenschaften und Methoden wurden zahlreiche weitere implementiert, welche einerseits zur Vollständigkeit der implementierten Komponenten für die Tests \cite{Eberhardinger2018}, andererseits auch zur Ausführung mithilfe des \gls{ss}"=Frameworks benötigt werden.
 Letztere sind \zB zur Speicherung von Strings notwendig, welche aufgrund der Einschränkungen von \gls{ss} (vgl. \cref{sec:ssharp}) \uU nicht jederzeit frei genutzt werden können.
@@ -186,7 +186,7 @@ Die Aktivierung von Komponentenfehlern ist von folgenden Parametern abhängig:
 
 Der hierfür benötigte Zufallsgenerator wird mithilfe des spezifizierten Basisseeds initialisiert (vgl. \cref{subsec:testcaseGeneration}).
 Da der Zufallsgenerator ein statischer Generator ist, werden über einen Test bei der gleichen Anzahl an möglichen Komponentenfehlern immer die gleichen Werte zurückgegeben, nicht jedoch zwingend für einen bestimmten Komponentenfehler eines Nodes.
-Die Komponentenfehler werden damit nicht automatisiert durch \gls{ss} aktiviert bzw. injiziert (vgl. \cref{subsec:ssharpExecution}), sondern mithilfe von speziell hierfür entwickelten Klassen und Methoden.
+Die Entscheidung zur Aktivierung bzw. Injizierung der Komponentenfehler wird somit auch nicht automatisiert durch \gls{ss} durchgeführt, sondern mithilfe von speziell hierfür entwickelten Klassen und Methoden (vgl. \cref{subsec:ssharpExecution}).
 
 Um bei der Ausführung eines Testfalls bestimmen zu können, ob ein Komponentenfehler aktiviert wird, sind alle Komponentenfehler mit dem Attribut \texttt{NodeFault} markiert.
 Dieses Attribut enthält die notwendigen Berechnungen, um über die Aktivierung des Komponentenfehlers zu entscheiden:
@@ -213,13 +213,13 @@ return probability < randomValue;
 Die Entscheidung zur Deaktivierung eines Komponentenfehlers verhält sich analog.
 Anstatt der generellen Aktivierungswahrscheinlichkeit wird hierbei die generelle Wahrscheinlichkeit zur Deaktivierung der Komponentenfehler genutzt.
 Außerdem spielt bei der Deaktivierung die Auslastung des Nodes zum Zeitpunkt der Aktivierung eine Rolle, welche hierzu in der Eigenschaft \texttt{NodeUsageOnActivation} des Attributs entsprechend gespeichert und zur Deaktivierung genutzt wird.
-Zudem wird ein Komponentenfehler eher deatkviert, wenn der Node eine geringe Auslastung aufweist, während die Aktivierung bevorzugt bei einer hohen Auslastung durchgeführt wird.
+Zudem wird ein Komponentenfehler eher deaktiviert, wenn der Node eine geringe Auslastung aufweist, während die Aktivierung bevorzugt bei einer hohen Auslastung durchgeführt wird.
 
 \subsection{Interface IYarnReadable und Monitoring}
 \label{subsec:yarnComponentInterface}
 
 Das Interface \texttt{IYarnReadable} ist das zentrale Erkennungsmerkmal der im Modell abgebildeten und implementierten YARN"=Komponenten.
-Es dient zum einen zur Identifikation aller implementierten YARN"=Komponenten, andererseits stellt es auch Eigenschaften und Methoden bereit, welche einerseits dem Testen in \gls{ss} dienen, primär aber dem Ermitteln der Daten aus dem realen Cluster:
+Es dient zum einen zur Identifikation aller implementierten YARN"=Komponenten, andererseits stellt es auch Eigenschaften und Methoden bereit, welche einerseits dem Testen mit \gls{ss} dienen, primär aber dem Ermitteln der Daten aus dem realen Cluster:
 
 \begin{itemize}
     \item \texttt{GetId()}
@@ -241,10 +241,9 @@ Die beiden erstgenannten Methoden dienen primär zu Debugging"=Zwecken und zur R
 Die nachfolgenden vier Eigenschaften und Methoden dienen zum Monitoring der entsprechenden YARN"=Komponenten.
 Während die Eigenschaft \texttt{Parser} den zu verwendenden Parser (vgl. \cref{subsec:implementedParsers}) speichert, dient die Eigenschaft \texttt{IsSelfMonito""ring} zur Unterscheidung, ob die Daten einer Komponente von dieser selbst ermittelt werden oder dies die übergeordnete Komponente durchführt.
 Diese Unterscheidung ist nötig, da YARN hierfür zwei unterschiedliche Schnittstellen bietet: Die Rückgabe der Daten durch die \gls{CLI} oder mithilfe der REST"=API.
-Ausführlichere Informationen in diesem Kontext sind in \cref{sec:sshDriver} zu finden.
-Bei der Nutzung der \gls{CLI} zur Ermittlung der Daten eignet sich daher die Selbstermittlung der Daten besser, während bei der Nutzung der REST"=API die Ermittlung der Daten durch die übergeordnete Komponente geeigneter ist.
-Aus diesem Grund ist auch die Methode \texttt{SetStatus()} definiert, da hier unabhängig von der Datenermittlung der aktuelle Status der Komponente abgespeichert werden kann.
-Die Durchführung des Monitoring findet in beiden Fällen jedoch mithilfe der Methode \texttt{MonitorStatus()} statt:
+Bei der Nutzung der \gls{CLI} zur Ermittlung der Daten eignet sich die Selbstermittlung der Daten besser, während bei der Nutzung der REST"=API die Ermittlung der Daten durch die übergeordnete Komponente geeigneter ist; die Gründe hierfür sind in \cref{sec:sshDriver} erläutert.
+Daher ist auch die Methode \texttt{SetStatus()} definiert, da hier unabhängig von der Datenermittlung der aktuelle Status der Komponente abgespeichert werden kann.
+Die Durchführung des Monitoring findet in beiden Fällen mithilfe der Methode \texttt{MonitorStatus()} statt:
 
 \begin{lstlisting}[label=lst:monitorAppStatus,style=cs,
 caption={[Implementierung der Methode MonitorStatus() in der Klasse YarnApp]
@@ -289,7 +288,7 @@ Die beiden Eigenschaften \texttt{SutConstraints} und \texttt{TestConstraints} di
 \subsection{Constraints der YARN"=Komponenten}
 \label{subsec:yarnComponentConstraints}
 
-Einige der in \cref{sec:requirements} definierten Anforderungen an das \gls{SuT} und gesamte Testsystem sind auch für die YARN"=Komponenten relevant und werden in Form von Constraints im Modell implementiert (vgl. \cref{subsec:ssharpModel,sec:clusterSetup,sec:requirements}).
+Die meisten der in \cref{sec:requirements} definierten Anforderungen an das \gls{SuT} und gesamte Testsystem sind auch für die YARN"=Komponenten relevant und werden in Form von Constraints im Modell implementiert (vgl. \cref{subsec:ssharpModel,sec:clusterSetup,sec:requirements}).
 Die relevanten Bestandteile der Anforderungen für die jeweiligen Komponenten sind mithilfe der beiden in \texttt{IYarnReadable} definierten Eigenschaften \texttt{SutConstraints} und \texttt{TestConstraints} implementiert.
 Realisiert sind die beiden Eigenschaften für die Constraints jeweils als \texttt{Func<bool>[]}:
 
@@ -372,20 +371,20 @@ Die Ein- und Ausgabedaten werden dadurch nur im Verzeichnis des jeweiligen Clien
 Wenn eine Anwendung gestartet wurde, wird diese zunächst synchron ausgeführt, bis von der gestarteten Anwendung ihre vom Cluster zugewiesene Anwendungs"=ID zurückgegeben wird.
 Diese ID wird vom Client abgespeichert und wird dafür benötigt, um in späteren Testfällen die Anwendung wieder beenden zu können.
 Zudem wird auch eine noch leere \texttt{YarnApp}"=Instanz ermittelt und dieser die ID ebenfalls zugewiesen, um diese analog zu den anderen YARN"=Komponenten zum Speichern der Daten der Anwendung zu nutzen.
-Der Unterschied hierbei ist jedoch, dass immer eine neue Instanz genutzt wird, da eine neue Anwendung automatisch immer eine ID erhält, welche im Cluster noch nicht existiert.
+Der Unterschied zu anderen Komponenten ist jedoch, dass immer eine neue Instanz genutzt wird, da eine neue Anwendung in der Regel eine im Cluster noch nicht vorhandene ID erhält.
 Wenn keine leere \texttt{YarnApp}"=Instanz mehr verfügbar ist, wird analog zum Monitoring ebenfalls eine \texttt{OutOfMemoryException} ausgelöst.
 
 \subsection{Implementierung des Controllers}
 \label{subsec:yarnController}
 
-Der Controller repräsentiert zum Einen den \gls{RM} des Hadoop"=Clusters, weshalb er genauso wie die modellierten Nodes von \texttt{YarnHost} erbt.
+Der Controller repräsentiert den \gls{RM} des Hadoop"=Clusters, weshalb er genauso wie die modellierten Nodes von \texttt{YarnHost} erbt.
 Primär dient er jedoch als Controller zum Testen mit \gls{ss} (vgl. \cref{subsec:ssharpModel}).
 Er steuert daher den wesentlichen Ablauf eines Testfalls und ist die einzige Komponente des YARN"=Modells, die direkt mit dem Oracle interagiert:
 
 \begin{lstlisting}[label=lst:controllerUpdate,style=cs,
 caption={[Update()"=Methode des Controllers]
     \texttt{Update()}"=Methode des Controllers (gekürzt).
-    Eine ausführliche Beschreibung des Ablaufs der Ausführung eines Testfalls findet sich in \cref{subsec:simulationStep}.}]
+    Eine ausführliche Beschreibung des gesamten Ablaufs eines Testfalls findet sich in \cref{subsec:simulationStep}.}]
 public override void Update()
 {
   MonitorMarp();
@@ -410,7 +409,7 @@ Vor dem Monitoring wird zunächst fünf Sekunden gewartet, damit die gestarteten
 Zum Monitoring nutzt der Controller die von \texttt{IYarnReadable} bereitgestellte Eigenschaft, um das Selbstmonitoring der einzelnen YARN"=Komponenten zu deaktivieren und führt dabei das Monitoring der Nodes und Anwendungen aus.
 Er startet zudem bei jeder Anwendung auch das Monitoring der jeweiligen Attempts bzw. dadurch auch das der YARN"=Container, sofern benötigt.
 Dabei wird der \gls{MARP}"=Wert hier erneut ausgelesen, da er sich abhängig von den ausgeführten Anwendungen jederzeit verändern kann.
-Abschließend startet der Controller die Validierung der Constraints durch das Oracle sowie die Prüfung, ob eine weitere Rekonfiguration des Clusters möglich ist.
+Abschließend startet der Controller die Validierung der Constraints durch das Oracle, getrennt nach Constraints für das \gls{SuT} und das gesamte Testsystem, sowie die Prüfung, ob eine weitere Rekonfiguration des Clusters möglich ist.
 
 Für den Controller selbst sind ebenfalls einige der in \cref{sec:requirements} definierten Anforderungen relevant.
 Die hierbei relevanten Anforderungen sind ebenfalls direkt im Controller implementiert und werden durch das Oracle validiert.
@@ -419,7 +418,7 @@ Die hierbei relevanten Anforderungen sind ebenfalls direkt im Controller impleme
 \label{subsec:oracleImpl}
 
 Das Oracle dient zur automatisierten Validierung der in \cref{sec:requirements} definierten Anforderungen durch das Testsystem (vgl. \cref{subsec:ssharpModel}).
-Hierzu werden die Constraints aller YARN"=Komponenten und des Controllers validiert, jeweils getrennt nach Constraints für das \gls{SuT} und das gesamte Testsystem, und geprüft, ob eine Rekonfiguration des Clusters möglich ist.
+Hierzu werden die Constraints aller YARN"=Komponenten und des Controllers validiert und geprüft, ob eine Rekonfiguration des Clusters möglich ist.
 Da die beiden von \texttt{IYarnReadable} bereitgestellten Eigenschaften zum Speichern der Constraints vom Typ \texttt{Func<bool>[]} sind, können so jeweils alle implementierten Constraints nacheinander validiert werden:
 
 \begin{lstlisting}[label=lst:oracleValidateConstraints,style=cs,
