@@ -13,45 +13,45 @@
 
 Das reale Cluster wurde mithilfe der Plattform Hadoop"=Benchmark umgesetzt.
 Hierzu wurden speziell für diese Fallstudie verschiedene Szenarien entwickelt, mit denen das Cluster mit den benötigten Einstellungen bzw. den zu testenden Mutanten gestartet wird.
-Um die Verwaltung des Clusters zu vereinfachen, wurden zudem entsprechende Setup- und Startscripte entwickelt, die auch von den implementierten Connectoren genutzt werden.
+Um die Verwaltung des Clusters zu vereinfachen, wurden zudem entsprechende Setup- und Start"=Scripte entwickelt, die auch von den implementierten Connectoren genutzt werden.
 
 \subsection{Grundlegender Aufbau}
 \label{subsec:clusterBasics}
 
 Da Docker und Hadoop vor allem zum Einsatz in Linux"=Umgebungen entwickelt wurden, werden für das reale Cluster bis zu zwei physische Linux"=Hosts genutzt.
 Auf einem dieser beiden Hosts wird mithilfe von VirtualBox eine VM mit Windows 10 ausgeführt, um die Tests mithilfe von \gls{ss} auszuführen.
-Dies ist nötig, da \gls{ss} mithilfe des .NET"=Frameworks entwickelt wurde (vgl. \cref{sec:ssharp}), welches für Linux in Form von .NET Core zudem nur mit einem etwas verringertem Funktionsumfang verfügbar ist \cite{Schwichtenberg2017}.
+Dies ist nötig, da \gls{ss} mithilfe des .NET"=Frameworks entwickelt wurde (vgl. \cref{sec:ssharp}), welches für Linux in Form von .NET Core zudem nur mit einem verringertem Funktionsumfang verfügbar ist \cite{Schwichtenberg2017}.
 
 Die beiden Hosts sind jeweils mit einem Intel Core i5"=4570 @ 3,2 GHz x 4, 16 GB Arbeitsspeicher sowie einer SSD ausgestattet, auf der Ubuntu als Betriebssystem installiert ist.
 
-Insgesamt wurden für diese Fallstudie die 6 in \cref{fig:hadoopBenchDockerInherits} gelb bzw. orange hinterlegten Szenarien mit den entsprechenden Docker"=Images entwickelt.
+Insgesamt wurden für diese Fallstudie die sechs in \cref{fig:hadoopBenchDockerInherits} gelb bzw. orange hinterlegten Szenarien mit den entsprechenden Docker"=Images entwickelt.
 Das zentrale Image in dieser Fallstudie ist das gelb hinterlegte \texttt{self-balancing-mt}, in dem alle benötigten, angepassten Einstellungen enthalten sind.
 Dies betrifft \zB die Anpassung der Zeitabstände zur Erkennung von defekten Nodes oder das Starten des \gls{TLS}, welcher in den Standard"=Szenarien der Plattform nicht gestartet wird.
 Die orange hinterlegten Images dienen zur Ausführung der  Mutationstests.
-Die Images enthalten daher nur die mutierte Selfbalancing"=Komponente, welche dadurch die in \texttt{self-balancing-example} enthaltene überschreiben.
-Das Namenssuffix der Images bzw. Szenarien in Form der Nummern geben an, welche der in \cref{sec:implMutationTests} generierten Mutationen enthalten sind.
+Sie enthalten daher nur die mutierte Selfbalancing"=Komponente, welche dadurch die in \texttt{self-balancing-example} enthaltene überschreiben.
+Das Namenssuffix der Images bzw. Szenarien in Form der Ziffern geben an, welche der in \cref{sec:implMutationTests} generierten Mutationen enthalten sind.
 
 \subsection{HostMode des Clusters}
 \label{subsec:hostMode}
 
 Der bereits mehrfach erwähnte \texttt{HostMode} beschreibt den prinzipiellen Aufbau des gestarteten Clusters.
-Das Cluster kann hierbei mithilfe von Docker-Machine auf entsprechenden VMs gestartet werden, auf denen das Cluster in Docker"=Containern ausgeführt wird (vgl. \cref{sec:hadoopBenchmark}).
-Der größte Nachteil dieses \texttt{DockerMachine}"=Modes ist, dass das Cluster nicht bzw. nur umständlich auf mehreren Hosts ausgeführt werden kann.
+Das Cluster kann hierbei, wie in der Standard"=Konfiguration der Plattform Hadoop"=Benchmark, mithilfe von Docker"=Machine gestartet werden (vgl. \cref{sec:hadoopBenchmark}).
+Der große Nachteil dieses \texttt{DockerMachine}"=Modes ist allerdings, dass das Cluster nicht bzw. nur mit großem Aufwand auf mehreren physischen Hosts ausgeführt werden kann.
 
-Um das Cluster auf beiden für diese Fallstudie genutzten Hosts auszuführen, wurde daher der \texttt{Multihost}"=Mode entwickelt, bei dem die Docker"=Container des Clusters direkt auf den jeweiligen Hosts ohne Docker Machine gestartet werden:
+Um das Cluster auf beiden für diese Fallstudie genutzten Hosts auszuführen, wurde daher der \texttt{Multihost}"=Mode entwickelt, bei dem die Docker"=Container des Clusters direkt auf den jeweiligen Hosts ohne Docker"=Machine gestartet werden:
 
 \begin{figure}[h]
     \includegraphics{./resources/caseStudyHadoopSetup.pdf}
     \caption[Cluster"=Setup bei der Nutzung des Multihost"=Modes]
     {Cluster"=Setup bei der Nutzung des \texttt{Multihost}"=Modes.
-    Hier ist das konkrete, in dieser Fallstudie genutzte Setup gezeigt.
+    Hier ist das konkrete, in dieser Fallstudie genutzte Setup gezeigt, bei dem die Nodes auf Host2, abhängig von der genutzten Testkonfiguration, optional gestartet werden (vgl. \cref{sec:implTestcases}).
     Grün: HDFS, Blau: YARN, Rot: Graphite.}
     \label{fig:caseStudyHadoopSetup}
 \end{figure}
 
 Die genaue Anzahl der zu nutzenden Hosts und der Hadoop"=Nodes ist in beiden \texttt{HostMode}s variabel, wodurch es auch möglich ist, das Cluster nur auf Host1 zu starten.
 Damit das Cluster jedoch auf beiden Hosts gestartet werden kann, ist es nötig, zuvor beide Hosts als Docker"=Swarm miteinander zu verbinden.
-Außerdem können mithilfe des \texttt{Multihost}"=Modes dem Hadoop"=Cluster weitere, sonst für die Ausführung der VMs benötigte Ressourcen, zur Verfügung gestellt werden, weshalb in dieser Fallstudie der \texttt{Multihost}"=Mode genutzt wurde.
+Außerdem können mithilfe des \texttt{Multihost}"=Modes dem Hadoop"=Cluster weitere, sonst für die Ausführung der VMs benötigte Ressourcen, zur Verfügung gestellt werden, weshalb in dieser Fallstudie der \texttt{Multihost}"=Mode genutzt wird.
 Beim \texttt{Mutihost}"=Mode werden zudem nur auf Host1 die volle Anzahl an definierten Nodes pro Host gestartet, auf allen anderen Hosts wird jeweils die Hälfte gestartet und ausgeführt.
 
 Je nach \texttt{HostMode} unterscheiden sich einzelne Pfade oder Adressen, \zB die der REST"=API.
@@ -61,21 +61,21 @@ Auch aus diesem Grund wurde die bereits in \cref{subsec:modelClass} erläuterte 
 \label{subsec:scripts}
 
 Die Plattform Hadoop"=Benchmark enthält bereits zum Starten des Clusters ein Setup"=Script und zum Ausführen der Benchmarks entsprechende Start"=Scripte (vgl. \cref{sec:hadoopBenchmark}).
-Um die Interaktion aufgrund der beiden unterschiedlichen \texttt{HostMode}s zu vereinfachen, wurde für jeden \texttt{HostMode} ein Setup"=Script entwickelt, um eine einheitliche und vereinfachte Befehlssyntax bereitzustellen.
-Die beiden entwickelten Setup"=Scripte werden vom \texttt{CmdConnector} genutzt, um die benötigten Aktionen auf dem Cluster auszuführen (vgl. \cref{subsubsec:implCmdConnector}).
-Die beiden Setup"=Scripte abstrahieren somit die vom \texttt{HostMode} abhängigen, benötigten Befehle und sorgen dafür, dass der genutzte \texttt{HostMode} transparent ist, benötigen hierfür jedoch die gleiche, in \cref{app:setupScriptCmds} gezeigte, Befehlssyntax.
+Um die Interaktion aufgrund der beiden unterschiedlichen \texttt{HostMode}s zu vereinfachen, wurde für jeden \texttt{HostMode} ein eigenes Setup"=Script entwickelt, um eine einheitliche und vereinfachte Befehlssyntax bereitzustellen.
+Die beiden Setup"=Scripte werden vom \texttt{CmdConnector} genutzt, um die benötigten Aktionen auf dem Cluster auszuführen (vgl. \cref{subsubsec:implCmdConnector}).
+Sie abstrahieren somit die vom \texttt{HostMode} abhängigen, benötigten Befehle und sorgen dafür, dass der genutzte \texttt{HostMode} transparent ist, benötigen hierfür jedoch die gleiche, in \cref{app:setupScriptCmds} gezeigte, Befehlssyntax.
 Sie beinhalten entsprechende Befehle für folgende Aktionen:
 
 \begin{itemize}
     \item Starten und Beenden des gesamten Clusters
     \item Injizieren und Reparieren von Komponentenfehlern
-    \item Ausführen von \gls{CLI}"=Befehlen von Hadoop
+    \item Ausführen von weiteren \gls{CLI}"=Befehlen von Hadoop
 \end{itemize}
 
-Zudem wird beim Starten des Clusters immer geprüft, ob sich die Dockerfiles geändert haben und entsprechend die Docker"=Images aktualisiert, aus denen das Cluster gestartet wird.
+Zudem wird beim Starten des Clusters immer geprüft, ob die Dockerfiles geändert wurden und entsprechend die Docker"=Images aktualisiert, aus denen das Cluster gestartet wird.
 Die Setup"=Scripte enthalten außerdem weitere, jeweils spezifische Befehle zum Umgang mit dem Cluster im entsprechenden \texttt{HostMode}.
 
-Zum zentralen Starten der Benchmarks wurde ebenfalls ein zentrales Benchmark"=Script entwickelt, welches die jeweiligen Start"=Scripte der einzelnen Benchmarks ausführt.
+Zum Starten der Benchmarks wurde ein zentrales Benchmark"=Script entwickelt, welches die jeweiligen Start"=Scripte der einzelnen Benchmarks ausführt.
 Dadurch kann analog zum Setup"=Script unabhängig vom zu startenden Benchmark vom \texttt{CmdConnector} immer die gleiche Syntax genutzt werden.
 Das zentrale Benchmark"=Script ermittelt, basierend auf der zu startenden Benchmark, das jeweils benötigte Start"=Script und übergibt diesem die benötigten Parameter.
 Die vom \texttt{HostMode} abhängigen Parameter zum Starten der Benchmark"=Container werden von den hierfür angepassten Start"=Scripten der Benchmarks selbst ermittelt.

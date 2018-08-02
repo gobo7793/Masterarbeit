@@ -3,23 +3,23 @@
 
 Damit die Fallstudie die Realität abbilden kann, wurden von den verfügbaren Anwendungen einige ausgewählt und in ein Transitionssystem in Form einer Markow"=Kette überführt.
 Diese Kette definiert die Ausführungsreihenfolge zwischen den einzelnen Anwendungen.
-Eine zufallsbasierte Markow"=Kette wurde aus dem Grund verwendet, dass auch in der Praxis Anwendungen nicht immer in der gleichen Reihenfolge ausgeführt werden und daher auch in dieser Fallstudie eine unterschiedliche Ausführungsreihenfolge der Anwendungen ermöglicht werden soll.
+Eine zufallsbasierte Markow"=Kette wurde aus dem Grund verwendet, dass auch in der Praxis Anwendungen nicht immer in der gleichen Reihenfolge ausgeführt werden und daher auch im Testsystem eine unterschiedliche Ausführungsreihenfolge der Anwendungen ermöglicht werden soll.
 Mithilfe der Festlegung eines bestimmten Seeds für den hierfür benötigten Pseudo"=Zufallsgenerator besteht dennoch die Möglichkeit, einen Test mit den gleichen Anwendungen wiederholen zu können.
 
 \subsection{Auswahl der Benchmarks}
 \label{subsec:appSelection}
 
 Einige der in \cref{subsec:mapreduceExamples} erwähnten Mapreduce"=Examples werden häufig als Benchmark verwendet.
-Einige Beispiele dafür sind die Anwendungen \acrlong{so} und \texttt{grep}, die bereits im Referenzpapier \cite{Dean2004} des \gls{MR}"=Frameworks zum Testen genutzt wurden.
+Einige Beispiele dafür sind die Anwendungen \acrlong{so} und \texttt{grep}, die bereits bei der Entwicklung des \gls{MR}"=Frameworks zur Evaluation genutzt wurden \cite{Dean2004}.
 Zum Testen des HDFS dient in \cite{Shvachko2010} die DFSIO"=Benchmark, um den Durchsatz beim Lesen und Schreiben einer großen Datenmenge auf dem HDFS zu messen.
 \acrlong{tsr} und die beiden dazugehörigen Anwendungen \acrlong{tg} und \acrlong{tvl} bilden ebenfalls eine weit verbreitete Benchmark, der die Hadoop"=Implementierung der standardisierten \emph{Sort Benchmarks}\footnote{\url{https://sortbenchmark.org/}} darstellt \cite{Graves2013}.
 Ebenfalls als gute Benchmark dient die Anwendung \acrlong{wc}, mit der ein großer Datensatz stark verkleinert bzw. zusammengefasst wird und daher als gute Repräsentation für Anwendungsarten dient, bei denen Daten extrahiert werden \cite{Huang2010,Chen2012}.
 
-Da in dieser Fallstudie ein realistisches Abbild der ausgeführten Anwendungen ausgeführt werden soll, ist es nicht sehr hilfreich, die einzelnen Übergangswahrscheinlichkeiten im Transitionssystem anzugleichen oder rein zufällig zu verteilen.
+Da im Testsystem TestingHadoop ein realistisches Abbild an auszuführenden Anwendungen implementiert werden soll, ist es nicht sehr hilfreich, die einzelnen Übergangswahrscheinlichkeiten im Transitionssystem anzugleichen oder rein zufällig zu verteilen.
 Einen realistischen Einblick in genutzte Anwendungs- und Datentypen in produktiv genutzten Hadoop"=Clustern geben \uA die Studien \cite{Chen2012,HadoopDataTypes}.
 Auffällig ist hierbei, dass die meisten Anwendungen in einem Hadoop"=Cluster innerhalb weniger Sekunden oder Minuten abgeschlossen sind oder Datensätze im Größenbereich von wenigen Kilobyte bis hin zu wenigen Megabyte verarbeiten.
 Zu einem ähnlichen Ergebnis kam auch die Studie \cite{Ren2013}, in der gefolgert wird, dass für kleinere Jobs einfachere Frameworks abseits von Hadoop besser geeignet wären.
-Die Autoren der Studie \cite{HadoopDataTypes} bezeichneten Hadoop aufgrund ihrer Ergebnisse als \enquote{potentielle Technologie zum Verarbeiten aller Arten von Daten}, folgerten aber ähnlich wie \citeauthor{Ren2013} in \cite{Ren2013}, dass mit Hadoop meist Daten verarbeitet werden, die auch mit \enquote{traditionellen Plattformen} verarbeitet werden könnten.
+Die Autoren der Studie \cite{HadoopDataTypes} bezeichneten Hadoop aufgrund ihrer Ergebnisse als \enquote{potentielle Technologie zum Verarbeiten aller Arten von Daten}, folgerten aber ähnlich wie \citeauthor{Ren2013}, dass mit Hadoop meist Daten verarbeitet werden, die auch mit \enquote{traditionellen Plattformen} verarbeitet werden könnten \cite{Ren2013}.
 
 Basierend auf den Ergebnissen der Studien in \cite{Huang2010,Chen2012,HadoopDataTypes,Ren2013} und der in den Publikationen \cite{Shvachko2010,Dean2004,Graves2013} verwendeten Benchmarks, wurden folgende Anwendungen der Mapreduce"=Examples und Jobclient"=Tests in das Transitionssystem übernommen:
 
@@ -47,7 +47,7 @@ Basierend auf den Ergebnissen der Studien in \cite{Huang2010,Chen2012,HadoopData
         \end{itemize}
         \item Transformieren:
         \begin{itemize}
-            \item \gls{so}: Sortieren von Daten, wird in dieser Fallstudie zum Sortieren von Textdaten genutzt
+            \item \gls{so}: Sortieren von Daten, wird hier für Textdaten genutzt
             \item \gls{tsr}: Sortieren von großen Binärdatenmengen
         \end{itemize}
         \item Validierung der Transformationen:
@@ -61,7 +61,7 @@ Basierend auf den Ergebnissen der Studien in \cite{Huang2010,Chen2012,HadoopData
     \begin{itemize}
         \item \acrlong{pi}\glsunset{pi}: Einfache Berechnung von $\pi$ mithilfe der Quasi"=Monte"=Carlo"=Methode.
             Die Monte"=Carlo"=Methode und die darauf basierende Quasi"=Monte"=Carlo"=Methode sind stochastische Verfahren, um komplexe Probleme numerisch zu lösen.
-            Für weitere Informationen hierzu sei auf entsprechende Literatur, wie \zB \cite{Korn2010,Lemieux2009}, verweisen.
+            Für weitere Informationen hierzu sei auf entsprechende Literatur, wie \zB \cite{Korn2010,Lemieux2009}, verwiesen.
         \item \gls{pt}: Berechnung einer Lösung von Pentomino"=Problemen.
             Bei Pentomino soll eine Fläche aus 64 Quadraten mithilfe von zwölf \emph{Bausteinen} bedeckt werden, wobei jeder Baustein aus fünf Quadraten besteht und nur einmal genutzt werden darf.
             Weitere Informationen hierzu sind in entsprechender Literatur, wie \zB \cite{Golomb1995}, zu finden.
@@ -80,35 +80,21 @@ So stehen die beiden \texttt{TestDFSIO}"=Varianten für eine umfangreichere Date
 \texttt{TestDFSIO} enthält zudem die Möglichkeit, Daten zu generieren und zu lesen, weshalb dieser Benchmark in zwei Kategorien als Anwendung genutzt wird.
 
 Eine Besonderheit bilden die beiden Dummy"=Anwendnugen.
-Beide werden dafür genutzt, um zu simulieren, wenn nichts ausgeführt werden soll oder bei der Ausführung der Anwendungen ein Fehler auftritt.
+Beide werden dafür genutzt, um zu simulieren, wenn keine Anwendung ausgeführt werden soll oder bei der Ausführung einer Anwendungen ein Fehler auftritt.
 
 Auf die Implementierung einer Anwendung der HiBench"=Suite wurde verzichtet.
-Da beim Starten einer Anwendung durch den Client die vom Cluster zugewiesene Anwendungs"=ID benötigt wird, um die Anwendung in späteren Testfällen beenden zu können, kann der HiBench nicht sinnvoll in das Testsystem integriert werden.
+Da beim Starten einer Anwendung durch den Client die vom Cluster zugewiesene Anwendungs"=ID benötigt wird, um die Anwendung in späteren Testfällen beenden zu können (vgl. \cref{subsec:yarnClient}), kann der HiBench nicht sinnvoll in das Testsystem integriert werden.
 Der Grund hierfür ist, dass beim Starten einer Anwendung der HiBench"=Suite die ID erst nach Abschluss der gesamten Anwendung zurückgegeben wird, womit eine asynchrone Ausführung der Anwendung nicht mehr möglich wäre.
 
 \subsection{Entwicklung der Markow"=Kette}
 \label{subsec:markovChain}
 
-Basierend auf den ausgewählten Anwendungen und der in den Studien genannten Anwendungstypen, wurde das Transitionssystem in Form einer Markov"=Kette entwickelt.
-Die Markov"=Kette definiert die Wahrscheinlichkeiten, mit denen die ausführenden Anwendungen bei der Ausführung eines Testfalls gewechselt werden.
-Damit die Übergänge nicht bei jedem Testfall stattfinden, sondern Anwendungen auch mehrere Testfälle lang ausgeführt werden können, wurden Selbst"=Transitionen mit einer Wahrscheinlichkeit von 60 Prozent definiert.
+Basierend auf den ausgewählten Anwendungen und der in den Studien und Publikationen \cite{Huang2010,Chen2012,HadoopDataTypes,Ren2013,Shvachko2010,Dean2004,Graves2013} genannten Anwendungstypen wurde das Transitionssystem in Form einer Markov"=Kette entwickelt.
+Sie definiert die Wahrscheinlichkeiten, mit denen die ausführenden Anwendungen bei der Ausführung eines Testfalls gewechselt werden:
 
-Für die beiden Dummy"=Anwendungen gelten einige Besonderheiten.
-Sie können beide unabhängig von der derzeit ausgeführten Anwendung mit einer sehr geringen Wahrscheinlichkeit als nachfolgende Anwendung ausgewählt werden.
-Zudem wurden als den Dummy"=Anwendungen nachfolgende Anwendungen nur solche definiert, die ihrerseits keine Eingabedaten benötigten bzw. diese für andere Anwendungen bereitstellen:
-
-\begin{itemize}
-    \item \acrlong{dfw}
-    \item \acrlong{rtw}
-    \item \acrlong{tg}
-    \item \acrlong{rw}
-    \item \acrlong{pi}
-    \item \acrlong{pt}
-\end{itemize}
-
-\begin{table}
+\begin{table}[h]
     \resizebox{\linewidth}{!}{
-    \begin{tabu}{l|[1.5pt]c|c|c|c|c|c|c|c|c|c|c|c|c|c}
+    \begin{tabu}{c|[1.5pt]c|c|c|c|c|c|c|c|c|c|c|c|c|c}
             & \textit{\acrshort{dfw}} & \textit{\acrshort{rtw}} & \textit{\acrshort{tg}} & \textit{\acrshort{dfr}} & \textit{\acrshort{wc}} & \textit{\acrshort{rw}} & \textit{\acrshort{so}} & \textit{\acrshort{tsr}} & \textit{\acrshort{pi}} & \textit{\acrshort{pt}} & \textit{\acrshort{tms}} & \textit{\acrshort{tvl}} & \textit{\acrshort{sl}} & \textit{\acrshort{fl}} \\ \tabucline[1.5pt]{-}
     	\textit{\acrshort{dfw}} & .600 & .073 &  0   & .145 &  0   &  0   &  0   &  0   & .073 & .073 &  0   &  0   & .018 & .018 \\ \hline
     	\textit{\acrshort{rtw}} & .036 & .600 &  0   &  0   & .145 & .036 & .109 &  0   & .036 &  0   &  0   &  0   & .019 & .019 \\ \hline
@@ -129,6 +115,20 @@ Zudem wurden als den Dummy"=Anwendungen nachfolgende Anwendungen nur solche defi
     \label{tab:transMatrix}
 \end{table}
 
-Bei der Entwicklung der Markow"=Kette des Transitionssystems wurde zudem berücksichtigt, welche Anwendungen welche Art von Eingabedaten benötigen.
+Damit die Übergänge nicht bei jedem Testfall stattfinden, sondern Anwendungen auch mehrere Testfälle lang ausgeführt werden können, wurden Selbst"=Transitionen mit einer Wahrscheinlichkeit von 60 Prozent definiert.
+Bei der Entwicklung des Transitionssystems wurde zudem berücksichtigt, welche Anwendungen welche Art von Eingabedaten benötigen.
 Dadurch wird sichergestellt, dass benötigte Eingabedaten immer vorhanden sind, da diese ebenfalls im Rahmen der Ausführung der Benchmarks generiert werden können (vgl. \cref{sec:clusterSetup,subsec:testcaseGeneration}).
-Anwendungen ohne Eingabedaten können dagegen fast jederzeit ausgeführt werden, wie die entwickelte Markov"=Kette in \cref{tab:transMatrix} zeigt.
+Anwendungen ohne Eingabedaten können dagegen fast jederzeit ausgeführt werden.
+
+Für die beiden Dummy"=Anwendungen gelten einige Besonderheiten.
+Sie können beide unabhängig von der derzeit ausgeführten Anwendung mit einer sehr geringen Wahrscheinlichkeit als nachfolgende Anwendung ausgewählt werden.
+Zudem wurden als den Dummy"=Anwendungen nachfolgende Anwendungen nur solche definiert, die ihrerseits keine Eingabedaten benötigten bzw. diese für andere Anwendungen bereitstellen:
+
+\begin{itemize}
+\item \acrlong{dfw}
+\item \acrlong{rtw}
+\item \acrlong{tg}
+\item \acrlong{rw}
+\item \acrlong{pi}
+\item \acrlong{pt}
+\end{itemize}

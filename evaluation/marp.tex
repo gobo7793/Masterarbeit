@@ -16,7 +16,7 @@ Während bei allen Testkonfigurationen, bei denen Mutationen aktiv waren, der \g
     	Wert  & 0,335 & 0,498 & 0,521 & ,0819 & 0,273 & 0,488 & 0,333
     \end{tabular}
     \caption[Finale \glsentryshort{MARP}"=Werte der Testkonfigurationen ohne Mutanten.]
-    {Finale \acrshort{MARP}"=Werte der Testkonfigurationen ohne Mutanten (auf drei Nachkommastellen gerundet).
+    {Finale \acrshort{MARP}"=Werte der Testkonfigurationen ohne Mutationen (auf drei Nachkommastellen gerundet).
     Eine Übersicht aller Tests findet sich in \cref{app:overviewExecutedTestCases}.}
     \label{tab:finalMarpValues}
 \end{table}
@@ -27,8 +27,8 @@ Bei der Konfiguration 1 wurde der Wert dagegen bei keiner der beiden Ausführung
 
 Die nicht durchgeführte Änderung des \gls{MARP}"=Wertes in Konfiguration 1 rührt sehr wahrscheinlich daher, dass nur im ersten der fünf Testfälle zwei Anwendungen gleichzeitig gestartet werden.
 Dadurch wurden in allen zehn ausgeführten Testfällen zusammengezählt nur acht Anwendungen gestartet, die Hälfte davon jeweils beim ersten Testfall.
-Da zudem vier der acht Anwendungen nur kleine Anwendungen (\acrlong{rtw} und \acrlong{pi}) sind, und diese entsprechend schnell abgeschlossen werden können, steht den wesentlich umfangreicheren Anwendungen \acrlong{dfw} und \acrlong{dfr} das gesamte Cluster nahezu exklusiv zur Verfügung.
-Daher stehen in diesen Tests allen Anwendungen ausreichend Ressourcen zur Verfügung, was eine Anpassung des \gls{MARP}"=Wertes unnötig erscheinen lässt und daher auch nicht durchgeführt wird.
+Da zudem vier der acht Anwendungen nur kleine Anwendungen (konkret \acrlong{rtw} und \acrlong{pi}) sind, und diese entsprechend schnell abgeschlossen werden können, steht den wesentlich umfangreicheren Anwendungen \acrlong{dfw} und \acrlong{dfr} das gesamte Cluster nahezu exklusiv zur Verfügung.
+Daher stehen in diesen Tests allen Anwendungen ausreichend Ressourcen zur Verfügung, was eine Anpassung des \gls{MARP}"=Wertes unnötig erscheinen lässt und daher nicht durchgeführt wird.
 
 Bei der Testkonfiguration 7 ist dies ähnlich, wobei die gesamte Last auf mehr Nodes verteilt werden kann.
 Der beim Test 7.2 deutlich veränderte \gls{MARP}"=Wert im Vergleich zum Test 7.1 ohne Anpassung zeigt jedoch auch, dass es stark abhängig davon ist, wie die Last im Cluster verteilt wird.
@@ -36,4 +36,4 @@ Bestätigt wird dies durch die Tests 9.1 und 9.2, da bei letzterem weniger Kompo
 Dadurch war im Test 9.2 ein um rund 0,1 niedrigerer \gls{MARP}"=Wert als im Test 9.1 nötig.
 
 Auffällig war zudem, dass der \gls{MARP}"=Wert in den Testausführungen 7.2, 9.1 und 23 nicht direkt im ersten Testfall verändert wurde, sondern erst bei der Ausführung von Testfällen im späteren Verlauf der jeweiligen Tests.
-Als Resultat wurde daher in 9 der 15 Testfälle der drei Testausführungen das entsprechende Constraint verletzt.
+Als Resultat wurde daher in neun der 15 Testfälle der drei Testausführungen das entsprechende Constraint verletzt.

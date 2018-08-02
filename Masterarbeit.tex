@@ -1,7 +1,6 @@
 \documentclass[12pt,a4paper,notitlepage,abstract=on,english,ngerman,bibliography=totoc,numbers=noenddot]{scrreprt}
 % prevent warning \float@addtolists detected
 \usepackage{scrhack} 
-\input{./settings/variablen}
 
 % Textkodierung Deutsch
 \usepackage{babel}
@@ -10,6 +9,8 @@
 \usepackage{lmodern}
 \usepackage{xspace}
 \usepackage{microtype}
+
+\input{./settings/variablen}
 
 % Seitenränder
 \usepackage{geometry}
@@ -79,7 +80,7 @@
 \definecolor{greencomments}{rgb}{0,0.5,0}
 \definecolor{redstrings}{rgb}{0.9,0,0}
 \definecolor{typeidentifier}{RGB}{38,121,153}
-\definecolor{backgroundgray}{rgb}{0.95,0.95,0.95}
+\definecolor{backgroundgray}{rgb}{0.9,0.9,0.9}
 \lstdefinestyle{base}{
     basicstyle=\footnotesize\ttfamily,
     frame=single,

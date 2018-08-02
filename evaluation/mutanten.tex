@@ -2,7 +2,7 @@
 \label{sec:killingMutants}
 
 Da die Selfbalancing"=Komponente den \gls{MARP}"=Wert auf Basis der aktuellen Auslastung des Clusters anpasst, konnte anhand der Betrachtung der \gls{MARP}"=Werte auch geprüft werden, ob die implementierten Mutationen vom Testsystem erkannt wurden.
-Um das zu bewerkstelligen wurden von den 16 Testkonfigurationen mit einem Mutationsszenario 22 Testausführungen durchgeführt (vgl. \cref{app:overviewExecutedTestCases}).
+Um dies zu bewerkstelligen wurden von den 16 Testkonfigurationen mit einem Mutationsszenario 22 Testausführungen durchgeführt (vgl. \cref{app:overviewExecutedTestCases}).
 
 Zunächst wurde das Mutationsszenario genutzt, in dem alle vier Mutationen enthalten sind (vgl. \cref{sec:implMutationTests}).
 Bei jeder der 17 Testausführungen mit allen Mutanten wurden diese, basierend auf dem Constraint zur Erkennung des \gls{MARP}"=Wertes, erkannt.
@@ -15,12 +15,12 @@ Dies wird dadurch gestützt, dass bei Konfiguration 8 im Gegensatz zur korrespon
 Zudem stellt das ein Indiz dafür dar, dass der Mutant im Test 2 erkannt worden sein könnte.
 
 Während bei jeder Konfiguration ein Mutationsszenario mit jeweils allen vier Mutanten genutzt wurde, wurde die Testkonfiguration 10 zusätzlich mit jeweils einem Mutanten ausgeführt.
-Ziel hierbei war es zu validieren, ob einzelne Mutanten ebenfalls vom Testsystem erkannt werden oder zur Erkennung der Mutanten vom Testsystem eine Kombination aus mehreren Mutaten nötig ist.
-Hierzu wurde die Testkonfiguration 10 mit den unterschiedlichen Mutationsszenarien der Plattform Hadoop"=Benchmark ausgeführt, bei denen jeweils einer der in \cref{sec:implMutationTests} definierten Mutanten aktiv ist (vgl. \cref{subsec:clusterBasics}).
+Ziel hierbei war es zu validieren, ob einzelne Mutanten ebenfalls von TestingHadoop erkannt werden oder zur Erkennung der Mutanten eine Kombination aus mehreren Mutationen nötig ist.
+Hierzu wurde die Testkonfiguration 10 mit den unterschiedlichen Mutationsszenarien ausgeführt, bei denen jeweils einer der in \cref{sec:implMutationTests} definierten Mutanten aktiv ist (vgl. \cref{subsec:clusterBasics}).
 Die Auswahl dieser Testkonfiguration hierfür liegt darin begründet, dass hier das Cluster auf beiden Hosts mit zusammen sechs Nodes gestartet wird, auf denen bis zu vier Anwendungen gleichzeitig gestartet werden.
 Zudem wurde bei den Tests 9.1 und 9.2 festgestellt, dass sich der \gls{MARP}"=Wert nicht direkt im ersten, sondern auch in später ausgeführten Testfällen ändern kann, er aber während der Ausführung auf jeden Fall geändert wird (vgl. \cref{sec:marpValueResults}).
 
 Einige Ergebnisse der hierfür fünf ausgeführten Tests sind sehr unterschiedlich.
-So variiert die Anzahl der aktivierten und deaktivierten Komponentenfehler zwischen 7 und 11 bzw. 5 und 9, sowie die Anzahl der fehlgeschlagenen Anwendungen zwischen 1 und 3.
-Gemein haben alle Tests jedoch, dass der \gls{MARP}"=Wert bei allen fünf Tests nicht verändert wurde, womit alle Mutationen erkannt wurden.
+So variiert die Anzahl der aktivierten und deaktivierten Komponentenfehler zwischen sieben und elf bzw. fünf und neun, sowie die Anzahl der fehlgeschlagenen Anwendungen zwischen eins und drei.
+Gemein haben die Tests jedoch, dass der \gls{MARP}"=Wert bei allen fünf Tests nicht verändert wurde, womit davon ausgegangen werden kann, dass die Mutationen erkannt wurden.
 Damit kann festgestellt werden, dass jeder der vier in \cref{sec:implMutationTests} definierten Mutanten durch das Testsystem TestingHadoop erkannt wird.

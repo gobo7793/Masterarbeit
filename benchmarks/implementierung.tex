@@ -1,8 +1,8 @@
 \section{Entwicklung des Benchmark"=Controllers}
 \label{sec:benchmarkController}
 
-Die im YARN"=Modell (vgl. \cref{sec:yarnModel}) implementierten Benchmarks und das zur Auswahl der Benchmarks entwickelte Transitionssystem bilden zusammen den Benchmark"=Controller.
-Der Benchmark"=Controller wurde als eigene Klasse \texttt{BenchmarkController} im Modell implementiert und wird von den Clients genutzt, um die Auswahl der Benchmarks vorzunehmen.
+Die implementierten Benchmarks und das zur Auswahl der Benchmarks entwickelte Transitionssystem bilden zusammen den Benchmark"=Controller.
+Der Benchmark"=Controller wurde als eigene Klasse \texttt{BenchmarkController} im YARN"=Modell implementiert und wird von den Clients genutzt, um die Auswahl der Benchmarks vorzunehmen.
 Der Benchmark"=Controller verwaltet die implementierten Benchmarks und stellt diese den Clients zum Starten zur Verfügung.
 Damit die Clients unabhängig voneinander sind, wird für jeden Client ein eigener Benchmark"=Controller instanziiert (vgl. \cref{subsec:yarnClient}).
 
@@ -75,39 +75,45 @@ public double[][] BenchTransitions => new[]
 \subsection{Auswahl der nachfolgenden Benchmarks}
 \label{subsec:selectionNextBenchmark}
 
-Zur Auswahl der nachfolgenden Anwendung dient die Methode \texttt{ChangeBenchmark()} des \texttt{BenchmarkController}s.
+Zur Auswahl der nachfolgenden Benchmarks dient die Methode \texttt{ChangeBenchmark()} des \texttt{BenchmarkController}s.
 Hier wird mithilfe des Transitionssystems und unabhängig von anderen Clients die nachfolgende Benchmark bestimmt, welche dabei in \texttt{CurrentBenchmark} gespeichert wird:
 
 \begin{lstlisting}[label=lst:benchmarkChanging,style=cs,
-caption={[Auswahl des nachfolgenden Benchmarks]
-    Auswahl des nachfolgenden Benchmarks (gekürzt).
-    Dies stellt einen Ausschnitt der Methode \texttt{ChangeBenchmark()} dar, welche vom Client zur Bestimmung des nachfolgenden Benchmarks aufgerufen wird (vgl. \cref{subsec:yarnClient}).}]
-// g§§et probabilities f§§rom current benchmark
-var transitions = BenchTransitions[CurrentBenchmark.Id];
-
-// calculate next benchmark
-var ranNumber = RandomGen.NextDouble();
-var cumulative = 0D;
-for(int i = 0; i < transitions.Length; i++)
+caption={[Auswahl des nachfolgenden Benchmarks durch ChangeBenchmark()]
+    Auswahl des nachfolgenden Benchmarks durch \texttt{ChangeBenchmark()} (gekürzt)}]
+public bool ChangeBenchmark()
 {
-  cumulative += transitions[i];
-  if(ranNumber >= cumulative)
-    continue;
+  // check transition system
   
-  // prevent saving current benchmark a§§s previous
-  if(CurrentBenchmark == _BenchmarksInstance[i])
-    break;
+  // g§§et probabilities f§§rom current benchmark
+  var transitions = BenchTransitions[CurrentBenchmark.Id];
   
-  // save benchmarks
-  PreviousBenchmark = CurrentBenchmark;
-  CurrentBenchmark = Benchmarks[i];
-  return true;
+  // calculate next benchmark
+  var ranNumber = RandomGen.NextDouble();
+  var cumulative = 0D;
+  for(int i = 0; i < transitions.Length; i++)
+  {
+    cumulative += transitions[i];
+    if(ranNumber >= cumulative)
+      continue;
+    
+    // prevent saving current benchmark a§§s previous
+    if(CurrentBenchmark == _BenchmarksInstance[i])
+      break;
+    
+    // save benchmarks
+    PreviousBenchmark = CurrentBenchmark;
+    CurrentBenchmark = _BenchmarksInstance[i];
+    return true;
+  }
+  
+  return false;
 }
 \end{lstlisting}
 
-Bevor auf die Daten des implementierten Transitionssystems zugegriffen wird, wird außerdem zunächst geprüft, ob die Markow"=Kette alle möglichen Übergänge für den aktuellen Benchmark enthält.
+Bevor auf die Daten des implementierten Transitionssystems zugegriffen wird, wird zunächst geprüft, ob die Markow"=Kette alle möglichen Übergänge für den aktuellen Benchmark enthält.
 Ist das nicht der Fall, wird eine \texttt{InvalidOperationException} ausgelöst.
-Wenn die Auswahl des Benchmarks dagegen erfolgreich war, wird an den aufrufenden Client \texttt{true} zurückgegeben und der ausgewählte Benchmark kann gestartet werden (vgl. \cref{subsec:yarnClient}).
+Wenn die Auswahl der nachfolgenden Benchmark dagegen erfolgreich war, wird an den aufrufenden Client \texttt{true} zurückgegeben und die ausgewählte Benchmark kann gestartet werden (vgl. \cref{subsec:yarnClient}).
 
 Der zur Auswahl der nachfolgenden Benchmarks benötigte Zufallsgenerator \texttt{Random""Gen} wird bei der Initialisierung des Benchmark"=Controllers, basierend auf dem Basisseed (vgl. \cref{subsec:testcaseGeneration}), initialisiert.
 Damit die Benchmark"=Controller aller Clients nicht die gleichen Benchmarks auswählen, wird zum Basisseed die numerische ID des zum Benchmark"=Controler zugehörigen Clients addiert und der Zufallsgenerator mit diesem Wert initialisiert.
@@ -119,7 +125,7 @@ Als initiale Anwendung wird immer der \acrlong{sl}"=Benchmark genutzt, sodass al
 Neben der Generierung der für einige Anwendungen benötigten Eingabedaten während der Testausführung, gibt es auch die Möglichkeit, die Eingabedaten vorab zu generieren und diese bei der Testausführung zu nutzen (vgl. \cref{sec:clusterSetup,subsec:testcaseGeneration,subsec:simulationModelInit}).
 Hierfür muss bei der Initialisierung des Tests die entsprechende Eigenschaft \texttt{ModelSettings.IsPrecreateBenchInputs} auf \texttt{true} gesetzt werden, wodurch auch direkt die entsprechenden Eingabedaten auf dem Cluster generiert werden.
 
-Die Vorabgenerierung der Daten startet folgende Anwendungen, die Eingabedaten für andere Anwendungen generieren und speichert diese in einem nur hierfür genutzten Verzeichnis im HDFS:
+Die Vorabgenerierung der Daten startet folgende Anwendungen und speichert die generierten Daten in einem nur hierfür genutzten Verzeichnis im HDFS:
 
 \begin{itemize}
     \item \acrlong{dfw}
@@ -129,7 +135,7 @@ Die Vorabgenerierung der Daten startet folgende Anwendungen, die Eingabedaten f�
     \item \acrlong{tsr}
 \end{itemize}
 
-Gestartet werden kann die Vorabgenerierung mithilfe des Benchmark"=Controllers.
+Ausgeführt wird die Vorabgenerierung mithilfe des Benchmark"=Controllers.
 Hierbei werden die Anwendungen, sofern möglich, gleichzeitig ausgeführt und anschließend gewartet, bis alle fünf Anwendungen beendet sind.
 Hierbei wird standardmäßig die Generierung der Eingabedaten einer Anwendung übersprungen, wenn das entsprechende Ausgabeverzeichnis der Anwendung bereits existiert.
 

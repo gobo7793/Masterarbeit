@@ -13,14 +13,14 @@ Folgende Benchmarks sind bereits in der Plattform integriert (vgl. \cref{sec:had
 Jede Benchmark enthält ein spezifisches Start"=Script, um die jeweiligen Benchmarks in einem Docker"=Container zu starten.
 Dieser Container wird, abhängig vom \texttt{HostMode} (vgl. \cref{subsec:hostMode}), auf der Docker"=Machine des \gls{RM} oder direkt auf dem Host gestartet.
 Da es in Docker"=Umgebungen \textit{best practice} ist, für jeden Einsatzzweck ein eigenes Image zu erstellen bzw. Container zu starten, werden für jede der drei Benchmark"=Suites eigene Container ausgeführt.
-Um mehrere Benchmarks gleichzeitig ausführen zu können, wurden die Startscripte der Benchmarks zudem entsprechend angepasst.
+Um mehrere Benchmarks gleichzeitig auszuführen, wurden die Start"=Scripte der Benchmarks entsprechend angepasst.
 
-\subsection{Mapreduce"=Examples}
+\subsection{Mapreduce Examples}
 \label{subsec:mapreduceExamples}
 
-Die Hadoop"=Mapreduce"=Examples sind unterschiedliche und meist voneinander unabhängige Anwendungen, die beispielhaft für die meisten Anwendungsfälle in einem produktiv genutzten Cluster sind.
+Die Hadoop Mapreduce Examples sind unterschiedliche und meist voneinander unabhängige Anwendungen, die beispielhaft für die meisten Anwendungsfälle in einem produktiv genutzten Cluster sind.
 Die Examples sind Teil der Hadoop"=Installation und daher standardmäßig in jedem Hadoop"=Cluster verfügbar.
-Einige der Anwendungen der Examples sind:
+Einige der enthaltenen Anwendungen der Examples sind:
 
 \begin{itemize}
     \item Generatoren für Text und Binärdaten, \zB \acrlong{rtw}
@@ -51,12 +51,12 @@ HiBench enthält damit folgende Workloads mit einer unterschiedlichen Anzahl an 
 \label{subsec:swim}
 
 \gls{SWIM}\footnote{\url{https://github.com/SWIMProjectUCB/SWIM/}} ist eine aus 50 einzelnen Workloads bestehende Benchmark"=Suite.
-Das besondere an \gls{SWIM} ist, dass die Suite im Rahmen der Studie \cite{Chen2012} entwickelt wurde, und dadurch anhand mehrerer tausend real ausgeführter \gls{MR}"=Jobs entwickelt wurde.
+Das besondere an \gls{SWIM} ist, dass die Suite im Rahmen der Studie \cite{Chen2012}, und anhand mehrerer tausend real ausgeführter \gls{MR}"=Jobs entwickelt wurde.
 Die dabei enthaltenen Workloads stellen damit eine größere Vielfalt an ausgeführten Anwendungen und damit einen größeren Testumfang dar als vergleichbare Benchmarks \cite{SwimWikiHome}.
 
 Bei der Ausführung auf dem in dieser Fallstudie verwendeten Cluster wurden jedoch nicht alle Workloads fehlerfrei ausgeführt.
 Zudem wird in \cite{InriaTutorial} explizit erwähnt, dass die Ausführung auf einem Cluster auf einem Host sehr zeitintensiv ist, sofern die Workloads überhaupt ausgeführt werden können.
-\gls{SWIM} ist außerdem für Benchmarks eines Clusters mit mehreren physischen Nodes ausgelegt, weshalb die Ausführung in dieser Fallstudie extrem viel Zeit benötigten würde.
+\gls{SWIM} ist außerdem für Benchmarks eines Clusters mit zahlreichen physischen Nodes ausgelegt, weshalb die Ausführung im Rahmen dieser Fallstudie extrem viel Zeit benötigten würde.
 Daher wurde die Nutzung des \gls{SWIM}"=Benchmarks nicht weiter verfolgt.
 
 \subsection{Jobclient"=Tests}
@@ -71,6 +71,6 @@ Die Jobclient"=Tests enthalten \uA folgende Arten an Anwendungen:
 \begin{itemize}
     \item HDFS"=Systemtests, \zB \texttt{SilveTest}
     \item Reine Lastgeneratoren, \zB \texttt{NNloadGenerator}
-    \item Eingabe/Ausgabe"=Durchsatz"=Tests, \zB \texttt{TestDFSIO}
-    \item DummyAnwendungen \acrlong{sl} und \acrlong{fl}
+    \item Ein- und Ausgabe"=Durchsatz"=Tests, \zB \texttt{TestDFSIO}
+    \item Dummy"=Anwendungen, \zB \acrlong{sl} und \acrlong{fl}
 \end{itemize}

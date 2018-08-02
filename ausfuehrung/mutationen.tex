@@ -1,7 +1,7 @@
 \section{Generierung der Mutanten}
 \label{sec:implMutationTests}
 
-Um das entwickelte Testsystem selbst zu validieren, wurden einige Mutationstests entwickelt.
+Um das entwickelte Testsystem TestingHadoop selbst zu validieren, wurden einige Mutationstests entwickelt.
 Mutationstests werden vor allem in der Forschung eingesetzt, um Fehler im \gls{SuT} oder dem Testsystem selbst zu finden, in dem das \gls{SuT} verändert wird.
 Ziel ist es, die im \gls{SuT} implementierten Mutanten zu finden, und dabei möglichst weitere Fehlerquellen zu ermitteln \cite{DeMillo1978,Hamlet1977,Jia2011,Groce2018}.
 
@@ -25,12 +25,12 @@ Von allen validen Mutationen wurde anschließend für jede der vier Klassen der 
     \item
     Zur Ermittlung der Veränderung des \gls{MARP}"=Wertes muss zunächst der jeweils aktuelle Arbeitsspeicher"=Bedarf des Clusters eingelesen werden.
     Dies geschieht im \texttt{Controller} mithilfe einer \texttt{for}"=Schleife, mit deren Hilfe der Speicherverbrauch im Cluster etwa sekündlich aus der \texttt{memLog}"=Datei eingelesen wird.
-    Der Mutant~1 verändert hierbei die Schleifenbedingung, damit die Schleife nicht ausgeführt wird.
+    Der Mutant~1 verändert hierbei die Schleifenbedingung so, damit die Schleife nicht ausgeführt wird.
     Dadurch wird verhindert, dass der Speicherverbrauch des Clusters vom \texttt{Controller} der Selfbalancing"=Komponente eingelesen und verwendet werden kann.
     Dadurch ist der Speicherverbrauch des Clusters auch nicht für den Algorithmus \cite{Zhang2016} der Selfbalancing"=Komponente verfügbar.
     
     \item 
-    Der \texttt{Effectuator} dient dazu, um die Veränderung des \gls{MARP}"=Wertes im Cluster zu speichern.
+    Der \texttt{Effectuator} dient dazu, um die Veränderung des \gls{MARP}"=Wertes in die Konfiguration des Clusters zu übertragen.
     Dazu wird das entsprechende Shell"=Script mithilfe der Bash"=Shell ausgeführt.
     Der Mutant~2 sorgt dafür, dass anstatt des korrekten Dateipfades der Bash"=Shell (\texttt{/bin/bash}) ein ungültiger Dateipfad (hier \texttt{\%bin/bash}) aufgerufen wird, womit das zur Übertragung des neuen Wertes benötigte Script nicht ausgeführt werden kann.
     
@@ -41,16 +41,16 @@ Von allen validen Mutationen wurde anschließend für jede der vier Klassen der 
     Dazu wird ein entsprechender \texttt{BufferedReader} geöffnet und der Error"=Stream des Scriptes eingelesen und anschließend von der Selfbalancing"=Komponente ausgegeben.
     Umgesetzt wird das mithilfe einer \texttt{while}"=Schleife, die solange den Fehler ausgibt, solange die mithilfe von \texttt{BufferedReader.readLine()} ausgelesene Fehlermeldung nicht \texttt{null} ist, also noch weiteren Text enthält.
     Der Mutant~3 ändert die Schleifenbedingung nun so ab, dass die Schleife durchlaufen wird, solange die Fehlermeldung keinen Text enthält, \texttt{readLine()} also \texttt{null} zurück gibt.
-    Dadurch wird der \texttt{ControlNodeMonitor} in einer Dauerschleife gefangen und die Anzahl der aktiven YARN"=Jobs wird einmalig direkt nach dem Start der Selfbalancing"=Komponente ermittelt.
+    Dadurch wird der \texttt{ControlNodeMonitor} in so einem Fall in einer Dauerschleife gefangen und die Anzahl der aktiven YARN"=Jobs wird nur einmalig nach dem Start der Selfbalancing"=Komponente ermittelt.
     Dadurch steht die Anzahl der YARN"=Jobs nicht zur Berechnung des \gls{MARP}"=Wertes zur Verfügung.
             
     \item
     Die Klasse \texttt{MemUtilization} dient analog zur \texttt{ControlNodeMonitor}"=Klasse zum Auslesen des Arbeitsspeicher"=Bedarfs des Clusters.
     Der Mutant~4 verhindert hierbei die komplette Ausführung des entsprechenden Threads, indem die Bedingung der Schleife für den gesamten Thread so verändert wird, dass diese nur dann ausgeführt wird, wenn der Thread nicht aktiv ist.
-    Dadurch wird verhindert, dass das entsprechende Shell"=Script überhaupt ausgeführt wird, der Speicherverbrauch somit nicht ausgelesen und somit auch nicht zur Berechnung des neuen \gls{MARP}"=Wertes zur Verfügung steht.
+    Dadurch wird verhindert, dass das entsprechende Shell"=Script überhaupt ausgeführt wird, der Speicherverbrauch somit nicht ausgelesen und damit auch nicht zur Berechnung des neuen \gls{MARP}"=Wertes zur Verfügung steht.
 \end{enumerate}
 
-Als Resultat der Mutanten 1, 3 und 4 kann somit der neue \gls{MARP}"=Wert nicht berechnet werden bzw. im Falle von Mutant 2 der korrekt berechnete \gls{MARP}"=Wert nicht an das Cluster übertragen werden.
+Als Resultat der Mutanten 1, 3 und 4 kann somit der neue \gls{MARP}"=Wert nicht berechnet bzw. im Falle von Mutant 2 der korrekt berechnete \gls{MARP}"=Wert nicht an das Cluster übertragen werden.
 
 Für jede Mutation wurde ein Mutationsszenario im Rahmen der Plattform Hadoop"=Benchmark entwickelt, bei dem keine weitere Mutationen enthalten sind.
 Zudem wurde ein weiteres Mutationsszenario entwickelt, bei dem alle vier Mutationen enthalten sind (vgl. \cref{sec:realCluster}).
