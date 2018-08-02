@@ -10,7 +10,7 @@ Damit die Clients unabhängig voneinander sind, wird für jeden Client ein eigen
 \label{subsec:appImplementation}
 
 Die Benchmarks sind mithilfe der Klasse \texttt{Benchmark} implementiert.
-Sie enthält alle zur Ausführung der Benchmarks benötigten Informationen und stellt diese der \texttt{BenchmarkController}"=Klasse bzw. dem Client bereit, um die Anwendung des Benchmarks zu starten.
+Sie enthält alle zur Ausführung der Benchmarks benötigten Informationen und stellt diese der \texttt{Benchmark""Controller}"=Klasse bzw. dem Client bereit, um die Anwendung des Benchmarks zu starten.
 Da mehrere Clients unabhängig voneinander agieren können müssen, erhält jeder Client ein spezifisches Unterverzeichnis im HDFS, in dem sich die Ein- und Ausgabeverzeichnisse für die von ihm gestarteten Anwendungen befinden.
 Das muss auch bei der Definition der Startbefehle der Anwendungen berücksichtigt werden, weshalb hierfür entsprechende Platzhalter ersetzt werden müssen, wenn mithilfe der Methode \texttt{GetStartCmd()} der Start"=Befehl des Benchmarks zurückgegeben wird:
 
