@@ -5,11 +5,11 @@ Die folgende Tabelle gibt eine Übersicht über die für diese Fallstudie ausgef
 Die Auswahl der Konfigurationen der Tests ist in \cref{sec:selectTestcases} beschrieben.
 
 Die Spalte \emph{Mutanten} gibt an, welche der in \cref{sec:implMutationTests} definierten Mutanten der Selfbalancing"=Komponente genutzt wurden.
-In den Spalten \emph{Ausgeführte Testfälle} und \emph{Dauer} ist angegeben, wie viele Testfälle bzw. Simulations"=Schritte vollständig und erfolgreich ausgeführt wurden bzw. wie viel Zeit die jeweiligen Simulationen in Minuten und Sekunden benötigten.
+In den Spalten \emph{Ausgeführte Testfälle} und \emph{Dauer} ist angegeben, wie viele Testfälle vollständig und erfolgreich ausgeführt wurden bzw. wie viel Zeit die jeweiligen Simulationen in Minuten und Sekunden benötigten.
 Wenn nicht alle möglichen Testfälle ausgeführt wurden, war im darauf folgenden Testfall eine Rekonfiguration des Clusters nicht mehr möglich und die Simulation wurde abgebrochen (vgl. \cref{subsec:oracleImpl}).
 
 Die Nummerierung der Konfigurationen bzw. Ausführungen erfolgte basierend auf den grundlegenden Testkonfigurationen, bestehend aus Seed, Anzahl der Hosts, Clients und ausgeführten Testfällen sowie der Angabe, ob ein Mutationsszenario verwendet wurde.
-Bei mehrmals ausgeführten Testkonfigurationen ist der Konfiguration eine entsprechende Ziffer angehängt, um die jeweilige Ausführung zu Kennzeichnen.
+Bei mehrmals ausgeführten Testkonfigurationen ist der Konfiguration eine entsprechende Ziffer angehängt, um die jeweilige Testausführung zu Kennzeichnen.
 Eine Besonderheit bildet hierbei die Testkonfiguration 10 mit insgesamt 6 Ausführungen, da diese Konfiguration mit verschiedenen Mutanten durchgeführt wurde.
 
 \begin{table}
@@ -22,11 +22,11 @@ Eine Besonderheit bildet hierbei die Testkonfiguration 10 mit insgesamt 6 Ausfü
     	2  & 0xAB4FEDD &   1   &    2    &    5      & 1,2,3,4  &     5      & 2:34  \\ \hline
     	3  & 0xAB4FEDD &   1   &    4    &    5      &  keine   &     5      & 5:52  \\ \hline
     	4  & 0xAB4FEDD &   1   &    4    &    5      & 1,2,3,4  &     2      & 3:13  \\ \hline
-    	6  & 0xAB4FEDD &   1   &    4    &    10     & 1,2,3,4  &     2      & 3:14  \\ \hline
         \makecell{5.1\\5.2}
            & 0xAB4FEDD &   1   &    4    &    10     &  keine   &
                         \makecell{2\\2} &
-                                \makecell{3:35\\3:23}                                 \\ \hline
+                                \makecell{3:35\\3:23}                                \\ \hline
+        6  & 0xAB4FEDD &   1   &    4    &    10     & 1,2,3,4  &     2      & 3:14  \\ \hline
         \makecell{7.1\\7.2}
            & 0xAB4FEDD &   2   &    2    &    5      &  keine   &
                         \makecell{5\\5} &
@@ -64,7 +64,6 @@ Eine Besonderheit bildet hierbei die Testkonfiguration 10 mit insgesamt 6 Ausfü
                                 \makecell{8:17\\7:37}                                \\ \hline
     	29 & 0x11399D3 &   2   &    6    &    5      &  keine   &     5      & 7:03  \\ \hline
     	30 & 0x11399D3 &   2   &    6    &    5      & 1,2,3,4  &     5      & 6:02  \\ \hline
-    	31 & 0x11399D3 &   2   &    6    &    10     &  keine   &     7      & 10:21 \\ \hline
         \makecell{31.1\\31.2}
            & 0x11399D3 &   2   &    6    &    10     &  keine   &
                         \makecell{7\\7} &
