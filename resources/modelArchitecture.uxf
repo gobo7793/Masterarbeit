@@ -12,7 +12,7 @@
     <panel_attributes>valign=top
 halign=center
 layer=0
-bg=green
+bg=#7da2ff
 YARN-Modell</panel_attributes>
     <additional_attributes/>
   </element>
