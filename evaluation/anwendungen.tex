@@ -9,38 +9,41 @@ Dies widerspricht zum Teil den in \cref{sec:requirements} definierten Anforderun
 \label{subsec:failedApps}
 
 Wie bereits erwähnt, sind etwas mehr als ein Viertel aller gestarteten Anwendungen fehlgeschlagen, was im Schnitt 2,6 fehlgeschlagene Anwendungen pro ausgeführtem Test ergibt.
-Die meisten fehlgeschlagenen Anwendungen sind hierbei mit 9 bzw. 8 bei den Tests der Konfigurationen 31 und 32 zu finden.
+Die meisten fehlgeschlagenen Anwendungen sind hierbei mit neun bzw. acht bei den Tests der Konfigurationen 31 und 32 zu finden.
 Auffällig ist zudem der Vergleich zwischen den Tests 19 und 20.
-Während bei der Ausführung der Testkonfiguration 19 ganze 5 Anwendungen fehlgeschlagen sind, ist dies bei der Ausführung des Tests 20 keine einzige.
+Während bei der Ausführung der Testkonfiguration 19 ganze fünf Anwendungen fehlgeschlagen sind, ist dies bei der Ausführung des Tests 20 keine einzige.
 Ebenfalls auffallend ist, dass Konfigurationen mit Mutationsszenario meist weniger oder gleich viele fehlgeschlagene Anwendungen aufweisen als die korrespondierenden Konfigurationen ohne Mutationen.
-Eine Ausnahme bildet der Test 8, bei dem 3 Anwendungen fehlgeschlagen sind, während die Tests 7.1 und 7.2 keine fehlgeschlagene Anwendung aufweisen.
-Eine weitere Ausnahme bildet der Test 9.2, der eine fehlgeschlagene Anwendung mehr aufweist als Test 10.3. Die anderen Tests der Konfigurationen 9 und 10 verhalten sich jedoch wie andere korrespondierende Testkonfigurationen.
+Eine Ausnahme bildet der Test 8, bei dem drei Anwendungen fehlgeschlagen sind, während die Tests 7.1 und 7.2 keine fehlgeschlagene Anwendung aufweisen.
+Eine weitere Ausnahme bildet der Test 9.2, der eine fehlgeschlagene Anwendung mehr aufweist als Test 10.3. Die anderen Tests der Konfigurationen 9 und 10 verhalten sich jedoch wie das Gros der ausgeführten Tests.
 
 Bei der Betrachtung der Constraints, welche die in \cref{subsec:functionalRequirements} definierte Anforderung umsetzen, dass Anwendungen vollständig ausgeführt werden, solange sie nicht manuell bzw. durch das Testsystem vorzeitig abgebrochen werden, fällt auf, dass die Anzahl der verletzten Constraints mit 343 mehr als die Hälfte aller verletzten Constraints ausmacht (59,9 \%).
-Im Schnitt ergibt das somit rund 8 ungültige Constraints pro Test bzw. ca. 1,8 verletzte Constraints pro durch das Oracle überprüften Testfall.
+Im Schnitt ergibt das somit rund acht verletzte Constraints pro Test bzw. ca. 1,8 verletzte Constraints pro durch das Oracle überprüften Testfall.
 Die auf den ersten Blick sehr hohe Anzahl an verletzten Constraints resultiert daraus, dass eine fehlgeschlagene Anwendung bei jedem nachfolgenden Testfall bei einer Testausführung erneut durch das Oracle entsprechend validiert wurde.
 Dadurch sind ein Großteil der verletzten Constraints ein falscher Alarm, da die entsprechende Anforderung pro Anwendung logischerweise nur einmal nicht erfüllt werden kann.
-Aussagekräftiger ist daher die Anzahl von 110 nicht vollständig abgeschlossenen bzw. aufgrund eines Fehlers abgebrochenen Anwendungen.
+Aussagekräftiger ist daher die Anzahl von 110 fehlgeschlagenen Anwendungen.
 Hierbei ist zudem zu beachten, dass es insgesamt einen erfolgreichen Attempt weniger gibt als Anwendungen (vgl. \cref{sec:evaluationResults}).
-Dies liegt darin, dass die \acrlong{fl}"=Anwendung als erfolgreich gewertet wird, dabei jedoch der \gls{AppMstr}, und damit auch der Attempt, gezielt mit einem Fehler beendet wird (vgl. \cref{subsec:appSelection}).
+Dies rührt daher, dass bei der Ausführung der \acrlong{fl}"=Anwendung diese erfolgreich gewertet wird, dabei jedoch der Map"=Task, und damit letztlich auch der Attempt, gezielt mit einem Fehler beendet wird (vgl. \cref{subsec:appSelection}).
 
 Anhand der Datenbasis lassen sich vier Ursachen für nicht vollständig ausgeführte Anwendungen bzw. Attempts ausmachen:
 
-\begin{itemize}
+\begin{itemize}[itemsep=5pt]
     \item
         Der \gls{AppMstr} ist nicht mehr erreichbar, da der auszuführende Node aufgrund eines injizierten Komponentenfehlers nicht mehr erreichbar ist.
-        Dadurch wird der \gls{AppMstr} nach einiger Zeit mit einem \emph{\gls{AppMstr} Timeout} als fehlgeschlagen markiert.
+        Dadurch schlägt die Ausführung des \gls{AppMstr} nach einiger Zeit mit einem \emph{\gls{AppMstr} Timeout} fehlt.
+        
     \item
-        Die den \gls{AppMstr} zugewiesenen Nodes sind vollständig ausgelastet, wodurch dem \gls{AppMstr} selbst die benötigten Ressourcen nicht allokiert bzw. der \gls{AppMstr} nicht ausgeführt werden kann.
-        Nach einiger Zeit wird der \gls{AppMstr} daher ebenfalls aufgrund eines \emph{\gls{AppMstr} Timeout}s abgebrochen.
+        Der dem \gls{AppMstr} zugewiesenen Node ist vollständig ausgelastet, wodurch die benötigten Ressourcen nicht allokiert bzw. der \gls{AppMstr} nicht ausgeführt werden kann.
+        Nach einiger Zeit wird der \gls{AppMstr} daher ebenfalls mit einem \emph{\gls{AppMstr} Timeout} abgebrochen.
         Das beinhaltet auch Timeouts, wenn einem \gls{AppMstr} kein ausführender Node zugewiesen werden kann.
+        
     \item
         Während der Ausführung einer \gls{MR}"=Anwendung wird ein Fehler im Map"=Task festgestellt, der dazu führt, dass der Task abgebrochen wird.
         Dieser Fehler trat bei den hier ausgeführten Tests mehrmals bei der Anwendung \acrlong{dfr} auf, wenn die zuvor generierten Eingabedaten für diesen Benchmark aufgrund injizierter Komponentenfehler nicht mehr im Cluster vorhanden waren.
-        Zwar werden Dateien im HDFS immer auf mehr als einem Node gespeichert (vgl. \cref{sec:hadoop}), jedoch ist es möglich, dass die für die Anwendung benötigten Daten auf Nodes repliziert wurden, bei denen ein Komponentenfehler injiziert wurde.
-        Dies führte dazu, dass die benötigten Daten nicht gefunden werden können bzw. im HDFS als fehlerhaft markiert sind.
+        Zwar werden Dateien im HDFS immer auf mehr als einem Node gespeichert (vgl. \cref{sec:hadoop}), jedoch ist es möglich, dass die für die Anwendung benötigten Daten auf Nodes repliziert, bei denen wiederum Komponentenfehler injiziert wurden.
+        Dies führt letztlich dazu, dass die benötigten Daten nicht gefunden werden können bzw. fehlerhaft sind.
         Dadurch wird im Map"=Task ein Fehler ausgelöst, der die gesamte Anwendung vorzeitig beendet.
         Aufgrund eines Fehlers im Map"=Task wird auch die \acrlong{fl}"=Anwendung beendet, jedoch ist das in diesem Fall das gewünschte Verhalten der Anwendung und zählt daher nicht als Fehler.
+        
     \item
         Der \gls{AppMstr} eines Attempts wird mit dem Exitcode -100 beendet.
         Dieser Fehler tritt dann auf, wenn versucht wird, einen Task eines YARN"=Containers auf einem defekten Node auszuführen, was somit auch der Anforderung widerspricht, dass kein Task an defekte Nodes gesendet wird (vgl. \cref{subsec:functionalRequirements}).
@@ -52,24 +55,24 @@ Anhand der Datenbasis lassen sich vier Ursachen für nicht vollständig ausgefü
 Hierbei werden aufgrund eines \gls{AppMstr}"=Timeouts zunächst nur die Attempts mit dem entsprechenden Fehler abgebrochen, nicht jedoch die Anwendung selbst.
 Die Anwendung selbst wird in so einem Fall erst dann als fehlgeschlagen abgebrochen, sobald zwei Attempts aufgrund eines Timeouts abgebrochen wurden.
 Wenn ein Attempt mit dem Exitcode -100 terminiert, wird unabhängig von zuvor ausgeführten Attempts ein weiterer Attempt ausgeführt.
-Dadurch wird hier die Anforderung, dass ein Task vollständig ausgeführt werden muss, teilweise erfüllt.
+Dadurch wird in so einem Fall die Anforderung, dass ein Task vollständig ausgeführt werden muss, teilweise erfüllt.
 
-Bei einigen der \gls{AppMstr}"=Timeouts aufgrund der Injizierung von Komponentenfehlern lässt sich zudem ein spezielles Muster erkennen.
-Hierbei wurde in einem zuvor ausgeführten Testfall auf einem Node ein \gls{AppMstr} einer Anwendung ohne Fehler allokiert.
-Nun ist es möglich, dass für diesen Node ein Komponentenfehler injiziert wird, was dazu führt, dass der Node nicht mehr erreichbar ist und der \gls{AppMstr} aufgrund eines Timeouts abgebrochen wird.
-Hierbei wird direkt im Anschluss ein neuer \gls{AppMstr} allokiert, was auch dazu führt, dass die Anwendung nun einen zweiten Attempt besitzt, nachdem der erste aufgrund des Timeouts abgebrochen wurde.
-Dabei ist es nun möglich, dass noch während der Aktivierung von Komponentenfehlern innerhalb des Testfalls auf dem ausführenden Node des neuen \gls{AppMstr} ein Komponentenfehler injiziert wird.
-Dadurch wird der zweite \gls{AppMstr} ebenfalls aufgrund eines Timeouts abgebrochen, wodurch die gesamte Anwendung als fehlgeschlagen gilt.
+Bei einigen der aufgrund der Injizierung von Komponentenfehlern ausgelösten \gls{AppMstr}"=Timeouts lässt sich zudem ein spezielles Muster erkennen.
+Hierbei wurde in einem zuvor ausgeführten Testfall auf einem Node ein \gls{AppMstr} einer Anwendung erfolgreich allokiert.
+Nun ist es möglich, dass für diesen Node ein Komponentenfehler injiziert wird, was dazu führt, dass der Node nicht mehr erreichbar ist und der \gls{AppMstr} mit einem Timeout abgebrochen wird.
+Hierbei wird direkt im Anschluss ein neuer \gls{AppMstr} allokiert, was auch dazu führt, dass die Anwendung nun einen zweiten Attempt besitzt.
+Dabei ist es nun möglich, dass noch während der Aktivierung von Komponentenfehlern auf dem ausführenden Node des neuen \gls{AppMstr} ebenfalls ein Komponentenfehler injiziert wird.
+Dadurch wird der zweite \gls{AppMstr} ebenfalls mit einem Timeout abgebrochen, wodurch die gesamte Anwendung fehl schlägt.
 
 \subsection{Nicht gestartete Anwendungen}
 \label{subsec:notStartedApps}
 
 Bei den Tests 19, 25 und 27 bis 32  (vgl. \cref{app:overviewExecutedTestCases}) konnten insgesamt 29 Anwendungen nicht gestartet werden.
-Meistens war hiervon die Anwendung \acrlong{tsr} davon betroffen, einige Male auch die Anwendung \acrlong{tvl}.
-Ursächlich dafür ist die jeweils hohe Auslastung des Clusters in den Testfällen zuvor, bei denen den \gls{AppMstr}"=Containern der \acrlong{tg}"=Anwendungen keine Ressourcen auf den ausführenden Nodes allokiert werden konnten und diese daher aufgrund eines \gls{AppMstr}"=Timeouts beendet wurden (vgl. \cref{subsec:failedApps}).
+Meistens war hiervon die Anwendung \acrlong{tsr} betroffen, einige Male auch die Anwendung \acrlong{tvl}.
+Ursächlich dafür ist die jeweils hohe Auslastung des Clusters in den Testfällen zuvor, bei denen den \gls{AppMstr}"=Containern der \acrlong{tg}"=Anwendungen keine Ressourcen auf den ausführenden Nodes allokiert werden konnten und diese daher mit einem \gls{AppMstr}"=Timeout beendet wurden (vgl. \cref{subsec:failedApps}).
 Da für die ausgeführten Tests definiert wurde, dass benötigte Eingabedaten für Anwendungen während der Ausführung der Tests generiert werden, konnten so die benötigten Eingabedaten für die Anwendung \acrlong{tsr} nicht generiert werden (vgl. \cref{subsec:appSelection,sec:selectTestcases}).
 Aufgrund der fehlenden Daten wurde daher die Anwendung direkt wieder abgebrochen, wodurch in 42 Testfällen nicht jeder Client eine Anwendung ausgeführt hat.
-In diesen Fällen wurde als Resultat zudem das Constraint der Anforderung, wonach mehrere Benchmark"=Anwendungen gleichzeitig gestartet und ausgeführt werden können, entsprechend verletzt, da hier geprüft wurde, ob alle Clients eine derzeit ausgeführte Anwendung aufweisen (vgl. \cref{subsec:testRequirements,subsec:yarnComponentFaults}).
+In diesen Fällen wurde als Resultat zudem das Constraint der Anforderung, wonach mehrere Benchmark"=Anwendungen gleichzeitig gestartet und ausgeführt werden können, entsprechend verletzt, da hier auch geprüft wurde, ob alle Clients eine derzeit ausgeführte Anwendung aufweisen (vgl. \cref{subsec:testRequirements,subsec:yarnComponentFaults}).
 Analog dazu verhält es sich bei der Anwendung \acrlong{tvl}, welche wiederum die \acrlong{tsr}"=Ausgabedaten als Eingabedaten benötigt (vgl. \cref{subsec:appSelection}).
 
 \subsection{Nicht ausreichend Submitter}

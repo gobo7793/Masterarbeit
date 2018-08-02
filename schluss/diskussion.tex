@@ -6,21 +6,21 @@ Dies liegt vor allem aufgrund der hohen Anzahl an fehlgeschlagenen Anwendungen, 
 
 \begin{itemize}
     \item Der Node ist nicht erreichbar, was zu einem \gls{AppMstr}"=Timeout führt
-    \item Der den \gls{AppMstr} ausführende Node ist zur sehr ausgelastet, was ebenfalls zu einem \gls{AppMstr}"=Timeout führt
+    \item Der den \gls{AppMstr} ausführende Node ist zur sehr ausgelastet, was ebenfalls zu einem \gls{AppMstr}"=Timeout führen kann
     \item Benötigte Dateien sind nicht im HDFS verfügbar, was in einem Map"=Task"=Fehler resultiert
     \item Es wird versucht, Tasks von YARN"=Containern auf einem defekten Node auszuführen, was im Exitcode -100 ersichtlich wird
 \end{itemize}
 
 Es ist erkennbar, dass drei der vier Ursachen im Zusammenhang mit der Injizierung von Komponentenfehlern im realen Cluster zu finden sind.
-Dies zeigt sich vor allem an der häufigen Zahl an \gls{AppMstr}"=Timeouts, welche bei einem injiziertem Komponentenfehler die direkte Folge davon ist, wenn auf dem Node ein \gls{AppMstr} ausgeführt wurde.
-Es hat sich daher gezeigt, dass die in \cref{sec:selectTestcases} ausgewählte generelle Wahrscheinlichkeit zur Aktivierung und Deaktivierung der Komponentenfehler von 0,3 vor allem für hohe Auslastungsgrade bei konkreten Testausführungen eine nicht sehr ausgewogene Mischung ergibt.
+Dies zeigt sich vor allem an der hohen Zahl an \gls{AppMstr}"=Timeouts, welche bei einem injiziertem Komponentenfehler die direkte Folge davon sein kann, wenn auf dem Node \gls{AppMstr} ausgeführt wurden.
+Es hat sich daher gezeigt, dass die ausgewählte generelle Wahrscheinlichkeit zur Aktivierung und Deaktivierung der Komponentenfehler von 0,3 vor allem für hohe Auslastungsgrade bei den konkreten Testausführungen entgegen der Erwartungen keinen ausgewogenen Wert darstellt (vgl. \cref{sec:selectTestcases}).
 Während bei niedrigen Auslastungsgraden nur wenige Komponentenfehler injiziert wurden, wurden bei hohen Auslastungsgraden häufig welche injiziert, was sich auch in der Anzahl der 14 abgebrochenen Tests zeigt (vgl. \cref{sec:noReconfig}).
 
 Mit 14 Prozent aller möglichen Komponentenfehler wurden zwar nicht viele Fehler aktiviert.
 Jedoch muss man bei diesem Wert beachten, dass für jeden Node pro Testfall bis zu zwei Komponentenfehler aktivierbar sind.
 Aus diesem Grund wurden nicht 14 Prozent der möglichen Defekte ausgelöst, sondern rund ein Viertel.
 Das ergibt umgerechnet pro ausgeführtem Testfall im Schnitt mindestens einen Node, bei dem ein Komponentenfehler injiziert und somit ein Defekt ausgelöst wurde.
-Die Quote von rund einem Viertel defekter Nodes dürfte im Praxisbetrieb jedoch eher unwahrscheinlich sein.
+Die Quote von rund einem Viertel defekter Nodes dürfte in produktiv genutzten Clustern jedoch eher unwahrscheinlich sein.
 Da viele in der Praxis eingesetzten Cluster eine zwei-, drei- oder zum Teil auch eine vierstellige Zahl an Nodes aufweisen \cite{PoweredByHadoop}, müssten hier für eine ähnliche Quote bis zu mehrere hundert Nodes gleichzeitig ausfallen.
 Ein Beispiel mit den Daten des Musik"=Streaming"=Dienstes Spotify\footnote{\url{https://www.spotify.com/}} verdeutlicht hierbei die Tragweite eines solchen Ausfalls.
 Das von Spotify genutzte Cluster zur Analyse der Hörgewohnheiten und für Musikempfehlungen für seine Benutzer und Kunden weist folgende Kenndaten auf \cite{PoweredByHadoop}:
@@ -36,7 +36,7 @@ Das von Spotify genutzte Cluster zur Analyse der Hörgewohnheiten und für Musik
 Es stellt damit auch eines der größten Hadoop"=Cluster dar \cite{PoweredByHadoop}.
 Es ist schnell ersichtlich, dass beim Ausfall von über 400 Nodes wohl ein Großteil der über 20.000 ausgeführten Anwendungen nicht mehr ausgeführt werden könnten und zahlreiche Blöcke von möglicherweise benötigten Daten im HDFS nicht mehr verfügbar wären (vgl. \cref{sec:hadoop}).
 Entsprechende Auswirkungen hätte das auch auf die Kunden von Spotify, da \uA die Musikempfehlungen nur noch eingeschränkt zur Verfügung stehen würden.
-Es dürfte aber auch sehr unwahrscheinlich sein, dass bei einem Cluster dieser Größe ein Viertel aller Nodes ausfallen würde.
+Es dürfte aber auch sehr unwahrscheinlich sein, dass bei einem Cluster dieser Größe ein Viertel aller Nodes ausfällt.
 Bei kleinen Clustern mit Nodes im ein- bzw. niedrigen zweistelligen Bereich dürfte der Ausfall eines Viertel der Nodes dagegen im realistischen Bereich liegen.
 Allerdings wären bei kleinen Clustern die Auswirkungen, natürlich abhängig von den Aufgaben des Clusters, tendenziell weniger massiv wie am Beispiel von Spotify.
 
@@ -52,12 +52,12 @@ Da es mit \acrlong{dfw}, \acrlong{dfr} und \acrlong{pt} zudem einige Benchmarks 
 Jedoch hätten sich die \gls{AppMstr}"=Timeouts darauf beschränkt, dass keine Ressourcen allokiert werden konnten, was eine deutlich geringere Zahl gewesen wäre.
 
 Durch eine Testausführung ohne Aktivierung der Komponentenfehler hätten vermutlich auch viele der 29 nicht gestarteten Anwendungen (vgl. \cref{subsec:notStartedApps}) gestartet werden können.
-Mit 7 Prozent ist der Anteil der nicht gestarteten Anwendungen im Verhältnis zu allen gestarteten Anwendungen zwar kein signifikanter Anteil, wobei dieser aber auch nicht zu vernachlässigen ist.
-Zwar hätten die nicht gestarteten Anwendungen keine signifikant höhere Auslastung des Clusters bedeutet, aber dennoch wurde hiermit auch eine in \cref{sec:requirements} nicht erwähnte Anforderung verletzt, wonach alle Anwendungen der ausgewählten Benchmarks auch gestartet werden müssten.
-Da hierbei immer zu \acrlong{tsr} zugehörige Anwendungen betroffen waren, gab es hierfür auch zwei Ursachen.
-Die erste war eine zu hohe Auslastung des Clusters, wodurch die benötigten Daten von der \acrlong{tg}"=Anwendung nicht generiert werden konnten, da die Anwendung keine Ressourcen zur Ausführung des \gls{AppMstr} erhalten hat oder die Anwendung auch deshalb vorab abgebrochen wurde.
+Mit 7 Prozent ist der Anteil der nicht gestarteten Anwendungen im Verhältnis zu allen gestarteten Anwendungen zwar kein signifikanter Anteil, jedoch ist der Anteil schon zu groß um ihn komplett vernachlässigen zu können.
+Zwar hätten die nicht gestarteten Anwendungen keine signifikant höhere Auslastung des Clusters bedeutet, aber dennoch wurde hiermit auch eine in \cref{sec:requirements} nicht explizit erwähnte Anforderung verletzt, wonach alle Anwendungen der ausgewählten Benchmarks auch gestartet werden sollten.
+Dass hierbei nur zu \acrlong{tsr} zugehörige Anwendungen betroffen waren, hatte zwei Ursachen.
+Die erste war eine zu hohe Auslastung des Clusters, wodurch die benötigten Daten von der \acrlong{tg}"=Anwendung nicht generiert werden konnten, da die Anwendung keine Ressourcen zur Ausführung des \gls{AppMstr} erhalten hat bzw. die Anwendung auch deshalb vorab abgebrochen wurde.
 Die zweite Ursache liegt in der Injizierung der Komponentenfehler, wodurch erfolgreich generierte Daten für die nachfolgenden Anwendungen nicht mehr verfügbar waren.
-Es ist daher stark davon auszugehen, dass sich die Anzahl der nicht gestarteten Anwendungen bei einer Testausführung ohne Aktivierungen von Komponentenfehlern signifikant reduzieren würde.
+Es ist daher stark davon auszugehen, dass sich die Anzahl der nicht gestarteten Anwendungen bei Tests ohne Aktivierungen von Komponentenfehlern signifikant reduzieren würde.
 
 Die Ausführungsdauer der einzelnen Tests ist zudem ebenfalls nicht zu vernachlässigen.
 Aufgrund der Ergebnisse lässt sich sagen, dass mehr injizierte Komponentenfehler auch die Ausführungsdauer erhöht haben.
